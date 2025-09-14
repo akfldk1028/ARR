@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python manage.py:*)",
+      "Bash(curl:*)",
+      "Bash(pip install:*)",
+      "Bash(daphne:*)",
+      "WebSearch",
+      "WebFetch(domain:colab.research.google.com)",
+      "WebFetch(domain:ai.google.dev)",
+      "WebFetch(domain:python.plainenglish.io)",
+      "WebFetch(domain:ably.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

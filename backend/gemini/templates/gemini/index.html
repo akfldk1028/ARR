@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ page_title }}</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .chat {
+            border: 2px solid #e0e0e0;
+            height: 500px;
+            overflow-y: auto;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f9f9f9;
+            border-radius: 15px;
+        }
+        .message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 80%;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        .ai {
+            background: white;
+            border: 1px solid #e0e0e0;
+            margin-right: auto;
+        }
+        .controls {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 15px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        input, button {
+            padding: 12px 20px;
+            margin: 5px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        #messageInput { width: 60%; }
+        #imagePrompt { width: 50%; }
+        .status {
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .image-preview {
+            max-width: 300px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .info-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+            margin-left: 10px;
+        }
+        .capabilities {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .capability {
+            padding: 5px 15px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ page_title }}</h1>
+            <p>Model: {{ model_name }} | Django + Channels WebSocket</p>
+            <div class="capabilities">
+                <span class="capability">Text</span>
+                <span class="capability">Image</span>
+                <span class="capability">Video (Soon)</span>
+                <span class="capability">Audio (Input)</span>
+            </div>
+        </div>
+
+        <div id="status" class="status disconnected">Connecting to Live API...</div>
+
+        <div id="chat" class="chat"></div>
+
+        <div class="controls">
+            <div class="control-group">
+                <h3>Image Analysis</h3>
+                <input type="file" id="imageInput" accept="image/*">
+                <input type="text" id="imagePrompt" placeholder="Ask about the image..." value="What do you see in this image?">
+                <button onclick="uploadImage()">Analyze Image</button>
+            </div>
+
+            <div class="control-group">
+                <h3>Audio Chat</h3>
+                <button id="audioButton" onclick="toggleAudio()">🎤 Start Recording</button>
+                <div id="audioStatus" style="margin: 10px 0; font-size: 12px; color: #666;"></div>
+            </div>
+
+            <div class="control-group">
+                <h3>Text Chat</h3>
+                <input type="text" id="messageInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">Send</button>
+                <button onclick="clearChat()">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Starting WebSocket connection to:', '{{ websocket_url }}');
+        const ws = new WebSocket('{{ websocket_url }}');
+        const chat = document.getElementById('chat');
+        const status = document.getElementById('status');
+
+        ws.onopen = () => {
+            console.log('WebSocket connected!');
+            status.textContent = 'Connected to Django + Gemini Live API';
+            status.className = 'status connected';
+        };
+
+        ws.onclose = (event) => {
+            console.log('WebSocket closed:', event.code, event.reason);
+            status.textContent = 'Disconnected';
+            status.className = 'status disconnected';
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error details:', error);
+            status.textContent = 'Connection Error';
+            status.className = 'status disconnected';
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('WebSocket received:', data); // DEBUG
+
+            if (data.type === 'connection') {
+                addMessage(`Connected! Model: ${data.model}`, 'ai');
+            } else if (data.type === 'response' || data.type === 'image_response') {
+                const time = data.response_time ? ` <span class="info-badge">${data.response_time.toFixed(2)}s</span>` : '';
+                let typeIcon = '[TXT]';
+                if (data.type === 'image_response') typeIcon = '[IMG]';
+                else if (data.analysis_type === 'image_regular_api') typeIcon = '[IMG]';
+                else if (data.analysis_type === 'audio_live_api') typeIcon = '[AUD]';
+                else if (data.analysis_type === 'video_frame_analysis') typeIcon = '[VID]';
+                addMessage(`${typeIcon} ${data.message}${time}`, 'ai');
+            } else if (data.type === 'error') {
+                addMessage(`[ERROR] ${data.message}`, 'ai');
+            }
+        };
+
+        function addMessage(msg, sender) {
+            const div = document.createElement('div');
+            div.className = 'message ' + sender;
+            div.innerHTML = msg;
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const msg = input.value.trim();
+            if (msg && ws.readyState === WebSocket.OPEN) {
+                addMessage('[TXT] ' + msg, 'user');
+                ws.send(JSON.stringify({type: 'text', message: msg}));
+                input.value = '';
+            } else if (ws.readyState !== WebSocket.OPEN) {
+                alert('Not connected. Please refresh the page.');
+            }
+        }
+
+        function uploadImage() {
+            const file = document.getElementById('imageInput').files[0];
+            const prompt = document.getElementById('imagePrompt').value || 'What do you see in this image?';
+
+            if (file && ws.readyState === WebSocket.OPEN) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    addMessage(`[IMG] Analyzing image: "${prompt}"`, 'user');
+
+                    // Show image preview
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'image-preview';
+                    chat.appendChild(img);
+                    chat.scrollTop = chat.scrollHeight;
+
+                    ws.send(JSON.stringify({
+                        type: 'image',
+                        image: e.target.result,
+                        prompt: prompt
+                    }));
+                };
+                reader.readAsDataURL(file);
+            } else if (!file) {
+                alert('Please select an image file.');
+            } else {
+                alert('WebSocket not connected.');
+            }
+        }
+
+        function clearChat() {
+            chat.innerHTML = '';
+            addMessage('Chat cleared. Ready for new conversation!', 'ai');
+        }
+
+        // Audio recording variables
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        async function toggleAudio() {
+            const audioButton = document.getElementById('audioButton');
+            const audioStatus = document.getElementById('audioStatus');
+
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            const base64Audio = reader.result.split(',')[1];
+                            if (ws.readyState === WebSocket.OPEN) {
+                                addMessage('🎤 Processing audio...', 'user');
+                                ws.send(JSON.stringify({
+                                    type: 'audio',
+                                    audio: base64Audio
+                                }));
+                            }
+                        };
+                        reader.readAsDataURL(audioBlob);
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    audioButton.textContent = '⏹️ Stop Recording';
+                    audioButton.style.background = '#dc3545';
+                    audioStatus.textContent = 'Recording... Click to stop';
+                    addMessage('🎤 Recording started...', 'user');
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
+                    audioStatus.textContent = 'Microphone access denied or unavailable';
+                }
+            } else {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                isRecording = false;
+                audioButton.textContent = '🎤 Start Recording';
+                audioButton.style.background = '#4CAF50';
+                audioStatus.textContent = 'Processing audio...';
+            }
+        }
+    </script>
+</body>
+</html>
