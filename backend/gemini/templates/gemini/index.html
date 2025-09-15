@@ -170,9 +170,24 @@
             </div>
 
             <div class="control-group">
-                <h3>Audio Chat</h3>
-                <button id="audioButton" onclick="toggleAudio()">🎤 Start Recording</button>
+                <h3>Audio Chat (TTS)</h3>
+                <input type="text" id="audioInput" placeholder="Type message for voice response..." style="width: 50%;">
+                <select id="voiceSelect" style="margin: 5px;">
+                    <option value="Aoede">Aoede (Default)</option>
+                    <option value="Charon">Charon</option>
+                    <option value="Fenrir">Fenrir</option>
+                    <option value="Kore">Kore</option>
+                    <option value="Puck">Puck</option>
+                </select>
+                <button onclick="sendAudioMessage()">🔊 Get Voice Response</button>
                 <div id="audioStatus" style="margin: 10px 0; font-size: 12px; color: #666;"></div>
+                <audio id="audioPlayer" controls style="display: none; margin: 10px 0;"></audio>
+            </div>
+
+            <div class="control-group">
+                <h3>Audio Recording</h3>
+                <button id="audioButton" onclick="toggleAudio()">🎤 Start Recording</button>
+                <div id="recordingStatus" style="margin: 10px 0; font-size: 12px; color: #666;"></div>
             </div>
 
             <div class="control-group">
@@ -222,6 +237,14 @@
                 else if (data.analysis_type === 'audio_live_api') typeIcon = '[AUD]';
                 else if (data.analysis_type === 'video_frame_analysis') typeIcon = '[VID]';
                 addMessage(`${typeIcon} ${data.message}${time}`, 'ai');
+            } else if (data.type === 'audio_response') {
+                const time = data.response_time ? ` <span class="info-badge">${data.response_time.toFixed(2)}s</span>` : '';
+                addMessage(`[🔊] ${data.transcript}${time} (Voice: ${data.voice})`, 'ai');
+
+                // Play audio if available
+                if (data.audio && data.success) {
+                    playAudioResponse(data.audio);
+                }
             } else if (data.type === 'error') {
                 addMessage(`[ERROR] ${data.message}`, 'ai');
             }
@@ -277,6 +300,61 @@
             }
         }
 
+        function sendAudioMessage() {
+            const input = document.getElementById('audioInput');
+            const voiceSelect = document.getElementById('voiceSelect');
+            const msg = input.value.trim();
+            const voice = voiceSelect.value;
+
+            if (msg && ws.readyState === WebSocket.OPEN) {
+                addMessage(`[🔊] ${msg} (Voice: ${voice})`, 'user');
+
+                document.getElementById('audioStatus').textContent = 'Processing audio...';
+
+                ws.send(JSON.stringify({
+                    type: 'text_audio',
+                    message: msg,
+                    voice: voice
+                }));
+
+                input.value = '';
+            } else if (ws.readyState !== WebSocket.OPEN) {
+                alert('Not connected. Please refresh the page.');
+            }
+        }
+
+        function playAudioResponse(audioBase64) {
+            try {
+                // Convert base64 to blob
+                const audioBytes = atob(audioBase64);
+                const audioArray = new Uint8Array(audioBytes.length);
+                for (let i = 0; i < audioBytes.length; i++) {
+                    audioArray[i] = audioBytes.charCodeAt(i);
+                }
+
+                // Create audio blob (PCM format)
+                const audioBlob = new Blob([audioArray], { type: 'audio/pcm' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                // Play audio
+                const audioPlayer = document.getElementById('audioPlayer');
+                audioPlayer.src = audioUrl;
+                audioPlayer.style.display = 'block';
+                audioPlayer.play();
+
+                document.getElementById('audioStatus').textContent = 'Playing audio response...';
+
+                // Clean up URL after playing
+                audioPlayer.onended = () => {
+                    URL.revokeObjectURL(audioUrl);
+                    document.getElementById('audioStatus').textContent = '';
+                };
+            } catch (error) {
+                console.error('Audio playback error:', error);
+                document.getElementById('audioStatus').textContent = 'Audio playback error';
+            }
+        }
+
         function clearChat() {
             chat.innerHTML = '';
             addMessage('Chat cleared. Ready for new conversation!', 'ai');
@@ -289,7 +367,7 @@
 
         async function toggleAudio() {
             const audioButton = document.getElementById('audioButton');
-            const audioStatus = document.getElementById('audioStatus');
+            const audioStatus = document.getElementById('recordingStatus');
 
             if (!isRecording) {
                 try {

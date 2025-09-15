@@ -95,6 +95,15 @@ class ServiceManager:
         """Process image"""
         return await self.client.process_image(image_bytes, prompt, mime_type)
 
+    async def process_text_with_audio(
+        self,
+        message: str,
+        voice_name: str = "Aoede",
+        session_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Process text with audio response (TTS)"""
+        return await self.client.process_text_with_audio(message, voice_name, session_id)
+
     async def health_check(self) -> Dict[str, Any]:
         """Perform health check"""
         return await self.client.health_check()

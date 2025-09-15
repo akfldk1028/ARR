@@ -104,6 +104,8 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
             if message_type == 'text':
                 await self._handle_text_message(data)
+            elif message_type == 'text_audio':
+                await self._handle_text_audio_message(data)
             elif message_type == 'image':
                 await self._handle_image_message(data)
             elif message_type == 'session_info':
@@ -226,6 +228,69 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             logger.error(f"Image processing failed: {e}")
             await self._send_error(f"Image processing failed: {str(e)}")
+
+    async def _handle_text_audio_message(self, data: Dict[str, Any]):
+        """Handle text message with audio response (TTS)"""
+        content = data.get('message', '').strip()
+        voice_name = data.get('voice', 'Aoede')  # Default voice
+
+        if not content:
+            await self._send_error("Empty message content")
+            return
+
+        if len(content) > 10000:  # 10K character limit
+            await self._send_error("Message too long (max 10,000 characters)")
+            return
+
+        start_time = time.time()
+
+        try:
+            # Save user message
+            user_message = await self._save_message(content, 'text', 'user')
+
+            # Process with Gemini Audio
+            result = await self.gemini_service.process_text_with_audio(
+                content, voice_name, self.session_id
+            )
+
+            # Save assistant response
+            assistant_message = await self._save_message(
+                result.get('transcript', content), 'audio', 'assistant',
+                metadata={
+                    'response_time': result['response_time'],
+                    'model': result['model'],
+                    'processing_type': result['type'],
+                    'voice': voice_name,
+                    'has_audio': result['success']
+                },
+                processing_time=result['response_time']
+            )
+
+            processing_time = time.time() - start_time
+
+            # Convert audio to base64 for transmission
+            audio_base64 = None
+            if result.get('audio') and result['success']:
+                import base64
+                audio_base64 = base64.b64encode(result['audio']).decode('utf-8')
+
+            # Send response
+            await self.send(text_data=json.dumps({
+                'type': 'audio_response',
+                'transcript': result.get('transcript', ''),
+                'audio': audio_base64,
+                'voice': voice_name,
+                'user_message_id': str(user_message.id),
+                'assistant_message_id': str(assistant_message.id),
+                'response_time': result['response_time'],
+                'total_processing_time': processing_time,
+                'model': result['model'],
+                'success': result['success']
+            }))
+
+        except Exception as e:
+            logger.error(f"Audio processing failed: {e}")
+            await self._send_error(f"Audio processing failed: {str(e)}")
 
     async def _process_image_data(self, image_data: str) -> tuple[Optional[bytes], Optional[str]]:
         """Validate and process image data"""

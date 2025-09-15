@@ -197,7 +197,7 @@ class OptimizedGeminiClient:
         self.rate_limiter = RateLimiter(config.rate_limit_per_minute)
         self.error_handler = ErrorHandler()
 
-        # Live API configuration
+        # Live API configuration for TEXT
         self.live_config = types.LiveConnectConfig(
             response_modalities=["TEXT"],
             temperature=0.9,
@@ -205,6 +205,22 @@ class OptimizedGeminiClient:
             system_instruction="""You are a helpful AI assistant with multimodal capabilities.
             You can analyze images, video streams, and have natural conversations.
             Provide detailed and helpful responses. Be concise yet informative."""
+        )
+
+        # Live API configuration for AUDIO (TTS)
+        self.audio_config = types.LiveConnectConfig(
+            response_modalities=["AUDIO"],
+            temperature=0.9,
+            max_output_tokens=2048,
+            system_instruction="""You are a helpful AI assistant with voice capabilities.
+            Speak naturally and conversationally. Be friendly and engaging.""",
+            speech_config=types.SpeechConfig(
+                voice_config=types.VoiceConfig(
+                    prebuilt_voice_config=types.PrebuiltVoiceConfig(
+                        voice_name="Aoede"  # Options: Aoede, Charon, Fenrir, Kore, Puck
+                    )
+                )
+            )
         )
 
         logger.info(f"Initialized Gemini client with model: {config.model}")
@@ -340,6 +356,114 @@ class OptimizedGeminiClient:
                 'model': 'error',
                 'type': 'error',
                 'success': False
+            }
+
+    async def process_text_with_audio(
+        self,
+        message: str,
+        voice_name: str = "Aoede",
+        session_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Process text and return audio response (TTS)"""
+
+        session_id = session_id or f"audio_{int(time.time())}"
+        start_time = time.time()
+
+        async def _process():
+            await self.rate_limiter.wait_if_needed()
+
+            # Create audio config with selected voice
+            audio_config = types.LiveConnectConfig(
+                response_modalities=["AUDIO"],
+                temperature=0.9,
+                system_instruction="Speak naturally and conversationally.",
+                speech_config=types.SpeechConfig(
+                    voice_config=types.VoiceConfig(
+                        prebuilt_voice_config=types.PrebuiltVoiceConfig(
+                            voice_name=voice_name
+                        )
+                    )
+                )
+            )
+
+            # Create a new session with audio config
+            client = await self.connection_pool.get_client()
+
+            async with client.aio.live.connect(
+                model=self.config.model,
+                config=audio_config
+            ) as session:
+                # Send message
+                await session.send_client_content(
+                    turns={
+                        "role": "user",
+                        "parts": [{"text": message}]
+                    },
+                    turn_complete=True
+                )
+
+                # Collect audio response
+                audio_data = None
+                transcript = ""
+
+                async for response in session.receive():
+                    # Check for audio data
+                    if hasattr(response, 'server_content') and response.server_content:
+                        # Audio data
+                        if hasattr(response.server_content, 'model_turn') and response.server_content.model_turn:
+                            model_turn = response.server_content.model_turn
+                            if hasattr(model_turn, 'parts') and model_turn.parts:
+                                for part in model_turn.parts:
+                                    if hasattr(part, 'inline_data') and part.inline_data:
+                                        if part.inline_data.mime_type == "audio/pcm":
+                                            audio_data = part.inline_data.data
+
+                        # Transcript
+                        if hasattr(response.server_content, 'output_transcription'):
+                            if response.server_content.output_transcription:
+                                transcript = response.server_content.output_transcription.text
+
+                        if hasattr(response.server_content, 'turn_complete') and response.server_content.turn_complete:
+                            break
+
+                return {
+                    'audio_data': audio_data,
+                    'transcript': transcript,
+                    'has_audio': audio_data is not None
+                }
+
+        try:
+            result = await self.error_handler.handle_with_retry(
+                _process,
+                self.config.max_retries,
+                self.config.retry_delay
+            )
+
+            response_time = time.time() - start_time
+
+            return {
+                'audio': result.get('audio_data'),
+                'transcript': result.get('transcript', ''),
+                'response_time': response_time,
+                'model': f"{self.config.model} (audio)",
+                'type': 'audio_tts',
+                'voice': voice_name,
+                'success': result.get('has_audio', False),
+                'session_id': session_id
+            }
+
+        except Exception as e:
+            response_time = time.time() - start_time
+            logger.error(f"Audio processing failed: {e}")
+
+            return {
+                'audio': None,
+                'transcript': f"Audio processing error: {str(e)}",
+                'response_time': response_time,
+                'model': 'error',
+                'type': 'error',
+                'success': False,
+                'session_id': session_id
             }
 
     async def health_check(self) -> Dict[str, Any]:
