@@ -13,6 +13,10 @@ from enum import Enum
 from google import genai
 from google.genai import types
 
+# Import centralized configuration
+from config.agent_config import AgentConfig, GeminiConfig, VoiceConfig
+from config.api_config import APIConfig
+
 
 logger = logging.getLogger(__name__)
 
@@ -197,27 +201,27 @@ class OptimizedGeminiClient:
         self.rate_limiter = RateLimiter(config.rate_limit_per_minute)
         self.error_handler = ErrorHandler()
 
+        # Get centralized configuration
+        gemini_config = AgentConfig.get_gemini_config()
+
         # Live API configuration for TEXT
         self.live_config = types.LiveConnectConfig(
             response_modalities=["TEXT"],
-            temperature=0.9,
-            max_output_tokens=2048,
-            system_instruction="""You are a helpful AI assistant with multimodal capabilities.
-            You can analyze images, video streams, and have natural conversations.
-            Provide detailed and helpful responses. Be concise yet informative."""
+            temperature=gemini_config.temperature,
+            max_output_tokens=gemini_config.max_output_tokens,
+            system_instruction=gemini_config.text_instruction
         )
 
         # Live API configuration for AUDIO (TTS)
         self.audio_config = types.LiveConnectConfig(
             response_modalities=["AUDIO"],
-            temperature=0.9,
-            max_output_tokens=2048,
-            system_instruction="""You are a helpful AI assistant with voice capabilities.
-            Speak naturally and conversationally. Be friendly and engaging.""",
+            temperature=gemini_config.temperature,
+            max_output_tokens=gemini_config.max_output_tokens,
+            system_instruction=gemini_config.audio_instruction,
             speech_config=types.SpeechConfig(
                 voice_config=types.VoiceConfig(
                     prebuilt_voice_config=types.PrebuiltVoiceConfig(
-                        voice_name="Aoede"  # Options: Aoede, Charon, Fenrir, Kore, Puck
+                        voice_name=gemini_config.default_voice
                     )
                 )
             )
@@ -372,15 +376,19 @@ class OptimizedGeminiClient:
         async def _process():
             await self.rate_limiter.wait_if_needed()
 
+            # Get voice config from centralized configuration
+            gemini_config = AgentConfig.get_gemini_config()
+            voice_config = AgentConfig.get_voice_config(voice_name)
+
             # Create audio config with selected voice
             audio_config = types.LiveConnectConfig(
                 response_modalities=["AUDIO"],
-                temperature=0.9,
-                system_instruction="Speak naturally and conversationally.",
+                temperature=gemini_config.temperature,
+                system_instruction=gemini_config.audio_instruction,
                 speech_config=types.SpeechConfig(
                     voice_config=types.VoiceConfig(
                         prebuilt_voice_config=types.PrebuiltVoiceConfig(
-                            voice_name=voice_name
+                            voice_name=voice_config.name
                         )
                     )
                 )
@@ -402,29 +410,36 @@ class OptimizedGeminiClient:
                     turn_complete=True
                 )
 
-                # Collect audio response
-                audio_data = None
+                # Collect audio response using Live API 2025 format
+                audio_chunks = []
                 transcript = ""
 
                 async for response in session.receive():
-                    # Check for audio data
+                    logger.debug(f"Live API response: {type(response)}")
+
+                    # Direct audio data access (Live API native format)
+                    if hasattr(response, 'data') and response.data is not None:
+                        audio_chunks.append(response.data)
+                        logger.info(f"Audio chunk received: {len(response.data)} bytes")
+
+                    # Text/transcript response
+                    if hasattr(response, 'text') and response.text:
+                        transcript += response.text
+                        logger.info(f"Transcript: {response.text}")
+
+                    # Check for setup completion and turn completion
+                    if hasattr(response, 'setupComplete'):
+                        logger.info("Setup complete")
+                        continue
+
+                    # Legacy format fallback
                     if hasattr(response, 'server_content') and response.server_content:
-                        # Audio data
-                        if hasattr(response.server_content, 'model_turn') and response.server_content.model_turn:
-                            model_turn = response.server_content.model_turn
-                            if hasattr(model_turn, 'parts') and model_turn.parts:
-                                for part in model_turn.parts:
-                                    if hasattr(part, 'inline_data') and part.inline_data:
-                                        if part.inline_data.mime_type == "audio/pcm":
-                                            audio_data = part.inline_data.data
-
-                        # Transcript
-                        if hasattr(response.server_content, 'output_transcription'):
-                            if response.server_content.output_transcription:
-                                transcript = response.server_content.output_transcription.text
-
                         if hasattr(response.server_content, 'turn_complete') and response.server_content.turn_complete:
+                            logger.info("Turn complete")
                             break
+
+                # Combine all audio chunks
+                audio_data = b''.join(audio_chunks) if audio_chunks else None
 
                 return {
                     'audio_data': audio_data,
@@ -459,6 +474,132 @@ class OptimizedGeminiClient:
             return {
                 'audio': None,
                 'transcript': f"Audio processing error: {str(e)}",
+                'response_time': response_time,
+                'model': 'error',
+                'type': 'error',
+                'success': False,
+                'session_id': session_id
+            }
+
+    async def process_audio_with_audio(
+        self,
+        audio_bytes: bytes,
+        voice_name: str = "Aoede",
+        session_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Process audio input and return audio response (Live API Audio-to-Audio)"""
+
+        session_id = session_id or f"audio_input_{int(time.time())}"
+        start_time = time.time()
+
+        async def _process():
+            await self.rate_limiter.wait_if_needed()
+
+            # Get voice config from centralized configuration
+            gemini_config = AgentConfig.get_gemini_config()
+            voice_config = AgentConfig.get_voice_config(voice_name)
+
+            # Create bidirectional audio config (AUDIO input and output)
+            audio_config = types.LiveConnectConfig(
+                response_modalities=["AUDIO"],
+                temperature=gemini_config.temperature,
+                system_instruction="You are a helpful AI assistant. Listen to the user's voice message and respond naturally.",
+                speech_config=types.SpeechConfig(
+                    voice_config=types.VoiceConfig(
+                        prebuilt_voice_config=types.PrebuiltVoiceConfig(
+                            voice_name=voice_config.name
+                        )
+                    )
+                )
+            )
+
+            # Create a new session with audio config
+            client = await self.connection_pool.get_client()
+
+            async with client.aio.live.connect(
+                model=self.config.model,
+                config=audio_config
+            ) as session:
+                # Send audio data as input with correct format
+                await session.send_client_content(
+                    turns={
+                        "role": "user",
+                        "parts": [{
+                            "inline_data": {
+                                "mime_type": "audio/webm",  # Browser MediaRecorder format
+                                "data": audio_bytes
+                            }
+                        }]
+                    },
+                    turn_complete=True
+                )
+
+                # Collect response
+                audio_data = None
+                transcript = ""
+                input_transcript = ""
+
+                async for response in session.receive():
+                    # Check for audio data
+                    if hasattr(response, 'server_content') and response.server_content:
+                        # Input transcription (what user said)
+                        if hasattr(response.server_content, 'input_transcription'):
+                            if response.server_content.input_transcription:
+                                input_transcript = response.server_content.input_transcription.text
+
+                        # Output audio data
+                        if hasattr(response.server_content, 'model_turn') and response.server_content.model_turn:
+                            model_turn = response.server_content.model_turn
+                            if hasattr(model_turn, 'parts') and model_turn.parts:
+                                for part in model_turn.parts:
+                                    if hasattr(part, 'inline_data') and part.inline_data:
+                                        if part.inline_data.mime_type == "audio/pcm":
+                                            audio_data = part.inline_data.data
+
+                        # Output transcript (what AI said)
+                        if hasattr(response.server_content, 'output_transcription'):
+                            if response.server_content.output_transcription:
+                                transcript = response.server_content.output_transcription.text
+
+                        if hasattr(response.server_content, 'turn_complete') and response.server_content.turn_complete:
+                            break
+
+                return {
+                    'audio_data': audio_data,
+                    'transcript': transcript,
+                    'input_transcript': input_transcript,
+                    'has_audio': audio_data is not None
+                }
+
+        try:
+            result = await self.error_handler.handle_with_retry(
+                _process,
+                self.config.max_retries,
+                self.config.retry_delay
+            )
+
+            response_time = time.time() - start_time
+
+            return {
+                'audio': result.get('audio_data'),
+                'transcript': result.get('transcript', ''),
+                'input_transcript': result.get('input_transcript', ''),
+                'response_time': response_time,
+                'model': f"{self.config.model} (live_audio)",
+                'type': 'audio_live_api',
+                'voice': voice_name,
+                'success': result.get('has_audio', False),
+                'session_id': session_id
+            }
+
+        except Exception as e:
+            response_time = time.time() - start_time
+            logger.error(f"Live audio processing failed: {e}")
+
+            return {
+                'audio': None,
+                'transcript': f"Live audio processing error: {str(e)}",
+                'input_transcript': '',
                 'response_time': response_time,
                 'model': 'error',
                 'type': 'error',

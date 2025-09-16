@@ -239,11 +239,16 @@
                 addMessage(`${typeIcon} ${data.message}${time}`, 'ai');
             } else if (data.type === 'audio_response') {
                 const time = data.response_time ? ` <span class="info-badge">${data.response_time.toFixed(2)}s</span>` : '';
-                addMessage(`[🔊] ${data.transcript}${time} (Voice: ${data.voice})`, 'ai');
+                const transcript = data.transcript || 'No response generated';
+                addMessage(`[🔊] ${transcript}${time} (Voice: ${data.voice})`, 'ai');
 
-                // Play audio if available
+                // Play audio if available, otherwise use browser TTS
                 if (data.audio && data.success) {
                     playAudioResponse(data.audio);
+                } else if (transcript && transcript !== 'No response generated') {
+                    // Fallback to browser TTS
+                    speakText(transcript, data.voice || 'Aoede');
+                    document.getElementById('audioStatus').textContent = 'Playing with browser TTS...';
                 }
             } else if (data.type === 'error') {
                 addMessage(`[ERROR] ${data.message}`, 'ai');
@@ -325,16 +330,16 @@
 
         function playAudioResponse(audioBase64) {
             try {
-                // Convert base64 to blob
+                // Convert base64 to Uint8Array
                 const audioBytes = atob(audioBase64);
                 const audioArray = new Uint8Array(audioBytes.length);
                 for (let i = 0; i < audioBytes.length; i++) {
                     audioArray[i] = audioBytes.charCodeAt(i);
                 }
 
-                // Create audio blob (PCM format)
-                const audioBlob = new Blob([audioArray], { type: 'audio/pcm' });
-                const audioUrl = URL.createObjectURL(audioBlob);
+                // Convert PCM to WAV format
+                const wavBlob = convertPCMToWAV(audioArray);
+                const audioUrl = URL.createObjectURL(wavBlob);
 
                 // Play audio
                 const audioPlayer = document.getElementById('audioPlayer');
@@ -351,7 +356,94 @@
                 };
             } catch (error) {
                 console.error('Audio playback error:', error);
-                document.getElementById('audioStatus').textContent = 'Audio playback error';
+                document.getElementById('audioStatus').textContent = 'Audio playback error: ' + error.message;
+            }
+        }
+
+        function convertPCMToWAV(pcmData) {
+            // PCM to WAV conversion
+            const sampleRate = 24000; // Gemini Audio uses 24kHz
+            const numChannels = 1;
+            const bytesPerSample = 2; // 16-bit PCM
+
+            const buffer = new ArrayBuffer(44 + pcmData.length);
+            const view = new DataView(buffer);
+
+            // WAV header
+            const writeString = (offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + pcmData.length, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true); // PCM format
+            view.setUint16(20, 1, true); // Audio format
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * numChannels * bytesPerSample, true);
+            view.setUint16(32, numChannels * bytesPerSample, true);
+            view.setUint16(34, 16, true); // Bits per sample
+            writeString(36, 'data');
+            view.setUint32(40, pcmData.length, true);
+
+            // Copy PCM data
+            for (let i = 0; i < pcmData.length; i++) {
+                view.setUint8(44 + i, pcmData[i]);
+            }
+
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        function speakText(text, voiceName) {
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(text);
+
+                // Voice mapping
+                const voiceMap = {
+                    'Aoede': 'female',
+                    'Charon': 'male',
+                    'Fenrir': 'male',
+                    'Kore': 'female',
+                    'Puck': 'male'
+                };
+
+                // Try to find a suitable voice
+                const voices = window.speechSynthesis.getVoices();
+                const preferredGender = voiceMap[voiceName] || 'female';
+
+                const suitableVoice = voices.find(voice =>
+                    voice.lang.startsWith('en') &&
+                    voice.name.toLowerCase().includes(preferredGender === 'female' ? 'female' : 'male')
+                ) || voices.find(voice => voice.lang.startsWith('en'));
+
+                if (suitableVoice) {
+                    utterance.voice = suitableVoice;
+                }
+
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+
+                utterance.onend = () => {
+                    document.getElementById('audioStatus').textContent = '';
+                };
+
+                utterance.onerror = (error) => {
+                    console.error('Speech synthesis error:', error);
+                    document.getElementById('audioStatus').textContent = 'TTS error';
+                };
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                console.warn('Speech synthesis not supported');
+                document.getElementById('audioStatus').textContent = 'TTS not supported';
             }
         }
 
@@ -365,53 +457,166 @@
         let audioChunks = [];
         let isRecording = false;
 
+        // Speech recognition global variable
+        let recognition = null;
+
         async function toggleAudio() {
             const audioButton = document.getElementById('audioButton');
             const audioStatus = document.getElementById('recordingStatus');
 
+            console.log('toggleAudio called, isRecording:', isRecording);
+
             if (!isRecording) {
                 try {
+                    // Start Web Speech API first
+                    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                        console.log('Initializing Web Speech API...');
+                        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                        recognition = new SpeechRecognition();
+
+                        recognition.continuous = true;
+                        recognition.interimResults = true; // Enable partial results for faster response
+                        recognition.lang = 'en-US';
+                        recognition.maxAlternatives = 1; // Reduce processing overhead
+
+                        let lastProcessedTranscript = '';
+                        recognition.onresult = (event) => {
+                            const result = event.results[event.results.length - 1];
+                            const transcript = result[0].transcript.trim();
+
+                            // Process immediately on final result or confident partial result
+                            if (result.isFinal || (transcript.length > 3 && result[0].confidence > 0.8)) {
+                                console.log('Speech recognized:', transcript, 'Final:', result.isFinal, 'Confidence:', result[0].confidence);
+
+                                // Avoid duplicate processing
+                                if (transcript !== lastProcessedTranscript && transcript && ws.readyState === WebSocket.OPEN) {
+                                    lastProcessedTranscript = transcript;
+
+                                    addMessage(`🎤 "${transcript}"`, 'user');
+                                    audioStatus.textContent = 'Getting AI response...';
+
+                                    // Send immediately for faster response
+                                    const startTime = performance.now();
+                                    ws.send(JSON.stringify({
+                                        type: 'text_audio',
+                                        message: transcript,
+                                        voice: 'Aoede',
+                                        timestamp: startTime
+                                    }));
+
+                                    // Stop after processing
+                                    stopRecording();
+                                }
+                            } else if (transcript.length > 0) {
+                                // Show interim results for user feedback
+                                audioStatus.textContent = `🎤 "${transcript}..." (listening)`;
+                            }
+                        };
+
+                        recognition.onerror = (event) => {
+                            console.error('Speech recognition error:', event.error);
+                            if (event.error !== 'no-speech' && event.error !== 'aborted') {
+                                audioStatus.textContent = 'Speech error: ' + event.error;
+                            }
+                        };
+
+                        recognition.onstart = () => {
+                            console.log('Speech recognition started');
+                            audioStatus.textContent = '🎤 Listening... Speak now!';
+                        };
+
+                        recognition.onend = () => {
+                            console.log('Speech recognition ended');
+                            if (isRecording && recognition) {
+                                // Restart if still recording
+                                try {
+                                    recognition.start();
+                                } catch (e) {
+                                    console.error('Failed to restart recognition:', e);
+                                }
+                            }
+                        };
+
+                        // Start speech recognition
+                        recognition.start();
+                    }
+
+                    console.log('Requesting microphone access...');
                     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    console.log('Microphone access granted, stream:', stream);
+
                     mediaRecorder = new MediaRecorder(stream);
                     audioChunks = [];
+                    console.log('MediaRecorder created:', mediaRecorder);
 
                     mediaRecorder.ondataavailable = (event) => {
+                        console.log('Audio data available:', event.data.size, 'bytes');
                         audioChunks.push(event.data);
                     };
 
-                    mediaRecorder.onstop = async () => {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            const base64Audio = reader.result.split(',')[1];
-                            if (ws.readyState === WebSocket.OPEN) {
-                                addMessage('🎤 Processing audio...', 'user');
-                                ws.send(JSON.stringify({
-                                    type: 'audio',
-                                    audio: base64Audio
-                                }));
-                            }
-                        };
-                        reader.readAsDataURL(audioBlob);
-                    };
-
+                    console.log('Starting recording...');
                     mediaRecorder.start();
                     isRecording = true;
                     audioButton.textContent = '⏹️ Stop Recording';
                     audioButton.style.background = '#dc3545';
-                    audioStatus.textContent = 'Recording... Click to stop';
-                    addMessage('🎤 Recording started...', 'user');
+                    addMessage('🎤 Recording started... Speak now!', 'user');
+                    console.log('Recording started successfully');
                 } catch (error) {
                     console.error('Error accessing microphone:', error);
-                    audioStatus.textContent = 'Microphone access denied or unavailable';
+                    audioStatus.textContent = 'Microphone access denied: ' + error.message;
                 }
             } else {
+                console.log('Stopping recording...');
+                // Stop speech recognition
+                if (recognition) {
+                    console.log('Stopping speech recognition...');
+                    recognition.stop();
+                    recognition = null;
+                }
+
                 mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                mediaRecorder.stream.getTracks().forEach(track => {
+                    console.log('Stopping track:', track);
+                    track.stop();
+                });
                 isRecording = false;
                 audioButton.textContent = '🎤 Start Recording';
                 audioButton.style.background = '#4CAF50';
-                audioStatus.textContent = 'Processing audio...';
+                audioStatus.textContent = 'Ready to record';
+                console.log('Recording stop requested');
+            }
+        }
+
+        function stopRecording() {
+            const audioButton = document.getElementById('audioButton');
+            const audioStatus = document.getElementById('recordingStatus');
+
+            console.log('stopRecording called');
+
+            if (isRecording) {
+                // Stop speech recognition
+                if (recognition) {
+                    console.log('Stopping speech recognition...');
+                    recognition.stop();
+                    recognition = null;
+                }
+
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                    mediaRecorder.stop();
+                }
+
+                if (mediaRecorder && mediaRecorder.stream) {
+                    mediaRecorder.stream.getTracks().forEach(track => {
+                        console.log('Stopping track:', track);
+                        track.stop();
+                    });
+                }
+
+                isRecording = false;
+                audioButton.textContent = '🎤 Start Recording';
+                audioButton.style.background = '#4CAF50';
+                audioStatus.textContent = 'Ready to record';
+                console.log('Recording stopped');
             }
         }
     </script>

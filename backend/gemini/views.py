@@ -12,9 +12,13 @@ def gemini_home(request):
     except Exception as e:
         model_name = f"Error: {str(e)}"
 
+    # Get current host and port from request
+    host = request.get_host()
+    websocket_url = f'ws://{host}/ws/gemini/'
+
     context = {
         'model_name': model_name,
-        'websocket_url': 'ws://localhost:8001/ws/gemini/',
+        'websocket_url': websocket_url,
         'page_title': 'Gemini Live API - Django Integration (Optimized)'
     }
 

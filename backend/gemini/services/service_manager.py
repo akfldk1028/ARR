@@ -9,6 +9,10 @@ from typing import Optional, Dict, Any
 from django.conf import settings
 
 from .gemini_client import OptimizedGeminiClient, ClientConfig
+# Import centralized configuration
+from config.agent_config import AgentConfig
+from config.api_config import APIConfig
+from config.app_settings import AppSettings
 
 
 logger = logging.getLogger(__name__)
@@ -41,31 +45,29 @@ class ServiceManager:
             raise
 
     def _load_config(self) -> ClientConfig:
-        """Load configuration from Django settings and environment"""
+        """Load configuration from centralized config management"""
 
-        # Get API key from environment or Django settings
-        api_key = os.getenv("GOOGLE_API_KEY")
-        if not api_key:
-            try:
-                api_key = getattr(settings, 'GOOGLE_API_KEY', None)
-            except:
-                pass
-
+        # Get API key from centralized configuration
+        api_key = APIConfig.get_api_key('google')
         if not api_key or api_key == "...":
-            raise ValueError("GOOGLE_API_KEY not found in environment or Django settings")
+            raise ValueError("GOOGLE_API_KEY not found. Please set GOOGLE_API_KEY environment variable.")
 
-        # Load configuration with defaults
+        # Get Gemini configuration from centralized config
+        gemini_config = AgentConfig.get_gemini_config()
+        app_config = AppSettings.get_config()
+
+        # Build client configuration using centralized settings
         config = ClientConfig(
             api_key=api_key,
-            model=os.getenv("GEMINI_MODEL", "models/gemini-2.0-flash-exp"),
-            max_connections=int(os.getenv("GEMINI_MAX_CONNECTIONS", "5")),
-            connection_timeout=int(os.getenv("GEMINI_CONNECTION_TIMEOUT", "30")),
-            request_timeout=int(os.getenv("GEMINI_REQUEST_TIMEOUT", "120")),
-            max_retries=int(os.getenv("GEMINI_MAX_RETRIES", "3")),
-            retry_delay=float(os.getenv("GEMINI_RETRY_DELAY", "1.0")),
-            rate_limit_per_minute=int(os.getenv("GEMINI_RATE_LIMIT", "60")),
-            enable_compression=os.getenv("GEMINI_COMPRESSION", "true").lower() == "true",
-            session_ttl=int(os.getenv("GEMINI_SESSION_TTL", "900"))
+            model=gemini_config.model,
+            max_connections=5,  # Could be moved to config later
+            connection_timeout=gemini_config.connection_timeout,
+            request_timeout=gemini_config.request_timeout,
+            max_retries=gemini_config.max_retries,
+            retry_delay=gemini_config.retry_delay,
+            rate_limit_per_minute=app_config['rate_limit']['requests_per_minute'],
+            enable_compression=True,  # Could be moved to config later
+            session_ttl=app_config['session']['ttl']
         )
 
         logger.info(f"Loaded config for model: {config.model}")
@@ -98,11 +100,30 @@ class ServiceManager:
     async def process_text_with_audio(
         self,
         message: str,
-        voice_name: str = "Aoede",
+        voice_name: Optional[str] = None,
         session_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """Process text with audio response (TTS)"""
+        # Use default voice from config if none specified
+        if voice_name is None:
+            gemini_config = AgentConfig.get_gemini_config()
+            voice_name = gemini_config.default_voice
+
         return await self.client.process_text_with_audio(message, voice_name, session_id)
+
+    async def process_audio_with_audio(
+        self,
+        audio_bytes: bytes,
+        voice_name: Optional[str] = None,
+        session_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Process audio input with audio response (Live API Audio-to-Audio)"""
+        # Use default voice from config if none specified
+        if voice_name is None:
+            gemini_config = AgentConfig.get_gemini_config()
+            voice_name = gemini_config.default_voice
+
+        return await self.client.process_audio_with_audio(audio_bytes, voice_name, session_id)
 
     async def health_check(self) -> Dict[str, Any]:
         """Perform health check"""

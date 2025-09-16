@@ -1,0 +1,40 @@
+# Core A2A and Semantic Kernel
+semantic-kernel>=1.36.1
+python-a2a>=0.5.9
+a2a-sdk>=0.3.3
+
+# Neo4j Graph Database
+neo4j>=5.15.0
+py2neo>=2021.2.3
+
+# Web Framework and Server
+fastapi>=0.116.1
+uvicorn>=0.35.0
+
+# HTTP Client and Async
+httpx>=0.28.1
+aiohttp>=3.12.15
+
+# Data Processing and Validation
+pydantic>=2.11.7
+pydantic-settings>=2.10.1
+
+# Environment and Configuration
+python-dotenv>=1.1.1
+
+# Logging and Utilities
+python-dateutil>=2.9.0
+uuid
+
+# Testing (optional)
+pytest>=7.4.0
+pytest-asyncio>=0.21.1
+
+# Data Analysis (optional)
+pandas>=2.0.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Graph Visualization (optional)
+networkx>=3.1
+plotly>=5.15.0

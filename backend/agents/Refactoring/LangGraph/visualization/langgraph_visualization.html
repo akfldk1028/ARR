@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LangGraph Currency Agent Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .graph-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .info-section {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .info-section h3 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+        .node-list, .edge-list {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .node-item, .edge-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .node-item:last-child, .edge-item:last-child {
+            border-bottom: none;
+        }
+        .description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="web_monitor_cors.html" class="back-link">← Back to Agent Monitor</a>
+
+        <h1>🔄 LangGraph Currency Agent Workflow</h1>
+
+        <div class="info-section">
+            <h3>📊 Graph Overview</h3>
+            <div class="description">
+                This is the workflow structure of the Currency Agent built with LangGraph.
+                The graph shows how the agent processes requests through different nodes and makes decisions.
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="refreshGraph()">🔄 Refresh Graph</button>
+            <button onclick="toggleZoom()">🔍 Toggle Zoom</button>
+            <button onclick="downloadGraph()">📥 Download PNG</button>
+        </div>
+
+        <div class="graph-container">
+            <div id="graphDiv" class="mermaid">
+                graph TD;
+                    __start__([__start__]):::first
+                    agent(Agent)
+                    tools(Tools)
+                    generate_structured_response(Generate Structured Response)
+                    __end__([__end__]):::last
+                    __start__ --> agent;
+                    agent -.-> generate_structured_response;
+                    agent -.-> tools;
+                    tools --> agent;
+                    generate_structured_response --> __end__;
+                    classDef default fill:#f2f0ff,line-height:1.2
+                    classDef first fill:#4CAF50,color:white
+                    classDef last fill:#f44336,color:white
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="info-section">
+                <h3>🔗 Graph Nodes (5)</h3>
+                <div class="node-list">
+                    <div class="node-item"><strong>__start__</strong> - Entry point</div>
+                    <div class="node-item"><strong>agent</strong> - Main agent logic</div>
+                    <div class="node-item"><strong>tools</strong> - External tool calls</div>
+                    <div class="node-item"><strong>generate_structured_response</strong> - Response formatting</div>
+                    <div class="node-item"><strong>__end__</strong> - Exit point</div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>➡️ Graph Edges (5)</h3>
+                <div class="edge-list">
+                    <div class="edge-item">__start__ → agent</div>
+                    <div class="edge-item">agent ⟶ generate_structured_response</div>
+                    <div class="edge-item">agent ⟶ tools</div>
+                    <div class="edge-item">tools → agent</div>
+                    <div class="edge-item">generate_structured_response → __end__</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>🎯 Workflow Explanation</h3>
+            <div class="description">
+                <p><strong>1. Start:</strong> The workflow begins at the __start__ node</p>
+                <p><strong>2. Agent Processing:</strong> The main agent node processes the user input and decides the next action</p>
+                <p><strong>3. Decision Branch:</strong> The agent can either:</p>
+                <ul>
+                    <li>Call external tools (like currency exchange APIs)</li>
+                    <li>Generate a structured response directly</li>
+                </ul>
+                <p><strong>4. Tool Loop:</strong> If tools are needed, the workflow goes to tools → back to agent for further processing</p>
+                <p><strong>5. Response Generation:</strong> When ready, the agent sends the flow to generate_structured_response</p>
+                <p><strong>6. End:</strong> The workflow completes at the __end__ node</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                curve: 'linear'
+            }
+        });
+
+        function refreshGraph() {
+            // Force re-render of the mermaid diagram
+            const element = document.getElementById('graphDiv');
+            element.removeAttribute('data-processed');
+            mermaid.init(undefined, element);
+        }
+
+        function toggleZoom() {
+            const graph = document.getElementById('graphDiv');
+            if (graph.style.transform === 'scale(1.5)') {
+                graph.style.transform = 'scale(1)';
+            } else {
+                graph.style.transform = 'scale(1.5)';
+                graph.style.transformOrigin = 'center';
+            }
+        }
+
+        function downloadGraph() {
+            // This would ideally trigger a download of the PNG
+            // For now, just show an alert
+            alert('PNG download feature would be implemented here.\nCheck the langgraph directory for currency_agent_graph.png');
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshGraph, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2A Agent Monitor (CORS Fixed)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .agent-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .agent-card.active {
+            border-color: #4CAF50;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .agent-card.inactive {
+            border-color: #f44336;
+            background: #ffe5e5;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .status-badge.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .status-badge.inactive {
+            background: #f44336;
+            color: white;
+        }
+        .agent-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .agent-info {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .message-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        select, input, button {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        input {
+            flex: 1;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .response-area {
+            background: #1e1e1e;
+            color: #00ff00;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            min-height: 150px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+        .skill-badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin: 2px;
+        }
+        .refresh-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="refresh-indicator">
+        Auto-refresh: <span id="countdown">5</span>s
+    </div>
+
+    <div class="container">
+        <h1>🤖 A2A Agent Monitor</h1>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+            <a href="langgraph_visualization.html" style="display: inline-block; background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%); color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: bold; margin: 0 10px; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                🔄 View LangGraph Workflow
+            </a>
+        </div>
+
+        <div id="agents-container" class="agent-grid">
+            <div class="loading">Loading agents...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>📤 Test Agent Communication</h3>
+            <div class="message-form">
+                <select id="agentSelect">
+                    <option value="">Select an agent...</option>
+                    <option value="currency">Currency Agent</option>
+                    <option value="hello">Hello World Agent</option>
+                </select>
+                <input type="text" id="messageInput" placeholder="Enter your message..." value="Hello, what can you do?">
+                <button onclick="sendMessage()">Send Message</button>
+                <button onclick="testAllAgents()">Test All</button>
+            </div>
+            <div id="responseArea" class="response-area">Ready to receive messages...</div>
+        </div>
+    </div>
+
+    <script>
+        const PROXY_URL = 'http://localhost:5000';
+        let countdown = 5;
+
+        async function loadAgents() {
+            const container = document.getElementById('agents-container');
+            container.innerHTML = '<div class="loading">Fetching agent status...</div>';
+
+            try {
+                const response = await fetch(`${PROXY_URL}/api/test`);
+                const agents = await response.json();
+
+                let html = '';
+                for (const [agentId, agent] of Object.entries(agents)) {
+                    const isActive = agent.status === 'active';
+                    html += `
+                        <div class="agent-card ${agent.status}">
+                            <span class="status-badge ${agent.status}">
+                                ${isActive ? '✅ ACTIVE' : '❌ INACTIVE'}
+                            </span>
+                            <div class="agent-name">${agent.name}</div>
+                            <div class="agent-info">
+                                ${isActive ? `
+                                    <strong>Description:</strong> ${agent.card.description || 'N/A'}<br>
+                                    <strong>Version:</strong> ${agent.card.version || 'N/A'}<br>
+                                    <strong>Skills:</strong> ${agent.card.skills} skill(s)<br>
+                                ` : `
+                                    <strong>Error:</strong> ${agent.error || 'Connection failed'}<br>
+                                `}
+                                <strong>ID:</strong> ${agentId}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = html || '<div class="loading">No agents found</div>';
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="agent-card inactive">
+                        <div class="agent-name">Connection Error</div>
+                        <div class="agent-info">
+                            Failed to connect to proxy server.<br>
+                            Make sure the proxy server is running on port 5000.<br>
+                            Error: ${error.message}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        async function sendMessage() {
+            const agentId = document.getElementById('agentSelect').value;
+            const message = document.getElementById('messageInput').value;
+            const responseArea = document.getElementById('responseArea');
+
+            if (!agentId) {
+                responseArea.textContent = 'Please select an agent first.';
+                return;
+            }
+
+            responseArea.textContent = 'Sending message...';
+
+            try {
+                const response = await fetch(`${PROXY_URL}/api/agent/${agentId}/message`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        id: `web-${Date.now()}`
+                    })
+                });
+
+                const result = await response.json();
+                responseArea.textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                responseArea.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function testAllAgents() {
+            const responseArea = document.getElementById('responseArea');
+            responseArea.textContent = 'Testing all agents...\n\n';
+
+            try {
+                const response = await fetch(`${PROXY_URL}/api/test`);
+                const results = await response.json();
+                responseArea.textContent = JSON.stringify(results, null, 2);
+            } catch (error) {
+                responseArea.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Countdown timer
+        setInterval(() => {
+            countdown--;
+            if (countdown <= 0) {
+                countdown = 5;
+                loadAgents();
+            }
+            document.getElementById('countdown').textContent = countdown;
+        }, 1000);
+
+        // Initial load
+        loadAgents();
+    </script>
+</body>
+</html>

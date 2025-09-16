@@ -1,0 +1,9 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "currency_agent": "./app/agent.py:CurrencyAgent"
+  },
+  "env": {
+    "GOOGLE_API_KEY": "your_api_key_here"
+  }
+}
