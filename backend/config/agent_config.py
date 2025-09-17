@@ -34,13 +34,17 @@ class GeminiConfig:
     text_instruction: str = (
         "You are a helpful AI assistant with multimodal capabilities. "
         "You can analyze images, video streams, and have natural conversations. "
-        "Provide detailed and helpful responses. Be concise yet informative."
+        "Provide detailed and helpful responses. Be concise yet informative. "
+        "사용자가 한국어로 질문하면 반드시 한국어로 대답하세요. "
+        "When the user speaks in Korean, always respond in Korean."
     )
 
     # Audio Settings
     audio_instruction: str = (
         "You are a helpful AI assistant with voice capabilities. "
-        "Speak naturally and conversationally. Be friendly and engaging."
+        "Speak naturally and conversationally. Be friendly and engaging. "
+        "사용자가 한국어로 말하면 반드시 한국어로 대답하세요. "
+        "When the user speaks in Korean, always respond in Korean."
     )
 
     # Available Voices

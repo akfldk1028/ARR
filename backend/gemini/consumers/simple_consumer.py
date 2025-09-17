@@ -148,9 +148,20 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         start_time = time.time()
 
         try:
-            # Start AI processing immediately without waiting for DB save
+            # Create streaming callback for real-time response
+            async def streaming_callback(chunk_data):
+                """Send chunks immediately as they arrive"""
+                await self.send(text_data=json.dumps({
+                    'type': 'streaming_chunk',
+                    'chunk': chunk_data.get('chunk', ''),
+                    'chunk_id': chunk_data.get('chunk_id', 0),
+                    'session_id': chunk_data.get('session_id', self.session_id),
+                    'is_final': chunk_data.get('is_final', False)
+                }))
+
+            # Start AI processing with streaming callback
             ai_task = asyncio.create_task(
-                self.gemini_service.process_text(content, self.session_id)
+                self.gemini_service.process_text_with_streaming(content, self.session_id, callback=streaming_callback)
             )
 
             # Save user message in parallel
@@ -275,9 +286,22 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         start_time = time.time()
 
         try:
-            # Start AI processing and DB save in parallel
+            # Create streaming callback for real-time audio response
+            async def audio_streaming_callback(chunk_data):
+                """Send audio chunks immediately as they arrive"""
+                if chunk_data.get('audio_chunk'):
+                    await self.send(text_data=json.dumps({
+                        'type': 'audio_streaming_chunk',
+                        'audio_chunk': chunk_data['audio_chunk'],
+                        'chunk_id': chunk_data.get('chunk_id', 0),
+                        'session_id': chunk_data.get('session_id', self.session_id),
+                        'transcript_chunk': chunk_data.get('transcript_chunk', ''),
+                        'is_final': chunk_data.get('is_final', False)
+                    }))
+
+            # Start AI processing with streaming callback
             ai_task = asyncio.create_task(
-                self.gemini_service.process_text_with_audio(content, voice_name, self.session_id)
+                self.gemini_service.process_text_with_audio_streaming(content, voice_name, self.session_id, callback=audio_streaming_callback)
             )
             user_message_task = asyncio.create_task(
                 self._save_message(content, 'text', 'user')
@@ -309,6 +333,9 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                 import base64
                 audio_base64 = base64.b64encode(result['audio']).decode('utf-8')
 
+            # Wait for assistant message to complete before accessing it
+            assistant_message = await assistant_message_task
+
             # Send response
             await self.send(text_data=json.dumps({
                 'type': 'audio_response',
@@ -316,7 +343,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                 'audio': audio_base64,
                 'voice': voice_name,
                 'user_message_id': str(user_message.id),
-                'assistant_message_id': str(assistant_message.id),
+                'assistant_message_id': str(assistant_message.id) if assistant_message else None,
                 'response_time': result['response_time'],
                 'total_processing_time': processing_time,
                 'model': result['model'],

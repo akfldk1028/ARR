@@ -1,0 +1,53 @@
+{
+  "name": "Flight Specialist Worker",
+  "description": "Specialized agent for flight booking and travel information",
+  "version": "1.0.0",
+  "agent_type": "worker",
+  "worker_class": "FlightSpecialistWorkerAgent",
+  "capabilities": ["text", "flight_booking", "travel_info", "airline_data", "route_planning"],
+  "protocols": ["a2a", "json-rpc-2.0"],
+  "transport": ["http", "https"],
+  "skills": [
+    {
+      "name": "flight_search",
+      "description": "Search for available flights between cities",
+      "type": "flight_booking",
+      "input_types": ["text"],
+      "output_types": ["text", "flight_data"]
+    },
+    {
+      "name": "airline_info",
+      "description": "Provide airline information and recommendations",
+      "type": "information_retrieval",
+      "input_types": ["text"],
+      "output_types": ["text"]
+    },
+    {
+      "name": "route_planning",
+      "description": "Help with travel route planning",
+      "type": "travel_planning",
+      "input_types": ["text"],
+      "output_types": ["text", "itinerary"]
+    }
+  ],
+  "specialization": {
+    "primary": "flight_booking",
+    "expertise_areas": [
+      "flight_schedules",
+      "airline_recommendations",
+      "travel_routes",
+      "pricing_information",
+      "airport_codes"
+    ],
+    "collaboration_offers": {
+      "hotel": "Can coordinate with hotel booking specialist for complete trip planning",
+      "general": "Provides specialized flight information to general assistants"
+    }
+  },
+  "configuration": {
+    "default_temperature": 0.3,
+    "max_tokens": 1024,
+    "model": "gpt-3.5-turbo",
+    "specialization_focus": "factual_accuracy"
+  }
+}

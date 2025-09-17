@@ -302,6 +302,111 @@ class OptimizedGeminiClient:
             return {
                 'text': f"Processing error: {str(e)}",
                 'response_time': response_time,
+                'model': self.config.model,
+                'type': 'text_stream_error',
+                'success': False,
+                'session_id': session_id
+            }
+
+    async def process_text_stream_with_callback(
+        self,
+        message: str,
+        session_id: Optional[str] = None,
+        callback=None
+    ) -> Dict[str, Any]:
+        """Process text with Live API streaming and real-time callback"""
+
+        session_id = session_id or f"text_{int(time.time())}"
+        start_time = time.time()
+
+        async def _process():
+            await self.rate_limiter.wait_if_needed()
+
+            # Create a new session directly (no pooling for now)
+            client = await self.connection_pool.get_client()
+
+            # Use the session as async context manager directly
+            async with client.aio.live.connect(
+                model=self.config.model,
+                config=self.live_config
+            ) as session:
+                # Send message with correct turns structure
+                await session.send_client_content(
+                    turns={
+                        "role": "user",
+                        "parts": [{"text": message}]
+                    },
+                    turn_complete=True
+                )
+
+                # Stream response in real-time with callback
+                full_response = ""
+                chunk_count = 0
+                async for response in session.receive():
+                    current_chunk = ""
+
+                    if hasattr(response, 'text') and response.text:
+                        current_chunk = response.text
+                    elif hasattr(response, 'server_content') and response.server_content:
+                        if hasattr(response.server_content, 'model_turn') and response.server_content.model_turn:
+                            model_turn = response.server_content.model_turn
+                            if hasattr(model_turn, 'parts') and model_turn.parts:
+                                for part in model_turn.parts:
+                                    if hasattr(part, 'text') and part.text:
+                                        current_chunk += part.text
+
+                    # Send chunk immediately if we have content and a callback
+                    if current_chunk and callback:
+                        chunk_count += 1
+                        await callback({
+                            'chunk': current_chunk,
+                            'chunk_id': chunk_count,
+                            'session_id': session_id,
+                            'is_final': False
+                        })
+
+                    full_response += current_chunk
+
+                    # Check for completion
+                    if hasattr(response, 'server_content') and response.server_content:
+                        if hasattr(response.server_content, 'turn_complete') and response.server_content.turn_complete:
+                            # Send final callback
+                            if callback:
+                                await callback({
+                                    'chunk': '',
+                                    'chunk_id': chunk_count + 1,
+                                    'session_id': session_id,
+                                    'is_final': True
+                                })
+                            break
+
+                return full_response
+
+        try:
+            response_text = await self.error_handler.handle_with_retry(
+                _process,
+                self.config.max_retries,
+                self.config.retry_delay
+            )
+
+            response_time = time.time() - start_time
+
+            return {
+                'text': response_text or "No response received",
+                'response_time': response_time,
+                'model': self.config.model,
+                'type': 'text_stream_callback',
+                'success': bool(response_text),
+                'session_id': session_id
+            }
+
+        except Exception as e:
+            response_time = time.time() - start_time
+            logger.error(f"Text processing failed: {e}")
+
+            return {
+                'text': f"Processing error: {str(e)}",
+                'response_time': response_time,
                 'model': 'error',
                 'type': 'error',
                 'success': False,

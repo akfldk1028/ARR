@@ -137,3 +137,125 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Create structured logs directory like SK system
+LOGS_DIR = os.path.join(BASE_DIR, 'agents', 'logs')
+os.makedirs(LOGS_DIR, exist_ok=True)
+
+# Generate daily log filenames (not per server restart)
+from datetime import datetime
+LOG_DATE = datetime.now().strftime('%Y%m%d')
+
+# Logging Configuration with timestamped files
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{levelname}] {asctime} {name} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '[{levelname}] {asctime} {name}: {message}',
+            'style': '{',
+        },
+        'a2a_format': {
+            'format': '[A2A] {asctime} | {levelname} | {name} | {message}',
+            'style': '{',
+        },
+        'conversation_format': {
+            'format': '[{asctime}] {levelname} | Session: {funcName} | {message}',
+            'style': '{',
+        },
+        'json_format': {
+            'format': '{message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'stream': 'ext://sys.stdout',
+        },
+        'django_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, f'django_{LOG_DATE}.log'),
+            'formatter': 'verbose',
+            'maxBytes': 10485760,  # 10MB
+            'backupCount': 5,
+        },
+        'conversation_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, f'conversation_{LOG_DATE}.log'),
+            'formatter': 'conversation_format',
+            'maxBytes': 10485760,  # 10MB
+            'backupCount': 5,
+        },
+        'agent_communication_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, f'agent_communication_{LOG_DATE}.json'),
+            'formatter': 'json_format',
+            'maxBytes': 10485760,  # 10MB
+            'backupCount': 5,
+        },
+        'agent_discovery_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, f'agent_discovery_{LOG_DATE}.log'),
+            'formatter': 'verbose',
+            'maxBytes': 10485760,  # 10MB
+            'backupCount': 5,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'django_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'agents.conversation': {
+            'handlers': ['conversation_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'agents.a2a_communication': {
+            'handlers': ['agent_communication_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'agents.worker_agents.base.base_worker': {
+            'handlers': ['console', 'conversation_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'agents.worker_agents.implementations.general_worker': {
+            'handlers': ['console', 'conversation_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'agents.worker_agents.implementations.flight_specialist_worker': {
+            'handlers': ['console', 'conversation_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'agents.worker_agents.agent_discovery': {
+            'handlers': ['console', 'agent_discovery_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'agents.views': {
+            'handlers': ['console', 'conversation_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}

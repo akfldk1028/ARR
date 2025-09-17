@@ -88,6 +88,15 @@ class ServiceManager:
         """Process text message"""
         return await self.client.process_text_stream(message, session_id)
 
+    async def process_text_with_streaming(
+        self,
+        message: str,
+        session_id: Optional[str] = None,
+        callback=None
+    ) -> Dict[str, Any]:
+        """Process text message with real-time streaming callback"""
+        return await self.client.process_text_stream_with_callback(message, session_id, callback)
+
     async def process_image(
         self,
         image_bytes: bytes,
@@ -110,6 +119,21 @@ class ServiceManager:
             voice_name = gemini_config.default_voice
 
         return await self.client.process_text_with_audio(message, voice_name, session_id)
+
+    async def process_text_with_audio_streaming(
+        self,
+        message: str,
+        voice_name: Optional[str] = None,
+        session_id: Optional[str] = None,
+        callback=None
+    ) -> Dict[str, Any]:
+        """Process text with streaming audio response (TTS)"""
+        # Use default voice from config if none specified
+        if voice_name is None:
+            gemini_config = AgentConfig.get_gemini_config()
+            voice_name = gemini_config.default_voice
+
+        return await self.client.process_text_with_audio_streaming(message, voice_name, session_id, callback)
 
     async def process_audio_with_audio(
         self,

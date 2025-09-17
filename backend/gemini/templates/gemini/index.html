@@ -223,12 +223,39 @@
             status.className = 'status disconnected';
         };
 
+        // Streaming variables
+        let currentStreamingMessage = null;
+        let streamingMessageElement = null;
+
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
             console.log('WebSocket received:', data); // DEBUG
 
             if (data.type === 'connection') {
                 addMessage(`Connected! Model: ${data.model}`, 'ai');
+            } else if (data.type === 'streaming_chunk') {
+                // Handle real-time streaming chunks
+                if (!currentStreamingMessage) {
+                    // Create new streaming message
+                    currentStreamingMessage = '';
+                    streamingMessageElement = document.createElement('div');
+                    streamingMessageElement.className = 'message ai';
+                    streamingMessageElement.innerHTML = '[STREAM] ';
+                    chat.appendChild(streamingMessageElement);
+                }
+
+                if (data.chunk) {
+                    currentStreamingMessage += data.chunk;
+                    streamingMessageElement.innerHTML = `[STREAM] ${currentStreamingMessage}`;
+                    chat.scrollTop = chat.scrollHeight;
+                }
+
+                if (data.is_final) {
+                    // Finalize streaming message
+                    streamingMessageElement.innerHTML = `[TXT] ${currentStreamingMessage}`;
+                    currentStreamingMessage = null;
+                    streamingMessageElement = null;
+                }
             } else if (data.type === 'response' || data.type === 'image_response') {
                 const time = data.response_time ? ` <span class="info-badge">${data.response_time.toFixed(2)}s</span>` : '';
                 let typeIcon = '[TXT]';
@@ -468,6 +495,22 @@
 
             if (!isRecording) {
                 try {
+                    // Check if we're on HTTPS or localhost (required for getUserMedia)
+                    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+                        audioStatus.textContent = '⚠️ Microphone requires HTTPS or localhost';
+                        console.error('Microphone access requires HTTPS or localhost');
+                        alert('Microphone access requires HTTPS or localhost. Please use https:// or access from localhost.');
+                        return;
+                    }
+
+                    // Check browser compatibility
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                        audioStatus.textContent = '⚠️ Browser does not support microphone access';
+                        console.error('getUserMedia not supported');
+                        alert('Your browser does not support microphone access. Please use Chrome, Firefox, or Edge.');
+                        return;
+                    }
+
                     // Start Web Speech API first
                     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
                         console.log('Initializing Web Speech API...');
@@ -476,7 +519,7 @@
 
                         recognition.continuous = true;
                         recognition.interimResults = true; // Enable partial results for faster response
-                        recognition.lang = 'en-US';
+                        recognition.lang = 'ko-KR';  // Korean language recognition
                         recognition.maxAlternatives = 1; // Reduce processing overhead
 
                         let lastProcessedTranscript = '';
@@ -542,7 +585,17 @@
                     }
 
                     console.log('Requesting microphone access...');
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    audioStatus.textContent = '📡 Requesting microphone permission...';
+
+                    // Request with more specific constraints
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        audio: {
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            autoGainControl: true,
+                            sampleRate: 44100
+                        }
+                    });
                     console.log('Microphone access granted, stream:', stream);
 
                     mediaRecorder = new MediaRecorder(stream);

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Agent Communication Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        .worker-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .worker-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .worker-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        .general-icon { background: #4CAF50; }
+        .flight-icon { background: #2196F3; }
+        .chat-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #fafafa;
+            margin-bottom: 15px;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+        .user-message {
+            background: #e3f2fd;
+            margin-left: auto;
+            text-align: right;
+        }
+        .agent-message {
+            background: #e8f5e8;
+        }
+        .system-message {
+            background: #fff3e0;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+            max-width: 100%;
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        button {
+            padding: 12px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        button:hover { background: #0056b3; }
+        .scenario-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .scenario-btn {
+            background: #28a745;
+            font-size: 12px;
+            padding: 8px 16px;
+        }
+        .scenario-btn:hover { background: #1e7e34; }
+        .worker-communication {
+            background: #f8f9fa;
+            border: 2px solid #6c757d;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .communication-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        .arrow {
+            font-size: 24px;
+            color: #007bff;
+            transition: all 0.3s ease;
+        }
+        .arrow.active {
+            color: #28a745;
+            transform: scale(1.2);
+        }
+        .communication-log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 4px;
+            background: #fff;
+            border-left: 3px solid #007bff;
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.active { background: #d4edda; color: #155724; }
+        .status.thinking { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 Worker Agent Communication Demo</h1>
+        <p>A2A Protocol을 통한 Worker Agent 간 실시간 소통 테스트</p>
+    </div>
+
+    <!-- Worker Communication Flow -->
+    <div class="worker-communication">
+        <h3>🔄 Worker Communication Flow</h3>
+        <div class="communication-flow">
+            <div>
+                <strong>General Agent</strong>
+                <span class="status active" id="general-status">Ready</span>
+            </div>
+            <div class="arrow" id="comm-arrow">➡️</div>
+            <div>
+                <strong>Flight Specialist</strong>
+                <span class="status active" id="flight-status">Ready</span>
+            </div>
+        </div>
+        <p><small>General Agent가 항공편 관련 키워드를 감지하면 자동으로 Flight Specialist에게 위임합니다.</small></p>
+
+        <div class="communication-log" id="comm-log">
+            <strong>🔄 Worker Communication Log</strong>
+            <div id="comm-entries">
+                <div class="log-entry">System initialized - Workers ready for communication</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Scenarios -->
+    <div class="scenario-buttons">
+        <button class="scenario-btn" onclick="testScenario('flight')">✈️ Flight Booking Test</button>
+        <button class="scenario-btn" onclick="testScenario('general')">💬 General Chat Test</button>
+        <button class="scenario-btn" onclick="testScenario('delegation')">🔄 Delegation Test</button>
+        <button class="scenario-btn" onclick="testWorkerCommunication()">🤝 Direct Worker Communication</button>
+    </div>
+
+    <!-- General Agent Section -->
+    <div class="worker-section">
+        <div class="worker-title">
+            <div class="worker-icon general-icon">🧠</div>
+            <div>
+                <h3>General Assistant Agent</h3>
+                <p>범용 어시스턴트 - 필요시 전문가에게 자동 위임</p>
+            </div>
+        </div>
+        <div class="chat-container" id="general-chat">
+            <div class="message system-message">
+                General Agent와 대화해보세요. "flight", "airline", "booking" 등의 키워드를 사용하면 Flight Specialist와 자동으로 소통합니다.
+            </div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="general-input" placeholder="General Agent에게 메시지를 보내세요..." maxlength="500">
+            <button onclick="sendToGeneral()">Send</button>
+        </div>
+    </div>
+
+    <!-- Flight Specialist Section -->
+    <div class="worker-section">
+        <div class="worker-title">
+            <div class="worker-icon flight-icon">✈️</div>
+            <div>
+                <h3>Flight Specialist Agent</h3>
+                <p>항공편 예약 및 여행 정보 전문가</p>
+            </div>
+        </div>
+        <div class="chat-container" id="flight-chat">
+            <div class="message system-message">
+                Flight Specialist와 직접 대화할 수 있습니다. 항공편 관련 전문 정보를 제공합니다.
+            </div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="flight-input" placeholder="Flight Specialist에게 메시지를 보내세요..." maxlength="500">
+            <button onclick="sendToFlight()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let messageId = 1;
+
+        function addCommLogEntry(message) {
+            const entriesDiv = document.getElementById('comm-entries');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<small>${timestamp}</small> - ${message}`;
+            entriesDiv.appendChild(entry);
+
+            // Keep only last 10 entries
+            while (entriesDiv.children.length > 10) {
+                entriesDiv.removeChild(entriesDiv.firstChild);
+            }
+
+            // Scroll to bottom
+            const commLog = document.getElementById('comm-log');
+            commLog.scrollTop = commLog.scrollHeight;
+        }
+
+        function animateArrow() {
+            const arrow = document.getElementById('comm-arrow');
+            arrow.classList.add('active');
+            setTimeout(() => arrow.classList.remove('active'), 1000);
+        }
+
+        function addMessage(containerId, content, isUser, agentName = '') {
+            const container = document.getElementById(containerId);
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + (isUser ? 'user-message' : 'agent-message');
+
+            const prefix = isUser ? 'You: ' : (agentName ? `${agentName}: ` : 'Agent: ');
+            messageDiv.textContent = prefix + content;
+
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function updateStatus(agentType, status) {
+            const statusEl = document.getElementById(agentType + '-status');
+            statusEl.textContent = status;
+            statusEl.className = 'status ' + (status === 'Thinking...' ? 'thinking' : 'active');
+        }
+
+        async function sendToGeneral() {
+            const input = document.getElementById('general-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage('general-chat', message, true);
+            input.value = '';
+            updateStatus('general', 'Thinking...');
+
+            try {
+                const response = await fetch('/agents/test-agent/chat/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        message: message,
+                        context_id: 'web_demo_' + Date.now(),
+                        session_id: 'demo_session',
+                        user_name: 'demo_user'
+                    })
+                });
+
+                const data = await response.json();
+                updateStatus('general', 'Ready');
+
+                if (data.success) {
+                    addMessage('general-chat', data.response, false, 'General Agent');
+
+                    // Check if this was a delegation using the new delegation info
+                    if (data.delegation && data.delegation.occurred) {
+                        // Add system message
+                        addMessage('general-chat', '🔄 Worker 간 소통이 발생했습니다!', false, 'System');
+
+                        // Log the communication
+                        addCommLogEntry(`General Agent → ${data.delegation.specialist_agent}: "${message}"`);
+                        animateArrow();
+
+                        // Show the delegation in flight chat
+                        addMessage('flight-chat', '📞 A2A Request: ' + message, false, 'General → Flight');
+
+                        // Use the specialist response from the backend if available
+                        let specialistContent = '';
+                        if (data.delegation.specialist_response) {
+                            specialistContent = data.delegation.specialist_response;
+                        } else {
+                            specialistContent = "Flight specialist consulted for: " + message;
+                        }
+
+                        addMessage('flight-chat', specialistContent, false, 'Flight Specialist Response');
+
+                        // Also show specialist response in general chat for context
+                        addMessage('general-chat', '📋 Specialist Response: ' + specialistContent, false, 'Flight Specialist');
+
+                        // Log the response
+                        addCommLogEntry(`Flight Specialist responded via A2A protocol`);
+
+                        updateStatus('flight', 'Consulted');
+                        setTimeout(() => updateStatus('flight', 'Ready'), 2000);
+                    }
+                } else {
+                    addMessage('general-chat', 'Error: ' + data.error, false, 'System');
+                }
+            } catch (error) {
+                updateStatus('general', 'Ready');
+                addMessage('general-chat', 'Connection error: ' + error.message, false, 'System');
+            }
+        }
+
+        async function sendToFlight() {
+            const input = document.getElementById('flight-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage('flight-chat', message, true);
+            input.value = '';
+            updateStatus('flight', 'Thinking...');
+
+            try {
+                const response = await fetch('/agents/flight-specialist/chat/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        message: message,
+                        context_id: 'flight_demo_' + Date.now(),
+                        session_id: 'demo_session',
+                        user_name: 'demo_user'
+                    })
+                });
+
+                const data = await response.json();
+                updateStatus('flight', 'Ready');
+
+                if (data.success) {
+                    addMessage('flight-chat', data.response, false, 'Flight Specialist');
+                } else {
+                    addMessage('flight-chat', 'Error: ' + data.error, false, 'System');
+                }
+            } catch (error) {
+                updateStatus('flight', 'Ready');
+                addMessage('flight-chat', 'Connection error: ' + error.message, false, 'System');
+            }
+        }
+
+        function testScenario(type) {
+            const scenarios = {
+                flight: "I need to book a flight from Seoul to Tokyo for next week",
+                general: "Hello! How are you today? What can you help me with?",
+                delegation: "What are the best airlines for international flights from Korea?"
+            };
+
+            if (scenarios[type]) {
+                document.getElementById('general-input').value = scenarios[type];
+                sendToGeneral();
+            }
+        }
+
+        async function testWorkerCommunication() {
+            addMessage('general-chat', '🤖 Testing direct worker-to-worker communication...', false, 'System');
+
+            try {
+                const response = await fetch('/agents/test_worker_communication/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        message: "Can you help with flight booking coordination?",
+                        source_agent: "test-agent",
+                        target_agent: "flight-specialist"
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    addMessage('general-chat', '✅ Worker communication successful!', false, 'System');
+                    addMessage('flight-chat', data.response, false, 'Via A2A Protocol');
+                } else {
+                    addMessage('general-chat', '❌ Communication failed: ' + data.error, false, 'System');
+                }
+            } catch (error) {
+                addMessage('general-chat', '❌ Connection error: ' + error.message, false, 'System');
+            }
+        }
+
+        // Allow Enter key to send messages
+        document.getElementById('general-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendToGeneral();
+        });
+
+        document.getElementById('flight-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendToFlight();
+        });
+
+        // Load initial demo
+        window.onload = function() {
+            addMessage('general-chat', 'General Assistant Agent가 준비되었습니다. 무엇이든 물어보세요!', false, 'System');
+            addMessage('flight-chat', 'Flight Specialist Agent가 준비되었습니다. 항공편 관련 질문을 해주세요!', false, 'System');
+        };
+    </script>
+</body>
+</html>
