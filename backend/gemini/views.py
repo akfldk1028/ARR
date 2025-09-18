@@ -55,3 +55,16 @@ def health_check(request):
         return asyncio.run(health_check_async(request))
     except Exception as e:
         return HttpResponse(f"Service error: {str(e)}", status=500)
+
+def continuous_voice(request):
+    """Continuous Voice Conversation interface using Gemini Live API"""
+    # Get current host and port from request
+    host = request.get_host()
+    websocket_url = f'ws://{host}/ws/gemini/'
+
+    context = {
+        'websocket_url': websocket_url,
+        'page_title': 'Gemini Live API - Real-time Voice Conversation'
+    }
+
+    return render(request, 'gemini/voice_conversation.html', context)

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gemini Live API - Real-time Voice Conversation</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .chat {
+            border: 2px solid #e0e0e0;
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f9f9f9;
+            border-radius: 15px;
+        }
+        .message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 80%;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            margin-left: auto;
+        }
+        .ai {
+            background: #e8f4f8;
+            color: #333;
+            border-left: 4px solid #2196F3;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .voice-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        .start-button {
+            background: #4CAF50;
+            color: white;
+        }
+        .start-button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        .stop-button {
+            background: #f44336;
+            color: white;
+        }
+        .stop-button:hover {
+            background: #da190b;
+            transform: scale(1.05);
+        }
+        .status {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .status.listening {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        .status.processing {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        .status.idle {
+            background: #f5f5f5;
+            color: #666;
+        }
+        .audio-controls {
+            display: none;
+            margin: 20px 0;
+            text-align: center;
+        }
+        audio {
+            width: 300px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Gemini Live API - 실시간 음성 대화</h1>
+            <p>2025 Gemini Live API를 사용한 실시간 양방향 음성 대화</p>
+        </div>
+
+        <div class="chat" id="chatContainer">
+            <div class="message ai">
+                <strong>AI:</strong> 안녕하세요! 실시간 음성 대화를 시작하려면 아래 버튼을 눌러주세요. 한국어로 자연스럽게 말씀해주시면 됩니다.
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="startButton" class="voice-button start-button" onclick="startVoiceConversation()">
+                🎤 실시간 대화 시작
+            </button>
+            <button id="stopButton" class="voice-button stop-button" onclick="stopVoiceConversation()" style="display: none;">
+                ⏹️ 대화 종료
+            </button>
+        </div>
+
+        <div id="status" class="status idle">
+            음성 대화를 시작하려면 위 버튼을 클릭하세요
+        </div>
+
+        <div class="audio-controls" id="audioControls">
+            <audio id="audioPlayer" controls autoplay></audio>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        let audioContext = null;
+        let mediaStream = null;
+        let processor = null;
+        let voiceSessionActive = false;
+        let isRecording = false;
+
+        function connectWebSocket() {
+            // WebSocket connection to Django Channels consumer
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/gemini/`;
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = function(event) {
+                console.log('WebSocket connected');
+                updateStatus('WebSocket 연결됨', 'idle');
+            };
+
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                console.log('WebSocket message:', data);
+
+                switch(data.type) {
+                    case 'voice_session_ready':
+                        voiceSessionActive = true;
+                        updateStatus('음성 세션 준비 완료 - 말씀해주세요!', 'listening');
+                        break;
+
+                    case 'voice_session_status':
+                        if (data.status === 'started') {
+                            voiceSessionActive = true;
+                            updateStatus('실시간 음성 대화 시작됨', 'listening');
+                        } else if (data.status === 'stopped') {
+                            voiceSessionActive = false;
+                            updateStatus('음성 대화 종료됨', 'idle');
+                        } else if (data.status === 'error') {
+                            updateStatus('오류: ' + data.message, 'idle');
+                            addMessage('오류: ' + data.message, 'ai');
+                        }
+                        break;
+
+                    case 'audio_chunk':
+                        // Play incoming audio from AI
+                        playAudioChunk(data.audio);
+                        break;
+
+                    case 'transcript':
+                        // Display AI's text response
+                        addMessage(data.text, 'ai');
+                        break;
+
+                    case 'user_speech':
+                        // Display user's transcribed speech
+                        addMessage(data.text, 'user');
+                        break;
+
+                    case 'ai_text_response':
+                        addMessage(data.text, 'ai');
+                        break;
+
+                    case 'ai_audio_response':
+                        // Play AI's audio response
+                        playAudioChunk(data.audio);
+                        updateStatus('AI 응답 재생 중...', 'processing');
+                        break;
+
+                    case 'audio_processing':
+                        updateStatus('음성 처리 중...', 'processing');
+                        break;
+
+                    case 'turn_complete':
+                        updateStatus('AI 응답 완료 - 계속 말씀해주세요', 'listening');
+                        break;
+
+                    case 'error':
+                        console.error('WebSocket error:', data.message);
+                        updateStatus('오류: ' + data.message, 'idle');
+                        break;
+                }
+            };
+
+            ws.onclose = function(event) {
+                console.log('WebSocket disconnected');
+                updateStatus('연결이 끊어졌습니다', 'idle');
+                voiceSessionActive = false;
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                updateStatus('WebSocket 오류 발생', 'idle');
+            };
+        }
+
+        async function startVoiceConversation() {
+            try {
+                updateStatus('음성 세션 시작 중...', 'processing');
+
+                // Connect WebSocket if not connected
+                if (!ws || ws.readyState !== WebSocket.OPEN) {
+                    connectWebSocket();
+                    // Wait for connection
+                    await new Promise((resolve) => {
+                        const checkConnection = () => {
+                            if (ws.readyState === WebSocket.OPEN) {
+                                resolve();
+                            } else {
+                                setTimeout(checkConnection, 100);
+                            }
+                        };
+                        checkConnection();
+                    });
+                }
+
+                // Start voice session on backend
+                ws.send(JSON.stringify({
+                    type: 'start_voice_session'
+                }));
+
+                // Get microphone access with 16kHz for 2025 Gemini Live API
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        channelCount: 1,
+                        sampleRate: 16000,  // 2025 Gemini Live API input requirement
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    }
+                });
+
+                // Setup audio processing at 16kHz
+                audioContext = new (window.AudioContext || window.webkitAudioContext)({
+                    sampleRate: 16000  // Input at 16kHz as per 2025 docs
+                });
+
+                const source = audioContext.createMediaStreamSource(mediaStream);
+                processor = audioContext.createScriptProcessor(4096, 1, 1);
+
+                processor.onaudioprocess = function(event) {
+                    if (isRecording && voiceSessionActive && ws.readyState === WebSocket.OPEN) {
+                        const inputBuffer = event.inputBuffer;
+                        const inputData = inputBuffer.getChannelData(0);
+
+                        // Check audio level for debugging
+                        let maxLevel = 0;
+                        for (let i = 0; i < inputData.length; i++) {
+                            maxLevel = Math.max(maxLevel, Math.abs(inputData[i]));
+                        }
+
+                        // Debug: Show audio level - increased threshold for better VAD
+                        if (maxLevel > 0.05) { // Increased threshold to reduce noise
+                            console.log('Audio level detected:', maxLevel);
+                            updateStatus(`🎤 음성 감지됨 (레벨: ${maxLevel.toFixed(3)})`, 'listening');
+                        }
+
+                        // Convert Float32Array to Int16Array (PCM format)
+                        const pcmData = new Int16Array(inputData.length);
+                        for (let i = 0; i < inputData.length; i++) {
+                            pcmData[i] = Math.max(-32768, Math.min(32767, inputData[i] * 32768));
+                        }
+
+                        // Send audio chunk to backend
+                        const audioBase64 = btoa(String.fromCharCode(...new Uint8Array(pcmData.buffer)));
+                        ws.send(JSON.stringify({
+                            type: 'voice_audio_chunk',
+                            audio: audioBase64
+                        }));
+                    }
+                };
+
+                source.connect(processor);
+                processor.connect(audioContext.destination);
+
+                isRecording = true;
+
+                // Update UI
+                document.getElementById('startButton').style.display = 'none';
+                document.getElementById('stopButton').style.display = 'inline-block';
+                document.getElementById('audioControls').style.display = 'block';
+
+                updateStatus('마이크 활성화됨 - 말씀해주세요!', 'listening');
+
+            } catch (error) {
+                console.error('Failed to start voice conversation:', error);
+                updateStatus('음성 대화 시작 실패: ' + error.message, 'idle');
+            }
+        }
+
+        function stopVoiceConversation() {
+            isRecording = false;
+            voiceSessionActive = false;
+
+            // Stop voice session on backend
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'stop_voice_session'
+                }));
+            }
+
+            // Stop audio processing
+            if (processor) {
+                processor.disconnect();
+                processor = null;
+            }
+
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+
+            // Clear audio queue and stop playing
+            audioQueue = [];
+            isPlayingAudio = false;
+
+            // Update UI
+            document.getElementById('startButton').style.display = 'inline-block';
+            document.getElementById('stopButton').style.display = 'none';
+            document.getElementById('audioControls').style.display = 'none';
+
+            updateStatus('음성 대화가 종료되었습니다', 'idle');
+        }
+
+        let audioQueue = [];
+        let isPlayingAudio = false;
+
+        // 새 코드 로드 확인용 로그
+        console.log("🔥 NEW AUDIO QUEUE SYSTEM LOADED!");
+
+        function playAudioChunk(audioBase64) {
+            console.log("🎵 Audio chunk received, queue length:", audioQueue.length);
+            try {
+                // Convert base64 to PCM data
+                const audioData = atob(audioBase64);
+                const uint8Array = new Uint8Array(audioData.length);
+                for (let i = 0; i < audioData.length; i++) {
+                    uint8Array[i] = audioData.charCodeAt(i);
+                }
+
+                // Convert PCM to WAV format for browser playback
+                const wavBlob = convertPCMToWAV(uint8Array, 24000); // Gemini outputs at 24kHz
+                const audioUrl = URL.createObjectURL(wavBlob);
+
+                // Add to queue instead of playing immediately
+                audioQueue.push(audioUrl);
+
+                // Start playing if not already playing
+                if (!isPlayingAudio) {
+                    playNextAudioInQueue();
+                }
+
+            } catch (error) {
+                console.error('Failed to play audio:', error);
+            }
+        }
+
+        function playNextAudioInQueue() {
+            if (audioQueue.length === 0) {
+                isPlayingAudio = false;
+                return;
+            }
+
+            isPlayingAudio = true;
+            const audioUrl = audioQueue.shift();
+
+            // Create a new audio element for each chunk to avoid conflicts
+            const audio = new Audio(audioUrl);
+
+            audio.onended = () => {
+                // Clean up the URL
+                URL.revokeObjectURL(audioUrl);
+                // Play next chunk
+                playNextAudioInQueue();
+            };
+
+            audio.onerror = (e) => {
+                console.log('Audio play failed:', e);
+                URL.revokeObjectURL(audioUrl);
+                // Try next chunk
+                playNextAudioInQueue();
+            };
+
+            audio.play().catch(e => {
+                console.log('Audio play failed:', e);
+                URL.revokeObjectURL(audioUrl);
+                // Try next chunk
+                playNextAudioInQueue();
+            });
+        }
+
+        function convertPCMToWAV(pcmData, sampleRate) {
+            // Gemini Live API sends 16-bit PCM data, not 8-bit
+            const length = pcmData.length / 2; // 2 bytes per sample for 16-bit
+            const buffer = new ArrayBuffer(44 + pcmData.length);
+            const view = new DataView(buffer);
+
+            // WAV header
+            const writeString = (offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + pcmData.length, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true); // mono
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(36, 'data');
+            view.setUint32(40, pcmData.length, true);
+
+            // Copy the PCM data directly (it's already 16-bit)
+            let offset = 44;
+            for (let i = 0; i < pcmData.length; i++) {
+                view.setUint8(offset + i, pcmData[i]);
+            }
+
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        function addMessage(content, sender) {
+            const chat = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const senderLabel = sender === 'user' ? '👤 사용자' : '🤖 AI';
+            messageDiv.innerHTML = `<strong>${senderLabel}:</strong> ${content}`;
+
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function updateStatus(message, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+        }
+
+        // Initialize WebSocket on page load
+        window.onload = function() {
+            connectWebSocket();
+        };
+
+        // Clean up on page unload
+        window.onbeforeunload = function() {
+            if (isRecording) {
+                stopVoiceConversation();
+            }
+            if (ws) {
+                ws.close();
+            }
+        };
+    </script>
+</body>
+</html>

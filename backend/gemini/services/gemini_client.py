@@ -506,12 +506,12 @@ class OptimizedGeminiClient:
                 model=self.config.model,
                 config=audio_config
             ) as session:
-                # Send message
+                # Send message with correct Live API format
                 await session.send_client_content(
-                    turns={
+                    turns=[{
                         "role": "user",
                         "parts": [{"text": message}]
-                    },
+                    }],
                     turn_complete=True
                 )
 
@@ -586,6 +586,157 @@ class OptimizedGeminiClient:
                 'session_id': session_id
             }
 
+    async def process_text_with_audio_streaming(
+        self,
+        message: str,
+        voice_name: str = "Aoede",
+        session_id: Optional[str] = None,
+        callback=None
+    ) -> Dict[str, Any]:
+        """Process text and return streaming audio response with real-time callback"""
+
+        session_id = session_id or f"audio_stream_{int(time.time())}"
+        start_time = time.time()
+
+        # Use WebSocket direct connection for Live API (based on Context7 cookbook)
+        from websockets.asyncio.client import connect
+        import base64
+        import json
+
+        async def _process():
+            await self.rate_limiter.wait_if_needed()
+
+            HOST = 'generativelanguage.googleapis.com'
+            MODEL = 'models/gemini-2.0-flash-exp'
+
+            ws_url = f'wss://{HOST}/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key={self.config.api_key}'
+
+            async with connect(ws_url) as websocket:
+                # Send initial setup request
+                initial_request = {
+                    'setup': {
+                        'model': MODEL,
+                    },
+                }
+                await websocket.send(json.dumps(initial_request))
+
+                # Send text input
+                text_input = {
+                    'clientContent': {
+                        'turns': [{
+                            'role': 'USER',
+                            'parts': [{'text': message}],
+                        }],
+                        'turnComplete': True,
+                    },
+                }
+                await websocket.send(json.dumps(text_input))
+
+                # Collect and stream response
+                audio_chunks = []
+                transcript = ""
+                chunk_count = 0
+
+                # Process WebSocket messages (based on Context7 cookbook pattern)
+                async for msg in websocket:
+                    msg_data = json.loads(msg)
+
+                    # Extract audio from server response
+                    server_content = msg_data.get('serverContent', {})
+                    model_turn = server_content.get('modelTurn', {})
+
+                    current_audio = None
+                    current_text = ""
+
+                    for part in model_turn.get('parts', []):
+                        # Extract text
+                        if 'text' in part:
+                            current_text += part['text']
+                            transcript += part['text']
+
+                        # Extract audio (base64 encoded)
+                        inline_data = part.get('inlineData', {})
+                        audio_b64 = inline_data.get('data', '')
+                        if audio_b64:
+                            current_audio = base64.b64decode(audio_b64)
+                            audio_chunks.append(current_audio)
+
+                    # Send streaming update via callback
+                    if (current_audio or current_text) and callback:
+                        chunk_count += 1
+                        await callback({
+                            'audio_chunk': current_audio,
+                            'text_chunk': current_text,
+                            'chunk_id': chunk_count,
+                            'session_id': session_id,
+                            'is_final': False,
+                            'voice': voice_name
+                        })
+
+                    # Check for turn completion
+                    if server_content.get('turnComplete'):
+                        # Send final callback
+                        if callback:
+                            await callback({
+                                'audio_chunk': None,
+                                'text_chunk': '',
+                                'chunk_id': chunk_count + 1,
+                                'session_id': session_id,
+                                'is_final': True,
+                                'voice': voice_name
+                            })
+                        break
+
+                    # Handle interruption
+                    if 'interrupted' in server_content:
+                        logger.info("Stream interrupted by user")
+                        break
+
+                # Combine all audio chunks
+                audio_data = b''.join(audio_chunks) if audio_chunks else None
+
+                return {
+                    'audio_data': audio_data,
+                    'transcript': transcript,
+                    'has_audio': audio_data is not None,
+                    'chunk_count': chunk_count
+                }
+
+        try:
+            result = await self.error_handler.handle_with_retry(
+                _process,
+                self.config.max_retries,
+                self.config.retry_delay
+            )
+
+            response_time = time.time() - start_time
+
+            return {
+                'audio': result.get('audio_data'),
+                'transcript': result.get('transcript', ''),
+                'response_time': response_time,
+                'model': f"{self.config.model} (audio_stream)",
+                'type': 'audio_streaming',
+                'voice': voice_name,
+                'success': result.get('has_audio', False),
+                'session_id': session_id,
+                'chunks_sent': result.get('chunk_count', 0)
+            }
+
+        except Exception as e:
+            response_time = time.time() - start_time
+            logger.error(f"Audio streaming processing failed: {e}")
+
+            return {
+                'audio': None,
+                'transcript': f"Audio streaming error: {str(e)}",
+                'response_time': response_time,
+                'model': 'error',
+                'type': 'error',
+                'success': False,
+                'session_id': session_id
+            }
+
     async def process_audio_with_audio(
         self,
         audio_bytes: bytes,
@@ -627,15 +778,15 @@ class OptimizedGeminiClient:
             ) as session:
                 # Send audio data as input with correct format
                 await session.send_client_content(
-                    turns={
+                    turns=[{
                         "role": "user",
                         "parts": [{
                             "inline_data": {
-                                "mime_type": "audio/webm",  # Browser MediaRecorder format
+                                "mime_type": "audio/pcm",  # Use PCM for Live API
                                 "data": audio_bytes
                             }
                         }]
-                    },
+                    }],
                     turn_complete=True
                 )
 

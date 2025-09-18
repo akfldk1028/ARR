@@ -27,7 +27,9 @@
       "Bash(taskkill:*)",
       "Bash(netstat:*)",
       "Bash(wmic process where processid=34592 delete:*)",
-      "Bash(cmd //c:*)"
+      "Bash(cmd //c:*)",
+      "Bash(pkill:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

@@ -170,6 +170,20 @@
             </div>
 
             <div class="control-group">
+                <h3>🤖 A2A Agent Selection</h3>
+                <select id="agentSelect" style="margin: 5px; width: 60%;">
+                    <option value="general-worker">General Assistant (Default)</option>
+                    <option value="flight-specialist">Flight Specialist</option>
+                    <option value="hotel-specialist">Hotel Specialist</option>
+                    <option value="travel-assistant">Travel Assistant</option>
+                </select>
+                <button onclick="switchAgent()">Switch Agent</button>
+                <button onclick="requestAgentList()">Refresh Agents</button>
+                <div id="agentStatus" style="margin: 10px 0; font-size: 12px; color: #666;">Current: General Assistant</div>
+                <div id="agentInfo" style="margin: 10px 0; font-size: 11px; color: #888; font-style: italic;">Voice: Warm and helpful general assistant</div>
+            </div>
+
+            <div class="control-group">
                 <h3>Audio Chat (TTS)</h3>
                 <input type="text" id="audioInput" placeholder="Type message for voice response..." style="width: 50%;">
                 <select id="voiceSelect" style="margin: 5px;">
@@ -185,9 +199,13 @@
             </div>
 
             <div class="control-group">
-                <h3>Audio Recording</h3>
-                <button id="audioButton" onclick="toggleAudio()">🎤 Start Recording</button>
-                <div id="recordingStatus" style="margin: 10px 0; font-size: 12px; color: #666;"></div>
+                <h3>🎙️ Voice Conversation</h3>
+                <button id="audioButton" onclick="startContinuousConversation()">🎤 Start Real-time Conversation</button>
+                <button id="stopButton" onclick="stopConversation()" style="margin-left: 10px; display: none; background: #dc3545;">⏹️ Stop</button>
+                <div id="recordingStatus" style="margin: 10px 0; font-size: 12px; color: #666;">Click to start continuous voice conversation</div>
+                <div style="font-size: 11px; color: #888; margin-top: 5px;">
+                    💡 One-click continuous conversation: Just speak naturally, AI responds automatically
+                </div>
             </div>
 
             <div class="control-group">
@@ -207,8 +225,13 @@
 
         ws.onopen = () => {
             console.log('WebSocket connected!');
-            status.textContent = 'Connected to Django + Gemini Live API';
+            status.textContent = 'Connected to Django + Gemini Live API + A2A Agents';
             status.className = 'status connected';
+
+            // Request initial agent list
+            setTimeout(() => {
+                requestAgentList();
+            }, 500);
         };
 
         ws.onclose = (event) => {
@@ -234,7 +257,7 @@
             if (data.type === 'connection') {
                 addMessage(`Connected! Model: ${data.model}`, 'ai');
             } else if (data.type === 'streaming_chunk') {
-                // Handle real-time streaming chunks
+                // Handle real-time streaming chunks (Gemini)
                 if (!currentStreamingMessage) {
                     // Create new streaming message
                     currentStreamingMessage = '';
@@ -256,6 +279,41 @@
                     currentStreamingMessage = null;
                     streamingMessageElement = null;
                 }
+            } else if (data.type === 'a2a_streaming_chunk') {
+                // Handle real-time A2A agent streaming chunks
+                if (!currentStreamingMessage) {
+                    // Create new A2A streaming message
+                    currentStreamingMessage = '';
+                    streamingMessageElement = document.createElement('div');
+                    streamingMessageElement.className = 'message ai';
+                    streamingMessageElement.innerHTML = `[🤖 ${data.agent_slug}] `;
+                    chat.appendChild(streamingMessageElement);
+                }
+
+                if (data.chunk) {
+                    currentStreamingMessage += data.chunk;
+                    streamingMessageElement.innerHTML = `[🤖 ${data.agent_slug}] ${currentStreamingMessage}`;
+                    chat.scrollTop = chat.scrollHeight;
+                }
+            } else if (data.type === 'ready_for_next') {
+                // Handle continuous mode ready signal
+                if (data.continuous_mode && continuousMode && isRecording) {
+                    const audioStatus = document.getElementById('recordingStatus');
+                    audioStatus.textContent = '🎤 Ready for your next question... Speak now!';
+
+                    // Optionally show visual indicator
+                    setTimeout(() => {
+                        if (continuousMode && isRecording) {
+                            audioStatus.textContent = '🎤 Listening for your next question...';
+                        }
+                    }, 1000);
+                }
+            } else if (data.type === 'processing_started') {
+                // Handle processing acknowledgment
+                if (data.continuous_mode) {
+                    const audioStatus = document.getElementById('recordingStatus');
+                    audioStatus.textContent = `🎤 Processing: "${data.message}"...`;
+                }
             } else if (data.type === 'response' || data.type === 'image_response') {
                 const time = data.response_time ? ` <span class="info-badge">${data.response_time.toFixed(2)}s</span>` : '';
                 let typeIcon = '[TXT]';
@@ -267,7 +325,8 @@
             } else if (data.type === 'audio_response') {
                 const time = data.response_time ? ` <span class="info-badge">${data.response_time.toFixed(2)}s</span>` : '';
                 const transcript = data.transcript || 'No response generated';
-                addMessage(`[🔊] ${transcript}${time} (Voice: ${data.voice})`, 'ai');
+                const agentInfo = data.agent_name ? ` (${data.agent_name})` : '';
+                addMessage(`[🔊] ${transcript}${time}${agentInfo}`, 'ai');
 
                 // Play audio if available, otherwise use browser TTS
                 if (data.audio && data.success) {
@@ -277,6 +336,31 @@
                     speakText(transcript, data.voice || 'Aoede');
                     document.getElementById('audioStatus').textContent = 'Playing with browser TTS...';
                 }
+
+                // Auto-restart recording in continuous mode after response
+                if (continuousMode && isRecording) {
+                    setTimeout(() => {
+                        if (continuousMode) {
+                            document.getElementById('recordingStatus').textContent = '🎤 Listening for your next question...';
+                            restartListening();
+                        }
+                    }, 1500); // Wait 1.5 seconds after audio response
+                }
+            } else if (data.type === 'agent_switched') {
+                // Handle automatic agent switching
+                updateCurrentAgent(data.new_agent, data.agent_name);
+                addMessage(`[🤖] Switched to ${data.agent_name}: ${data.message || 'Agent changed'}`, 'ai');
+                document.getElementById('agentSelect').value = data.new_agent;
+            } else if (data.type === 'agents_list') {
+                // Handle agent list response
+                updateAgentsList(data.agents, data.current_agent);
+                addMessage(`[🤖] Agent list updated. Current: ${data.current_agent}`, 'ai');
+            } else if (data.type === 'agent_info') {
+                // Handle agent info response
+                updateAgentInfo(data);
+            } else if (data.type === 'delegation_in_progress') {
+                // Handle real-time delegation notification
+                addMessage(`[🔄] ${data.message}`, 'ai');
             } else if (data.type === 'error') {
                 addMessage(`[ERROR] ${data.message}`, 'ai');
             }
@@ -479,164 +563,199 @@
             addMessage('Chat cleared. Ready for new conversation!', 'ai');
         }
 
-        // Audio recording variables
+        // Audio recording variables for Live API streaming
         let mediaRecorder;
-        let audioChunks = [];
+        let audioStream;
         let isRecording = false;
+        let continuousMode = false;
+        let voiceSessionActive = false;
+        let audioContext;
+        let processor;
 
-        // Speech recognition global variable
-        let recognition = null;
-
-        async function toggleAudio() {
-            const audioButton = document.getElementById('audioButton');
+        async function startRecording() {
             const audioStatus = document.getElementById('recordingStatus');
 
-            console.log('toggleAudio called, isRecording:', isRecording);
+            if (isRecording) {
+                return; // Already recording
+            }
 
-            if (!isRecording) {
-                try {
-                    // Check if we're on HTTPS or localhost (required for getUserMedia)
-                    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-                        audioStatus.textContent = '⚠️ Microphone requires HTTPS or localhost';
-                        console.error('Microphone access requires HTTPS or localhost');
-                        alert('Microphone access requires HTTPS or localhost. Please use https:// or access from localhost.');
-                        return;
+            try {
+                // Browser and security checks
+                if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+                    audioStatus.textContent = '⚠️ Microphone requires HTTPS or localhost';
+                    alert('Microphone access requires HTTPS or localhost.');
+                    return;
+                }
+
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    audioStatus.textContent = '⚠️ Browser does not support microphone access';
+                    alert('Your browser does not support microphone access.');
+                    return;
+                }
+
+                // Start voice session with backend (Gemini Live API)
+                await startVoiceSession();
+
+                // Get microphone access with optimal settings for Gemini Live API
+                audioStream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        channelCount: 1,
+                        sampleRate: 24000,  // Gemini Live API preferred rate
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
                     }
+                });
 
-                    // Check browser compatibility
-                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                        audioStatus.textContent = '⚠️ Browser does not support microphone access';
-                        console.error('getUserMedia not supported');
-                        alert('Your browser does not support microphone access. Please use Chrome, Firefox, or Edge.');
-                        return;
+                // Setup audio processing for real-time streaming
+                audioContext = new (window.AudioContext || window.webkitAudioContext)({
+                    sampleRate: 24000
+                });
+
+                const source = audioContext.createMediaStreamSource(audioStream);
+
+                // Create script processor for real-time audio chunks
+                processor = audioContext.createScriptProcessor(4096, 1, 1);
+
+                processor.onaudioprocess = function(event) {
+                    if (isRecording && voiceSessionActive) {
+                        const inputBuffer = event.inputBuffer;
+                        const inputData = inputBuffer.getChannelData(0);
+
+                        // Convert Float32Array to Int16Array (PCM format for Gemini)
+                        const pcmData = new Int16Array(inputData.length);
+                        for (let i = 0; i < inputData.length; i++) {
+                            pcmData[i] = Math.max(-32768, Math.min(32767, inputData[i] * 32768));
+                        }
+
+                        // Send PCM audio chunk to backend via WebSocket
+                        sendAudioChunk(pcmData.buffer);
                     }
+                };
 
-                    // Start Web Speech API first
-                    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                        console.log('Initializing Web Speech API...');
-                        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                        recognition = new SpeechRecognition();
+                source.connect(processor);
+                processor.connect(audioContext.destination);
 
-                        recognition.continuous = true;
-                        recognition.interimResults = true; // Enable partial results for faster response
-                        recognition.lang = 'ko-KR';  // Korean language recognition
-                        recognition.maxAlternatives = 1; // Reduce processing overhead
+                isRecording = true;
+                audioStatus.textContent = continuousMode ?
+                    '🎤 실시간 대화 중... 자연스럽게 말씀하세요' :
+                    '🎤 Recording... Speak now';
 
-                        let lastProcessedTranscript = '';
+                console.log('Direct audio streaming to Gemini Live API started');
+
                         recognition.onresult = (event) => {
                             const result = event.results[event.results.length - 1];
                             const transcript = result[0].transcript.trim();
+                            const confidence = result[0].confidence || 0.8;
 
-                            // Process immediately on final result or confident partial result
-                            if (result.isFinal || (transcript.length > 3 && result[0].confidence > 0.8)) {
-                                console.log('Speech recognized:', transcript, 'Final:', result.isFinal, 'Confidence:', result[0].confidence);
+                            // Clear silence timer on speech detection
+                            if (silenceTimer) {
+                                clearTimeout(silenceTimer);
+                                silenceTimer = null;
+                            }
 
-                                // Avoid duplicate processing
+                            // Process on final result or high confidence partial
+                            if (result.isFinal || (transcript.length > 2 && confidence > 0.75)) {
                                 if (transcript !== lastProcessedTranscript && transcript && ws.readyState === WebSocket.OPEN) {
                                     lastProcessedTranscript = transcript;
 
                                     addMessage(`🎤 "${transcript}"`, 'user');
-                                    audioStatus.textContent = 'Getting AI response...';
+                                    audioStatus.textContent = 'Processing with A2A agents...';
 
-                                    // Send immediately for faster response
-                                    const startTime = performance.now();
+                                    // Fast A2A processing
                                     ws.send(JSON.stringify({
                                         type: 'text_audio',
                                         message: transcript,
                                         voice: 'Aoede',
-                                        timestamp: startTime
+                                        timestamp: performance.now(),
+                                        continuous_mode: continuousMode
                                     }));
 
-                                    // Stop after processing
-                                    stopRecording();
+                                    // Don't stop if in continuous mode
+                                    if (!continuousMode) {
+                                        stopRecording();
+                                    } else {
+                                        audioStatus.textContent = 'Waiting for AI response...';
+                                    }
                                 }
                             } else if (transcript.length > 0) {
-                                // Show interim results for user feedback
                                 audioStatus.textContent = `🎤 "${transcript}..." (listening)`;
+                            }
+
+                            // Auto-stop after silence in continuous mode
+                            if (continuousMode && result.isFinal) {
+                                silenceCount++;
+                                silenceTimer = setTimeout(() => {
+                                    if (silenceCount > 2) { // After 2 final results with no new speech
+                                        audioStatus.textContent = '🎤 Listening for your next question...';
+                                        silenceCount = 0;
+                                    }
+                                }, 2000);
                             }
                         };
 
                         recognition.onerror = (event) => {
-                            console.error('Speech recognition error:', event.error);
                             if (event.error !== 'no-speech' && event.error !== 'aborted') {
                                 audioStatus.textContent = 'Speech error: ' + event.error;
                             }
                         };
 
                         recognition.onstart = () => {
-                            console.log('Speech recognition started');
-                            audioStatus.textContent = '🎤 Listening... Speak now!';
+                            const mode = continuousMode ? 'continuous conversation' : 'single question';
+                            audioStatus.textContent = `🎤 Listening (${mode})... Speak now!`;
                         };
 
                         recognition.onend = () => {
-                            console.log('Speech recognition ended');
-                            if (isRecording && recognition) {
-                                // Restart if still recording
-                                try {
-                                    recognition.start();
-                                } catch (e) {
-                                    console.error('Failed to restart recognition:', e);
-                                }
+                            if (isRecording && recognition && continuousMode) {
+                                setTimeout(() => {
+                                    if (continuousMode && isRecording) {
+                                        try {
+                                            recognition.start();
+                                        } catch (e) {
+                                            console.error('Failed to restart recognition:', e);
+                                        }
+                                    }
+                                }, 100);
                             }
                         };
 
-                        // Start speech recognition
                         recognition.start();
                     }
 
-                    console.log('Requesting microphone access...');
-                    audioStatus.textContent = '📡 Requesting microphone permission...';
-
-                    // Request with more specific constraints
+                    // Get microphone stream
                     const stream = await navigator.mediaDevices.getUserMedia({
                         audio: {
                             echoCancellation: true,
                             noiseSuppression: true,
                             autoGainControl: true,
-                            sampleRate: 44100
+                            sampleRate: 16000 // Optimized for speech
                         }
                     });
-                    console.log('Microphone access granted, stream:', stream);
 
                     mediaRecorder = new MediaRecorder(stream);
                     audioChunks = [];
-                    console.log('MediaRecorder created:', mediaRecorder);
-
-                    mediaRecorder.ondataavailable = (event) => {
-                        console.log('Audio data available:', event.data.size, 'bytes');
-                        audioChunks.push(event.data);
-                    };
-
-                    console.log('Starting recording...');
                     mediaRecorder.start();
+
                     isRecording = true;
-                    audioButton.textContent = '⏹️ Stop Recording';
-                    audioButton.style.background = '#dc3545';
-                    addMessage('🎤 Recording started... Speak now!', 'user');
-                    console.log('Recording started successfully');
+                    const stopButton = document.getElementById('stopButton');
+                    if (stopButton && stopButton.style.display !== 'none') {
+                        // In continuous mode
+                        audioStatus.textContent = continuousMode ? '🎤 Listening for conversation...' : '🎤 Recording...';
+                    }
+
                 } catch (error) {
                     console.error('Error accessing microphone:', error);
                     audioStatus.textContent = 'Microphone access denied: ' + error.message;
                 }
-            } else {
-                console.log('Stopping recording...');
-                // Stop speech recognition
-                if (recognition) {
-                    console.log('Stopping speech recognition...');
-                    recognition.stop();
-                    recognition = null;
-                }
+        }
 
-                mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => {
-                    console.log('Stopping track:', track);
-                    track.stop();
-                });
-                isRecording = false;
-                audioButton.textContent = '🎤 Start Recording';
-                audioButton.style.background = '#4CAF50';
-                audioStatus.textContent = 'Ready to record';
-                console.log('Recording stop requested');
+        async function toggleAudio() {
+            const audioButton = document.getElementById('audioButton');
+
+            if (!isRecording) {
+                await startRecording();
+            } else {
+                stopRecording();
             }
         }
 
@@ -670,6 +789,176 @@
                 audioButton.style.background = '#4CAF50';
                 audioStatus.textContent = 'Ready to record';
                 console.log('Recording stopped');
+            }
+        }
+
+        // A2A Agent Management Functions
+        function switchAgent() {
+            const agentSelect = document.getElementById('agentSelect');
+            const selectedAgent = agentSelect.value;
+
+            if (selectedAgent && ws.readyState === WebSocket.OPEN) {
+                addMessage(`[🤖] Switching to agent: ${selectedAgent}`, 'user');
+
+                ws.send(JSON.stringify({
+                    type: 'switch_agent',
+                    agent_slug: selectedAgent
+                }));
+
+                document.getElementById('agentStatus').textContent = 'Switching agent...';
+            } else if (ws.readyState !== WebSocket.OPEN) {
+                alert('Not connected. Please refresh the page.');
+            }
+        }
+
+        function requestAgentList() {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'list_agents'
+                }));
+
+                document.getElementById('agentStatus').textContent = 'Refreshing agent list...';
+            } else {
+                console.warn('WebSocket not connected, cannot request agent list');
+            }
+        }
+
+        function updateCurrentAgent(agentSlug, agentName) {
+            const agentStatusEl = document.getElementById('agentStatus');
+            const agentInfoEl = document.getElementById('agentInfo');
+
+            agentStatusEl.textContent = `Current: ${agentName}`;
+
+            // Update agent info based on known agent configurations
+            const agentConfigs = {
+                'general-worker': 'Voice: Warm and helpful general assistant',
+                'flight-specialist': 'Voice: Professional travel specialist',
+                'hotel-specialist': 'Voice: Friendly hospitality specialist',
+                'travel-assistant': 'Voice: Energetic travel coordinator'
+            };
+
+            agentInfoEl.textContent = agentConfigs[agentSlug] || 'Voice: AI Assistant';
+
+            // Update dropdown selection
+            const agentSelect = document.getElementById('agentSelect');
+            agentSelect.value = agentSlug;
+        }
+
+        function updateAgentsList(agents, currentAgent) {
+            const agentSelect = document.getElementById('agentSelect');
+
+            // Clear existing options
+            agentSelect.innerHTML = '';
+
+            // Add agents to dropdown
+            for (const [slug, info] of Object.entries(agents)) {
+                const option = document.createElement('option');
+                option.value = slug;
+                option.textContent = `${info.name} (${info.voice_style})`;
+                agentSelect.appendChild(option);
+            }
+
+            // Set current agent
+            agentSelect.value = currentAgent;
+            updateCurrentAgent(currentAgent, agents[currentAgent]?.name || 'Unknown Agent');
+        }
+
+        function updateAgentInfo(agentData) {
+            const agentInfoEl = document.getElementById('agentInfo');
+            agentInfoEl.textContent = `${agentData.agent_description} | Capabilities: ${agentData.capabilities?.join(', ') || 'Standard'}`;
+        }
+
+        // One-click continuous conversation
+        function startContinuousConversation() {
+            const audioButton = document.getElementById('audioButton');
+            const stopButton = document.getElementById('stopButton');
+            const audioStatus = document.getElementById('recordingStatus');
+
+            if (isRecording) {
+                return; // Already recording
+            }
+
+            // Enable continuous mode automatically
+            continuousMode = true;
+
+            // Update UI
+            audioButton.style.display = 'none';
+            stopButton.style.display = 'inline-block';
+            audioStatus.textContent = 'Starting continuous conversation...';
+
+            // Start recording directly
+            startRecording();
+        }
+
+        function stopConversation() {
+            const audioButton = document.getElementById('audioButton');
+            const stopButton = document.getElementById('stopButton');
+            const audioStatus = document.getElementById('recordingStatus');
+
+            // Disable continuous mode
+            continuousMode = false;
+
+            // Stop recording
+            stopRecording();
+
+            // Update UI
+            audioButton.style.display = 'inline-block';
+            stopButton.style.display = 'none';
+            audioStatus.textContent = 'Click to start continuous voice conversation';
+        }
+
+        function restartListening() {
+            if (recognition && continuousMode && isRecording) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    // If already running, don't worry
+                    if (e.name !== 'InvalidStateError') {
+                        console.error('Failed to restart recognition:', e);
+                    }
+                }
+            }
+        }
+
+        // Optimized stopRecording function
+        function stopRecording() {
+            const audioButton = document.getElementById('audioButton');
+            const stopButton = document.getElementById('stopButton');
+            const audioStatus = document.getElementById('recordingStatus');
+
+            console.log('stopRecording called');
+
+            if (isRecording) {
+                // Clear any timers
+                if (silenceTimer) {
+                    clearTimeout(silenceTimer);
+                    silenceTimer = null;
+                }
+
+                // Stop speech recognition
+                if (recognition) {
+                    recognition.stop();
+                    recognition = null;
+                }
+
+                // Stop media recorder
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                    mediaRecorder.stop();
+                }
+
+                // Stop all tracks
+                if (mediaRecorder && mediaRecorder.stream) {
+                    mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                }
+
+                isRecording = false;
+
+                // Reset UI to default state
+                audioButton.textContent = '🎤 Start Real-time Conversation';
+                audioButton.style.background = '#667eea';
+                audioButton.style.display = 'inline-block';
+                stopButton.style.display = 'none';
+                audioStatus.textContent = 'Click to start continuous voice conversation';
             }
         }
     </script>

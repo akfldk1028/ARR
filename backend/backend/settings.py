@@ -145,6 +145,7 @@ os.makedirs(LOGS_DIR, exist_ok=True)
 # Generate daily log filenames (not per server restart)
 from datetime import datetime
 LOG_DATE = datetime.now().strftime('%Y%m%d')
+LOG_TIMESTAMP = datetime.now().strftime('%Y%m%d_%H%M%S')
 
 # Logging Configuration with timestamped files
 LOGGING = {
