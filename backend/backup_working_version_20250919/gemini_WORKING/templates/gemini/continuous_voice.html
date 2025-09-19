@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continuous Voice Conversation - Gemini Live API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .status.inactive {
+            background: #f0f0f0;
+            color: #666;
+        }
+        .status.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .start-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        .start-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .stop-btn {
+            background: #f44336;
+            color: white;
+        }
+        .stop-btn:hover {
+            background: #da190b;
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .conversation {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            background: #fafafa;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .user {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+        }
+        .assistant {
+            background: #f3e5f5;
+            border-left: 4px solid #9C27B0;
+        }
+        .system {
+            background: #fff3e0;
+            border-left: 4px solid #FF9800;
+            font-style: italic;
+        }
+        .visualizer {
+            height: 100px;
+            background: #000;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .visualizer canvas {
+            width: 100%;
+            height: 100%;
+        }
+        .info {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎙️ Continuous Voice Conversation</h1>
+
+        <div class="status inactive" id="status">
+            Click Start to begin continuous conversation
+        </div>
+
+        <div class="visualizer">
+            <canvas id="visualizer"></canvas>
+        </div>
+
+        <div class="controls">
+            <button class="start-btn" id="startBtn" onclick="startConversation()">
+                🎤 Start Conversation
+            </button>
+            <button class="stop-btn" id="stopBtn" onclick="stopConversation()" disabled>
+                ⏹️ Stop Conversation
+            </button>
+        </div>
+
+        <div class="conversation" id="conversation">
+            <div class="message system">
+                Ready for continuous voice conversation with Gemini Live API
+            </div>
+        </div>
+
+        <div class="info">
+            Powered by Gemini Live API - Real-time bidirectional streaming
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        let audioContext = null;
+        let analyser = null;
+        let microphone = null;
+        let isActive = false;
+        let inputProcessor = null;
+        let outputProcessor = null;
+
+        // WebSocket URL
+        const WS_URL = `ws://${window.location.host}/ws/gemini/`;
+
+        // Official Context7 Cookbook Pattern - 50ms batching for optimal streaming
+        const inputWorkletCode = `
+        class InputProcessor extends AudioWorkletProcessor {
+            constructor() {
+                super();
+                this._out = [];
+                this._out_len = 0;
+                console.log("Official Context7 InputProcessor initialized", this);
+
+                this.port.postMessage({
+                    debug: "Input processor ready with official Context7 pattern!",
+                });
+            }
+
+            encodeAudio(input) {
+                const channel = input[0];
+                const data = new ArrayBuffer(2 * channel.length);
+                const view = new DataView(data);
+                for (let i = 0; i < channel.length; i++) {
+                    view.setInt16(2*i, channel[i] * 32767, true);
+                }
+                return data;
+            }
+
+            process(inputs, outputs, parameters) {
+                // Official Context7 Pattern: 50ms batch transmission
+                if (inputs[0] && inputs[0][0]) {
+                    let data = this.encodeAudio(inputs[0]);
+                    this._out.push(data);
+                    this._out_len += data.byteLength;
+
+                    // Official Gemini Cookbook: sampleRate/20 = 50ms batches
+                    // At 16kHz: 16000/20 = 800 samples = 1600 bytes (50ms)
+                    if (this._out_len > (2 * sampleRate / 20)) {
+                        let concat = new Uint8Array(this._out_len);
+                        let idx = 0;
+                        for (let a of this._out) {
+                            concat.set(new Uint8Array(a), idx);
+                            idx += a.byteLength;
+                        }
+                        this._out = [];
+                        this._out_len = 0;
+                        this.port.postMessage({
+                            'audio_in': concat.buffer,
+                        });
+                    }
+                }
+                return true;
+            }
+        }
+
+        registerProcessor('input-processor', InputProcessor);
+        `;
+
+        // Context7 Cookbook OUTPUT PROCESSOR - seamless playback
+        const outputWorkletCode = `
+        class OutputProcessor extends AudioWorkletProcessor {
+            constructor() {
+                super();
+                this._queue = [];
+                this.port.onmessage = (event) => {
+                    if ('enqueue' in event.data) {
+                        this.enqueueAudio(event.data.enqueue);
+                    }
+                    if ('clear' in event.data) {
+                        this.clearAudio();
+                    }
+                };
+                console.log("Context7 OutputProcessor initialized");
+                this.port.postMessage({
+                    debug: "Output processor ready for seamless playback!",
+                });
+            }
+
+            enqueueAudio(input) {
+                // Context7 pattern: Convert PCM bytes to Float32
+                let view = new DataView(input);
+                let floats = [];
+                for (let i = 0; i < input.byteLength; i += 2) {
+                    floats.push(view.getInt16(i, true) / 32768.0);
+                }
+                this._queue.push(Float32Array.from(floats));
+            }
+
+            dequeueIntoBuffer(output) {
+                // Context7 seamless buffer management
+                let idx = 0;
+                while (idx < output.length) {
+                    if (this._queue.length === 0) {
+                        // Fill remaining with silence to prevent clicks
+                        output.fill(0, idx);
+                        return;
+                    }
+                    let input = this._queue[0];
+                    if (input.length == 0) {
+                        this._queue.shift();
+                        continue;
+                    }
+                    let n = Math.min(input.length, output.length - idx);
+                    output.set(input.subarray(0, n), idx);
+                    this._queue[0] = input.subarray(n);
+                    idx += n;
+                }
+            }
+
+            clearAudio() {
+                this._queue = [];
+            }
+
+            process(inputs, outputs, parameters) {
+                // Context7 OUTPUT: seamless audio playback
+                if (outputs[0] && outputs[0][0]) {
+                    this.dequeueIntoBuffer(outputs[0][0]);
+                    // Copy to stereo channels
+                    for (let i = 1; i < outputs[0].length; i++) {
+                        const src = outputs[0][0];
+                        const dst = outputs[0][i];
+                        dst.set(src.subarray(0, dst.length));
+                    }
+                }
+                return true;
+            }
+        }
+
+        registerProcessor('output-processor', OutputProcessor);
+        `;
+
+        // Initialize WebSocket
+        function initWebSocket() {
+            ws = new WebSocket(WS_URL);
+
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+                addMessage('Connected to server', 'system');
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleServerMessage(data);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                addMessage('Connection error', 'system');
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket closed');
+                if (isActive) {
+                    stopConversation();
+                }
+            };
+        }
+
+        // Handle server messages
+        function handleServerMessage(data) {
+            switch (data.type) {
+                case 'voice_session_status':
+                    if (data.status === 'started') {
+                        startAudioCapture();
+                    }
+                    addMessage(data.message, 'system');
+                    break;
+
+                case 'audio_chunk':
+                    // Enqueue audio for playback using Context7 pattern
+                    if (data.audio && outputProcessor) {
+                        const decoded = Uint8Array.from(
+                            atob(data.audio), c => c.charCodeAt(0)
+                        ).buffer;
+                        outputProcessor.port.postMessage({'enqueue': decoded});
+                    }
+                    break;
+
+                case 'transcript':
+                    if (data.text) {
+                        addMessage(`🤖 AI: ${data.text}`, 'assistant');
+                    }
+                    break;
+
+                case 'user_transcript':
+                    if (data.text) {
+                        addMessage(`👤 You: ${data.text}`, 'user');
+                    }
+                    break;
+
+                case 'error':
+                    addMessage(`Error: ${data.message}`, 'system');
+                    break;
+            }
+        }
+
+        // Start conversation
+        async function startConversation() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                initWebSocket();
+                setTimeout(() => {
+                    if (ws.readyState === WebSocket.OPEN) {
+                        startConversation();
+                    }
+                }, 1000);
+                return;
+            }
+
+            ws.send(JSON.stringify({
+                type: 'start_voice_session'
+            }));
+
+            isActive = true;
+            updateUI(true);
+        }
+
+        // Start audio capture using Context7 SEPARATED worklet pattern
+        async function startAudioCapture() {
+            try {
+                // Official Gemini Live API audio configuration
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        sampleRate: 16000,  // Official Gemini Live API input standard
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        channelCount: 1
+                    }
+                });
+
+                // Official: 16kHz AudioContext for Gemini Live API input
+                audioContext = new AudioContext({sampleRate: 16000});
+
+                // Setup analyser for visualization
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+
+                // Context7 pattern: Load separated AudioWorklet modules
+                await audioContext.audioWorklet.addModule(URL.createObjectURL(
+                    new Blob([inputWorkletCode], {type: 'text/javascript'})
+                ));
+                await audioContext.audioWorklet.addModule(URL.createObjectURL(
+                    new Blob([outputWorkletCode], {type: 'text/javascript'})
+                ));
+
+                // Create SEPARATED processors
+                inputProcessor = new AudioWorkletNode(audioContext, 'input-processor');
+                outputProcessor = new AudioWorkletNode(audioContext, 'output-processor');
+
+                // Real-time 12.5ms batch audio transmission
+                inputProcessor.port.onmessage = (event) => {
+                    if ('audio_in' in event.data && ws && ws.readyState === WebSocket.OPEN) {
+                        // Context7 base64 encoding
+                        const encoded = btoa(String.fromCharCode(
+                            ...Array.from(new Uint8Array(event.data.audio_in))
+                        ));
+
+                        ws.send(JSON.stringify({
+                            type: 'voice_audio_chunk',
+                            audio: encoded
+                        }));
+                    }
+                };
+
+                // Connect SEPARATED audio pipeline (Context7 pattern)
+                microphone.connect(inputProcessor);
+                // INPUT: microphone -> inputProcessor (NO destination!)
+                // OUTPUT: outputProcessor -> destination (separate path!)
+                outputProcessor.connect(audioContext.destination);
+
+                // Start visualization
+                visualizeAudio();
+
+                addMessage('Official Gemini Live API (16kHz input/24kHz output) active with 50ms Context7 streaming - speak freely!', 'system');
+
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                addMessage('Failed to access microphone', 'system');
+                stopConversation();
+            }
+        }
+
+        // Visualize audio
+        function visualizeAudio() {
+            if (!analyser || !isActive) return;
+
+            const canvas = document.getElementById('visualizer');
+            const ctx = canvas.getContext('2d');
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function draw() {
+                if (!isActive) return;
+
+                requestAnimationFrame(draw);
+
+                analyser.getByteFrequencyData(dataArray);
+
+                ctx.fillStyle = 'rgb(0, 0, 0)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const barWidth = (canvas.width / bufferLength) * 2.5;
+                let barHeight;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    barHeight = dataArray[i] / 2;
+
+                    ctx.fillStyle = `rgb(${barHeight + 100}, 50, ${250 - barHeight})`;
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+                    x += barWidth + 1;
+                }
+            }
+
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            draw();
+        }
+
+        // Stop conversation
+        function stopConversation() {
+            isActive = false;
+
+            // Clear SEPARATED audio worklets
+            if (inputProcessor) {
+                inputProcessor.disconnect();
+                inputProcessor = null;
+            }
+            if (outputProcessor) {
+                outputProcessor.port.postMessage({'clear': ''});
+                outputProcessor.disconnect();
+                outputProcessor = null;
+            }
+
+            // Close audio context
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+
+            // Send stop command
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'stop_voice_session'
+                }));
+            }
+
+            updateUI(false);
+            addMessage('Conversation ended', 'system');
+        }
+
+        // Update UI
+        function updateUI(active) {
+            const status = document.getElementById('status');
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+
+            if (active) {
+                status.className = 'status active';
+                status.textContent = '🔴 Live - Speak naturally';
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+            } else {
+                status.className = 'status inactive';
+                status.textContent = 'Click Start to begin conversation';
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        }
+
+        // Add message to conversation
+        function addMessage(text, type) {
+            const conversation = document.getElementById('conversation');
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.textContent = text;
+            conversation.appendChild(message);
+            conversation.scrollTop = conversation.scrollHeight;
+        }
+
+        // Initialize on load
+        window.onload = () => {
+            initWebSocket();
+        };
+
+        // Cleanup on unload
+        window.onbeforeunload = () => {
+            if (isActive) {
+                stopConversation();
+            }
+            if (ws) {
+                ws.close();
+            }
+        };
+    </script>
+</body>
+</html>
