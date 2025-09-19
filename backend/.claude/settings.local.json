@@ -29,7 +29,9 @@
       "Bash(wmic process where processid=34592 delete:*)",
       "Bash(cmd //c:*)",
       "Bash(pkill:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(set DJANGO_SETTINGS_MODULE=backend.settings)"
     ],
     "deny": [],
     "ask": []

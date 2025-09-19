@@ -42,7 +42,7 @@ class WebSocketLiveClient:
             self.websocket = await connect(ws_url)
             self.session_active = True
 
-            # Send initial setup request with Korean language support
+            # Send initial setup request with Korean language support and official audio config
             initial_request = {
                 'setup': {
                     'model': self.model,
@@ -51,7 +51,7 @@ class WebSocketLiveClient:
                         'speech_config': {
                             'voice_config': {
                                 'prebuilt_voice_config': {
-                                    'voice_name': 'Puck'  # Puck supports Korean better than Aoede
+                                    'voice_name': 'Aoede'  # Aoede has a warm, feminine voice
                                 }
                             }
                         },
