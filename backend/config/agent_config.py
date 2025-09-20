@@ -56,7 +56,7 @@ class GeminiConfig:
         VoiceConfig('Puck', 'en-US', 'Playful voice'),
     ])
 
-    default_voice: str = 'Aoede'
+    default_voice: str = 'Aoede'  # Greek muse - female voice
 
     # Connection Settings
     connection_timeout: int = 30
@@ -76,7 +76,7 @@ class AgentConfig:
     # Agent Configurations
     AGENTS = {
         'gemini': GeminiConfig(
-            model=os.getenv('GEMINI_MODEL', 'models/gemini-2.0-flash-exp'),
+            model=os.getenv('GEMINI_MODEL', 'models/gemini-live-2.5-flash-preview'),  # Correct Gemini 2.5 Flash Live API model
             temperature=float(os.getenv('GEMINI_TEMPERATURE', '0.9')),
             max_output_tokens=int(os.getenv('GEMINI_MAX_TOKENS', '2048')),
         ),

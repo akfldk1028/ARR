@@ -19,7 +19,7 @@ class LiveAPIClient:
 
     def __init__(self, api_key: str):
         self.api_key = api_key
-        self.model = 'models/gemini-2.0-flash-exp'  # Use stable model name
+        self.model = 'models/gemini-live-2.5-flash-preview'  # Correct Gemini 2.5 Flash Live API model
         self.session = None
         self.session_active = False
         self.audio_queue = asyncio.Queue()
@@ -51,7 +51,7 @@ class LiveAPIClient:
                 speech_config=types.SpeechConfig(
                     voice_config=types.VoiceConfig(
                         prebuilt_voice_config=types.PrebuiltVoiceConfig(
-                            voice_name="Aoede"
+                            voice_name="Aoede"  # Greek muse - female voice
                         )
                     )
                 )

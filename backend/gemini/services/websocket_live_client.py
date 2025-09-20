@@ -19,7 +19,7 @@ class WebSocketLiveClient:
 
     def __init__(self, api_key: str):
         self.api_key = api_key
-        self.model = 'models/gemini-2.0-flash-exp'
+        self.model = 'models/gemini-live-2.5-flash-preview'  # Correct Gemini 2.5 Flash Live API model
         self.host = 'generativelanguage.googleapis.com'
         self.websocket = None
         self.session_active = False

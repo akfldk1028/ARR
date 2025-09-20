@@ -32,7 +32,7 @@ class RetryStrategy(Enum):
 class ClientConfig:
     """Configuration for Gemini client"""
     api_key: str
-    model: str = "models/gemini-2.0-flash-exp"
+    model: str = "models/gemini-live-2.5-flash-preview"  # Correct Gemini 2.5 Flash Live API model
     max_connections: int = 5
     connection_timeout: int = 30
     request_timeout: int = 120
@@ -607,7 +607,7 @@ class OptimizedGeminiClient:
             await self.rate_limiter.wait_if_needed()
 
             HOST = 'generativelanguage.googleapis.com'
-            MODEL = 'models/gemini-2.0-flash-exp'
+            MODEL = 'models/gemini-live-2.5-flash-preview'  # Correct Gemini 2.5 Flash Live API model
 
             ws_url = f'wss://{HOST}/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key={self.config.api_key}'
 

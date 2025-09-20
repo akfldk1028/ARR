@@ -67,7 +67,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             self.session_id = str(self.chat_session.id)
 
             # Send welcome message
-            model_name = getattr(self.gemini_service.client.config, 'model', 'models/gemini-2.0-flash-exp')
+            model_name = getattr(self.gemini_service.client.config, 'model', 'models/gemini-live-2.5-flash-preview')
 
             await self.send(text_data=json.dumps({
                 'type': 'connection',
