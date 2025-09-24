@@ -53,6 +53,10 @@ class BaseWorkerAgent(ABC):
         """Agent system prompt"""
         pass
 
+    async def process_request(self, user_input: str, context_id: str, session_id: str, user_name: str) -> str:
+        """Process request - main entry point for conversation coordinator"""
+        return await self.chat(user_input, context_id, session_id, user_name)
+
     async def chat(self, user_input: str, context_id: str, session_id: str, user_name: str) -> str:
         """Main chat method that all workers must implement"""
         conversation_start = datetime.now()
@@ -124,11 +128,6 @@ class BaseWorkerAgent(ABC):
 
     async def _save_message_to_neo4j(self, context_id: str, session_id: str, message_type: str, content: str, user_name: str):
         """Save message to Neo4j graph database"""
-        # TEMPORARY: Skip Neo4j for debugging
-        if self.neo4j_service is None:
-            logger.info(f"Neo4j disabled - would save: {message_type} message from {user_name}")
-            return
-
         try:
             query = """
             MERGE (s:Session {session_id: $session_id})
@@ -197,7 +196,7 @@ class BaseWorkerAgent(ABC):
             if target_agent_slug not in self._a2a_clients:
                 # Discover target agent card
                 from agents.a2a_client import A2ACardResolver
-                resolver = A2ACardResolver("http://localhost:8000")
+                resolver = A2ACardResolver("http://localhost:8002")
                 target_card = await resolver.get_agent_card(target_agent_slug)
 
                 if not target_card:
@@ -309,10 +308,10 @@ class BaseWorkerAgent(ABC):
                 }
             ],
             "endpoints": {
-                "chat": f"http://localhost:8000/agents/{self.agent_slug}/chat/",
-                "status": f"http://localhost:8000/agents/{self.agent_slug}/status/",
-                "a2a": f"http://localhost:8000/agents/{self.agent_slug}/chat/",
-                "jsonrpc": f"http://localhost:8000/agents/{self.agent_slug}/chat/"
+                "chat": f"http://localhost:8002/agents/{self.agent_slug}/chat/",
+                "status": f"http://localhost:8002/agents/{self.agent_slug}/status/",
+                "a2a": f"http://localhost:8002/agents/{self.agent_slug}/chat/",
+                "jsonrpc": f"http://localhost:8002/agents/{self.agent_slug}/chat/"
             },
             "authentication": {
                 "type": "none",

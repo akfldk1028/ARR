@@ -126,7 +126,7 @@ class A2AClient:
                 chat_endpoint,
                 json=payload,
                 headers={"Content-Type": "application/json"},
-                timeout=30.0
+                timeout=60.0
             )
 
             response.raise_for_status()

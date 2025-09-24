@@ -61,6 +61,34 @@
             border: 1px solid #e0e0e0;
             margin-right: auto;
         }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .a2a_confirmation {
+            background: #ffeb3b;
+            border: 2px solid #ff9800;
+            margin-right: auto;
+            box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        .delegation {
+            background: linear-gradient(135deg, #ff9a8b 0%, #a8e6cf 100%);
+            color: #2c3e50;
+            border: 2px solid #27ae60;
+            margin-right: auto;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            animation: pulse 2s ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 6px 20px rgba(39, 174, 96, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
+        }
         .controls {
             margin: 20px 0;
             padding: 20px;
@@ -219,6 +247,114 @@
             cursor: not-allowed;
             transform: none !important;
         }
+
+        /* A2A Delegation Flow Styles */
+        .delegation-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #e3f2fd;
+        }
+        .delegation-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .agent-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px;
+        }
+        .agent-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+        .test-agent-icon { background: #4CAF50; color: white; }
+        .flight-specialist-icon { background: #2196F3; color: white; }
+        .hotel-specialist-icon { background: #FF9800; color: white; }
+        .general-worker-icon { background: #9C27B0; color: white; }
+        .agent-name {
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .agent-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        .status-ready { background: #d4edda; color: #155724; }
+        .status-thinking { background: #fff3cd; color: #856404; }
+        .status-active { background: #cce5ff; color: #004085; }
+        .status-delegated { background: #f8d7da; color: #721c24; }
+
+        .delegation-arrow {
+            font-size: 24px;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        .delegation-arrow.active {
+            color: #28a745;
+            transform: scale(1.3);
+            animation: pulse 1s ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1.3); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1.3); }
+        }
+
+        .communication-log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            max-height: 120px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 3px 0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: white;
+            border-left: 3px solid #007bff;
+            font-size: 11px;
+        }
+        .log-delegation { border-left-color: #28a745; }
+        .log-response { border-left-color: #17a2b8; }
+        .log-error { border-left-color: #dc3545; }
+
+        .current-agent-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -236,7 +372,58 @@
 
         <div id="status" class="status disconnected">Connecting to Live API...</div>
 
+        <!-- A2A Delegation Flow Indicator -->
+        <div class="delegation-section">
+            <h3 style="margin: 0 0 15px 0; color: #333; font-size: 16px;">A2A Agent Delegation Flow</h3>
+
+            <div class="current-agent-display" id="currentAgentDisplay">
+                Current Active Agent: <span id="currentAgentName">Test Agent (Coordinator)</span>
+            </div>
+
+            <div class="delegation-flow">
+                <div class="agent-indicator">
+                    <div class="agent-icon test-agent-icon" id="testAgentIcon">🧠</div>
+                    <div class="agent-name">Test Agent</div>
+                    <div class="agent-status status-ready" id="testAgentStatus">Ready</div>
+                </div>
+
+                <div class="delegation-arrow" id="delegationArrow">➡️</div>
+
+                <div class="agent-indicator">
+                    <div class="agent-icon flight-specialist-icon" id="flightAgentIcon">✈️</div>
+                    <div class="agent-name">Flight Specialist</div>
+                    <div class="agent-status status-ready" id="flightAgentStatus">Ready</div>
+                </div>
+
+                <div class="delegation-arrow" id="delegationArrow2">➡️</div>
+
+                <div class="agent-indicator">
+                    <div class="agent-icon hotel-specialist-icon" id="hotelAgentIcon">🏨</div>
+                    <div class="agent-name">Hotel Specialist</div>
+                    <div class="agent-status status-ready" id="hotelAgentStatus">Ready</div>
+                </div>
+            </div>
+
+            <div class="communication-log" id="delegationLog">
+                <strong>Real-time A2A Communication Log</strong>
+                <div id="logEntries">
+                    <div class="log-entry">System initialized - Agents ready for delegation</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chat Window -->
         <div id="chat" class="chat"></div>
+
+        <!-- A2A Agent Communication Window -->
+        <div class="delegation-section">
+            <h3 style="margin: 0 0 15px 0; color: #333; font-size: 16px;">A2A Agent Communication Window</h3>
+            <div id="a2aChat" class="chat" style="height: 300px; background: #f0f8ff; border: 2px solid #007bff;">
+                <div class="message system-message" style="background: #e3f2fd; color: #1976d2; text-align: center; margin: 10px; padding: 10px; border-radius: 8px;">
+                    A2A Agent-to-Agent communication will appear here in real-time
+                </div>
+            </div>
+        </div>
 
         <div class="controls">
             <div class="control-group">
@@ -247,17 +434,17 @@
             </div>
 
             <div class="control-group">
-                <h3>🤖 A2A Agent Selection</h3>
+                <h3>A2A Agent Selection</h3>
                 <select id="agentSelect" style="margin: 5px; width: 60%;">
-                    <option value="general-worker">General Assistant (Default)</option>
-                    <option value="flight-specialist">Flight Specialist</option>
-                    <option value="hotel-specialist">Hotel Specialist</option>
-                    <option value="travel-assistant">Travel Assistant</option>
+                    <option value="test-agent" selected>Test Agent (Coordinator) - Voice: Charon (Male, Confident)</option>
+                    <option value="flight-specialist">Flight Specialist - Voice: Aoede (Female, Professional)</option>
+                    <option value="hotel-specialist">Hotel Specialist - Voice: Kore (Female, Friendly)</option>
+                    <option value="general-worker">General Worker - Voice: Leda (Female, Warm)</option>
                 </select>
                 <button onclick="switchAgent()">Switch Agent</button>
                 <button onclick="requestAgentList()">Refresh Agents</button>
-                <div id="agentStatus" style="margin: 10px 0; font-size: 12px; color: #666;">Current: General Assistant</div>
-                <div id="agentInfo" style="margin: 10px 0; font-size: 11px; color: #888; font-style: italic;">Voice: Warm and helpful general assistant</div>
+                <div id="agentStatus" style="margin: 10px 0; font-size: 12px; color: #666;">Current: Test Agent (Coordinator)</div>
+                <div id="agentInfo" style="margin: 10px 0; font-size: 11px; color: #888; font-style: italic;">Voice: Charon (Male) - Confident coordinator voice for delegation</div>
             </div>
 
             <div class="control-group">
@@ -270,24 +457,24 @@
                     <option value="Charon">Charon (Male)</option>
                     <option value="Fenrir">Fenrir (Male)</option>
                 </select>
-                <button onclick="sendAudioMessage()">🔊 Get Voice Response</button>
+                <button onclick="sendAudioMessage()">Get Voice Response</button>
                 <div id="audioStatus" style="margin: 10px 0; font-size: 12px; color: #666;"></div>
                 <audio id="audioPlayer" controls style="display: none; margin: 10px 0;"></audio>
             </div>
 
             <div class="control-group">
-                <h3>🎙️ Voice Conversation</h3>
+                <h3>Voice Conversation</h3>
                 
                 <!-- Audio Visualizer (from continuous_voice.html) -->
                 <div style="height: 80px; background: #000; border-radius: 10px; margin: 15px 0; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
                     <canvas id="visualizer" style="width: 100%; height: 100%;"></canvas>
                 </div>
                 
-                <button id="audioButton" onclick="startContinuousConversation()">🎤 Start Real-time Conversation</button>
-                <button id="stopButton" onclick="stopConversation()" style="margin-left: 10px; display: none; background: #dc3545;">⏹️ Stop</button>
+                <button id="audioButton" onclick="startContinuousConversation()">Start Real-time Conversation</button>
+                <button id="stopButton" onclick="stopConversation()" style="margin-left: 10px; display: none; background: #dc3545;">Stop</button>
                 <div id="recordingStatus" style="margin: 10px 0; font-size: 12px; color: #666;">Click to start continuous voice conversation</div>
                 <div style="font-size: 11px; color: #888; margin-top: 5px;">
-                    💡 One-click continuous conversation: Just speak naturally, AI responds automatically
+                    One-click continuous conversation: Just speak naturally, AI responds automatically
                 </div>
             </div>
 
@@ -446,6 +633,10 @@
             status.textContent = 'Connected to Django + Gemini Live API + A2A Agents';
             status.className = 'status connected';
 
+            // Initialize delegation UI
+            addDelegationLogEntry('WebSocket connected - A2A delegation system ready', 'info');
+            updateAgentStatus('test-agent', 'Active');
+
             // Request initial agent list
             setTimeout(() => {
                 requestAgentList();
@@ -467,6 +658,121 @@
         // Streaming variables
         let currentStreamingMessage = null;
         let streamingMessageElement = null;
+
+        // A2A Delegation UI Variables
+        let currentActiveAgent = 'test-agent';
+        const agentVoiceMap = {
+            'test-agent': 'Charon',
+            'flight-specialist': 'Aoede',
+            'hotel-specialist': 'Kore',
+            'general-worker': 'Leda'
+        };
+
+        // A2A Delegation UI Functions
+        function updateAgentStatus(agentSlug, status) {
+            const statusMap = {
+                'test-agent': 'testAgentStatus',
+                'flight-specialist': 'flightAgentStatus',
+                'hotel-specialist': 'hotelAgentStatus'
+            };
+
+            const statusElement = document.getElementById(statusMap[agentSlug]);
+            if (statusElement) {
+                statusElement.textContent = status;
+                statusElement.className = `agent-status status-${status.toLowerCase().replace(' ', '-')}`;
+            }
+        }
+
+        function animateDelegationArrow(fromAgent, toAgent) {
+            const arrow = document.getElementById('delegationArrow');
+            const arrow2 = document.getElementById('delegationArrow2');
+
+            // Determine which arrow to animate based on delegation flow
+            let targetArrow = arrow;
+            if (fromAgent === 'test-agent' && toAgent === 'hotel-specialist') {
+                // Use second arrow for hotel delegation
+                targetArrow = arrow2;
+            }
+
+            if (targetArrow) {
+                targetArrow.classList.add('active');
+                setTimeout(() => targetArrow.classList.remove('active'), 2000);
+            }
+        }
+
+        function addDelegationLogEntry(message, type = 'info') {
+            const logEntries = document.getElementById('logEntries');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+
+            let logClass = 'log-entry';
+            if (type === 'delegation') logClass += ' log-delegation';
+            else if (type === 'response') logClass += ' log-response';
+            else if (type === 'error') logClass += ' log-error';
+
+            entry.className = logClass;
+            entry.innerHTML = `<small>${timestamp}</small> - ${message}`;
+            logEntries.appendChild(entry);
+
+            // Keep only last 8 entries
+            while (logEntries.children.length > 8) {
+                logEntries.removeChild(logEntries.firstChild);
+            }
+
+            // Scroll to bottom
+            const delegationLog = document.getElementById('delegationLog');
+            delegationLog.scrollTop = delegationLog.scrollHeight;
+        }
+
+        function updateCurrentAgentDisplay(agentSlug, agentName) {
+            const display = document.getElementById('currentAgentName');
+            const voiceInfo = agentVoiceMap[agentSlug] || 'Aoede';
+
+            if (display) {
+                display.textContent = `${agentName} (Voice: ${voiceInfo})`;
+            }
+
+            // Update current agent variable
+            currentActiveAgent = agentSlug;
+
+            // Update voice selector to match agent
+            const voiceSelect = document.getElementById('voiceSelect');
+            if (voiceSelect && agentVoiceMap[agentSlug]) {
+                voiceSelect.value = agentVoiceMap[agentSlug];
+            }
+        }
+
+        function processDelegationFlow(data) {
+            if (data.delegation_occurred || data.agent_switched) {
+                const fromAgent = data.old_agent || currentActiveAgent;
+                const toAgent = data.new_agent || data.agent_slug;
+                const agentName = data.agent_name || 'Specialist Agent';
+
+                // Update status indicators
+                updateAgentStatus(fromAgent, 'Delegated');
+                updateAgentStatus(toAgent, 'Active');
+
+                // Animate delegation arrow
+                animateDelegationArrow(fromAgent, toAgent);
+
+                // Add log entries
+                addDelegationLogEntry(`Delegation: ${fromAgent} to ${toAgent}`, 'delegation');
+                addDelegationLogEntry(`${agentName} is now handling the request`, 'response');
+
+                // Add A2A communication messages to separate window
+                addA2AMessage(` DELEGATION STARTED: ${fromAgent} to${toAgent}`, 'system', 'A2A Protocol');
+                addA2AMessage(` Request forwarded to ${agentName}`, 'ai', fromAgent);
+                addA2AMessage(` ${agentName} accepting request...`, 'user', toAgent);
+
+                // Update current agent display
+                updateCurrentAgentDisplay(toAgent, agentName);
+
+                // Reset previous agent status after delay
+                setTimeout(() => {
+                    updateAgentStatus(fromAgent, 'Ready');
+                }, 3000);
+            }
+        }
 
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
@@ -504,25 +810,25 @@
                     currentStreamingMessage = '';
                     streamingMessageElement = document.createElement('div');
                     streamingMessageElement.className = 'message ai';
-                    streamingMessageElement.innerHTML = `[🤖 ${data.agent_slug}] `;
+                    streamingMessageElement.innerHTML = `[AGENT ${data.agent_slug}] `;
                     chat.appendChild(streamingMessageElement);
                 }
 
                 if (data.chunk) {
                     currentStreamingMessage += data.chunk;
-                    streamingMessageElement.innerHTML = `[🤖 ${data.agent_slug}] ${currentStreamingMessage}`;
+                    streamingMessageElement.innerHTML = `[AGENT ${data.agent_slug}] ${currentStreamingMessage}`;
                     chat.scrollTop = chat.scrollHeight;
                 }
             } else if (data.type === 'ready_for_next') {
                 // Handle continuous mode ready signal
                 if (data.continuous_mode && continuousMode && isRecording) {
                     const audioStatus = document.getElementById('recordingStatus');
-                    audioStatus.textContent = '🎤 Ready for your next question... Speak now!';
+                    audioStatus.textContent = 'VOICE Ready for your next question... Speak now!';
 
                     // Optionally show visual indicator
                     setTimeout(() => {
                         if (continuousMode && isRecording) {
-                            audioStatus.textContent = '🎤 Listening for your next question...';
+                            audioStatus.textContent = 'Listening for your next question...';
                         }
                     }, 1000);
                 }
@@ -530,7 +836,7 @@
                 // Handle processing acknowledgment
                 if (data.continuous_mode) {
                     const audioStatus = document.getElementById('recordingStatus');
-                    audioStatus.textContent = `🎤 Processing: "${data.message}"...`;
+                    audioStatus.textContent = `VOICE Processing: "${data.message}"...`;
                 }
             } else if (data.type === 'response' || data.type === 'image_response') {
                 const time = data.response_time ? ` <span class="info-badge">${data.response_time.toFixed(2)}s</span>` : '';
@@ -539,12 +845,65 @@
                 else if (data.analysis_type === 'image_regular_api') typeIcon = '[IMG]';
                 else if (data.analysis_type === 'audio_live_api') typeIcon = '[AUD]';
                 else if (data.analysis_type === 'video_frame_analysis') typeIcon = '[VID]';
-                addMessage(`${typeIcon} ${data.message}${time}`, 'ai');
+
+                // Process delegation flow if present
+                processDelegationFlow(data);
+
+                // Show agent name in message if available
+                const agentName = data.agent_name ? ` (${data.agent_name})` : '';
+                addMessage(`${typeIcon}${agentName} ${data.message}${time}`, 'ai');
+
+                // Check for delegation (matching worker_test.html logic)
+                if (data.delegation && data.delegation.occurred) {
+                    // Add system message about delegation
+                    addMessage('[A2A] Worker communication occurred', 'ai');
+
+                    // Log the communication
+                    addDelegationLogEntry(`${data.delegation.original_agent} to ${data.delegation.specialist_agent}: "${data.delegation.reason}"`, 'delegation');
+                    animateDelegationArrow(data.delegation.original_agent, data.delegation.specialist_agent);
+
+                    // Show delegation in A2A chat window with enhanced formatting
+                    addA2AMessage(`A2A DELEGATION START`, 'system', 'A2A Protocol');
+                    addA2AMessage(`From Agent: ${data.delegation.original_agent}`, 'ai', data.delegation.original_agent);
+                    addA2AMessage(`To Agent: ${data.delegation.specialist_agent}`, 'ai', 'System');
+                    addA2AMessage(`User Request: "${data.delegation.reason}"`, 'user', 'User Request');
+
+                    // Show specialist response
+                    if (data.delegation.specialist_response) {
+                        addA2AMessage(`Specialist Response: ${data.delegation.specialist_response}`, 'ai', data.delegation.specialist_agent);
+                    }
+
+                    addA2AMessage(`A2A DELEGATION COMPLETE`, 'system', 'A2A Protocol');
+
+                    // Update agent statuses
+                    updateAgentStatus(data.delegation.original_agent, 'Delegated');
+                    updateAgentStatus(data.delegation.specialist_agent, 'Active');
+
+                    // Reset status after delay
+                    setTimeout(() => {
+                        updateAgentStatus(data.delegation.original_agent, 'Ready');
+                        updateAgentStatus(data.delegation.specialist_agent, 'Ready');
+                    }, 3000);
+                }
+
+                // Update agent status
+                if (data.agent_slug) {
+                    updateAgentStatus(data.agent_slug, 'Ready');
+                }
             } else if (data.type === 'audio_response') {
                 const time = data.response_time ? ` <span class="info-badge">${data.response_time.toFixed(2)}s</span>` : '';
                 const transcript = data.transcript || 'No response generated';
                 const agentInfo = data.agent_name ? ` (${data.agent_name})` : '';
+
+                // Process delegation flow for audio responses too
+                processDelegationFlow(data);
+
                 addMessage(`[🔊] ${transcript}${time}${agentInfo}`, 'ai');
+
+                // Update agent status
+                if (data.agent_slug) {
+                    updateAgentStatus(data.agent_slug, 'Ready');
+                }
 
                 // Play audio if available, otherwise use browser TTS (only in non-continuous voice mode)
                 if (!isVoiceActive) {
@@ -561,26 +920,126 @@
                 if (continuousMode && isRecording) {
                     setTimeout(() => {
                         if (continuousMode) {
-                            document.getElementById('recordingStatus').textContent = '🎤 Listening for your next question...';
+                            document.getElementById('recordingStatus').textContent = 'VOICE Listening for your next question...';
                             restartListening();
                         }
                     }, 1500); // Wait 1.5 seconds after audio response
                 }
             } else if (data.type === 'agent_switched') {
-                // Handle automatic agent switching
+                // Handle automatic agent switching with delegation flow
+                processDelegationFlow(data);
                 updateCurrentAgent(data.new_agent, data.agent_name);
-                addMessage(`[🤖] Switched to ${data.agent_name}: ${data.message || 'Agent changed'}`, 'ai');
+                addMessage(`[AGENT] Switched to ${data.agent_name}: ${data.message || 'Agent changed'}`, 'ai');
                 document.getElementById('agentSelect').value = data.new_agent;
+
+                // Add delegation log
+                addDelegationLogEntry(` Agent switched to ${data.agent_name}`, 'delegation');
+            } else if (data.type === 'delegation_announcement') {
+                // Handle delegation announcement - show prominently in main chat
+                addMessage(`[📢 DELEGATION] ${data.announcement}`, 'delegation');
+                addA2AMessage(`📢 Delegation Announcement: ${data.announcement}`, 'ai', 'General Agent');
+            } else if (data.type === 'a2a_delegation_confirmation') {
+                // Handle A2A delegation confirmation - highly visible alert for user
+                const message = `A2A 위임 확인: ${data.original_agent} → ${data.specialist_agent}`;
+                addMessage(`[A2A 전문가 위임] ${data.message}`, 'a2a_confirmation');
+
+                // Show visual alert notification
+                showA2AAlert(`A2A 전문가 위임이 발동되었습니다!\n원래 에이전트: ${data.original_agent}\n전문가 에이전트: ${data.specialist_agent}\n트리거: ${data.trigger}`);
+
+                // Log delegation details
+                console.log('A2A Delegation Details:', {
+                    original: data.original_agent,
+                    specialist: data.specialist_agent,
+                    trigger: data.trigger,
+                    response: data.specialist_response
+                });
+            } else if (data.type === 'a2a_conversation_event') {
+                // Handle real-time A2A conversation events from the coordinator
+                const eventData = data.event_data;
+                const eventType = eventData.type;
+
+                switch (eventType) {
+                    case 'conversation_started':
+                        addA2AMessage(` A2A Conversation Started: ${eventData.conversationId}`, 'system', 'Coordinator');
+                        break;
+                    case 'agent_turn_started':
+                        const agentName = eventData.agent?.agentName || 'Unknown Agent';
+                        addA2AMessage(`${agentName} is speaking...`, 'ai', agentName);
+                        break;
+                    case 'agent_turn_completed':
+                        const completedAgent = eventData.agent?.agentName || 'Unknown Agent';
+                        const response = eventData.response || 'No response';
+                        addA2AMessage(` ${completedAgent}: ${response.substring(0, 100)}${response.length > 100 ? '...' : ''}`, 'ai', completedAgent);
+                        break;
+                    case 'conversation_continuation':
+                        const nextAgent = eventData.nextAgent?.agentName || 'Unknown Agent';
+                        addA2AMessage(` Switching to ${nextAgent}`, 'system', 'Coordinator');
+                        break;
+                    case 'conversation_error':
+                        const error = eventData.error || 'Unknown error';
+                        addA2AMessage(`❌ Error: ${error}`, 'system', 'Error');
+                        break;
+                    default:
+                        addA2AMessage(`📋 Event: ${eventType}`, 'system', 'Coordinator');
+                }
+            } else if (data.type === 'a2a_delegation') {
+                // Handle detailed A2A delegation information with conversation log
+                const details = data.delegation_details;
+                addA2AMessage(` A2A DELEGATION INITIATED`, 'system', 'Protocol');
+
+                // Show delegation announcement if available
+                if (details.announcement) {
+                    addA2AMessage(`📢 ${details.announcement}`, 'ai', details.from_agent);
+                }
+
+                // Show conversation log if available
+                if (details.conversation_log && details.conversation_log.length > 0) {
+                    addA2AMessage(`📖 === Agent Conversation Log ===`, 'system', 'Protocol');
+
+                    details.conversation_log.forEach((log_entry, index) => {
+                        const timestamp = new Date(log_entry.timestamp * 1000).toLocaleTimeString();
+                        let icon = '';
+                        let messageClass = '';
+
+                        switch(log_entry.role) {
+                            case 'user':
+                                icon = '👤';
+                                messageClass = 'user';
+                                break;
+                            case 'delegation':
+                                icon = '';
+                                messageClass = 'ai';
+                                break;
+                            case 'assistant':
+                                icon = 'AGENT';
+                                messageClass = 'ai';
+                                break;
+                            default:
+                                icon = 'MESSAGE';
+                                messageClass = 'ai';
+                        }
+
+                        addA2AMessage(`${icon} [${timestamp}] ${log_entry.message}`, messageClass, log_entry.agent);
+                    });
+
+                    addA2AMessage(`📖 === End of Conversation Log ===`, 'system', 'Protocol');
+                } else {
+                    // Fallback to old format
+                    addA2AMessage(`📝 User Request: "${details.user_request}"`, 'user', 'User');
+                    addA2AMessage(`AGENT From: ${details.from_agent} toTo: ${details.to_agent}`, 'ai', 'Coordinator');
+                    addA2AMessage(`💡 Reason: ${details.reason}`, 'ai', 'System');
+                    addA2AMessage(`MESSAGE Specialist Response: "${details.specialist_response}"`, 'ai', details.to_agent);
+                }
             } else if (data.type === 'agents_list') {
                 // Handle agent list response
                 updateAgentsList(data.agents, data.current_agent);
-                addMessage(`[🤖] Agent list updated. Current: ${data.current_agent}`, 'ai');
+                addMessage(`[AGENT] Agent list updated. Current: ${data.current_agent}`, 'ai');
             } else if (data.type === 'agent_info') {
                 // Handle agent info response
                 updateAgentInfo(data);
             } else if (data.type === 'delegation_in_progress') {
                 // Handle real-time delegation notification
-                addMessage(`[🔄] ${data.message}`, 'ai');
+                addMessage(`[] ${data.message}`, 'ai');
             } else if (data.type === 'voice_session_status') {
                 // Handle continuous voice session status (from continuous_voice.html)
                 if (data.status === 'started') {
@@ -598,7 +1057,7 @@
             } else if (data.type === 'transcript') {
                 // Handle AI transcript (from continuous_voice.html)
                 if (data.text) {
-                    addMessage(`🤖 AI: ${data.text}`, 'ai');
+                    addMessage(`AGENT AI: ${data.text}`, 'ai');
                 }
             } else if (data.type === 'user_transcript') {
                 // Handle user transcript (from continuous_voice.html) 
@@ -618,11 +1077,38 @@
             chat.scrollTop = chat.scrollHeight;
         }
 
+        function showA2AAlert(message) {
+            // Show highly visible alert for A2A delegation
+            alert(`A2A 시스템 알림\n\n${message}`);
+
+            // Also log to console for debugging
+            console.log(`%cA2A DELEGATION ALERT: ${message}`, 'color: #ff9800; font-weight: bold; font-size: 14px;');
+        }
+
+        function addA2AMessage(msg, sender, agentName = '') {
+            const a2aChat = document.getElementById('a2aChat');
+            const div = document.createElement('div');
+            div.className = 'message ' + sender;
+
+            // Add timestamp and agent info
+            const timestamp = new Date().toLocaleTimeString();
+            const agentInfo = agentName ? ` [${agentName}]` : '';
+            div.innerHTML = `<small>${timestamp}${agentInfo}</small><br>${msg}`;
+
+            a2aChat.appendChild(div);
+            a2aChat.scrollTop = a2aChat.scrollHeight;
+        }
+
         function sendMessage() {
             const input = document.getElementById('messageInput');
             const msg = input.value.trim();
             if (msg && ws.readyState === WebSocket.OPEN) {
                 addMessage('[TXT] ' + msg, 'user');
+
+                // Show current agent is thinking
+                updateAgentStatus(currentActiveAgent, 'Thinking');
+                addDelegationLogEntry(`📝 User message: "${msg.substring(0, 50)}${msg.length > 50 ? '...' : ''}"`, 'info');
+
                 ws.send(JSON.stringify({type: 'text', message: msg}));
                 input.value = '';
             } else if (ws.readyState !== WebSocket.OPEN) {
@@ -664,10 +1150,17 @@
             const input = document.getElementById('audioInput');
             const voiceSelect = document.getElementById('voiceSelect');
             const msg = input.value.trim();
-            const voice = voiceSelect.value;
+
+            // Auto-select voice based on current agent
+            const voice = agentVoiceMap[currentActiveAgent] || voiceSelect.value;
+            voiceSelect.value = voice; // Update the selector
 
             if (msg && ws.readyState === WebSocket.OPEN) {
-                addMessage(`[🔊] ${msg} (Voice: ${voice})`, 'user');
+                addMessage(`[🔊] ${msg} (Voice: ${voice} - Agent: ${currentActiveAgent})`, 'user');
+
+                // Show current agent is thinking and log the message
+                updateAgentStatus(currentActiveAgent, 'Thinking');
+                addDelegationLogEntry(`🔊 Audio message: "${msg.substring(0, 50)}${msg.length > 50 ? '...' : ''}"`, 'info');
 
                 document.getElementById('audioStatus').textContent = 'Processing audio...';
 
@@ -822,6 +1315,7 @@
         async function startRecording() {
             const audioStatus = document.getElementById('recordingStatus');
 
+
             if (isRecording) {
                 return; // Already recording
             }
@@ -890,8 +1384,8 @@
 
                 isRecording = true;
                 audioStatus.textContent = continuousMode ?
-                    '🎤 실시간 대화 중... 자연스럽게 말씀하세요' :
-                    '🎤 Recording... Speak now';
+                    'VOICE 실시간 대화 중... 자연스럽게 말씀하세요' :
+                    'VOICE Recording... Speak now';
 
                 console.log('Direct audio streaming to Gemini Live API started');
 
@@ -919,7 +1413,7 @@
                             if (transcript !== lastProcessedTranscript && transcript && ws.readyState === WebSocket.OPEN) {
                                 lastProcessedTranscript = transcript;
 
-                                addMessage(`🎤 "${transcript}"`, 'user');
+                                addMessage(`VOICE "${transcript}"`, 'user');
                                 audioStatus.textContent = 'Processing with A2A agents...';
 
                                 // Fast A2A processing
@@ -939,7 +1433,7 @@
                                 }
                             }
                         } else if (transcript.length > 0) {
-                            audioStatus.textContent = `🎤 "${transcript}..." (listening)`;
+                            audioStatus.textContent = `VOICE "${transcript}..." (listening)`;
                         }
 
                         // Auto-stop after silence in continuous mode
@@ -947,7 +1441,7 @@
                             silenceCount++;
                             silenceTimer = setTimeout(() => {
                                 if (silenceCount > 2) { // After 2 final results with no new speech
-                                    audioStatus.textContent = '🎤 Listening for your next question...';
+                                    audioStatus.textContent = 'Listening for your next question...';
                                     silenceCount = 0;
                                 }
                             }, 2000);
@@ -962,7 +1456,7 @@
 
                     recognition.onstart = () => {
                         const mode = continuousMode ? 'continuous conversation' : 'single question';
-                        audioStatus.textContent = `🎤 Listening (${mode})... Speak now!`;
+                        audioStatus.textContent = `VOICE Listening (${mode})... Speak now!`;
                     };
 
                     recognition.onend = () => {
@@ -1024,7 +1518,7 @@
                 }
 
                 isRecording = false;
-                audioButton.textContent = '🎤 Start Recording';
+                audioButton.textContent = 'VOICE Start Recording';
                 audioButton.style.background = '#4CAF50';
                 audioStatus.textContent = 'Ready to record';
                 console.log('Recording stopped');
@@ -1037,7 +1531,7 @@
             const selectedAgent = agentSelect.value;
 
             if (selectedAgent && ws.readyState === WebSocket.OPEN) {
-                addMessage(`[🤖] Switching to agent: ${selectedAgent}`, 'user');
+                addMessage(`[AGENT] Switching to agent: ${selectedAgent}`, 'user');
 
                 ws.send(JSON.stringify({
                     type: 'switch_agent',
@@ -1068,19 +1562,23 @@
 
             agentStatusEl.textContent = `Current: ${agentName}`;
 
-            // Update agent info based on known agent configurations
+            // Update agent info with voice information
+            const voiceInfo = agentVoiceMap[agentSlug] || 'Aoede';
             const agentConfigs = {
-                'general-worker': 'Voice: Warm and helpful general assistant',
-                'flight-specialist': 'Voice: Professional travel specialist',
-                'hotel-specialist': 'Voice: Friendly hospitality specialist',
-                'travel-assistant': 'Voice: Energetic travel coordinator'
+                'test-agent': `Voice: ${voiceInfo} (Male) - Confident coordinator voice for delegation`,
+                'flight-specialist': `Voice: ${voiceInfo} (Female) - Professional travel specialist`,
+                'hotel-specialist': `Voice: ${voiceInfo} (Female) - Friendly hospitality specialist`,
+                'general-worker': `Voice: ${voiceInfo} (Female) - Warm and helpful general assistant`
             };
 
-            agentInfoEl.textContent = agentConfigs[agentSlug] || 'Voice: AI Assistant';
+            agentInfoEl.textContent = agentConfigs[agentSlug] || `Voice: ${voiceInfo} - AI Assistant`;
 
             // Update dropdown selection
             const agentSelect = document.getElementById('agentSelect');
             agentSelect.value = agentSlug;
+
+            // Update the delegation display
+            updateCurrentAgentDisplay(agentSlug, agentName);
         }
 
         function updateAgentsList(agents, currentAgent) {
@@ -1336,7 +1834,7 @@
                 isRecording = false;
 
                 // Reset UI to default state
-                audioButton.textContent = '🎤 Start Real-time Conversation';
+                audioButton.textContent = 'VOICE Start Real-time Conversation';
                 audioButton.style.background = '#667eea';
                 audioButton.style.display = 'inline-block';
                 stopButton.style.display = 'none';

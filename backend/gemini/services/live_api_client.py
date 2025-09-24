@@ -27,7 +27,8 @@ class LiveAPIClient:
 
     async def start_session(self,
                            audio_callback: Optional[Callable] = None,
-                           text_callback: Optional[Callable] = None):
+                           text_callback: Optional[Callable] = None,
+                           voice_name: str = "Aoede"):
         """Start a session using proper 2025 Gemini Live API"""
 
         try:
@@ -37,7 +38,7 @@ class LiveAPIClient:
             # Create Gemini client
             client = genai.Client(api_key=self.api_key)
 
-            # Live API configuration using Context7 best practices
+            # Live API configuration using Context7 best practices with TRANSCRIPT SUPPORT
             config = types.LiveConnectConfig(
                 response_modalities=["AUDIO", "TEXT"],
                 system_instruction="""You are a helpful assistant having a natural conversation.
@@ -51,10 +52,13 @@ class LiveAPIClient:
                 speech_config=types.SpeechConfig(
                     voice_config=types.VoiceConfig(
                         prebuilt_voice_config=types.PrebuiltVoiceConfig(
-                            voice_name="Aoede"  # Greek muse - female voice
+                            voice_name=voice_name  # Configurable voice per agent
                         )
                     )
-                )
+                ),
+                # CRITICAL: Enable transcript support for both input and output (SIMPLE CONFIG)
+                input_audio_transcription=types.AudioTranscriptionConfig(),  # Transcribe user speech
+                output_audio_transcription=types.AudioTranscriptionConfig()  # Transcribe AI speech
             )
 
             # Connect using proper 2025 Live API
@@ -114,9 +118,32 @@ class LiveAPIClient:
                                 server_content = response.server_content
                                 logger.info(f"Processing server_content: {type(server_content)}")
 
+                                # CRITICAL: Handle transcript messages FIRST
+                                if hasattr(server_content, 'input_transcription') and server_content.input_transcription:
+                                    transcript_text = server_content.input_transcription.text
+                                    if transcript_text:  # Only process non-empty transcripts
+                                        logger.info(f"User transcript: {transcript_text}")
+                                        if text_callback:
+                                            # Send user transcript with special marker
+                                            await text_callback({
+                                                'type': 'transcript',
+                                                'text': f"[USER]: {transcript_text}"
+                                            })
+
+                                if hasattr(server_content, 'output_transcription') and server_content.output_transcription:
+                                    transcript_text = server_content.output_transcription.text
+                                    if transcript_text:  # Only process non-empty transcripts
+                                        logger.info(f"AI transcript: {transcript_text}")
+                                        if text_callback:
+                                            # Send AI transcript
+                                            await text_callback({
+                                                'type': 'transcript',
+                                                'text': transcript_text
+                                            })
+
                                 # Handle interruption first - this is critical for natural conversation
                                 if hasattr(server_content, 'interrupted') and server_content.interrupted:
-                                    logger.info("🛑 Interruption detected! Stopping current audio playback")
+                                    logger.info("Interruption detected! Stopping current audio playback")
                                     self.is_playing_audio = False
                                     # Clear audio queue when interrupted
                                     while not self.audio_queue.empty():
@@ -143,11 +170,14 @@ class LiveAPIClient:
                                         if hasattr(part, 'text') and part.text:
                                             if text_callback:
                                                 logger.info(f"Sending text response: {part.text}")
-                                                await text_callback(part.text)
+                                                await text_callback({
+                                                    'type': 'transcript',
+                                                    'text': part.text
+                                                })
 
                                 # Handle turn complete signals
                                 if hasattr(server_content, 'turn_complete') and server_content.turn_complete:
-                                    logger.info("✅ Turn complete signal received - ready for next user input")
+                                    logger.info("Turn complete signal received - ready for next user input")
 
                             # Handle direct responses (alternative API structure)
                             elif hasattr(response, 'candidates') and response.candidates:
@@ -160,7 +190,10 @@ class LiveAPIClient:
                                                     await audio_callback(part.inline_data.data)
                                             if hasattr(part, 'text') and part.text:
                                                 if text_callback:
-                                                    await text_callback(part.text)
+                                                    await text_callback({
+                                                        'type': 'transcript',
+                                                        'text': part.text
+                                                    })
 
                             # Handle setup complete or other status messages
                             elif hasattr(response, 'setup_complete'):
@@ -184,27 +217,21 @@ class LiveAPIClient:
         except Exception as e:
             logger.error(f"Live API session error: {e}")
             self.session_active = False
-            if self.websocket:
-                await self.websocket.close()
 
     async def send_text(self, text: str):
         """Send text input to the conversation"""
-        if not self.websocket or not self.session_active:
+        if not self.session or not self.session_active:
             logger.error("No active session")
             return
 
-        message = {
-            'clientContent': {
-                'turns': [{
-                    'role': 'USER',
-                    'parts': [{'text': text}]
-                }],
-                'turnComplete': True
-            }
-        }
-
-        await self.websocket.send(json.dumps(message))
-        logger.info(f"Sent text: {text}")
+        # Use the 2025 Live API session to send text
+        try:
+            from google.genai import types
+            # Send text input using the 2025 Live API format
+            await self.session.send_realtime_input(text=text)
+            logger.info(f"Sent text: {text}")
+        except Exception as e:
+            logger.error(f"Failed to send text: {e}")
 
     async def send_audio_chunk(self, audio_data: bytes):
         """Queue audio data for streaming to 2025 Live API"""
@@ -227,7 +254,7 @@ class ContinuousVoiceSession:
         self.audio_buffer = []
         self.is_speaking = False
 
-    async def start(self, websocket_callback):
+    async def start(self, websocket_callback, voice_name="Aoede"):
         """Start continuous conversation session"""
 
         async def handle_audio(audio_bytes):
@@ -250,7 +277,8 @@ class ContinuousVoiceSession:
         asyncio.create_task(
             self.client.start_session(
                 audio_callback=handle_audio,
-                text_callback=handle_text
+                text_callback=handle_text,
+                voice_name=voice_name
             )
         )
 

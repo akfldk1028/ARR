@@ -13,8 +13,8 @@ def gemini_home(request):
         model_name = f"Error: {str(e)}"
 
     # Get current host and port from request
-    host = request.get_host()
-    websocket_url = f'ws://{host}/ws/gemini/'
+    host = request.get_host().split(':')[0]  # Get hostname only
+    websocket_url = f'ws://{host}:8000/ws/gemini/'  # WebSocket server on port 8000
 
     context = {
         'model_name': model_name,
@@ -59,8 +59,8 @@ def health_check(request):
 def continuous_voice(request):
     """Continuous Voice Conversation interface using Gemini Live API"""
     # Get current host and port from request
-    host = request.get_host()
-    websocket_url = f'ws://{host}/ws/gemini/'
+    host = request.get_host().split(':')[0]  # Get hostname only
+    websocket_url = f'ws://{host}:8000/ws/gemini/'  # WebSocket server on port 8000
 
     context = {
         'websocket_url': websocket_url,

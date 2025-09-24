@@ -6,6 +6,7 @@ Includes Agent Card functionality adapted from SK system
 import asyncio
 import json
 from uuid import uuid4
+from concurrent.futures import ThreadPoolExecutor
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views import View
@@ -53,10 +54,10 @@ class AgentCardView(View):
                     }
                 ],
                 "endpoints": {
-                    "chat": f"http://localhost:8000/agents/{agent.slug}/chat/",
-                    "status": f"http://localhost:8000/agents/{agent.slug}/status/",
-                    "a2a": f"http://localhost:8000/agents/{agent.slug}/a2a/",
-                    "jsonrpc": f"http://localhost:8000/agents/{agent.slug}/chat/",  # A2A compatible endpoint
+                    "chat": f"http://localhost:8002/agents/{agent.slug}/chat/",
+                    "status": f"http://localhost:8002/agents/{agent.slug}/status/",
+                    "a2a": f"http://localhost:8002/agents/{agent.slug}/a2a/",
+                    "jsonrpc": f"http://localhost:8002/agents/{agent.slug}/chat/",  # A2A compatible endpoint
                 },
                 "authentication": {
                     "type": "none",  # Could be "bearer", "api_key", etc.
@@ -318,13 +319,16 @@ class AgentChatView(View):
                     'success': False
                 }, status=500)
 
-        # Run async operation
+        # Use Django's async_to_sync for proper async handling
         try:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            return loop.run_until_complete(_handle_async())
-        finally:
-            loop.close()
+            from asgiref.sync import async_to_sync
+            result = async_to_sync(_handle_async)()
+            return result
+        except Exception as e:
+            return JsonResponse({
+                'error': f'Processing error: {str(e)}',
+                'success': False
+            }, status=500)
 
     def get(self, request, agent_slug):
         """Show chat interface"""
@@ -485,14 +489,16 @@ class WorkerCommunicationTestView(View):
                 else:
                     return {'success': False, 'error': 'No response from target agent'}
 
-            # Run async test
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
+            # Use Django's async_to_sync for proper async handling
             try:
-                result = loop.run_until_complete(_test_communication())
+                from asgiref.sync import async_to_sync
+                result = async_to_sync(_test_communication)()
                 return JsonResponse(result)
-            finally:
-                loop.close()
+            except Exception as e:
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Communication test error: {str(e)}'
+                }, status=500)
 
         except json.JSONDecodeError:
             return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)

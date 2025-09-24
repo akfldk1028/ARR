@@ -107,6 +107,27 @@ class AgentConfig:
         return gemini_config.voices[0]
 
     @classmethod
+    def get_voice_for_agent(cls, agent_slug: str) -> str:
+        """Get the voice assigned to a specific agent"""
+        agent_voice_mapping = {
+            'test-agent': 'Aoede',           # General agent - warm and friendly
+            'flight-specialist': 'Kore',     # Flight specialist - calm and professional
+            'general-worker': 'Charon',      # General worker - authoritative
+            'hotel-booking': 'Puck',         # Hotel booking - playful and engaging
+            'travel-assistant': 'Fenrir',    # Travel assistant - energetic
+        }
+        return agent_voice_mapping.get(agent_slug, 'Aoede')  # Default to Aoede
+
+
+def get_voice_config(agent_slug: str) -> Dict[str, str]:
+    """Get voice configuration for a specific agent (standalone function)"""
+    voice_name = AgentConfig.get_voice_for_agent(agent_slug)
+    return {
+        'voice_name': voice_name,
+        'agent_slug': agent_slug
+    }
+
+    @classmethod
     def validate_api_keys(cls) -> Dict[str, bool]:
         """API 키 검증"""
         return {

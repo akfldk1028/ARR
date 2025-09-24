@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'conversations',
     'rules',
 
+    # Live API + A2A Integration
+    'live_a2a_bridge',
+
     # Legacy (to be migrated)
     'gemini',
 ]

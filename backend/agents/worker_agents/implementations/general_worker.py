@@ -90,6 +90,19 @@ Always be helpful, clear, and concise in your responses.''')
                 logger.info("No discovery service available, handling request directly")
 
             if should_delegate and target_agent:
+                # Get agent info for better announcement
+                agent_info = None
+                if self.discovery_service and hasattr(self.discovery_service, 'get_cached_agent_info'):
+                    try:
+                        agent_info = self.discovery_service.get_cached_agent_info(target_agent)
+                    except Exception as e:
+                        logger.warning(f"Could not get cached agent info: {e}")
+
+                agent_name = agent_info.get('name', target_agent.replace('-', ' ')) if agent_info else target_agent.replace('-', ' ')
+
+                # Announce delegation before proceeding
+                delegation_announcement = f"I'll ask our {agent_name} specialist to help with your request. Please wait while I connect you..."
+
                 # Try to communicate with the selected specialist agent with timeout
                 try:
                     specialist_response = await asyncio.wait_for(
@@ -140,8 +153,8 @@ Always be helpful, clear, and concise in your responses.''')
                         llm_time = time.time() - llm_start
                         total_time = time.time() - start_time
                         logger.info(f"Coordination LLM took {llm_time:.2f}s, total request: {total_time:.2f}s")
-                        # Add a marker for UI to detect delegation with specialist response
-                        return f"[DELEGATION_OCCURRED:{target_agent}][SPECIALIST_RESPONSE:{specialist_response}] {coordination_response.content}"
+                        # Add a marker for UI to detect delegation with specialist response and include announcement
+                        return f"[DELEGATION_ANNOUNCEMENT:{delegation_announcement}][DELEGATION_OCCURRED:{target_agent}][SPECIALIST_RESPONSE:{specialist_response}] {coordination_response.content}"
                     except Exception as e:
                         logger.error(f"Error in coordination response: {e}")
                         # Fallback to simple forwarding

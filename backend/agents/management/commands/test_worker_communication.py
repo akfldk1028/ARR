@@ -48,7 +48,7 @@ class Command(BaseCommand):
             self.stdout.write('\n=== Step 1: Agent Discovery ===')
 
             # Discover target agent
-            target_url = f'http://localhost:8000'
+            target_url = f'http://localhost:8002'
             resolver = A2ACardResolver(target_url)
 
             self.stdout.write(f'Discovering {target_agent} agent card...')

@@ -25,7 +25,7 @@ class AgentDiscoveryService:
         """Discover all available agents via their agent cards"""
         try:
             # Get agent cards from our own system
-            resolver = A2ACardResolver("http://localhost:8000")
+            resolver = A2ACardResolver("http://localhost:8002")
 
             # Get all agents list first
             all_agents_card = await resolver.get_agent_card()  # No slug = get all
@@ -133,6 +133,72 @@ class AgentDiscoveryService:
                 logger.info(f"Not delegating - current agent {current_agent_slug} is not test-agent")
                 return False, None
 
+            # Semantic routing using sentence-transformers for intelligent delegation
+            try:
+                from sentence_transformers import SentenceTransformer
+                from sklearn.metrics.pairwise import cosine_similarity
+                import numpy as np
+
+                # Initialize model (cache for reuse)
+                if not hasattr(self, '_semantic_model'):
+                    logger.info("Loading semantic routing model...")
+                    self._semantic_model = SentenceTransformer('all-MiniLM-L6-v2')
+
+                    # Define semantic categories with examples
+                    self._categories = {
+                        'greetings': [
+                            "안녕하세요", "hello", "hi there", "good morning",
+                            "안녕", "반갑습니다", "어떻게 지내세요", "뭐하고 계세요"
+                        ],
+                        'flight_booking': [
+                            "비행기 예약해주세요", "항공편 알아봐주세요", "비행기표 예약",
+                            "book a flight", "flight reservation", "airline tickets",
+                            "항공료 확인", "비행 스케줄", "항공권 예약"
+                        ],
+                        'hotel_booking': [
+                            "호텔 예약", "숙박 예약", "accommodation booking",
+                            "hotel reservation", "숙소 찾아주세요", "room booking"
+                        ]
+                    }
+
+                    # Pre-compute embeddings for categories
+                    self._category_embeddings = {}
+                    for category, examples in self._categories.items():
+                        embeddings = self._semantic_model.encode(examples)
+                        self._category_embeddings[category] = np.mean(embeddings, axis=0)
+
+                # Encode user request
+                user_embedding = self._semantic_model.encode([user_request])
+
+                # Calculate similarities with each category
+                similarities = {}
+                for category, category_embedding in self._category_embeddings.items():
+                    similarity = cosine_similarity(user_embedding, [category_embedding])[0][0]
+                    similarities[category] = similarity
+
+                # Find best match
+                best_category = max(similarities, key=similarities.get)
+                best_score = similarities[best_category]
+
+                logger.info(f"Semantic routing: '{user_request[:50]}...' → {best_category} (score: {best_score:.3f})")
+
+                # Decision thresholds
+                if best_category == 'greetings' and best_score > 0.6:
+                    logger.info(f"Greeting detected via semantic similarity, no delegation needed")
+                    return False, None
+                elif best_category in ['flight_booking', 'hotel_booking'] and best_score > 0.4:
+                    logger.info(f"Specialized task detected: {best_category}, proceeding with delegation")
+                    # Continue to agent selection logic
+                else:
+                    logger.info(f"Low confidence or general conversation, no delegation needed")
+                    return False, None
+
+            except Exception as e:
+                logger.error(f"Error in semantic routing: {e}")
+                # Fallback to simple length check
+                if len(user_request.strip()) <= 5:
+                    return False, None
+
             available_agents = await self.discover_available_agents()
             logger.info(f"Discovered {len(available_agents)} agents: {list(available_agents.keys())}")
 
@@ -142,6 +208,23 @@ class AgentDiscoveryService:
 
             selected_agent = await self.select_best_agent_for_task(user_request, available_agents)
             logger.info(f"LLM selected agent: {selected_agent}")
+
+            # If LLM failed to select, fallback based on detected category
+            if not selected_agent:
+                # Get the detected category from semantic routing
+                if best_category == 'flight_booking':
+                    if 'flight-specialist' in available_agents:
+                        selected_agent = 'flight-specialist'
+                        logger.info(f"LLM failed, fallback to flight-specialist for flight_booking")
+                    else:
+                        selected_agent = 'general-worker' if 'general-worker' in available_agents else 'test-agent'
+                elif best_category == 'hotel_booking':
+                    # For hotel booking, use general-worker or test-agent as fallback
+                    selected_agent = 'general-worker' if 'general-worker' in available_agents else 'test-agent'
+                    logger.info(f"LLM failed, fallback to {selected_agent} for hotel_booking")
+                else:
+                    logger.info(f"LLM failed and no specific category, no delegation")
+                    return False, None
 
             # Delegate if a different (specialist) agent was selected
             if selected_agent and selected_agent != current_agent_slug:
