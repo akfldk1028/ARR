@@ -1,5 +1,5 @@
 # A2A Worker Agent System - Developer Documentation
-
+models/gemini-live-2.5-flash-preview
 ## Overview
 Complete A2A (Agent-to-Agent) protocol implementation with LangGraph-based worker agents, Django backend, and Gemini Live API integration.
 

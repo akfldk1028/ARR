@@ -5,6 +5,7 @@ General Worker Agent - 범용 어시스턴트 에이전트
 import os
 import asyncio
 import logging
+import re
 from typing import List, Dict, Any
 
 from langchain_openai import ChatOpenAI
@@ -16,6 +17,32 @@ from ..base import BaseWorkerAgent
 from ..agent_discovery import AgentDiscoveryService
 
 logger = logging.getLogger(__name__)
+
+def remove_emojis(text: str) -> str:
+    """Remove all emojis from text to prevent encoding issues"""
+    # Remove all Unicode emoji characters
+    emoji_pattern = re.compile(
+        r'[\U0001F600-\U0001F64F]|'  # emoticons
+        r'[\U0001F300-\U0001F5FF]|'  # symbols & pictographs
+        r'[\U0001F680-\U0001F6FF]|'  # transport & map symbols
+        r'[\U0001F700-\U0001F77F]|'  # alchemical symbols
+        r'[\U0001F780-\U0001F7FF]|'  # Geometric Shapes Extended
+        r'[\U0001F800-\U0001F8FF]|'  # Supplemental Arrows-C
+        r'[\U0001F900-\U0001F9FF]|'  # Supplemental Symbols and Pictographs
+        r'[\U0001FA00-\U0001FA6F]|'  # Chess Symbols
+        r'[\U0001FA70-\U0001FAFF]|'  # Symbols and Pictographs Extended-A
+        r'[\U00002600-\U000026FF]|'  # Miscellaneous Symbols
+        r'[\U00002700-\U000027BF]',  # Dingbats
+        flags=re.UNICODE
+    )
+    return emoji_pattern.sub('', text)
+
+def safe_log_text(text: str) -> str:
+    """Preserve all text including Korean characters without any filtering"""
+    if not text:
+        return text
+    # Simply return the original text without any encoding conversion or filtering
+    return text
 
 class GeneralWorkerAgent(BaseWorkerAgent):
     """General-purpose worker agent for diverse tasks"""
@@ -63,6 +90,8 @@ class GeneralWorkerAgent(BaseWorkerAgent):
 
 When a user asks about something that requires specialized knowledge (like flight booking, hotel reservations, etc.), you should offer to connect them with a relevant specialist agent.
 
+IMPORTANT: Never use emojis in your responses. Always respond in plain text without any emoji characters.
+
 Always be helpful, clear, and concise in your responses.''')
 
     async def _generate_response(self, user_input: str, context_id: str, session_id: str, user_name: str) -> str:
@@ -72,7 +101,7 @@ Always be helpful, clear, and concise in your responses.''')
 
         try:
             # Use A2A agent discovery to determine if delegation is needed
-            logger.info(f"General worker processing request: {user_input}")
+            logger.info(f"General worker processing request: {safe_log_text(user_input)}")
 
             # Use LLM-based agent discovery for all requests
             if self.discovery_service:
@@ -153,8 +182,10 @@ Always be helpful, clear, and concise in your responses.''')
                         llm_time = time.time() - llm_start
                         total_time = time.time() - start_time
                         logger.info(f"Coordination LLM took {llm_time:.2f}s, total request: {total_time:.2f}s")
+                        # Remove emojis from coordination response
+                        clean_response = remove_emojis(coordination_response.content)
                         # Add a marker for UI to detect delegation with specialist response and include announcement
-                        return f"[DELEGATION_ANNOUNCEMENT:{delegation_announcement}][DELEGATION_OCCURRED:{target_agent}][SPECIALIST_RESPONSE:{specialist_response}] {coordination_response.content}"
+                        return f"[DELEGATION_ANNOUNCEMENT:{delegation_announcement}][DELEGATION_OCCURRED:{target_agent}][SPECIALIST_RESPONSE:{specialist_response}] {clean_response}"
                     except Exception as e:
                         logger.error(f"Error in coordination response: {e}")
                         # Fallback to simple forwarding
@@ -203,7 +234,8 @@ Always be helpful, clear, and concise in your responses.''')
             llm_time = time.time() - llm_start
             total_time = time.time() - start_time
             logger.info(f"Regular LLM took {llm_time:.2f}s, total request: {total_time:.2f}s")
-            return response.content
+            # Remove emojis from response
+            return remove_emojis(response.content)
 
         except Exception as e:
             logger.error(f"Error generating response in GeneralWorkerAgent: {e}")

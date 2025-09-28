@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Live API + A2A Agents - Korean Voice Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .voice-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .voice-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .voice-controls {
+            text-align: center;
+        }
+
+        .voice-button {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            min-width: 200px;
+        }
+
+        .start-voice {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .start-voice:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .stop-voice {
+            background: #f44336;
+            color: white;
+        }
+
+        .stop-voice:hover {
+            background: #da190b;
+            transform: translateY(-2px);
+        }
+
+        .voice-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .voice-status {
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .visualizer {
+            height: 80px;
+            background: #000;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visualizer canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .a2a-section {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #007bff;
+        }
+
+        .a2a-section h2 {
+            color: #007bff;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .agent-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .agent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+        }
+
+        .agent-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .test-agent { background: #4CAF50; color: white; }
+        .flight-agent { background: #2196F3; color: white; }
+        .hotel-agent { background: #FF9800; color: white; }
+
+        .agent-name {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .agent-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .status-ready { background: #d4edda; color: #155724; }
+        .status-active { background: #cce5ff; color: #004085; }
+        .status-thinking { background: #fff3cd; color: #856404; }
+
+        .arrow {
+            font-size: 24px;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .arrow.active {
+            color: #28a745;
+            transform: scale(1.3);
+            animation: pulse 1s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1.3); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1.3); }
+        }
+
+        .chat-container {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 10px;
+            max-width: 80%;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .message.ai {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            margin-right: auto;
+        }
+
+        .message.system {
+            background: #e3f2fd;
+            color: #1976d2;
+            text-align: center;
+            margin: 5px auto;
+            font-size: 12px;
+        }
+
+        .message.a2a {
+            background: #ffeb3b;
+            border: 2px solid #ff9800;
+            margin-right: auto;
+            animation: pulse 2s infinite;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .input-section input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .input-section button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .input-section button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .current-agent {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .log-container {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            max-height: 120px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+
+        .log-entry {
+            margin: 3px 0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: white;
+            border-left: 3px solid #007bff;
+            font-size: 11px;
+        }
+
+        .log-delegation { border-left-color: #28a745; }
+        .log-response { border-left-color: #17a2b8; }
+        .log-error { border-left-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Korean Voice AI + A2A Agent System</h1>
+            <p>Gemini Live API 2.5 Flash Preview with Agent-to-Agent Communication</p>
+        </div>
+
+        <div id="status" class="status disconnected">연결 중...</div>
+
+        <div class="main-grid">
+            <!-- Voice Conversation Section -->
+            <div class="voice-section">
+                <h2>🎙️ Voice Conversation</h2>
+
+                <div class="voice-controls">
+                    <div class="visualizer">
+                        <canvas id="visualizer"></canvas>
+                    </div>
+
+                    <button id="startButton" class="voice-button start-voice" onclick="startVoiceConversation()">
+                        음성 대화 시작
+                    </button>
+                    <button id="stopButton" class="voice-button stop-voice" onclick="stopVoiceConversation()" style="display: none;">
+                        대화 종료
+                    </button>
+
+                    <div id="voiceStatus" class="voice-status">
+                        버튼을 클릭하여 음성 대화를 시작하세요
+                    </div>
+                </div>
+            </div>
+
+            <!-- A2A Agent Communication Section -->
+            <div class="a2a-section">
+                <h2>A2A Agent Communication</h2>
+
+                <div class="current-agent" id="currentAgent">
+                    현재 활성 에이전트: Test Agent (Coordinator)
+                </div>
+
+                <div class="agent-flow">
+                    <div class="agent">
+                        <div class="agent-icon test-agent" id="testAgentIcon">🧠</div>
+                        <div class="agent-name">Test Agent</div>
+                        <div class="agent-status status-ready" id="testAgentStatus">Ready</div>
+                    </div>
+
+                    <div class="arrow" id="arrow1">➡️</div>
+
+                    <div class="agent">
+                        <div class="agent-icon flight-agent" id="flightAgentIcon">✈️</div>
+                        <div class="agent-name">Flight Specialist</div>
+                        <div class="agent-status status-ready" id="flightAgentStatus">Ready</div>
+                    </div>
+
+                    <div class="arrow" id="arrow2">➡️</div>
+
+                    <div class="agent">
+                        <div class="agent-icon hotel-agent" id="hotelAgentIcon">🏨</div>
+                        <div class="agent-name">Hotel Specialist</div>
+                        <div class="agent-status status-ready" id="hotelAgentStatus">Ready</div>
+                    </div>
+                </div>
+
+                <div class="log-container" id="a2aLog">
+                    <strong>A2A Communication Log</strong>
+                    <div id="logEntries">
+                        <div class="log-entry">시스템 초기화 완료 - A2A 에이전트 준비됨</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chat Window -->
+        <div id="mainChat" class="chat-container">
+            <div class="message system">메인 대화창 - 모든 대화가 여기에 표시됩니다</div>
+        </div>
+
+        <!-- A2A Communication Window -->
+        <div id="a2aChat" class="chat-container" style="background: #f0f8ff; border-color: #007bff;">
+            <div class="message system">A2A 에이전트 간 통신이 여기에 실시간으로 표시됩니다</div>
+        </div>
+
+        <!-- Text Input -->
+        <div class="input-section">
+            <input type="text" id="messageInput" placeholder="텍스트 메시지를 입력하세요..." onkeypress="if(event.key==='Enter') sendTextMessage()">
+            <button onclick="sendTextMessage()">전송</button>
+            <button onclick="clearChats()">지우기</button>
+        </div>
+    </div>
+
+    <script>
+        // WebSocket connection
+        const ws = new WebSocket('{{ websocket_url }}');
+
+        // Audio variables
+        let audioContext = null;
+        let analyser = null;
+        let microphone = null;
+        let isVoiceActive = false;
+        let inputProcessor = null;
+        let outputProcessor = null;
+
+        // A2A variables
+        let currentActiveAgent = 'test-agent';
+        const agentVoiceMap = {
+            'test-agent': 'Charon',
+            'flight-specialist': 'Aoede',
+            'hotel-specialist': 'Kore'
+        };
+
+        // Context7 Cookbook Pattern - AudioWorklet for real-time streaming
+        const inputWorkletCode = `
+        class InputProcessor extends AudioWorkletProcessor {
+            constructor() {
+                super();
+                this._out = [];
+                this._out_len = 0;
+            }
+
+            encodeAudio(input) {
+                const channel = input[0];
+                const data = new ArrayBuffer(2 * channel.length);
+                const view = new DataView(data);
+                for (let i = 0; i < channel.length; i++) {
+                    view.setInt16(2*i, channel[i] * 32767, true);
+                }
+                return data;
+            }
+
+            process(inputs, outputs, parameters) {
+                if (inputs[0] && inputs[0][0]) {
+                    let data = this.encodeAudio(inputs[0]);
+                    this._out.push(data);
+                    this._out_len += data.byteLength;
+
+                    // 50ms batches for Gemini Live API
+                    if (this._out_len > (2 * 16000 / 20)) {
+                        let concat = new Uint8Array(this._out_len);
+                        let idx = 0;
+                        for (let a of this._out) {
+                            concat.set(new Uint8Array(a), idx);
+                            idx += a.byteLength;
+                        }
+                        this._out = [];
+                        this._out_len = 0;
+                        this.port.postMessage({
+                            'audio_in': concat.buffer,
+                        });
+                    }
+                }
+                return true;
+            }
+        }
+        registerProcessor('input-processor', InputProcessor);
+        `;
+
+        const outputWorkletCode = `
+        class OutputProcessor extends AudioWorkletProcessor {
+            constructor() {
+                super();
+                this._queue = [];
+                this.port.onmessage = (event) => {
+                    if ('enqueue' in event.data) {
+                        this.enqueueAudio(event.data.enqueue);
+                    }
+                    if ('clear' in event.data) {
+                        this.clearAudio();
+                    }
+                };
+            }
+
+            enqueueAudio(input) {
+                let view = new DataView(input);
+                let floats = [];
+                for (let i = 0; i < input.byteLength; i += 2) {
+                    floats.push(view.getInt16(i, true) / 32768.0);
+                }
+                this._queue.push(Float32Array.from(floats));
+            }
+
+            dequeueIntoBuffer(output) {
+                let idx = 0;
+                while (idx < output.length) {
+                    if (this._queue.length === 0) {
+                        output.fill(0, idx);
+                        return;
+                    }
+                    let input = this._queue[0];
+                    if (input.length == 0) {
+                        this._queue.shift();
+                        continue;
+                    }
+                    let n = Math.min(input.length, output.length - idx);
+                    output.set(input.subarray(0, n), idx);
+                    this._queue[0] = input.subarray(n);
+                    idx += n;
+                }
+            }
+
+            clearAudio() {
+                this._queue = [];
+            }
+
+            process(inputs, outputs, parameters) {
+                if (outputs[0] && outputs[0][0]) {
+                    this.dequeueIntoBuffer(outputs[0][0]);
+                    for (let i = 1; i < outputs[0].length; i++) {
+                        const src = outputs[0][0];
+                        const dst = outputs[0][i];
+                        dst.set(src.subarray(0, dst.length));
+                    }
+                }
+                return true;
+            }
+        }
+        registerProcessor('output-processor', OutputProcessor);
+        `;
+
+        // WebSocket event handlers
+        ws.onopen = () => {
+            document.getElementById('status').textContent = '✅ Gemini Live API + A2A 시스템 연결됨';
+            document.getElementById('status').className = 'status connected';
+            addLogEntry('WebSocket 연결 완료 - A2A 시스템 준비', 'info');
+        };
+
+        ws.onclose = () => {
+            document.getElementById('status').textContent = '연결 끊어짐';
+            document.getElementById('status').className = 'status disconnected';
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+            document.getElementById('status').textContent = '⚠️ 연결 오류';
+            document.getElementById('status').className = 'status disconnected';
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('WebSocket received:', data);
+
+            switch(data.type) {
+                case 'transcript':
+                    if (data.text) {
+                        // Check if it's user transcript or AI transcript
+                        if (data.sender === 'user' || data.text.startsWith('[USER]:')) {
+                            // User voice transcript
+                            const cleanText = data.text.replace('[USER]: ', '');
+                            addMainMessage(`You: ${cleanText}`, 'user');
+
+                            // Check for A2A delegation using semantic routing
+                            checkA2ADelegation(cleanText);
+                        } else {
+                            // AI transcript (speech-to-text of AI audio)
+                            addMainMessage(`AI (transcript): ${data.text}`, 'ai');
+                        }
+                    }
+                    break;
+
+                case 'ai_response':
+                    if (data.text) {
+                        // Live API text response from AI
+                        addMainMessage(`AI: ${data.text}`, 'ai');
+                        console.log('AI response logged:', data.text);
+                    }
+                    break;
+
+                case 'audio_chunk':
+                    if (data.audio && outputProcessor) {
+                        const decoded = Uint8Array.from(
+                            atob(data.audio), c => c.charCodeAt(0)
+                        ).buffer;
+                        outputProcessor.port.postMessage({'enqueue': decoded});
+                    }
+                    break;
+
+                case 'semantic_routing_result':
+                    if (data.should_delegate && data.target_agent !== currentActiveAgent) {
+                        performA2ADelegation(data.target_agent, data.original_message, data.reasoning);
+                    } else if (data.reasoning) {
+                        addLogEntry(`Semantic analysis: ${data.reasoning}`, 'info');
+                    }
+                    break;
+
+                case 'a2a_response':
+                    addA2AMessage(`${data.agent}: ${data.message}`, 'ai', data.agent);
+                    addMainMessage(`[A2A] ${data.agent}: ${data.message}`, 'a2a');
+
+                    // Update agent status
+                    updateAgentStatus(data.agent_slug || 'flight-specialist', 'Active');
+                    animateArrow();
+                    addLogEntry(`A2A Response from ${data.agent}`, 'response');
+                    break;
+
+                case 'response':
+                    addMainMessage(`AI: ${data.message}`, 'ai');
+                    break;
+
+                case 'error':
+                    addMainMessage(`오류: ${data.message}`, 'system');
+                    addLogEntry(`Error: ${data.message}`, 'error');
+                    break;
+
+                case 'voice_session_status':
+                    if (data.status === 'started') {
+                        startAudioCapture();
+                    }
+                    addMainMessage(`🎙️ ${data.message}`, 'system');
+                    break;
+            }
+        };
+
+        // Voice conversation functions
+        async function startVoiceConversation() {
+            const startBtn = document.getElementById('startButton');
+            const stopBtn = document.getElementById('stopButton');
+            const voiceStatus = document.getElementById('voiceStatus');
+
+            if (ws.readyState !== WebSocket.OPEN) {
+                voiceStatus.textContent = 'WebSocket 연결 필요';
+                return;
+            }
+
+            isVoiceActive = true;
+            startBtn.style.display = 'none';
+            stopBtn.style.display = 'inline-block';
+            voiceStatus.textContent = '음성 세션 시작 중...';
+
+            // Start voice session
+            ws.send(JSON.stringify({
+                type: 'start_voice_session'
+            }));
+        }
+
+        function stopVoiceConversation() {
+            const startBtn = document.getElementById('startButton');
+            const stopBtn = document.getElementById('stopButton');
+            const voiceStatus = document.getElementById('voiceStatus');
+
+            isVoiceActive = false;
+            startBtn.style.display = 'inline-block';
+            stopBtn.style.display = 'none';
+            voiceStatus.textContent = '버튼을 클릭하여 음성 대화를 시작하세요';
+
+            // Clear audio worklets
+            if (inputProcessor) {
+                inputProcessor.disconnect();
+                inputProcessor = null;
+            }
+            if (outputProcessor) {
+                outputProcessor.port.postMessage({'clear': ''});
+                outputProcessor.disconnect();
+                outputProcessor = null;
+            }
+
+            // Close audio context
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+
+            // Send stop command
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'stop_voice_session'
+                }));
+            }
+
+            addMainMessage('🎙️ 음성 대화 종료', 'system');
+        }
+
+        async function startAudioCapture() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        sampleRate: 16000,
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        channelCount: 1
+                    }
+                });
+
+                audioContext = new AudioContext({sampleRate: 24000});
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+
+                // Load separated AudioWorklet modules
+                await audioContext.audioWorklet.addModule(URL.createObjectURL(
+                    new Blob([inputWorkletCode], {type: 'text/javascript'})
+                ));
+                await audioContext.audioWorklet.addModule(URL.createObjectURL(
+                    new Blob([outputWorkletCode], {type: 'text/javascript'})
+                ));
+
+                // Create separated processors
+                inputProcessor = new AudioWorkletNode(audioContext, 'input-processor');
+                outputProcessor = new AudioWorkletNode(audioContext, 'output-processor');
+
+                // Real-time audio transmission
+                inputProcessor.port.onmessage = (event) => {
+                    if ('audio_in' in event.data && ws && ws.readyState === WebSocket.OPEN) {
+                        const encoded = btoa(String.fromCharCode(
+                            ...Array.from(new Uint8Array(event.data.audio_in))
+                        ));
+
+                        ws.send(JSON.stringify({
+                            type: 'voice_audio_chunk',
+                            audio: encoded
+                        }));
+                    }
+                };
+
+                // Connect audio pipeline
+                microphone.connect(inputProcessor);
+                outputProcessor.connect(audioContext.destination);
+
+                // Start visualization
+                visualizeAudio();
+
+                document.getElementById('voiceStatus').textContent = '음성 대화 활성화 - 자연스럽게 말씀하세요!';
+
+            } catch (error) {
+                console.error('Audio capture error:', error);
+                document.getElementById('voiceStatus').textContent = '마이크 접근 실패: ' + error.message;
+            }
+        }
+
+        function visualizeAudio() {
+            if (!analyser || !isVoiceActive) return;
+
+            const canvas = document.getElementById('visualizer');
+            const ctx = canvas.getContext('2d');
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function draw() {
+                if (!isVoiceActive) return;
+
+                requestAnimationFrame(draw);
+                analyser.getByteFrequencyData(dataArray);
+
+                ctx.fillStyle = 'rgb(0, 0, 0)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const barWidth = (canvas.width / bufferLength) * 2.5;
+                let barHeight;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    barHeight = dataArray[i] / 2;
+                    ctx.fillStyle = `rgb(${barHeight + 100}, 50, ${250 - barHeight})`;
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    x += barWidth + 1;
+                }
+            }
+
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            draw();
+        }
+
+        // Chat functions
+        function addMainMessage(message, type) {
+            const chat = document.getElementById('mainChat');
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerHTML = message;
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function addA2AMessage(message, type, agent = '') {
+            const chat = document.getElementById('a2aChat');
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+
+            const timestamp = new Date().toLocaleTimeString();
+            const agentInfo = agent ? ` [${agent}]` : '';
+            div.innerHTML = `<small>${timestamp}${agentInfo}</small><br>${message}`;
+
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function sendTextMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+
+            if (message && ws.readyState === WebSocket.OPEN) {
+                addMainMessage(`💬 You: ${message}`, 'user');
+
+                ws.send(JSON.stringify({
+                    type: 'text_audio',
+                    message: message,
+                    voice: agentVoiceMap[currentActiveAgent] || 'Aoede'
+                }));
+
+                input.value = '';
+                updateAgentStatus(currentActiveAgent, 'Thinking');
+            }
+        }
+
+        function clearChats() {
+            document.getElementById('mainChat').innerHTML = '<div class="message system">메인 대화창이 초기화되었습니다</div>';
+            document.getElementById('a2aChat').innerHTML = '<div class="message system">A2A 통신창이 초기화되었습니다</div>';
+        }
+
+        // A2A functions
+        function updateAgentStatus(agentSlug, status) {
+            const statusMap = {
+                'test-agent': 'testAgentStatus',
+                'flight-specialist': 'flightAgentStatus',
+                'hotel-specialist': 'hotelAgentStatus'
+            };
+
+            const statusElement = document.getElementById(statusMap[agentSlug]);
+            if (statusElement) {
+                statusElement.textContent = status;
+                statusElement.className = `agent-status status-${status.toLowerCase()}`;
+            }
+        }
+
+        function animateArrow() {
+            const arrow = document.getElementById('arrow1');
+            arrow.classList.add('active');
+            setTimeout(() => arrow.classList.remove('active'), 2000);
+        }
+
+        function addLogEntry(message, type = 'info') {
+            const logEntries = document.getElementById('logEntries');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+
+            let logClass = 'log-entry';
+            if (type === 'delegation') logClass += ' log-delegation';
+            else if (type === 'response') logClass += ' log-response';
+            else if (type === 'error') logClass += ' log-error';
+
+            entry.className = logClass;
+            entry.innerHTML = `<small>${timestamp}</small> - ${message}`;
+            logEntries.appendChild(entry);
+
+            // Keep only last 6 entries
+            while (logEntries.children.length > 6) {
+                logEntries.removeChild(logEntries.firstChild);
+            }
+
+            document.getElementById('a2aLog').scrollTop = document.getElementById('a2aLog').scrollHeight;
+        }
+
+        // A2A Semantic Routing Logic
+        function checkA2ADelegation(userText) {
+            // Use semantic routing via backend
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'semantic_routing',
+                    user_message: userText,
+                    current_agent: currentActiveAgent
+                }));
+
+                // Add log entry for semantic analysis
+                addLogEntry(`Analyzing semantic intent: "${userText}"`, 'info');
+            }
+        }
+
+        function performA2ADelegation(targetAgent, userMessage, reason) {
+            console.log(`A2A Delegation: ${currentActiveAgent} -> ${targetAgent}`);
+
+            // Update UI
+            updateAgentStatus(currentActiveAgent, 'Ready');
+            updateAgentStatus(targetAgent, 'Active');
+            animateArrow();
+
+            // Update current active agent
+            const previousAgent = currentActiveAgent;
+            currentActiveAgent = targetAgent;
+
+            // Update current agent display
+            const agentNames = {
+                'test-agent': 'Test Agent (Coordinator)',
+                'flight-specialist': 'Flight Specialist',
+                'hotel-specialist': 'Hotel Specialist'
+            };
+            document.getElementById('currentAgent').textContent =
+                `현재 활성 에이전트: ${agentNames[targetAgent]}`;
+
+            // Add delegation message to A2A chat
+            addA2AMessage(`Delegation: ${agentNames[previousAgent]} → ${agentNames[targetAgent]}`, 'system');
+            addA2AMessage(`Reason: ${reason}`, 'system');
+            addA2AMessage(`User Message: "${userMessage}"`, 'user');
+
+            // Log the delegation
+            addLogEntry(`Delegated to ${agentNames[targetAgent]} - ${reason}`, 'delegation');
+
+            // Send delegation request to backend
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'a2a_delegation',
+                    source_agent: previousAgent,
+                    target_agent: targetAgent,
+                    user_message: userMessage,
+                    reason: reason,
+                    voice: agentVoiceMap[targetAgent] || 'Aoede'
+                }));
+
+                addA2AMessage(`A2A request sent to ${agentNames[targetAgent]}...`, 'system');
+            }
+        }
+    </script>
+</body>
+</html>

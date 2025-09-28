@@ -56,9 +56,9 @@ class A2ACardResolver:
 
             # Construct agent card URL
             if agent_slug:
-                url = f"{self.base_url}/agents/.well-known/agent-card/{agent_slug}.json"
+                url = f"{self.base_url}/.well-known/agent-card/{agent_slug}.json"
             else:
-                url = f"{self.base_url}/agents/.well-known/agent-card.json"
+                url = f"{self.base_url}/.well-known/agent-card.json"
 
             logger.info(f"Fetching agent card from: {url}")
 
@@ -202,9 +202,9 @@ async def discover_and_register_agents():
     # For now, we'll use hardcoded values similar to SK example
 
     default_agents = [
-        {"slug": "flight-booking", "url": "http://localhost:9999"},
-        {"slug": "hotel-booking", "url": "http://localhost:10000"},
-        {"slug": "travel-assistant", "url": "http://localhost:8001"}
+        {"slug": "flight-booking", "url": "http://localhost:8000"},
+        {"slug": "hotel-booking", "url": "http://localhost:8000"},
+        {"slug": "travel-assistant", "url": "http://localhost:8000"}
     ]
 
     for agent_config in default_agents:

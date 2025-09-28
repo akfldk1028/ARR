@@ -1,6 +1,7 @@
 import asyncio
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+from django.conf import settings
 from .services.service_manager import get_gemini_service
 
 def gemini_home(request):
@@ -15,6 +16,10 @@ def gemini_home(request):
     # Get current host and port from request
     host = request.get_host().split(':')[0]  # Get hostname only
     websocket_url = f'ws://{host}:8000/ws/gemini/'  # WebSocket server on port 8000
+
+    # Debug logging to check what URL is being generated
+    print(f"DEBUG - Generated websocket_url: {websocket_url}")
+    print(f"DEBUG - A2A_SERVER_PORT: {settings.A2A_SERVER_PORT}")
 
     context = {
         'model_name': model_name,
@@ -68,3 +73,24 @@ def continuous_voice(request):
     }
 
     return render(request, 'gemini/voice_conversation.html', context)
+
+def live_voice_a2a(request):
+    """Korean Voice AI + A2A Agent System - Clean Interface"""
+    try:
+        # Get service instance
+        service = get_gemini_service()
+        model_name = service.client.config.model
+    except Exception as e:
+        model_name = f"Error: {str(e)}"
+
+    # Get current host and port from request
+    host_with_port = request.get_host()  # Get hostname and port
+    websocket_url = f'ws://{host_with_port}/ws/gemini/'  # Use same port as HTTP server
+
+    context = {
+        'model_name': model_name,
+        'websocket_url': websocket_url,
+        'page_title': 'Korean Voice AI + A2A Agent System'
+    }
+
+    return render(request, 'gemini/live_voice.html', context)

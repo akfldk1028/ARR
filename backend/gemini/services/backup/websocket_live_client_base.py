@@ -53,7 +53,7 @@ class WebSocketLiveClient:
                 'setup': {
                     'model': self.model,
                     'generation_config': {
-                        'response_modalities': ['AUDIO'],  # Audio only - TEXT+AUDIO causes API errors
+                        'response_modalities': ['AUDIO'],  # Audio only - TEXT causes issues
                         'speech_config': {
                             'voice_config': {
                                 'prebuilt_voice_config': {
@@ -63,26 +63,11 @@ class WebSocketLiveClient:
                         }
                     },
                     'system_instruction': {
-                        'parts': [{'text': '''You are a Korean AI assistant specialized in travel and booking services.
-
-CRITICAL LANGUAGE INSTRUCTIONS:
-- The user will ONLY speak in KOREAN language (한국어)
-- You MUST recognize Korean speech correctly - NOT Japanese, Chinese, or Arabic
-- Always respond in Korean language only
-- If you hear "비행기 예약" it means "flight booking"
-- If you hear "호텔 예약" it means "hotel booking"
-
-당신은 여행 및 예약 전문 한국어 AI 어시스턴트입니다.
-- 사용자는 오직 한국어로만 말합니다
-- 한국어 음성을 정확히 인식해야 합니다 (일본어, 중국어, 아랍어 아님)
-- 항상 한국어로만 응답하세요
-- "비행기 예약"은 항공편 예약을 의미합니다
-- "호텔 예약"은 숙박 예약을 의미합니다'''
-                        }]
+                        'parts': [{'text': 'You are a Korean AI assistant. The user will speak in Korean language. Please recognize Korean speech correctly and respond naturally in Korean. Do not confuse Korean with Arabic or other languages. 당신은 한국어 AI 어시스턴트입니다. 사용자는 한국어로 말할 것입니다. 한국어 음성을 정확히 인식하고 자연스럽게 한국어로 응답해주세요.'}]
                     },
-                    # Enable transcript support for both input and output
-                    'input_audio_transcription': {},
-                    'output_audio_transcription': {}
+                    # CRITICAL: Enable transcript support for both input and output
+                    'input_audio_transcription': {},  # Transcribe user speech
+                    'output_audio_transcription': {}  # Transcribe AI speech
                 }
             }
 
@@ -240,12 +225,8 @@ CRITICAL LANGUAGE INSTRUCTIONS:
             if self.input_transcript_buffer:
                 combined_text = ''.join(self.input_transcript_buffer).strip()
                 if combined_text:
-                    try:
-                        logger.info(f"User transcript received: {len(combined_text)} chars")
-                        await self.text_callback(f"[USER]: {combined_text}")
-                    except UnicodeError as e:
-                        logger.error(f"Unicode error in user transcript: {e}")
-                        await self.text_callback("[USER]: [음성 인식됨]")
+                    logger.info(f"User transcript: {combined_text}")
+                    await self.text_callback(f"[USER]: {combined_text}")
                 self.input_transcript_buffer.clear()
 
     async def _flush_output_buffer_after_delay(self):
@@ -357,23 +338,10 @@ class ContinuousVoiceSession:
         async def handle_text(text):
             """Handle text from Live API"""
             if self.websocket_callback:
-                # Differentiate between user transcripts and AI responses
-                if text.startswith('[USER]:'):
-                    # User voice transcript
-                    await self.websocket_callback({
-                        'type': 'transcript',
-                        'text': text,
-                        'sender': 'user',
-                        'source': 'voice_input'
-                    })
-                else:
-                    # AI text response (not transcript) - should show in chat
-                    await self.websocket_callback({
-                        'type': 'ai_response',
-                        'text': text,
-                        'sender': 'ai',
-                        'source': 'live_api'
-                    })
+                await self.websocket_callback({
+                    'type': 'transcript',
+                    'text': text
+                })
 
         try:
             await self.client.start_session(

@@ -6,13 +6,22 @@ Implements proper agent discovery via agent cards for delegation
 import logging
 from typing import Dict, List, Optional, Any
 import json
+import re
 
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_openai import ChatOpenAI
+from django.conf import settings
 
 from ..a2a_client import A2ACardResolver
 
 logger = logging.getLogger(__name__)
+
+def safe_log_text(text: str) -> str:
+    """Preserve all text including Korean characters without any filtering"""
+    if not text:
+        return text
+    # Simply return the original text without any encoding conversion or filtering
+    return text
 
 class AgentDiscoveryService:
     """Service for discovering and selecting appropriate agents for tasks"""
@@ -25,7 +34,7 @@ class AgentDiscoveryService:
         """Discover all available agents via their agent cards"""
         try:
             # Get agent cards from our own system
-            resolver = A2ACardResolver("http://localhost:8002")
+            resolver = A2ACardResolver(settings.A2A_BASE_URL)
 
             # Get all agents list first
             all_agents_card = await resolver.get_agent_card()  # No slug = get all
@@ -126,11 +135,12 @@ class AgentDiscoveryService:
         Returns (should_delegate, target_agent_slug)
         """
         try:
-            logger.info(f"AgentDiscoveryService: Checking delegation for '{user_request}' from {current_agent_slug}")
+            logger.info(f"AgentDiscoveryService: Checking delegation for '{safe_log_text(user_request)}' from {current_agent_slug}")
 
             # Don't delegate if we're already a specialist being consulted
-            if current_agent_slug != 'test-agent':  # test-agent is our general coordinator
-                logger.info(f"Not delegating - current agent {current_agent_slug} is not test-agent")
+            # Allow both test-agent and general-worker to delegate to specialists
+            if current_agent_slug not in ['test-agent', 'general-worker']:
+                logger.info(f"Not delegating - current agent {current_agent_slug} is a specialist")
                 return False, None
 
             # Semantic routing using sentence-transformers for intelligent delegation
@@ -180,13 +190,13 @@ class AgentDiscoveryService:
                 best_category = max(similarities, key=similarities.get)
                 best_score = similarities[best_category]
 
-                logger.info(f"Semantic routing: '{user_request[:50]}...' → {best_category} (score: {best_score:.3f})")
+                logger.info(f"Semantic routing: '{safe_log_text(user_request[:50])}...' → {best_category} (score: {best_score:.3f})")
 
-                # Decision thresholds
-                if best_category == 'greetings' and best_score > 0.6:
+                # Decision thresholds - 비행기 예약 우선순위 높임
+                if best_category == 'greetings' and best_score > 0.8:
                     logger.info(f"Greeting detected via semantic similarity, no delegation needed")
                     return False, None
-                elif best_category in ['flight_booking', 'hotel_booking'] and best_score > 0.4:
+                elif best_category in ['flight_booking', 'hotel_booking'] and best_score > 0.2:
                     logger.info(f"Specialized task detected: {best_category}, proceeding with delegation")
                     # Continue to agent selection logic
                 else:

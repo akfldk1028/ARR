@@ -1,0 +1,53 @@
+{
+  "name": "Hotel Specialist Worker",
+  "description": "Specialized agent for hotel booking and accommodation information",
+  "version": "1.0.0",
+  "agent_type": "worker",
+  "worker_class": "HotelSpecialistWorkerAgent",
+  "capabilities": ["text", "hotel_booking", "accommodation_info", "hotel_data", "stay_planning"],
+  "protocols": ["a2a", "json-rpc-2.0"],
+  "transport": ["http", "https"],
+  "skills": [
+    {
+      "name": "hotel_search",
+      "description": "Search for available hotels in cities",
+      "type": "hotel_booking",
+      "input_types": ["text"],
+      "output_types": ["text", "hotel_data"]
+    },
+    {
+      "name": "accommodation_info",
+      "description": "Provide hotel information and recommendations",
+      "type": "information_retrieval",
+      "input_types": ["text"],
+      "output_types": ["text"]
+    },
+    {
+      "name": "stay_planning",
+      "description": "Help with accommodation planning and booking",
+      "type": "travel_planning",
+      "input_types": ["text"],
+      "output_types": ["text", "booking_info"]
+    }
+  ],
+  "specialization": {
+    "primary": "hotel_booking",
+    "expertise_areas": [
+      "hotel_availability",
+      "accommodation_recommendations",
+      "pricing_information",
+      "room_types",
+      "location_insights"
+    ],
+    "collaboration_offers": {
+      "flight": "Can coordinate with flight booking specialist for complete trip planning",
+      "general": "Provides specialized accommodation information to general assistants"
+    }
+  },
+  "configuration": {
+    "default_temperature": 0.3,
+    "max_tokens": 1024,
+    "model": "gpt-3.5-turbo",
+    "specialization_focus": "factual_accuracy"
+  }
+}

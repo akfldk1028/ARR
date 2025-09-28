@@ -98,8 +98,6 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                 'start_voice_session': self._handle_start_voice_session,
                 'stop_voice_session': self._handle_stop_voice_session,
                 'voice_audio_chunk': self._handle_voice_audio_chunk,
-                'semantic_routing': self._handle_semantic_routing,
-                'a2a_delegation': self._handle_a2a_delegation,
                 'session_info': self._handle_session_info,
                 'history': self._handle_history,
                 'switch_agent': self._handle_agent_switch,
@@ -136,18 +134,8 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
             # WebSocket callback to send messages to frontend
             async def websocket_callback(message):
-                """Forward Live API messages to frontend with proper classification"""
+                """Forward Live API messages to frontend"""
                 try:
-                    # Classify Live API messages properly
-                    if message.get('type') == 'transcript':
-                        # This is an AI response - mark it correctly
-                        message['sender'] = 'ai'
-                        message['source'] = 'live_api'
-                    elif message.get('type') == 'audio_chunk':
-                        # Audio response from AI
-                        message['sender'] = 'ai'
-                        message['source'] = 'live_api'
-
                     await self.send(text_data=json.dumps(message))
                 except Exception as e:
                     logger.error(f"Websocket callback error: {e}")
@@ -591,186 +579,6 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
         except Exception as e:
             await self._send_error(f"Failed to get agent info: {str(e)}")
-
-    async def _handle_a2a_delegation(self, data):
-        """Handle A2A delegation requests"""
-        try:
-            target_agent = data.get('target_agent')
-            user_message = data.get('user_message', '')
-            delegation_reason = data.get('reason', 'Semantic routing delegation')
-
-            if not target_agent:
-                await self._send_error("Target agent is required for delegation")
-                return
-
-            if not user_message:
-                await self._send_error("User message is required for delegation")
-                return
-
-            # Verify target agent exists
-            agent = await self.worker_manager.get_worker(target_agent)
-            if not agent:
-                await self._send_error(f"Target agent '{target_agent}' not found")
-                return
-
-            # Switch to target agent
-            old_agent = self.current_agent_slug
-            self.current_agent_slug = target_agent
-
-            logger.info(f"A2A delegation: {old_agent} -> {target_agent} for message: {user_message[:50]}...")
-
-            # Process message with new agent
-            result = await self._process_with_a2a(user_message)
-
-            if result['success']:
-                # Save delegation message
-                await self._save_message(user_message, 'text', 'user')
-                await self._save_message(result['response'], 'text', 'assistant', {
-                    'agent_slug': self.current_agent_slug,
-                    'delegated_from': old_agent,
-                    'delegation_reason': delegation_reason
-                })
-
-                # Send delegation confirmation and response
-                await self.send(text_data=json.dumps({
-                    'type': 'a2a_delegation_response',
-                    'message': result['response'],
-                    'original_message': user_message,
-                    'delegated_from': old_agent,
-                    'delegated_to': target_agent,
-                    'agent_name': agent.agent_name,
-                    'reason': delegation_reason,
-                    'success': True
-                }))
-            else:
-                # Delegation failed, revert to original agent
-                self.current_agent_slug = old_agent
-                await self._send_error(f"Delegation to {target_agent} failed: {result.get('error', 'Unknown error')}")
-
-        except Exception as e:
-            logger.error(f"A2A delegation failed: {e}")
-            await self._send_error(f"A2A delegation failed: {str(e)}")
-
-    async def _handle_semantic_routing(self, data):
-        """Handle LLM-based semantic routing for A2A delegation"""
-        try:
-            user_message = data.get('user_message', '').strip()
-            current_agent = data.get('current_agent', self.current_agent_slug)
-
-            if not user_message:
-                await self._send_error("No user message provided for semantic routing")
-                return
-
-            logger.info(f"LLM semantic routing analysis for: '{user_message}' with current agent: {current_agent}")
-
-            # Use Gemini LLM for semantic intent analysis
-            routing_result = await self._analyze_intent_with_llm(user_message, current_agent)
-
-            # Send semantic routing result
-            await self.send(text_data=json.dumps({
-                'type': 'semantic_routing_result',
-                'should_delegate': routing_result['should_delegate'],
-                'target_agent': routing_result['target_agent'],
-                'confidence': routing_result['confidence'],
-                'original_message': user_message,
-                'current_agent': current_agent,
-                'analysis': routing_result['analysis'],
-                'reasoning': routing_result['reasoning'],
-                'success': True
-            }))
-
-        except Exception as e:
-            logger.error(f"Semantic routing failed: {e}")
-            await self._send_error(f"Semantic routing failed: {str(e)}")
-
-    async def _analyze_intent_with_llm(self, user_message: str, current_agent: str) -> dict:
-        """Use Gemini LLM to analyze user intent and determine routing"""
-        try:
-            routing_prompt = f"""
-당신은 사용자의 요청을 분석하여 적절한 전문 에이전트로 라우팅하는 AI 시스템입니다.
-
-사용 가능한 에이전트들:
-- general-worker: 일반적인 질문과 대화 처리
-- flight-specialist: 항공편 예약, 항공료 조회, 항공사 정보, 여행 일정 등 항공 관련 전문 서비스
-- hotel-specialist: 호텔 예약, 숙박 정보, 체크인/아웃, 객실 서비스 등 숙박 관련 전문 서비스
-
-현재 활성 에이전트: {current_agent}
-사용자 메시지: "{user_message}"
-
-다음 사항을 분석해주세요:
-1. 사용자의 의도가 항공 관련인가?
-2. 사용자의 의도가 호텔/숙박 관련인가?
-3. 현재 에이전트가 이 요청을 적절히 처리할 수 있는가?
-4. 다른 전문 에이전트로 위임이 필요한가?
-
-JSON 형식으로 응답해주세요:
-{{
-    "should_delegate": boolean,
-    "target_agent": "agent_slug" or null,
-    "confidence": float (0.0-1.0),
-    "reasoning": "분석 이유를 한국어로 설명",
-    "intent_category": "general|flight|hotel|other"
-}}
-"""
-
-            # Use Gemini service for intent analysis
-            result = await self.gemini_service.process_text_with_streaming(
-                routing_prompt, self.session_id, callback=None
-            )
-
-            # Parse LLM response
-            llm_response = result.get('text', '{}')
-            logger.info(f"LLM routing response: {llm_response}")
-
-            try:
-                # Extract JSON from response
-                import re
-                json_match = re.search(r'\{.*\}', llm_response, re.DOTALL)
-                if json_match:
-                    routing_data = json.loads(json_match.group())
-                else:
-                    raise ValueError("No JSON found in LLM response")
-
-                # Validate and process the routing decision
-                should_delegate = routing_data.get('should_delegate', False)
-                target_agent = routing_data.get('target_agent')
-                confidence = float(routing_data.get('confidence', 0.0))
-                reasoning = routing_data.get('reasoning', 'LLM 분석 완료')
-                intent_category = routing_data.get('intent_category', 'general')
-
-                # Additional validation
-                if should_delegate and target_agent == current_agent:
-                    should_delegate = False
-                    reasoning += " (이미 적절한 에이전트 사용 중)"
-
-                return {
-                    'should_delegate': should_delegate,
-                    'target_agent': target_agent,
-                    'confidence': confidence,
-                    'analysis': f"LLM 의도 분석: {intent_category} 카테고리",
-                    'reasoning': reasoning
-                }
-
-            except (json.JSONDecodeError, ValueError) as e:
-                logger.error(f"Failed to parse LLM routing response: {e}")
-                # Fallback to simple logic
-                return {
-                    'should_delegate': False,
-                    'target_agent': None,
-                    'confidence': 0.0,
-                    'analysis': "LLM 응답 파싱 실패, 현재 에이전트 유지",
-                    'reasoning': "LLM 응답을 파싱할 수 없어 기본 라우팅 사용"
-                }
-
-        except Exception as e:
-            logger.error(f"LLM intent analysis failed: {e}")
-            return {
-                'should_delegate': False,
-                'target_agent': None,
-                'confidence': 0.0,
-                'analysis': "LLM 분석 실패, 현재 에이전트 유지",
-                'reasoning': f"분석 중 오류 발생: {str(e)}"
-            }
 
     # ============== 7. UTILITY METHODS ==============
 

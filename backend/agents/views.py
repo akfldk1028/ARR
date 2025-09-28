@@ -54,10 +54,10 @@ class AgentCardView(View):
                     }
                 ],
                 "endpoints": {
-                    "chat": f"http://localhost:8002/agents/{agent.slug}/chat/",
-                    "status": f"http://localhost:8002/agents/{agent.slug}/status/",
-                    "a2a": f"http://localhost:8002/agents/{agent.slug}/a2a/",
-                    "jsonrpc": f"http://localhost:8002/agents/{agent.slug}/chat/",  # A2A compatible endpoint
+                    "chat": f"http://localhost:8000/agents/{agent.slug}/chat/",
+                    "status": f"http://localhost:8000/agents/{agent.slug}/status/",
+                    "a2a": f"http://localhost:8000/agents/{agent.slug}/a2a/",
+                    "jsonrpc": f"http://localhost:8000/agents/{agent.slug}/chat/",  # A2A compatible endpoint
                 },
                 "authentication": {
                     "type": "none",  # Could be "bearer", "api_key", etc.

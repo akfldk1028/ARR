@@ -6,6 +6,7 @@ Provides common functionality for all worker agents
 import asyncio
 import json
 import logging
+import re
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List
 from uuid import uuid4
@@ -18,6 +19,13 @@ from agents.a2a_client import A2AClient, A2AAgentCard
 logger = logging.getLogger(__name__)
 conversation_logger = logging.getLogger('agents.conversation')
 a2a_logger = logging.getLogger('agents.a2a_communication')
+
+def safe_log_text(text: str) -> str:
+    """Preserve all text including Korean characters without any filtering"""
+    if not text:
+        return text
+    # Simply return the original text without any encoding conversion or filtering
+    return text
 
 class BaseWorkerAgent(ABC):
     """Base class for all worker agents"""
@@ -72,7 +80,7 @@ class BaseWorkerAgent(ABC):
             conversation_logger.info(f"User: {user_name}")
             conversation_logger.info(f"Context ID: {context_id}")
             conversation_logger.info(f"-" * 40)
-            conversation_logger.info(f"USER: {user_input}")
+            conversation_logger.info(f"USER: {safe_log_text(user_input)}")
 
             # Save user input to Neo4j
             await self._save_message_to_neo4j(
@@ -196,7 +204,7 @@ class BaseWorkerAgent(ABC):
             if target_agent_slug not in self._a2a_clients:
                 # Discover target agent card
                 from agents.a2a_client import A2ACardResolver
-                resolver = A2ACardResolver("http://localhost:8002")
+                resolver = A2ACardResolver(settings.A2A_BASE_URL)
                 target_card = await resolver.get_agent_card(target_agent_slug)
 
                 if not target_card:
@@ -308,10 +316,10 @@ class BaseWorkerAgent(ABC):
                 }
             ],
             "endpoints": {
-                "chat": f"http://localhost:8002/agents/{self.agent_slug}/chat/",
-                "status": f"http://localhost:8002/agents/{self.agent_slug}/status/",
-                "a2a": f"http://localhost:8002/agents/{self.agent_slug}/chat/",
-                "jsonrpc": f"http://localhost:8002/agents/{self.agent_slug}/chat/"
+                "chat": f"{settings.A2A_BASE_URL}/agents/{self.agent_slug}/chat/",
+                "status": f"{settings.A2A_BASE_URL}/agents/{self.agent_slug}/status/",
+                "a2a": f"{settings.A2A_BASE_URL}/agents/{self.agent_slug}/chat/",
+                "jsonrpc": f"{settings.A2A_BASE_URL}/agents/{self.agent_slug}/chat/"
             },
             "authentication": {
                 "type": "none",

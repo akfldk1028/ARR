@@ -5,6 +5,7 @@ Flight Specialist Worker Agent - 항공편 예약 및 여행 정보 전문 에�
 import os
 import asyncio
 import logging
+import re
 from typing import List, Dict, Any
 
 from langchain_openai import ChatOpenAI
@@ -13,6 +14,25 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from ..base import BaseWorkerAgent
 
 logger = logging.getLogger(__name__)
+
+def remove_emojis(text: str) -> str:
+    """Remove all emojis from text to prevent encoding issues"""
+    # Remove all Unicode emoji characters
+    emoji_pattern = re.compile(
+        r'[\U0001F600-\U0001F64F]|'  # emoticons
+        r'[\U0001F300-\U0001F5FF]|'  # symbols & pictographs
+        r'[\U0001F680-\U0001F6FF]|'  # transport & map symbols
+        r'[\U0001F700-\U0001F77F]|'  # alchemical symbols
+        r'[\U0001F780-\U0001F7FF]|'  # Geometric Shapes Extended
+        r'[\U0001F800-\U0001F8FF]|'  # Supplemental Arrows-C
+        r'[\U0001F900-\U0001F9FF]|'  # Supplemental Symbols and Pictographs
+        r'[\U0001FA00-\U0001FA6F]|'  # Chess Symbols
+        r'[\U0001FA70-\U0001FAFF]|'  # Symbols and Pictographs Extended-A
+        r'[\U00002600-\U000026FF]|'  # Miscellaneous Symbols
+        r'[\U00002700-\U000027BF]',  # Dingbats
+        flags=re.UNICODE
+    )
+    return emoji_pattern.sub('', text)
 
 class FlightSpecialistWorkerAgent(BaseWorkerAgent):
     """Specialized worker agent for flight booking and travel information"""
@@ -60,6 +80,8 @@ Provide detailed, helpful flight information including:
 - Multiple airline options
 - Price ranges and booking recommendations
 - Travel tips and considerations
+
+IMPORTANT: Never use emojis in your responses. Always respond in plain text without any emoji characters.
 
 Always be specific and informative in your responses about flight-related queries.
 
@@ -119,7 +141,8 @@ Provide realistic flight times, prices, and airline recommendations.''')
                 # Offer to coordinate with hotel specialist
                 flight_response += "\n\n숙박도 필요하시다면 호텔 예약 전문가와 연결해드릴 수 있습니다. 완전한 여행 계획을 원하시나요?"
 
-            return flight_response
+            # Remove emojis from response
+            return remove_emojis(flight_response)
 
         except Exception as e:
             logger.error(f"Error generating response in FlightSpecialistWorkerAgent: {e}")
