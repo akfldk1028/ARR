@@ -358,7 +358,7 @@
         <div class="main-grid">
             <!-- Voice Conversation Section -->
             <div class="voice-section">
-                <h2>🎙️ Voice Conversation</h2>
+                <h2>Voice Conversation</h2>
 
                 <div class="voice-controls">
                     <div class="visualizer">
@@ -453,8 +453,8 @@
         let currentActiveAgent = 'test-agent';
         const agentVoiceMap = {
             'test-agent': 'Charon',
-            'flight-specialist': 'Aoede',
-            'hotel-specialist': 'Kore'
+            'flight-specialist': 'Kore',      // 수정: Flight Agent = Kore
+            'hotel-specialist': 'Aoede'       // 수정: Hotel Agent = Aoede
         };
 
         // Context7 Cookbook Pattern - AudioWorklet for real-time streaming
@@ -567,7 +567,7 @@
 
         // WebSocket event handlers
         ws.onopen = () => {
-            document.getElementById('status').textContent = '✅ Gemini Live API + A2A 시스템 연결됨';
+            document.getElementById('status').textContent = 'Gemini Live API + A2A 시스템 연결됨';
             document.getElementById('status').className = 'status connected';
             addLogEntry('WebSocket 연결 완료 - A2A 시스템 준비', 'info');
         };
@@ -579,7 +579,7 @@
 
         ws.onerror = (error) => {
             console.error('WebSocket error:', error);
-            document.getElementById('status').textContent = '⚠️ 연결 오류';
+            document.getElementById('status').textContent = '연결 오류';
             document.getElementById('status').className = 'status disconnected';
         };
 
@@ -590,17 +590,22 @@
             switch(data.type) {
                 case 'transcript':
                     if (data.text) {
+                        // Ensure data.text is a string
+                        const textStr = typeof data.text === 'string' ? data.text :
+                                       (typeof data.text === 'object' && data.text.text) ? data.text.text :
+                                       String(data.text);
+
                         // Check if it's user transcript or AI transcript
-                        if (data.sender === 'user' || data.text.startsWith('[USER]:')) {
+                        if (data.sender === 'user' || textStr.startsWith('[USER]:')) {
                             // User voice transcript
-                            const cleanText = data.text.replace('[USER]: ', '');
+                            const cleanText = textStr.replace('[USER]: ', '');
                             addMainMessage(`You: ${cleanText}`, 'user');
 
                             // Check for A2A delegation using semantic routing
                             checkA2ADelegation(cleanText);
                         } else {
                             // AI transcript (speech-to-text of AI audio)
-                            addMainMessage(`AI (transcript): ${data.text}`, 'ai');
+                            addMainMessage(`AI (transcript): ${textStr}`, 'ai');
                         }
                     }
                     break;
@@ -634,10 +639,61 @@
                     addA2AMessage(`${data.agent}: ${data.message}`, 'ai', data.agent);
                     addMainMessage(`[A2A] ${data.agent}: ${data.message}`, 'a2a');
 
+                    // Handle audio response from A2A agent
+                    if (data.audio) {
+                        // Try Live API audio system first
+                        if (outputProcessor) {
+                            const decoded = Uint8Array.from(
+                                atob(data.audio), c => c.charCodeAt(0)
+                            ).buffer;
+                            outputProcessor.port.postMessage({'enqueue': decoded});
+                            console.log(`Playing A2A audio via Live API system: ${data.agent} (${data.voice})`);
+                        } else {
+                            // Fallback: Play using Web Audio API directly
+                            playA2AAudioFallback(data.audio, data.voice);
+                            console.log(`Playing A2A audio via fallback system: ${data.agent} (${data.voice})`);
+                        }
+                    }
+
                     // Update agent status
                     updateAgentStatus(data.agent_slug || 'flight-specialist', 'Active');
                     animateArrow();
                     addLogEntry(`A2A Response from ${data.agent}`, 'response');
+                    break;
+
+                case 'a2a_audio_response':
+                    // New handler for A2A audio responses from websocket_callback
+                    const agentName = data.voice === 'Kore' ? 'Flight Agent' : 'Hotel Agent';
+
+                    // Display transcript
+                    if (data.transcript) {
+                        addA2AMessage(`${agentName}: ${data.transcript}`, 'ai', agentName);
+                        addMainMessage(`[A2A] ${agentName}: ${data.transcript}`, 'a2a');
+                    }
+
+                    // Play audio response
+                    if (data.audio) {
+                        // Stop any ongoing Live API audio to prevent overlap
+                        if (outputProcessor) {
+                            // Clear Live API audio queue
+                            outputProcessor.port.postMessage({'clear': true});
+                        }
+
+                        // Play A2A audio
+                        if (outputProcessor) {
+                            const decoded = Uint8Array.from(
+                                atob(data.audio), c => c.charCodeAt(0)
+                            ).buffer;
+                            outputProcessor.port.postMessage({'enqueue': decoded});
+                            console.log(`Playing A2A audio response: ${agentName} (${data.voice})`);
+                        } else {
+                            playA2AAudioFallback(data.audio, data.voice);
+                            console.log(`Playing A2A audio via fallback: ${agentName} (${data.voice})`);
+                        }
+                    }
+
+                    // Log
+                    addLogEntry(`A2A Audio Response from ${agentName}`, 'response');
                     break;
 
                 case 'response':
@@ -653,7 +709,7 @@
                     if (data.status === 'started') {
                         startAudioCapture();
                     }
-                    addMainMessage(`🎙️ ${data.message}`, 'system');
+                    addMainMessage(`${data.message}`, 'system');
                     break;
             }
         };
@@ -714,7 +770,7 @@
                 }));
             }
 
-            addMainMessage('🎙️ 음성 대화 종료', 'system');
+            addMainMessage('음성 대화 종료', 'system');
         }
 
         async function startAudioCapture() {
@@ -852,6 +908,47 @@
         function clearChats() {
             document.getElementById('mainChat').innerHTML = '<div class="message system">메인 대화창이 초기화되었습니다</div>';
             document.getElementById('a2aChat').innerHTML = '<div class="message system">A2A 통신창이 초기화되었습니다</div>';
+        }
+
+        // A2A Audio Fallback System
+        async function playA2AAudioFallback(audioBase64, voiceName) {
+            try {
+                // Decode base64 to binary
+                const binaryString = atob(audioBase64);
+                const audioBytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    audioBytes[i] = binaryString.charCodeAt(i);
+                }
+
+                // Create audio context if not exists
+                if (!window.a2aAudioContext) {
+                    window.a2aAudioContext = new (window.AudioContext || window.webkitAudioContext)({
+                        sampleRate: 24000  // Match Gemini TTS output
+                    });
+                }
+
+                const audioContext = window.a2aAudioContext;
+
+                // Resume audio context if suspended
+                if (audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
+
+                // Decode audio data
+                const audioBuffer = await audioContext.decodeAudioData(audioBytes.buffer);
+
+                // Create source and play
+                const source = audioContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(audioContext.destination);
+                source.start();
+
+                addLogEntry(`A2A audio played: ${voiceName} voice`, 'info');
+
+            } catch (error) {
+                console.error('A2A audio playback failed:', error);
+                addLogEntry(`A2A audio failed: ${error.message}`, 'error');
+            }
         }
 
         // A2A functions

@@ -136,19 +136,68 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
             # WebSocket callback to send messages to frontend
             async def websocket_callback(message):
-                """Forward Live API messages to frontend with proper classification"""
+                """Handle Live API messages with smart routing"""
                 try:
-                    # Classify Live API messages properly
-                    if message.get('type') == 'transcript':
-                        # This is an AI response - mark it correctly
-                        message['sender'] = 'ai'
-                        message['source'] = 'live_api'
-                    elif message.get('type') == 'audio_chunk':
-                        # Audio response from AI
-                        message['sender'] = 'ai'
-                        message['source'] = 'live_api'
+                    message_type = message.get('type')
+                    sender = message.get('sender')
+                    source = message.get('source')
 
+                    if message_type == 'transcript':
+                        if sender == 'user' and source == 'live_api_input':
+                            # 사용자 입력에 대해 semantic routing 적용
+                            user_text = message.get('text', '')
+                            logger.info(f"사용자 입력 transcript: {user_text}")
+
+                            # Semantic routing 수행
+                            routing_result = await self._analyze_intent_with_llm(user_text, 'live-api')
+
+                            if routing_result.get('should_delegate', False):
+                                # A2A 처리 필요
+                                target_agent = routing_result.get('target_agent')
+                                logger.info(f"A2A 라우팅: {target_agent}")
+
+                                try:
+                                    # A2A 에이전트로 요청 전송
+                                    agent = await self.worker_manager.get_worker(target_agent)
+                                    if agent:
+                                        a2a_response = await agent.process_request(
+                                            user_input=user_text,
+                                            context_id=self.session_id,
+                                            session_id=self.session_id,
+                                            user_name=self.user_obj.username if self.user_obj else "user"
+                                        )
+
+                                        # A2A 응답을 음성으로 변환하여 전송
+                                        voice_name = 'Kore' if target_agent == 'flight-specialist' else 'Aoede'
+                                        await self._process_a2a_response(a2a_response, voice_name, user_text)
+
+                                    else:
+                                        logger.error(f"Agent {target_agent} not available")
+                                        # Fallback to Live API
+                                        pass
+
+                                except Exception as e:
+                                    logger.error(f"A2A processing failed: {e}")
+                                    # Fallback to Live API
+                                    pass
+                            else:
+                                # Live API에서 직접 처리 - transcript만 frontend로 전송
+                                logger.info("Live API 직접 처리")
+
+                        elif sender == 'ai' and source == 'live_api_output':
+                            # AI 출력은 그대로 frontend로 전송
+                            logger.info(f"AI 응답 transcript: {message.get('text', '')[:50]}...")
+
+                    elif message_type == 'audio_chunk':
+                        # Audio response from AI - 기존과 동일
+                        if not message.get('sender'):
+                            message['sender'] = 'ai'
+                        if not message.get('source'):
+                            message['source'] = 'live_api'
+
+                    # 모든 메시지를 frontend로 전송
                     await self.send(text_data=json.dumps(message))
+
                 except Exception as e:
                     logger.error(f"Websocket callback error: {e}")
 
@@ -631,17 +680,48 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                     'delegation_reason': delegation_reason
                 })
 
-                # Send delegation confirmation and response
-                await self.send(text_data=json.dumps({
-                    'type': 'a2a_delegation_response',
-                    'message': result['response'],
-                    'original_message': user_message,
-                    'delegated_from': old_agent,
-                    'delegated_to': target_agent,
-                    'agent_name': agent.agent_name,
-                    'reason': delegation_reason,
-                    'success': True
-                }))
+                # Get voice for target agent (Flight Agent = 'Kore')
+                voice_name = data.get('voice', 'Kore' if target_agent == 'flight-specialist' else 'Aoede')
+
+                # Convert Flight Agent response to TTS using existing Gemini service
+                try:
+                    audio_result = await self.gemini_service.process_text_with_audio_streaming(
+                        result['response'], voice_name, self.session_id, callback=None
+                    )
+
+                    audio_base64 = None
+                    if audio_result.get('audio') and audio_result['success']:
+                        audio_base64 = base64.b64encode(audio_result['audio']).decode('utf-8')
+
+                    # Send A2A response with audio (use existing a2a_response type)
+                    await self.send(text_data=json.dumps({
+                        'type': 'a2a_response',  # Use existing a2a_response type
+                        'agent': agent.agent_name,
+                        'message': result['response'],
+                        'audio': audio_base64,
+                        'voice': voice_name,
+                        'agent_slug': target_agent,
+                        'original_message': user_message,
+                        'delegated_from': old_agent,
+                        'reason': delegation_reason,
+                        'success': True
+                    }))
+
+                except Exception as tts_error:
+                    logger.error(f"TTS conversion failed for A2A response: {tts_error}")
+                    # Fallback to text-only response
+                    await self.send(text_data=json.dumps({
+                        'type': 'a2a_response',
+                        'agent': agent.agent_name,
+                        'message': result['response'],
+                        'audio': None,
+                        'voice': voice_name,
+                        'agent_slug': target_agent,
+                        'original_message': user_message,
+                        'delegated_from': old_agent,
+                        'reason': delegation_reason,
+                        'success': True
+                    }))
             else:
                 # Delegation failed, revert to original agent
                 self.current_agent_slug = old_agent
@@ -687,29 +767,39 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         """Use Gemini LLM to analyze user intent and determine routing"""
         try:
             routing_prompt = f"""
-당신은 사용자의 요청을 분석하여 적절한 전문 에이전트로 라우팅하는 AI 시스템입니다.
+당신은 사용자 요청과 전문 에이전트 기능 간의 의미적 유사도를 측정하여 라우팅을 결정하는 AI 시스템입니다.
 
-사용 가능한 에이전트들:
-- general-worker: 일반적인 질문과 대화 처리
-- flight-specialist: 항공편 예약, 항공료 조회, 항공사 정보, 여행 일정 등 항공 관련 전문 서비스
-- hotel-specialist: 호텔 예약, 숙박 정보, 체크인/아웃, 객실 서비스 등 숙박 관련 전문 서비스
+전문 에이전트 기능 정의:
 
-현재 활성 에이전트: {current_agent}
+🔹 flight-specialist (항공 전문가):
+- 핵심 기능: 항공편 검색, 예약, 변경, 취소, 항공료 비교, 좌석 선택, 수하물 정보
+
+🔹 hotel-specialist (숙박 전문가):
+- 핵심 기능: 호텔 검색, 예약, 체크인/아웃, 객실 서비스, 숙박 정보, 리뷰 확인
+
 사용자 메시지: "{user_message}"
 
-다음 사항을 분석해주세요:
-1. 사용자의 의도가 항공 관련인가?
-2. 사용자의 의도가 호텔/숙박 관련인가?
-3. 현재 에이전트가 이 요청을 적절히 처리할 수 있는가?
-4. 다른 전문 에이전트로 위임이 필요한가?
+위 사용자 메시지와 각 전문 에이전트의 핵심 기능 간 의미적 유사도를 분석하세요:
 
-JSON 형식으로 응답해주세요:
+1. 사용자 요청의 진짜 의도를 파악
+2. 각 전문 에이전트 기능과의 의미적 관련성 측정
+3. 가장 높은 유사도를 가진 에이전트 선택 (임계값 0.7 이상)
+4. 임계값 이하면 Live API 직접 처리
+
+**중요**: 오직 flight-specialist와 hotel-specialist만 사용 가능합니다.
+일반적인 대화, 질문, 정보 요청은 should_delegate=false로 설정하세요.
+
+의미적 유사도 분석 결과를 JSON으로 응답:
 {{
     "should_delegate": boolean,
-    "target_agent": "agent_slug" or null,
+    "target_agent": "flight-specialist" or "hotel-specialist" or null,
     "confidence": float (0.0-1.0),
-    "reasoning": "분석 이유를 한국어로 설명",
-    "intent_category": "general|flight|hotel|other"
+    "reasoning": "의미적 유사도 분석 결과",
+    "intent_category": "flight|hotel|general",
+    "similarity_scores": {{
+        "flight_similarity": float,
+        "hotel_similarity": float
+    }}
 }}
 """
 
@@ -773,6 +863,52 @@ JSON 형식으로 응답해주세요:
             }
 
     # ============== 7. UTILITY METHODS ==============
+
+    async def _process_a2a_response(self, a2a_response: str, voice_name: str, user_text: str):
+        """A2A 응답을 TTS로 변환하여 전송"""
+        try:
+            import base64
+
+            # A2A 응답을 음성으로 변환
+            audio_result = await self.gemini_service.process_text_with_audio_streaming(
+                a2a_response, voice_name, self.session_id, callback=None
+            )
+
+            # 메시지 저장
+            await self._save_message(user_text, 'text', 'user', {
+                'delegated_to_a2a': True,
+                'target_agent': voice_name
+            })
+
+            await self._save_message(
+                audio_result.get('transcript', a2a_response), 'audio', 'assistant', {
+                    'voice': voice_name,
+                    'has_audio': audio_result['success'],
+                    'from_a2a': True,
+                    'input_transcript': user_text
+                }
+            )
+
+            # 오디오 응답 전송
+            audio_base64 = None
+            if audio_result.get('audio') and audio_result['success']:
+                audio_base64 = base64.b64encode(audio_result['audio']).decode('utf-8')
+
+            await self.send(text_data=json.dumps({
+                'type': 'a2a_audio_response',
+                'transcript': a2a_response,
+                'audio': audio_base64,
+                'voice': voice_name,
+                'input_transcript': user_text,
+                'success': audio_result['success'],
+                'source': 'a2a_agent'
+            }))
+
+            logger.info(f"A2A 응답 전송 완료: {voice_name} - {a2a_response[:50]}...")
+
+        except Exception as e:
+            logger.error(f"A2A 응답 처리 실패: {e}")
+            await self._send_error(f"A2A 응답 처리 실패: {str(e)}")
 
     async def _get_user(self):
         """Get authenticated user"""

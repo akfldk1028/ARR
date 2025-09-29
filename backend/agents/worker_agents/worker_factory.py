@@ -16,10 +16,10 @@ class WorkerAgentFactory:
 
     # Registry of available worker agent types
     WORKER_TYPES: Dict[str, Type[BaseWorkerAgent]] = {
-        'general': GeneralWorkerAgent,
+        # 'general': GeneralWorkerAgent,  # 비활성화: Live API에서 직접 처리
         'flight-specialist': FlightSpecialistWorkerAgent,
         # Add more worker types here as needed
-        'test-agent': GeneralWorkerAgent,  # Alias for testing
+        # 'test-agent': GeneralWorkerAgent,  # 비활성화: 테스트용 general worker
     }
 
     @classmethod
@@ -27,20 +27,20 @@ class WorkerAgentFactory:
         """Create a worker agent instance based on configuration"""
         try:
             # Determine worker type from config or slug
-            worker_type = agent_config.get('agent_type', 'general')
+            worker_type = agent_config.get('agent_type', 'flight-specialist')  # 기본값을 flight-specialist로 변경
 
             # Handle slug-based type mapping
             if agent_slug == 'flight-specialist':
                 worker_type = 'flight-specialist'
-            elif agent_slug == 'test-agent':
-                worker_type = 'general'
+            # elif agent_slug == 'test-agent':
+            #     worker_type = 'general'  # 비활성화: general worker 사용 금지
 
             # Get worker class
             worker_class = cls.WORKER_TYPES.get(worker_type)
             if not worker_class:
                 logger.error(f"Unknown worker type: {worker_type}")
-                # Fallback to general worker
-                worker_class = GeneralWorkerAgent
+                # No fallback - return None to prevent general worker usage
+                return None
 
             # Create worker instance
             worker = worker_class(agent_slug, agent_config)

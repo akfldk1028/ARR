@@ -19,7 +19,7 @@ class WebSocketLiveClient:
 
     def __init__(self, api_key: str):
         self.api_key = api_key
-        self.model = 'models/gemini-live-2.5-flash-preview'  # Correct Gemini 2.5 Flash Live API model
+        self.model = 'models/gemini-live-2.5-flash-preview'  # Correct Live API conversation model from Context7
         self.host = 'generativelanguage.googleapis.com'
         self.websocket = None
         self.session_active = False
@@ -63,21 +63,7 @@ class WebSocketLiveClient:
                         }
                     },
                     'system_instruction': {
-                        'parts': [{'text': '''You are a Korean AI assistant specialized in travel and booking services.
-
-CRITICAL LANGUAGE INSTRUCTIONS:
-- The user will ONLY speak in KOREAN language (한국어)
-- You MUST recognize Korean speech correctly - NOT Japanese, Chinese, or Arabic
-- Always respond in Korean language only
-- If you hear "비행기 예약" it means "flight booking"
-- If you hear "호텔 예약" it means "hotel booking"
-
-당신은 여행 및 예약 전문 한국어 AI 어시스턴트입니다.
-- 사용자는 오직 한국어로만 말합니다
-- 한국어 음성을 정확히 인식해야 합니다 (일본어, 중국어, 아랍어 아님)
-- 항상 한국어로만 응답하세요
-- "비행기 예약"은 항공편 예약을 의미합니다
-- "호텔 예약"은 숙박 예약을 의미합니다'''
+                        'parts': [{'text': 'You are a Korean AI assistant. The user will speak in Korean language. Please recognize Korean speech correctly and respond naturally in Korean. Do not confuse Korean with Arabic or other languages. 당신은 한국어 AI 어시스턴트입니다. 사용자는 한국어로 말할 것입니다. 한국어 음성을 정확히 인식하고 자연스럽게 한국어로 응답해주세요.'
                         }]
                     },
                     # Enable transcript support for both input and output
@@ -215,9 +201,16 @@ CRITICAL LANGUAGE INSTRUCTIONS:
     async def _handle_output_transcript(self, transcript_text: str):
         """Handle output transcript with buffering for Korean text"""
         try:
+            # Ensure we have a proper string, avoid double encoding/decoding
             if isinstance(transcript_text, bytes):
-                transcript_text = transcript_text.decode('utf-8')
-            transcript_text = str(transcript_text).encode('utf-8').decode('utf-8')
+                transcript_text = transcript_text.decode('utf-8', errors='replace')
+            elif not isinstance(transcript_text, str):
+                transcript_text = str(transcript_text)
+
+            # Clean and validate the text
+            transcript_text = transcript_text.strip()
+            if not transcript_text:
+                return
 
             current_time = time.time()
             self.last_transcript_time = current_time
@@ -228,8 +221,10 @@ CRITICAL LANGUAGE INSTRUCTIONS:
             # Start timer to flush buffer
             asyncio.create_task(self._flush_output_buffer_after_delay())
 
-        except UnicodeError as e:
-            logger.error(f"Encoding error in output transcript: {e}")
+        except Exception as e:
+            logger.error(f"Error processing output transcript: {e}")
+            # Fallback to safe text
+            self.output_transcript_buffer.append("[AI 응답]")
 
     async def _flush_input_buffer_after_delay(self):
         """Flush input transcript buffer after delay"""
@@ -241,11 +236,16 @@ CRITICAL LANGUAGE INSTRUCTIONS:
                 combined_text = ''.join(self.input_transcript_buffer).strip()
                 if combined_text:
                     try:
-                        logger.info(f"User transcript received: {len(combined_text)} chars")
-                        await self.text_callback(f"[USER]: {combined_text}")
-                    except UnicodeError as e:
-                        logger.error(f"Unicode error in user transcript: {e}")
-                        await self.text_callback("[USER]: [음성 인식됨]")
+                        logger.info(f"User transcript: {combined_text}")
+                    except UnicodeEncodeError:
+                        logger.info("User transcript: [Korean text - encoding error in log]")
+
+                    await self.text_callback({
+                        'type': 'transcript',
+                        'text': combined_text,
+                        'sender': 'user',
+                        'source': 'live_api_input'
+                    })
                 self.input_transcript_buffer.clear()
 
     async def _flush_output_buffer_after_delay(self):
@@ -257,8 +257,17 @@ CRITICAL LANGUAGE INSTRUCTIONS:
             if self.output_transcript_buffer:
                 combined_text = ''.join(self.output_transcript_buffer).strip()
                 if combined_text:
-                    logger.info(f"AI transcript: {combined_text}")
-                    await self.text_callback(combined_text)
+                    try:
+                        logger.info(f"AI transcript: {combined_text}")
+                    except UnicodeEncodeError:
+                        logger.info("AI transcript: [Korean text - encoding error in log]")
+
+                    await self.text_callback({
+                        'type': 'transcript',
+                        'text': combined_text,
+                        'sender': 'ai',
+                        'source': 'live_api_output'
+                    })
                 self.output_transcript_buffer.clear()
 
     async def send_text(self, text: str):
@@ -354,25 +363,20 @@ class ContinuousVoiceSession:
                     'audio': base64.b64encode(audio_bytes).decode('utf-8')
                 })
 
-        async def handle_text(text):
-            """Handle text from Live API"""
+        async def handle_text(text_data):
+            """Handle text from Live API - support both direct text and structured data"""
             if self.websocket_callback:
-                # Differentiate between user transcripts and AI responses
-                if text.startswith('[USER]:'):
-                    # User voice transcript
+                # Check if it's structured transcript data from WebSocketLiveClient
+                if isinstance(text_data, dict):
+                    # Already structured data from WebSocketLiveClient._flush_*_buffer_after_delay
+                    await self.websocket_callback(text_data)
+                else:
+                    # Direct text for compatibility - assume AI response
                     await self.websocket_callback({
                         'type': 'transcript',
-                        'text': text,
-                        'sender': 'user',
-                        'source': 'voice_input'
-                    })
-                else:
-                    # AI text response (not transcript) - should show in chat
-                    await self.websocket_callback({
-                        'type': 'ai_response',
-                        'text': text,
+                        'text': text_data,
                         'sender': 'ai',
-                        'source': 'live_api'
+                        'source': 'live_api_output'
                     })
 
         try:

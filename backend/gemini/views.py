@@ -15,7 +15,7 @@ def gemini_home(request):
 
     # Get current host and port from request
     host = request.get_host().split(':')[0]  # Get hostname only
-    websocket_url = f'ws://{host}:8000/ws/gemini/'  # WebSocket server on port 8000
+    websocket_url = f'ws://{host}:8001/ws/gemini/'  # WebSocket server on port 8001
 
     # Debug logging to check what URL is being generated
     print(f"DEBUG - Generated websocket_url: {websocket_url}")
@@ -65,7 +65,7 @@ def continuous_voice(request):
     """Continuous Voice Conversation interface using Gemini Live API"""
     # Get current host and port from request
     host = request.get_host().split(':')[0]  # Get hostname only
-    websocket_url = f'ws://{host}:8000/ws/gemini/'  # WebSocket server on port 8000
+    websocket_url = f'ws://{host}:8001/ws/gemini/'  # WebSocket server on port 8001
 
     context = {
         'websocket_url': websocket_url,
@@ -83,9 +83,9 @@ def live_voice_a2a(request):
     except Exception as e:
         model_name = f"Error: {str(e)}"
 
-    # Get current host and port from request
-    host_with_port = request.get_host()  # Get hostname and port
-    websocket_url = f'ws://{host_with_port}/ws/gemini/'  # Use same port as HTTP server
+    # Get current host from request
+    host = request.get_host().split(':')[0]  # Get hostname only
+    websocket_url = f'ws://{host}:8001/ws/gemini/'  # WebSocket server on port 8001
 
     context = {
         'model_name': model_name,
@@ -94,3 +94,24 @@ def live_voice_a2a(request):
     }
 
     return render(request, 'gemini/live_voice.html', context)
+
+def test_simple(request):
+    """Simple test page for debugging"""
+    try:
+        # Get service instance
+        service = get_gemini_service()
+        model_name = service.client.config.model
+    except Exception as e:
+        model_name = f"Error: {str(e)}"
+
+    # Get current host from request
+    host = request.get_host().split(':')[0]  # Get hostname only
+    websocket_url = f'ws://{host}:8001/ws/gemini/'  # WebSocket server on port 8001
+
+    context = {
+        'model_name': model_name,
+        'websocket_url': websocket_url,
+        'page_title': 'Simple Test Page'
+    }
+
+    return render(request, 'gemini/test_simple.html', context)

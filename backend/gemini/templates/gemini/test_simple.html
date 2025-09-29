@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test Page</title>
+</head>
+<body>
+    <h1>Simple Test Page</h1>
+    <p>WebSocket URL: {{ websocket_url }}</p>
+    <p>Model: {{ model_name }}</p>
+    <div id="status">Loading...</div>
+
+    <script>
+        console.log('JavaScript loaded successfully');
+        document.getElementById('status').textContent = 'JavaScript working!';
+
+        // Test WebSocket connection
+        const ws = new WebSocket('{{ websocket_url }}');
+        ws.onopen = function() {
+            console.log('WebSocket connected');
+            document.getElementById('status').textContent = 'WebSocket connected!';
+        };
+        ws.onerror = function(error) {
+            console.error('WebSocket error:', error);
+            document.getElementById('status').textContent = 'WebSocket error!';
+        };
+    </script>
+</body>
+</html>
