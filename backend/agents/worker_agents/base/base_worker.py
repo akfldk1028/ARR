@@ -21,19 +21,11 @@ conversation_logger = logging.getLogger('agents.conversation')
 a2a_logger = logging.getLogger('agents.a2a_communication')
 
 def safe_log_text(text: str) -> str:
-    """Safely encode text for logging, preserving Korean but replacing problematic Unicode"""
+    """Preserve all text including Korean characters without any filtering"""
     if not text:
         return text
-
-    try:
-        # First try to encode with cp949 (Korean Windows encoding)
-        text.encode('cp949')
-        return text
-    except UnicodeEncodeError:
-        # If encoding fails, replace problematic characters while preserving Korean
-        # Use 'replace' error handling to substitute problematic characters with '?'
-        safe_text = text.encode('cp949', errors='replace').decode('cp949')
-        return safe_text
+    # Simply return the original text without any encoding conversion or filtering
+    return text
 
 class BaseWorkerAgent(ABC):
     """Base class for all worker agents"""

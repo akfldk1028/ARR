@@ -128,14 +128,10 @@ Provide realistic flight times, prices, and airline recommendations.''')
             # Add current user message
             messages.append(HumanMessage(content=user_input))
 
-            # Generate specialized response with timeout - temporarily use fallback first
+            # Generate specialized response with timeout
             try:
-                # Temporarily use fallback response to debug the issue
-                logger.info("Using fallback response for debugging")
-                flight_response = "안녕하세요! 항공편 예약을 도와드리겠습니다. 어디서 어디로 가는 항공편을 찾고 계신가요? 출발지와 목적지, 그리고 선호하는 날짜를 알려주시면 최적의 항공편을 찾아드리겠습니다."
-
-                # Disabled temporarily: response = await asyncio.wait_for(self.llm.ainvoke(messages), timeout=30.0)
-                # Disabled temporarily: flight_response = response.content
+                response = await asyncio.wait_for(self.llm.ainvoke(messages), timeout=30.0)
+                flight_response = response.content
             except asyncio.TimeoutError:
                 logger.warning("LLM response timeout, using fallback response")
                 flight_response = "안녕하세요! 항공편 예약을 도와드리겠습니다. 어디서 어디로 가는 항공편을 찾고 계신가요? 출발지와 목적지, 그리고 선호하는 날짜를 알려주시면 최적의 항공편을 찾아드리겠습니다."

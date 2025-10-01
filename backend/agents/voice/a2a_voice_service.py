@@ -34,7 +34,7 @@ class A2AVoiceService:
         # Gemini Live API WebSocket endpoint (from Context7 docs)
         self.host = 'generativelanguage.googleapis.com'
         self.websocket_url = f'wss://{self.host}/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent'
-        self.model = 'models/gemini-live-2.5-flash-preview'  # Live API model from docs
+        self.model = 'models/gemini-flash-2.0-live-001'  # Live API model from docs
 
         # Audio configuration (from Context7 docs)
         self.audio_config = {
