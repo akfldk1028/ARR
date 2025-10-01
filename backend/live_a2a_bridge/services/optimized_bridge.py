@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from agents.worker_agents.worker_manager import WorkerAgentManager
 from agents.worker_agents.agent_discovery import AgentDiscoveryService
 from gemini.services.websocket_live_client import ContinuousVoiceSession
+from config.agent_config import AgentConfig
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,8 @@ class LiveA2AResponse:
     delegation_occurred: bool = False
     delegated_agent: Optional[str] = None
     specialist_response: Optional[str] = None
+    handoff_message: Optional[str] = None
+    voice_name: Optional[str] = None
     processing_time: float = 0.0
     error_message: Optional[str] = None
 
@@ -45,15 +48,13 @@ class OptimizedLiveA2ABridge:
     Optimized bridge between Live API and A2A Workers
 
     Flow:
-    1. Live API transcript → Delegate check → A2A process → TTS response
+    1. Live API transcript ??Delegate check ??A2A process ??TTS response
     2. Direct integration with simplified routing logic
     """
 
-    def __init__(self):
-        self.worker_manager = WorkerAgentManager()
-        self.discovery_service = None
-        self.current_agent = "test-agent"
-        self.voice_session: Optional[ContinuousVoiceSession] = None
+        HANDOFF_CONFIRMATION_MESSAGE = (
+        "\ub124\uc54c\uacb0\uc2b5\ub2c8\ub2e4\ube44\ud589\uae30\uc5d0\uc774\uc804\ud2b8\ub97c\ud1b5\ud574\uc608\uc57d\ud558\uaca0\uc2b5\ub2c8\ub2e4"
+    )        self.voice_session: Optional[ContinuousVoiceSession] = None
 
         # Performance tracking
         self.request_count = 0
@@ -79,7 +80,7 @@ class OptimizedLiveA2ABridge:
 
     async def process_live_transcript(self, transcript: str, user_id: str, session_id: str) -> LiveA2AResponse:
         """
-        Core processing method: Live API transcript → A2A routing → Response
+        Core processing method: Live API transcript ??A2A routing ??Response
 
         This is the main bridge method that handles:
         1. Input validation
@@ -147,7 +148,7 @@ class OptimizedLiveA2ABridge:
                 current_agent_slug=self.current_agent
             )
 
-            logger.info(f"Delegation check: {should_delegate} → {target_agent}")
+            logger.info(f"Delegation check: {should_delegate} ??{target_agent}")
             return should_delegate, target_agent
 
         except Exception as e:
@@ -161,9 +162,17 @@ class OptimizedLiveA2ABridge:
             if not specialist:
                 raise Exception(f"Specialist agent '{target_agent}' not found")
 
-            # Process with specialist
-            response_text = await specialist.process_request(
-                user_input=request.user_input,
+            handoff_message = None
+            specialist_input = request.user_input
+            specialist_voice = AgentConfig.get_voice_for_agent(target_agent)
+
+            if target_agent == 'flight-specialist':
+                handoff_message = self.HANDOFF_CONFIRMATION_MESSAGE
+                specialist_input = f"{handoff_message}\n\n\uc6d0\ubcf8 \uc0ac\uc6a9\uc790 \uc694\uccad: {request.user_input}\"
+                logger.info('Forwarding Live API confirmation to flight specialist')
+
+            specialist_response_text = await specialist.process_request(
+                user_input=specialist_input,
                 context_id=request.session_id,
                 session_id=request.session_id,
                 user_name=request.user_id
@@ -171,12 +180,14 @@ class OptimizedLiveA2ABridge:
 
             return LiveA2AResponse(
                 success=True,
-                response_text=response_text,
+                response_text=specialist_response_text,
                 agent_slug=target_agent,
                 agent_name=specialist.agent_name,
                 delegation_occurred=True,
                 delegated_agent=target_agent,
-                specialist_response=response_text
+                specialist_response=specialist_response_text,
+                handoff_message=handoff_message,
+                voice_name=specialist_voice
             )
 
         except Exception as e:
@@ -203,12 +214,15 @@ class OptimizedLiveA2ABridge:
                 user_name=request.user_id
             )
 
+            current_voice = AgentConfig.get_voice_for_agent(self.current_agent)
+
             return LiveA2AResponse(
                 success=True,
                 response_text=response_text,
                 agent_slug=self.current_agent,
                 agent_name=agent.agent_name,
-                delegation_occurred=False
+                delegation_occurred=False,
+                voice_name=current_voice
             )
 
         except Exception as e:
@@ -228,15 +242,47 @@ class OptimizedLiveA2ABridge:
                 logger.error("No active voice session")
                 return False
 
-            if not response.success or not response.response_text:
-                logger.warning("No valid response to send to Live API")
+            if not response.success:
+                logger.warning("Response marked unsuccessful; skipping Live API send")
                 return False
 
-            # Send to Live API for TTS
-            await self.voice_session.send_text(response.response_text)
-            logger.info(f"Response sent to Live API: {response.response_text[:50]}...")
+            sent = False
+            current_voice = AgentConfig.get_voice_for_agent(self.current_agent)
+            target_voice = response.voice_name or current_voice
 
-            return True
+            try:
+                if response.handoff_message:
+                    updated = await self.voice_session.update_voice(current_voice)
+                    if not updated:
+                        logger.warning(f"Voice update to {current_voice} failed before handoff message")
+                    await self.voice_session.send_text(response.handoff_message, role='MODEL')
+                    logger.info(f"Handoff message sent to Live API: {response.handoff_message[:50]}...")
+                    sent = True
+
+                if response.response_text:
+                    if response.delegation_occurred and target_voice != current_voice:
+                        updated = await self.voice_session.update_voice(target_voice)
+                        if not updated:
+                            logger.warning(f"Voice update to {target_voice} failed before delegated response")
+                        else:
+                            logger.info(f"Switched voice to {target_voice} for delegated response")
+                    else:
+                        updated = await self.voice_session.update_voice(target_voice)
+                        if not updated:
+                            logger.warning(f"Voice update to {target_voice} failed before response")
+
+                    await self.voice_session.send_text(response.response_text, role='MODEL')
+                    logger.info(f"Response sent to Live API: {response.response_text[:50]}...")
+                    sent = True
+
+            finally:
+                if response.delegation_occurred:
+                    await self.voice_session.update_voice(current_voice)
+
+            if not sent:
+                logger.warning("No response content available for Live API")
+
+            return sent
 
         except Exception as e:
             logger.error(f"Failed to send response to Live API: {e}")
@@ -279,6 +325,7 @@ class OptimizedLiveA2ABridge:
                                     'original_agent': self.current_agent,
                                     'specialist_agent': bridge_response.delegated_agent,
                                     'user_request': user_text,
+                                    'handoff_message': bridge_response.handoff_message,
                                     'specialist_response': bridge_response.specialist_response
                                 })
 

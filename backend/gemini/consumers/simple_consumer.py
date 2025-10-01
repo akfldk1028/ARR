@@ -21,9 +21,23 @@ import io
 from ..models import ChatSession, ChatMessage
 from ..services.service_manager import get_gemini_service
 from ..services.websocket_live_client import ContinuousVoiceSession
+from ..services.vad_stt_service import VADSTTService
 from agents.worker_agents.worker_manager import WorkerAgentManager
 
 logger = logging.getLogger('gemini.consumers')
+
+
+def safe_log_text(text: str) -> str:
+    """Safely encode text for logging, handling encoding errors"""
+    if not text:
+        return text
+    try:
+        # Try to encode and decode to catch problematic characters
+        text.encode('utf-8')
+        return text
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        # Replace problematic characters with ASCII representation
+        return text.encode('ascii', errors='backslashreplace').decode('ascii')
 
 
 class SimpleChatConsumer(AsyncWebsocketConsumer):
@@ -45,6 +59,8 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         self.worker_manager = WorkerAgentManager()
         self.current_agent_slug = "general-worker"
         self.voice_session = None
+        self.a2a_handler = None
+        self.vad_stt_service = None  # VAD + STT integrated service
 
     # ============== 1. CONNECTION MANAGEMENT ==============
 
@@ -58,6 +74,10 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             self.gemini_service = get_gemini_service()
             self.chat_session = await self._get_or_create_session()
             self.session_id = str(self.chat_session.id)
+
+            # Initialize handlers
+            from .handlers.a2a_handler import A2AHandler
+            self.a2a_handler = A2AHandler(self)
 
             await self._send_welcome_message()
             logger.info(f"Connection established: {self.session_id}")
@@ -98,6 +118,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                 'start_voice_session': self._handle_start_voice_session,
                 'stop_voice_session': self._handle_stop_voice_session,
                 'voice_audio_chunk': self._handle_voice_audio_chunk,
+                'transcript': self._handle_transcript,
                 'semantic_routing': self._handle_semantic_routing,
                 'a2a_delegation': self._handle_a2a_delegation,
                 'session_info': self._handle_session_info,
@@ -146,15 +167,25 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                         if sender == 'user' and source == 'live_api_input':
                             # 사용자 입력에 대해 semantic routing 적용
                             user_text = message.get('text', '')
-                            logger.info(f"사용자 입력 transcript: {user_text}")
+                            logger.info(f"사용자 입력 transcript: {safe_log_text(user_text)}")
 
-                            # Semantic routing 수행
-                            routing_result = await self._analyze_intent_with_llm(user_text, 'live-api')
+                            # Filter out noise/silence tags from Gemini Live API
+                            if user_text.strip() in ['<noise>', '<silence>', '<background>', '']:
+                                logger.info(f"Skipping noise/silence tag: {user_text}")
+                                return
+
+                            # STEP 2: Immediately interrupt Live API to prevent competing responses
+                            if self.voice_session and hasattr(self.voice_session, 'send_interrupt'):
+                                await self.voice_session.send_interrupt()
+                                logger.info("Live API interrupted for A2A processing")
+
+                            # Semantic routing 수행 (a2a_handler의 임베딩 기반 유사도 사용)
+                            routing_result = await self.a2a_handler._analyze_intent_with_similarity(user_text, 'live-api')
 
                             if routing_result.get('should_delegate', False):
-                                # A2A 처리 필요
+                                # A2A 처리 필요 - Keep Live API paused
                                 target_agent = routing_result.get('target_agent')
-                                logger.info(f"A2A 라우팅: {target_agent}")
+                                logger.info(f"A2A 라우팅: {target_agent} - Live API stays paused")
 
                                 try:
                                     # A2A 에이전트로 요청 전송
@@ -167,22 +198,20 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                                             user_name=self.user_obj.username if self.user_obj else "user"
                                         )
 
-                                        # A2A 응답을 음성으로 변환하여 전송
+                                        # A2A 응답을 음성으로 변환하여 전송 (Live API remains paused)
                                         voice_name = 'Kore' if target_agent == 'flight-specialist' else 'Aoede'
                                         await self._process_a2a_response(a2a_response, voice_name, user_text)
 
                                     else:
                                         logger.error(f"Agent {target_agent} not available")
-                                        # Fallback to Live API
-                                        pass
+                                        # Fallback to Live API (interrupt already sent, no resume needed)
 
                                 except Exception as e:
                                     logger.error(f"A2A processing failed: {e}")
-                                    # Fallback to Live API
-                                    pass
+                                    # Fallback to Live API (interrupt already sent, no resume needed)
                             else:
-                                # Live API에서 직접 처리 - transcript만 frontend로 전송
-                                logger.info("Live API 직접 처리")
+                                # Live API에서 직접 처리 (no interrupt needed, continues normally)
+                                logger.info("Live API 직접 처리 - no A2A routing needed")
 
                         elif sender == 'ai' and source == 'live_api_output':
                             # AI 출력은 그대로 frontend로 전송
@@ -210,13 +239,70 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                     logger.error(f"A2A processor error: {e}")
                     return {'success': False, 'error': str(e)}
 
+            # STT transcript callback for A2A routing
+            async def stt_transcript_callback(transcript_text):
+                """Handle Speech-to-Text transcript results for A2A routing"""
+                try:
+                    logger.info(f"STT Transcript received: {safe_log_text(transcript_text)}")
+
+                    # Filter out noise/silence
+                    if transcript_text.strip() in ['<noise>', '<silence>', '<background>', '']:
+                        logger.info(f"Skipping noise/silence: {transcript_text}")
+                        return
+
+                    # STEP 1: Interrupt Live API to prevent competing responses
+                    if self.voice_session and hasattr(self.voice_session, 'send_interrupt'):
+                        await self.voice_session.send_interrupt()
+                        logger.info("Live API interrupted for STT-based A2A processing")
+
+                    # STEP 2: Semantic routing with embedding similarity
+                    routing_result = await self.a2a_handler._analyze_intent_with_similarity(
+                        transcript_text, 'speech-to-text'
+                    )
+
+                    if routing_result.get('should_delegate', False):
+                        # A2A processing needed
+                        target_agent = routing_result.get('target_agent')
+                        logger.info(f"STT A2A routing: {target_agent}")
+
+                        try:
+                            # Get agent and process request
+                            agent = await self.worker_manager.get_worker(target_agent)
+                            if agent:
+                                a2a_response = await agent.process_request(
+                                    user_input=transcript_text,
+                                    context_id=self.session_id,
+                                    session_id=self.session_id,
+                                    user_name=self.user_obj.username if self.user_obj else "user"
+                                )
+
+                                # Convert A2A response to voice
+                                voice_name = 'Kore' if target_agent == 'flight-specialist' else 'Aoede'
+                                await self._process_a2a_response(a2a_response, voice_name, transcript_text)
+                            else:
+                                logger.error(f"Agent {target_agent} not available")
+
+                        except Exception as e:
+                            logger.error(f"STT A2A processing failed: {e}")
+                    else:
+                        # No A2A routing needed - Live API continues normally
+                        logger.info("STT: No A2A routing needed - Live API continues")
+
+                except Exception as e:
+                    logger.error(f"STT transcript callback error: {e}")
+
+            # Start VAD + STT session in parallel
+            self.vad_stt_service = VADSTTService(api_key=api_key, vad_engine='silero')
+            await self.vad_stt_service.start(transcript_callback=stt_transcript_callback)
+            logger.info("VAD + STT service started (Silero VAD, Korean STT)")
+
             # Connect Context7 Live API session
             await self.voice_session.start(
                 websocket_callback=websocket_callback,
                 voice_name="Aoede"
             )
 
-            await self._send_voice_status('started', 'Context7 Live API + A2A 브릿지 활성화!')
+            await self._send_voice_status('started', 'Context7 Live API + STT + A2A 브릿지 활성화!')
 
         except Exception as e:
             logger.error(f"Context7 Live API session start failed: {e}")
@@ -228,13 +314,19 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             if self.voice_session:
                 await self.voice_session.stop()
                 self.voice_session = None
-            await self._send_voice_status('stopped', 'Context7 Live API 세션 종료')
+
+            # Stop VAD + STT service
+            if self.vad_stt_service:
+                await self.vad_stt_service.stop()
+                logger.info("VAD + STT service stopped")
+
+            await self._send_voice_status('stopped', 'Context7 Live API + STT 세션 종료')
         except Exception as e:
             logger.error(f"Context7 voice session stop failed: {e}")
             await self._send_error(f"세션 종료 실패: {str(e)}")
 
     async def _handle_voice_audio_chunk(self, data):
-        """Process voice audio chunk with Context7 Live API"""
+        """Process voice audio chunk with Context7 Live API and Speech-to-Text in parallel"""
         try:
             if not self.voice_session:
                 await self._send_error('Live API 세션이 없습니다')
@@ -252,12 +344,42 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             except Exception:
                 return  # Skip invalid base64
 
-            # Send to Context7 Live API
-            await self.voice_session.process_audio(audio_data)
+            # Parallel processing: Send to both Live API and VAD+STT
+            tasks = [
+                self.voice_session.process_audio(audio_data),  # Gemini Live API
+            ]
+
+            # Send to VAD + STT if available
+            if self.vad_stt_service:
+                tasks.append(self.vad_stt_service.process_audio_chunk(audio_data))
+
+            # Run both in parallel
+            await asyncio.gather(*tasks, return_exceptions=True)
 
         except Exception as e:
             logger.error(f"Context7 audio processing failed: {e}")
             await self._send_error(f"음성 처리 실패: {str(e)}")
+
+    async def _handle_transcript(self, data):
+        """Handle transcript messages for A2A routing"""
+        try:
+            text = data.get('text', '').strip()
+            sender = data.get('sender')
+            source = data.get('source')
+
+            logger.info(f"Transcript received: sender={sender}, source={source}, text={text[:50]}...")
+
+            # DEDUPLICATION: Skip A2A processing here since websocket_callback already handles it
+            # A2A 중복 방지: websocket_callback에서 이미 처리하므로 여기서는 스킵
+            if sender == 'user' and source == 'live_api_input' and text:
+                logger.info("Transcript A2A processing skipped - already handled in websocket_callback")
+
+            # 모든 transcript 메시지를 frontend로 전송 (기존 동작 유지)
+            await self.send(text_data=json.dumps(data))
+
+        except Exception as e:
+            logger.error(f"Transcript handling error: {e}")
+            await self._send_error(f"Transcript 처리 실패: {str(e)}")
 
     # ============== 4. A2A PROCESSING ==============
 
@@ -666,7 +788,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             old_agent = self.current_agent_slug
             self.current_agent_slug = target_agent
 
-            logger.info(f"A2A delegation: {old_agent} -> {target_agent} for message: {user_message[:50]}...")
+            logger.info(f"A2A delegation: {old_agent} -> {target_agent} for message: {safe_log_text(user_message[:50])}...")
 
             # Process message with new agent
             result = await self._process_with_a2a(user_message)
@@ -741,7 +863,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                 await self._send_error("No user message provided for semantic routing")
                 return
 
-            logger.info(f"LLM semantic routing analysis for: '{user_message}' with current agent: {current_agent}")
+            logger.info(f"LLM semantic routing analysis for: '{safe_log_text(user_message)}' with current agent: {current_agent}")
 
             # Use Gemini LLM for semantic intent analysis
             routing_result = await self._analyze_intent_with_llm(user_message, current_agent)
@@ -764,105 +886,121 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             await self._send_error(f"Semantic routing failed: {str(e)}")
 
     async def _analyze_intent_with_llm(self, user_message: str, current_agent: str) -> dict:
-        """Use Gemini LLM to analyze user intent and determine routing"""
+        """Use semantic similarity (embeddings) to analyze user intent and determine routing"""
         try:
-            routing_prompt = f"""
-당신은 사용자 요청과 전문 에이전트 기능 간의 의미적 유사도를 측정하여 라우팅을 결정하는 AI 시스템입니다.
+            from sentence_transformers import SentenceTransformer
+            from sklearn.metrics.pairwise import cosine_similarity
+            import numpy as np
 
-전문 에이전트 기능 정의:
+            # Load embedding model (cache it in memory)
+            if not hasattr(self, '_embedding_model'):
+                self._embedding_model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
 
-🔹 flight-specialist (항공 전문가):
-- 핵심 기능: 항공편 검색, 예약, 변경, 취소, 항공료 비교, 좌석 선택, 수하물 정보
+            # Agent capability descriptions
+            agent_descriptions = {
+                'flight-specialist': '비행기 항공편 항공권 예약 출발 도착 공항 탑승 수하물 좌석 예약 변경 취소 항공료',
+                'hotel-specialist': '호텔 숙박 객실 체크인 체크아웃 예약 숙소 리조트 게스트하우스 룸서비스'
+            }
 
-🔹 hotel-specialist (숙박 전문가):
-- 핵심 기능: 호텔 검색, 예약, 체크인/아웃, 객실 서비스, 숙박 정보, 리뷰 확인
+            # Compute embeddings
+            user_embedding = self._embedding_model.encode([user_message])
+            flight_embedding = self._embedding_model.encode([agent_descriptions['flight-specialist']])
+            hotel_embedding = self._embedding_model.encode([agent_descriptions['hotel-specialist']])
 
-사용자 메시지: "{user_message}"
+            # Compute cosine similarities
+            flight_similarity = float(cosine_similarity(user_embedding, flight_embedding)[0][0])
+            hotel_similarity = float(cosine_similarity(user_embedding, hotel_embedding)[0][0])
 
-위 사용자 메시지와 각 전문 에이전트의 핵심 기능 간 의미적 유사도를 분석하세요:
+            logger.info(f"Semantic similarity - Flight: {flight_similarity:.3f}, Hotel: {hotel_similarity:.3f}")
 
-1. 사용자 요청의 진짜 의도를 파악
-2. 각 전문 에이전트 기능과의 의미적 관련성 측정
-3. 가장 높은 유사도를 가진 에이전트 선택 (임계값 0.7 이상)
-4. 임계값 이하면 Live API 직접 처리
+            # Routing decision based on similarity threshold
+            THRESHOLD = 0.5
+            max_similarity = max(flight_similarity, hotel_similarity)
 
-**중요**: 오직 flight-specialist와 hotel-specialist만 사용 가능합니다.
-일반적인 대화, 질문, 정보 요청은 should_delegate=false로 설정하세요.
-
-의미적 유사도 분석 결과를 JSON으로 응답:
-{{
-    "should_delegate": boolean,
-    "target_agent": "flight-specialist" or "hotel-specialist" or null,
-    "confidence": float (0.0-1.0),
-    "reasoning": "의미적 유사도 분석 결과",
-    "intent_category": "flight|hotel|general",
-    "similarity_scores": {{
-        "flight_similarity": float,
-        "hotel_similarity": float
-    }}
-}}
-"""
-
-            # Use Gemini service for intent analysis
-            result = await self.gemini_service.process_text_with_streaming(
-                routing_prompt, self.session_id, callback=None
-            )
-
-            # Parse LLM response
-            llm_response = result.get('text', '{}')
-            logger.info(f"LLM routing response: {llm_response}")
-
-            try:
-                # Extract JSON from response
-                import re
-                json_match = re.search(r'\{.*\}', llm_response, re.DOTALL)
-                if json_match:
-                    routing_data = json.loads(json_match.group())
+            if max_similarity >= THRESHOLD:
+                if flight_similarity > hotel_similarity:
+                    target_agent = 'flight-specialist'
+                    confidence = flight_similarity
+                    intent_category = 'flight'
                 else:
-                    raise ValueError("No JSON found in LLM response")
+                    target_agent = 'hotel-specialist'
+                    confidence = hotel_similarity
+                    intent_category = 'hotel'
 
-                # Validate and process the routing decision
-                should_delegate = routing_data.get('should_delegate', False)
-                target_agent = routing_data.get('target_agent')
-                confidence = float(routing_data.get('confidence', 0.0))
-                reasoning = routing_data.get('reasoning', 'LLM 분석 완료')
-                intent_category = routing_data.get('intent_category', 'general')
+                should_delegate = True
+                reasoning = f"의미적 유사도 {confidence:.2f}로 {target_agent} 선택"
+            else:
+                should_delegate = False
+                target_agent = None
+                confidence = max_similarity
+                intent_category = 'general'
+                reasoning = f"최대 유사도 {max_similarity:.2f}가 임계값 {THRESHOLD} 미만"
 
-                # Additional validation
-                if should_delegate and target_agent == current_agent:
-                    should_delegate = False
-                    reasoning += " (이미 적절한 에이전트 사용 중)"
-
-                return {
-                    'should_delegate': should_delegate,
-                    'target_agent': target_agent,
-                    'confidence': confidence,
-                    'analysis': f"LLM 의도 분석: {intent_category} 카테고리",
-                    'reasoning': reasoning
+            return {
+                'should_delegate': should_delegate,
+                'target_agent': target_agent,
+                'confidence': confidence,
+                'analysis': f"임베딩 기반 의미 분석: {intent_category} 카테고리",
+                'reasoning': reasoning,
+                'similarity_scores': {
+                    'flight_similarity': flight_similarity,
+                    'hotel_similarity': hotel_similarity
                 }
+            }
 
-            except (json.JSONDecodeError, ValueError) as e:
-                logger.error(f"Failed to parse LLM routing response: {e}")
-                # Fallback to simple logic
-                return {
-                    'should_delegate': False,
-                    'target_agent': None,
-                    'confidence': 0.0,
-                    'analysis': "LLM 응답 파싱 실패, 현재 에이전트 유지",
-                    'reasoning': "LLM 응답을 파싱할 수 없어 기본 라우팅 사용"
-                }
-
+        except ImportError as e:
+            logger.error(f"Sentence Transformers not installed: {e}")
+            # Fallback to simple keyword matching
+            return await self._fallback_keyword_routing(user_message, current_agent)
         except Exception as e:
-            logger.error(f"LLM intent analysis failed: {e}")
+            logger.error(f"Semantic analysis failed: {e}")
+            return await self._fallback_keyword_routing(user_message, current_agent)
+
+    async def _fallback_keyword_routing(self, user_message: str, current_agent: str) -> dict:
+        """Fallback keyword-based routing when embeddings fail"""
+        user_lower = user_message.lower()
+
+        flight_keywords = ['비행기', '항공', '비행', '예약', '출발', '도착', '공항', '탑승', '항공권']
+        hotel_keywords = ['호텔', '숙박', '체크인', '객실', '숙소', '리조트']
+
+        flight_score = sum(1 for kw in flight_keywords if kw in user_lower) / len(flight_keywords)
+        hotel_score = sum(1 for kw in hotel_keywords if kw in user_lower) / len(hotel_keywords)
+
+        if flight_score > hotel_score and flight_score > 0:
+            return {
+                'should_delegate': True,
+                'target_agent': 'flight-specialist',
+                'confidence': flight_score,
+                'analysis': '키워드 기반 분석: flight 카테고리',
+                'reasoning': f'비행 관련 키워드 매칭 점수: {flight_score:.2f}'
+            }
+        elif hotel_score > 0:
+            return {
+                'should_delegate': True,
+                'target_agent': 'hotel-specialist',
+                'confidence': hotel_score,
+                'analysis': '키워드 기반 분석: hotel 카테고리',
+                'reasoning': f'호텔 관련 키워드 매칭 점수: {hotel_score:.2f}'
+            }
+        else:
             return {
                 'should_delegate': False,
                 'target_agent': None,
                 'confidence': 0.0,
-                'analysis': "LLM 분석 실패, 현재 에이전트 유지",
-                'reasoning': f"분석 중 오류 발생: {str(e)}"
+                'analysis': '키워드 기반 분석: general 카테고리',
+                'reasoning': '전문 에이전트 키워드 매칭 없음'
             }
 
     # ============== 7. UTILITY METHODS ==============
+
+    async def _resume_after_tts_playback(self, estimated_duration: float):
+        """TTS 재생 완료 대기 (Context7: interrupt 이후 자동 재개, resume 불필요)"""
+        try:
+            logger.info(f"Waiting {estimated_duration:.1f}s for TTS playback completion")
+            await asyncio.sleep(estimated_duration)
+            logger.info(f"TTS playback completed after {estimated_duration:.1f}s (Live API will auto-resume on next input)")
+        except Exception as e:
+            logger.error(f"Error in TTS playback timer: {e}")
 
     async def _process_a2a_response(self, a2a_response: str, voice_name: str, user_text: str):
         """A2A 응답을 TTS로 변환하여 전송"""
@@ -906,8 +1044,23 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
             logger.info(f"A2A 응답 전송 완료: {voice_name} - {a2a_response[:50]}...")
 
+            # STEP 3: TTS 재생 상태 관리를 위해 RESPONDING 상태로 전환
+            if self.voice_session and hasattr(self.voice_session, 'set_responding_state'):
+                await self.voice_session.set_responding_state()
+                logger.info("A2A TTS response playing - Live API in RESPONDING state")
+
+                # TTS 재생 예상 시간 계산 (대략적으로 텍스트 길이 기반)
+                estimated_duration = max(3, len(a2a_response) * 0.08)  # ~80ms per character
+
+                # TTS 재생 완료 대기 (비동기로 처리, Context7는 자동 재개)
+                asyncio.create_task(self._resume_after_tts_playback(estimated_duration))
+            else:
+                # Fallback: 스트리밍 없이 완료 (Context7는 자동 재개)
+                logger.info("A2A response completed (Live API will auto-resume on next input)")
+
         except Exception as e:
             logger.error(f"A2A 응답 처리 실패: {e}")
+            # A2A 처리 실패 (Context7는 자동 재개)
             await self._send_error(f"A2A 응답 처리 실패: {str(e)}")
 
     async def _get_user(self):
