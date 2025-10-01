@@ -190,6 +190,7 @@ LOGGING = {
             'formatter': 'verbose',
             'maxBytes': 10485760,  # 10MB
             'backupCount': 5,
+            'encoding': 'utf-8',
         },
         'conversation_file': {
             'level': 'INFO',
@@ -198,6 +199,7 @@ LOGGING = {
             'formatter': 'conversation_format',
             'maxBytes': 10485760,  # 10MB
             'backupCount': 5,
+            'encoding': 'utf-8',
         },
         'agent_communication_file': {
             'level': 'INFO',
@@ -206,12 +208,14 @@ LOGGING = {
             'formatter': 'json_format',
             'maxBytes': 10485760,  # 10MB
             'backupCount': 5,
+            'encoding': 'utf-8',
         },
         'agent_discovery_file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(LOGS_DIR, f'agent_discovery_{LOG_DATE}.log'),
             'formatter': 'verbose',
+            'encoding': 'utf-8',
             'maxBytes': 10485760,  # 10MB
             'backupCount': 5,
         },

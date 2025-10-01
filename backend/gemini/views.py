@@ -83,9 +83,9 @@ def live_voice_a2a(request):
     except Exception as e:
         model_name = f"Error: {str(e)}"
 
-    # Get current host from request
-    host = request.get_host().split(':')[0]  # Get hostname only
-    websocket_url = f'ws://{host}:8001/ws/gemini/'  # WebSocket server on port 8001
+    # Get current host from request (includes port)
+    host = request.get_host()  # Get full host:port
+    websocket_url = f'ws://{host}/ws/gemini/'  # Use same port as HTTP
 
     context = {
         'model_name': model_name,
@@ -104,9 +104,9 @@ def test_simple(request):
     except Exception as e:
         model_name = f"Error: {str(e)}"
 
-    # Get current host from request
-    host = request.get_host().split(':')[0]  # Get hostname only
-    websocket_url = f'ws://{host}:8001/ws/gemini/'  # WebSocket server on port 8001
+    # Get current host from request (includes port)
+    host = request.get_host()  # Get full host:port
+    websocket_url = f'ws://{host}/ws/gemini/'  # Use same port as HTTP
 
     context = {
         'model_name': model_name,
