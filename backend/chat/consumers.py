@@ -34,7 +34,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.session_id = None  # Django session ID
+        self.browser_session_id = None  # Django HTTP session ID (browser connection)
         self.chat_session = None
         self.user_obj = None
         self.worker_manager = WorkerAgentManager()
@@ -45,7 +45,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.conversation_tracker = ConversationTracker(self.neo4j_service)
         self.task_manager = TaskManager(self.neo4j_service)
         self.provenance_tracker = ProvenanceTracker(self.neo4j_service)
-        self.neo4j_session_id = None  # Neo4j Session ID
+        self.conversation_id = None  # Neo4j conversation tracking ID
         self.turn_counter = 0  # Turn counter for this session
 
         self.a2a_handler = None  # A2A Handler (connect 시 초기화)
@@ -60,15 +60,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
             # 사용자 및 Django 세션 초기화
             self.user_obj = await self._get_user()
             self.chat_session = await self._get_or_create_session()
-            self.session_id = str(self.chat_session.id)
+            self.browser_session_id = str(self.chat_session.id)
 
-            # Neo4j Session 생성
+            # Neo4j Conversation 생성 또는 재사용
             username = self.user_obj.username if self.user_obj else 'anonymous'
-            self.neo4j_session_id = self.conversation_tracker.create_session(
+            self.conversation_id = self.conversation_tracker.get_or_create_conversation(
                 username,
-                metadata={'django_session_id': self.session_id, 'agent': self.current_agent_slug}
+                self.browser_session_id,
+                metadata={'django_session_id': self.browser_session_id, 'agent': self.current_agent_slug}
             )
-            logger.info(f"Neo4j Session created: {self.neo4j_session_id}")
+
+            # Initialize turn_counter from last Turn in this Conversation
+            self.turn_counter = self.conversation_tracker.get_last_turn_sequence(self.conversation_id)
+            logger.info(f"Conversation ready: {self.conversation_id}, starting from Turn {self.turn_counter}")
 
             # Gemini service는 없으므로 None 설정 (A2A Handler 초기화 전에 먼저 설정)
             self.gemini_service = None
@@ -78,7 +82,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.a2a_handler = A2AHandler(self)
 
             await self._send_welcome_message()
-            logger.info(f"Chat connection established: Django={self.session_id}, Neo4j={self.neo4j_session_id}")
+            logger.info(f"Chat connected: Browser={self.browser_session_id[:16]}..., Conversation={self.conversation_id[:16]}...")
 
         except Exception as e:
             logger.error(f"Connection failed: {e}")
@@ -90,7 +94,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         try:
             if self.chat_session:
                 await self._update_session_activity()
-            logger.info(f"Chat disconnected: {self.session_id}")
+            logger.info(f"Chat disconnected: Browser={self.browser_session_id[:16] if self.browser_session_id else 'N/A'}...")
         except Exception as e:
             logger.error(f"Disconnect error: {e}")
         finally:
@@ -205,7 +209,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             message_count = await self._get_message_count()
             await self.send(text_data=json.dumps({
                 'type': 'session_info',
-                'session_id': self.session_id,
+                'browser_session_id': self.browser_session_id,
+                'conversation_id': self.conversation_id,
                 'user': self.user_obj.username if self.user_obj else 'Anonymous',
                 'current_agent': self.current_agent_slug,
                 'message_count': message_count,
@@ -240,7 +245,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'connection',
             'message': 'Connected to A2A Chat System',
-            'session_id': self.session_id,
+            'browser_session_id': self.browser_session_id,
+            'conversation_id': self.conversation_id,
             'user': self.user_obj.username if self.user_obj else 'Anonymous',
             'current_agent': self.current_agent_slug,
             'success': True

@@ -117,10 +117,10 @@ WORKER_QUERIES = {
     """
 }
 
-# Session Management Queries
+# Session Management Queries (Legacy: using Conversation node for consistency)
 SESSION_QUERIES = {
     "create_session": """
-        MERGE (s:Session {session_id: $session_id})
+        MERGE (s:Conversation {session_id: $session_id})
         MERGE (c:Context {context_id: $context_id})
         MERGE (s)-[:IN_CONTEXT]->(c)
         SET s.created_at = coalesce(s.created_at, $timestamp),
@@ -130,7 +130,7 @@ SESSION_QUERIES = {
     """,
 
     "save_session_message": """
-        MERGE (s:Session {session_id: $session_id})
+        MERGE (s:Conversation {session_id: $session_id})
         MERGE (c:Context {context_id: $context_id})
         MERGE (s)-[:IN_CONTEXT]->(c)
         CREATE (m:Message {
@@ -146,7 +146,7 @@ SESSION_QUERIES = {
     """,
 
     "get_session_history": """
-        MATCH (s:Session {session_id: $session_id})-[:HAS_MESSAGE]->(m:Message)
+        MATCH (s:Conversation {session_id: $session_id})-[:HAS_MESSAGE]->(m:Message)
         WHERE m.agent_slug = $agent_slug OR m.type = 'user'
         RETURN m.content as content,
                m.type as role,

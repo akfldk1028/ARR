@@ -21,64 +21,90 @@ class ConversationTracker:
     def __init__(self, service: Neo4jService):
         self.service = service
 
-    def create_session(self, user_id: str, metadata: Dict[str, Any] = None) -> str:
-        """Create a new conversation session"""
-        session_id = str(uuid4())
+    def get_or_create_conversation(self, user_id: str, browser_session_id: str, metadata: Dict[str, Any] = None) -> str:
+        """Get existing active conversation or create new one"""
+        # 1. 기존 활성 Conversation 검색
+        search_query = """
+        MATCH (c:Conversation {user_id: $user_id, status: 'active'})
+        WHERE c.metadata CONTAINS $browser_session_id
+        RETURN c.id as conversation_id
+        ORDER BY c.started_at DESC
+        LIMIT 1
+        """
+
+        search_params = {
+            'user_id': user_id,
+            'browser_session_id': browser_session_id
+        }
+
+        result = self.service.execute_query(search_query, search_params)
+
+        if result and len(result) > 0:
+            conversation_id = result[0]['conversation_id']
+            logger.info(f"Reusing existing conversation {conversation_id} for user {user_id}")
+            return conversation_id
+
+        # 2. 없으면 새로 생성
+        return self.create_conversation(user_id, metadata)
+
+    def create_conversation(self, user_id: str, metadata: Dict[str, Any] = None) -> str:
+        """Create a new conversation"""
+        conversation_id = str(uuid4())
         query = """
         MERGE (u:User {id: $user_id})
-        CREATE (s:Session {
-            id: $session_id,
+        CREATE (c:Conversation {
+            id: $conversation_id,
             user_id: $user_id,
             started_at: datetime($started_at),
             status: 'active',
             metadata: $metadata
         })
-        CREATE (u)-[:STARTED_SESSION]->(s)
-        RETURN s.id as session_id
+        CREATE (u)-[:STARTED_CONVERSATION]->(c)
+        RETURN c.id as conversation_id
         """
 
         params = {
-            'session_id': session_id,
+            'conversation_id': conversation_id,
             'user_id': user_id,
             'started_at': datetime.utcnow().isoformat(),
             'metadata': json.dumps(metadata or {})
         }
 
         result = self.service.execute_write_query(query, params)
-        logger.info(f"Created session {session_id} for user {user_id}")
-        return session_id
+        logger.info(f"Created conversation {conversation_id} for user {user_id}")
+        return conversation_id
 
-    def create_turn(self, session_id: str, sequence: int, user_query: str) -> str:
+    def create_turn(self, conversation_id: str, sequence: int, user_query: str) -> str:
         """Create a new conversation turn"""
         turn_id = str(uuid4())
         query = """
-        MATCH (s:Session {id: $session_id})
+        MATCH (c:Conversation {id: $conversation_id})
         CREATE (t:Turn {
             id: $turn_id,
-            session_id: $session_id,
+            conversation_id: $conversation_id,
             sequence: $sequence,
             started_at: datetime($started_at),
             user_query: $user_query
         })
-        CREATE (s)-[:HAS_TURN]->(t)
+        CREATE (c)-[:HAS_TURN]->(t)
         RETURN t.id as turn_id
         """
 
         params = {
             'turn_id': turn_id,
-            'session_id': session_id,
+            'conversation_id': conversation_id,
             'sequence': sequence,
             'started_at': datetime.utcnow().isoformat(),
             'user_query': user_query
         }
 
         result = self.service.execute_write_query(query, params)
-        logger.info(f"Created turn {turn_id} for session {session_id}")
+        logger.info(f"Created turn {turn_id} for conversation {conversation_id}")
         return turn_id
 
     def add_message(
         self,
-        session_id: str,
+        conversation_id: str,
         turn_id: str,
         role: str,
         content: str,
@@ -91,7 +117,7 @@ class ConversationTracker:
         MATCH (t:Turn {id: $turn_id})
         CREATE (m:Message {
             id: $message_id,
-            session_id: $session_id,
+            conversation_id: $conversation_id,
             turn_id: $turn_id,
             role: $role,
             content: $content,
@@ -105,7 +131,7 @@ class ConversationTracker:
 
         params = {
             'message_id': message_id,
-            'session_id': session_id,
+            'conversation_id': conversation_id,
             'turn_id': turn_id,
             'role': role,
             'content': content,
@@ -232,28 +258,28 @@ class ConversationTracker:
         self.service.execute_write_query(query, params)
         logger.info(f"Completed turn {turn_id}")
 
-    def complete_session(self, session_id: str, status: str = 'completed'):
-        """Mark a session as completed"""
+    def complete_conversation(self, conversation_id: str, status: str = 'completed'):
+        """Mark a conversation as completed"""
         query = """
-        MATCH (s:Session {id: $session_id})
-        SET s.ended_at = datetime($ended_at),
-            s.status = $status
-        RETURN s
+        MATCH (c:Conversation {id: $conversation_id})
+        SET c.ended_at = datetime($ended_at),
+            c.status = $status
+        RETURN c
         """
 
         params = {
-            'session_id': session_id,
+            'conversation_id': conversation_id,
             'ended_at': datetime.utcnow().isoformat(),
             'status': status
         }
 
         self.service.execute_write_query(query, params)
-        logger.info(f"Completed session {session_id} with status {status}")
+        logger.info(f"Completed conversation {conversation_id} with status {status}")
 
-    def get_session_history(self, session_id: str, limit: int = 50) -> List[Dict]:
-        """Get conversation history for a session"""
+    def get_conversation_history(self, conversation_id: str, limit: int = 50) -> List[Dict]:
+        """Get conversation history"""
         query = """
-        MATCH (s:Session {id: $session_id})-[:HAS_TURN]->(t:Turn)
+        MATCH (c:Conversation {id: $conversation_id})-[:HAS_TURN]->(t:Turn)
         MATCH (t)-[:INCLUDES_MESSAGE]->(m:Message)
         RETURN t.sequence as turn_sequence,
                m.sequence as message_sequence,
@@ -265,7 +291,7 @@ class ConversationTracker:
         """
 
         params = {
-            'session_id': session_id,
+            'conversation_id': conversation_id,
             'limit': limit
         }
 
@@ -304,3 +330,23 @@ class ConversationTracker:
 
         params = {'turn_id': turn_id}
         return self.service.execute_query(query, params)
+
+    def get_last_turn_sequence(self, conversation_id: str) -> int:
+        """Get the last Turn sequence number for a Conversation"""
+        query = """
+        MATCH (c:Conversation {id: $conversation_id})-[:HAS_TURN]->(t:Turn)
+        RETURN t.sequence as sequence
+        ORDER BY t.sequence DESC
+        LIMIT 1
+        """
+
+        params = {'conversation_id': conversation_id}
+        result = self.service.execute_query(query, params)
+
+        if result and len(result) > 0:
+            last_sequence = result[0]['sequence']
+            logger.debug(f"Last Turn sequence for conversation {conversation_id}: {last_sequence}")
+            return last_sequence
+
+        logger.debug(f"No Turns found for conversation {conversation_id}, starting at 0")
+        return 0

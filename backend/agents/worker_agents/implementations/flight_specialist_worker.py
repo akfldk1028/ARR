@@ -109,7 +109,7 @@ When user provides both origin and destination, provide realistic flight times, 
             # Load recent conversation history
             try:
                 history_query = """
-                MATCH (s:Session {session_id: $session_id})-[:HAS_MESSAGE]->(m:Message)
+                MATCH (s:Conversation {session_id: $session_id})-[:HAS_MESSAGE]->(m:Message)
                 WHERE m.agent_slug = $agent_slug OR m.type = 'user'
                 RETURN m.content as content, m.type as role, m.timestamp as timestamp
                 ORDER BY m.timestamp DESC

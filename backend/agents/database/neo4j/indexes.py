@@ -21,8 +21,8 @@ AGENT_SYSTEM_INDEXES = [
 
     # Conversation and context indexes
     "CREATE INDEX conversation_id_idx IF NOT EXISTS FOR (c:Conversation) ON (c.conversation_id)",
+    "CREATE INDEX conversation_session_idx IF NOT EXISTS FOR (c:Conversation) ON (c.session_id)",  # Legacy session_id property
     "CREATE INDEX context_id_idx IF NOT EXISTS FOR (c:Context) ON (c.context_id)",
-    "CREATE INDEX session_id_idx IF NOT EXISTS FOR (s:Session) ON (s.session_id)",
 
     # Message indexes
     "CREATE INDEX message_timestamp_idx IF NOT EXISTS FOR (m:Message) ON (m.timestamp)",

@@ -146,7 +146,7 @@ class BaseWorkerAgent(ABC):
         """Save message to Neo4j graph database"""
         try:
             query = """
-            MERGE (s:Session {session_id: $session_id})
+            MERGE (s:Conversation {session_id: $session_id})
             MERGE (c:Context {context_id: $context_id})
             MERGE (s)-[:IN_CONTEXT]->(c)
             CREATE (m:Message {

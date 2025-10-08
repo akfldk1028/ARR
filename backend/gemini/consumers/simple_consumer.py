@@ -52,7 +52,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.session_id = None
+        self.browser_session_id = None
         self.chat_session = None
         self.user_obj = None
         self.gemini_service = None
@@ -69,7 +69,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         self.conversation_tracker = ConversationTracker(self.neo4j_service)
         self.task_manager = TaskManager(self.neo4j_service)
         self.provenance_tracker = ProvenanceTracker(self.neo4j_service)
-        self.neo4j_session_id = None  # Neo4j Session ID
+        self.conversation_id = None  # Neo4j conversation tracking ID
         self.turn_counter = 0  # Turn counter for this session
 
     # ============== 1. CONNECTION MANAGEMENT ==============
@@ -83,22 +83,26 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             self.user_obj = await self._get_user()
             self.gemini_service = get_gemini_service()
             self.chat_session = await self._get_or_create_session()
-            self.session_id = str(self.chat_session.id)
+            self.browser_session_id = str(self.chat_session.id)
 
-            # Neo4j Session 생성
+            # Neo4j Conversation 생성 또는 재사용
             username = self.user_obj.username if self.user_obj else 'anonymous'
-            self.neo4j_session_id = self.conversation_tracker.create_session(
+            self.conversation_id = self.conversation_tracker.get_or_create_conversation(
                 username,
-                metadata={'django_session_id': self.session_id, 'agent': self.current_agent_slug}
+                self.browser_session_id,
+                metadata={'django_session_id': self.browser_session_id, 'agent': self.current_agent_slug}
             )
-            logger.info(f"Neo4j Session created: {self.neo4j_session_id}")
+
+            # Initialize turn_counter from last Turn in this Conversation
+            self.turn_counter = self.conversation_tracker.get_last_turn_sequence(self.conversation_id)
+            logger.info(f"Neo4j Conversation ready: {self.conversation_id}, starting from Turn {self.turn_counter}")
 
             # Initialize handlers
             from .handlers.a2a_handler import A2AHandler
             self.a2a_handler = A2AHandler(self)
 
             await self._send_welcome_message()
-            logger.info(f"Connection established: Django={self.session_id}, Neo4j={self.neo4j_session_id}")
+            logger.info(f"Connection established: Django={self.session_id}, Neo4j={self.conversation_id}")
 
         except Exception as e:
             logger.error(f"Connection failed: {e}")
@@ -112,7 +116,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                 await self.voice_session.stop()
             if self.chat_session:
                 await self._update_session_activity()
-            logger.info(f"Disconnected: {self.session_id}")
+            logger.info(f"Disconnected: Browser={self.browser_session_id[:16] if self.browser_session_id else "N/A"}...")
         except Exception as e:
             logger.error(f"Disconnect error: {e}")
         finally:
@@ -244,11 +248,11 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
                     # === Neo4j 저장 추가 (음성 입력도 기록) ===
                     turn_id = None  # Initialize for later use
-                    if self.neo4j_session_id and self.conversation_tracker:
+                    if self.conversation_id and self.conversation_tracker:
                         # Create Turn
                         self.turn_counter += 1
                         turn_id = self.conversation_tracker.create_turn(
-                            session_id=self.neo4j_session_id,
+                            session_id=self.conversation_id,
                             sequence=self.turn_counter,
                             user_query=transcript_text
                         )
@@ -256,12 +260,12 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
                         # Create User Message
                         user_msg_id = self.conversation_tracker.add_message(
-                            session_id=self.neo4j_session_id,
+                            session_id=self.conversation_id,
                             turn_id=turn_id,
                             role='user',
                             content=transcript_text,
                             sequence=1,
-                            metadata={'source': 'stt', 'django_session': self.session_id}
+                            metadata={'source': 'stt', 'django_session': self.browser_session_id}
                         )
                         logger.info(f"Neo4j User Message created for voice: {user_msg_id}")
 
@@ -451,7 +455,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
             # Process with Gemini to get transcript
             gemini_result = await self.gemini_service.process_audio_with_audio(
-                audio_bytes, voice_name, self.session_id
+                audio_bytes, voice_name, self.browser_session_id
             )
 
             user_transcript = gemini_result.get('input_transcript', '')
@@ -504,7 +508,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         """Process text with Gemini TTS"""
         try:
             result = await self.gemini_service.process_text_with_audio_streaming(
-                content, voice_name, self.session_id, callback=None
+                content, voice_name, self.browser_session_id, callback=None
             )
 
             await self._save_message(result.get('transcript', content), 'audio', 'assistant', {
@@ -533,7 +537,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         """Fallback to Gemini when A2A fails"""
         try:
             result = await self.gemini_service.process_text_with_streaming(
-                content, self.session_id, callback=None
+                content, self.browser_session_id, callback=None
             )
 
             await self._save_message(result['text'], 'text', 'assistant', {
@@ -558,7 +562,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         try:
             # Generate TTS for A2A response
             audio_result = await self.gemini_service.process_text_with_audio_streaming(
-                a2a_result['response'], voice_name, self.session_id, callback=None
+                a2a_result['response'], voice_name, self.browser_session_id, callback=None
             )
 
             audio_base64 = None
@@ -660,7 +664,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             message_count = await self._get_message_count()
             await self.send(text_data=json.dumps({
                 'type': 'session_info',
-                'session_id': self.session_id,
+                'session_id': self.browser_session_id,
                 'user': self.user_obj.username if self.user_obj else 'Anonymous',
                 'message_count': message_count,
                 'success': True
@@ -800,7 +804,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                 # Convert Flight Agent response to TTS using existing Gemini service
                 try:
                     audio_result = await self.gemini_service.process_text_with_audio_streaming(
-                        result['response'], voice_name, self.session_id, callback=None
+                        result['response'], voice_name, self.browser_session_id, callback=None
                     )
 
                     audio_base64 = None
@@ -1001,7 +1005,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
             # A2A 응답을 음성으로 변환
             audio_result = await self.gemini_service.process_text_with_audio_streaming(
-                a2a_response, voice_name, self.session_id, callback=None
+                a2a_response, voice_name, self.browser_session_id, callback=None
             )
 
             # Django 모델에 메시지 저장
@@ -1020,9 +1024,9 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             )
 
             # === Neo4j에 A2A 응답 저장 (음성 플로우) ===
-            if turn_id and self.neo4j_session_id and self.conversation_tracker:
+            if turn_id and self.conversation_id and self.conversation_tracker:
                 assistant_msg_id = self.conversation_tracker.add_message(
-                    session_id=self.neo4j_session_id,
+                    session_id=self.conversation_id,
                     turn_id=turn_id,
                     role='assistant',
                     content=a2a_response,
@@ -1031,7 +1035,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                         'source': 'a2a',
                         'agent': voice_name,
                         'voice': voice_name,
-                        'django_session': self.session_id
+                        'django_session': self.browser_session_id
                     }
                 )
                 logger.info(f"Neo4j Assistant Message created for A2A voice response: {assistant_msg_id}")
@@ -1083,7 +1087,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'connection',
             'message': 'Connected to Gemini Chat',
-            'session_id': self.session_id,
+            'session_id': self.browser_session_id,
             'user': self.user_obj.username if self.user_obj else 'Anonymous',
             'model': model_name,
             'success': True

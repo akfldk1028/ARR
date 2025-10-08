@@ -20,7 +20,7 @@ class A2AHandler:
     def __init__(self, consumer):
         self.consumer = consumer
         self.websocket_send = consumer.send
-        self.session_id = consumer.session_id  # Django session ID
+        self.session_id = consumer.browser_session_id  # Django browser session ID
         self.user_obj = consumer.user_obj
         self.worker_manager = consumer.worker_manager
         self.gemini_service = consumer.gemini_service
@@ -31,7 +31,7 @@ class A2AHandler:
         self.conversation_tracker = consumer.conversation_tracker
         self.task_manager = consumer.task_manager
         self.provenance_tracker = consumer.provenance_tracker
-        self.neo4j_session_id = consumer.neo4j_session_id
+        self.conversation_id = consumer.conversation_id  # Neo4j conversation tracking ID
 
     async def handle_text(self, data):
         """Handle text messages with A2A integration + Neo4j tracking"""
@@ -45,7 +45,7 @@ class A2AHandler:
             # 1. Turn 카운터 증가 및 Turn 생성
             self.consumer.turn_counter += 1
             turn_id = self.conversation_tracker.create_turn(
-                session_id=self.neo4j_session_id,
+                conversation_id=self.conversation_id,
                 sequence=self.consumer.turn_counter,
                 user_query=content
             )
@@ -53,7 +53,7 @@ class A2AHandler:
 
             # 2. User Message 노드 생성
             user_msg_id = self.conversation_tracker.add_message(
-                session_id=self.neo4j_session_id,
+                conversation_id=self.conversation_id,
                 turn_id=turn_id,
                 role='user',
                 content=content,
@@ -141,7 +141,7 @@ class A2AHandler:
             if result['success']:
                 # 3. Assistant Message 노드 생성
                 assistant_msg_id = self.conversation_tracker.add_message(
-                    session_id=self.neo4j_session_id,
+                    conversation_id=self.conversation_id,
                     turn_id=turn_id,
                     role='assistant',
                     content=result['response'],
@@ -566,7 +566,7 @@ class A2AHandler:
             # Best Practice Thresholds (based on semantic-router research)
             specialist_threshold = 0.75  # High confidence for specialists
             general_threshold = 0.5      # Medium confidence for general
-            confidence_gap_threshold = 0.15  # Gap between 1st and 2nd score
+            confidence_gap_threshold = 0.10  # Gap between 1st and 2nd score (relaxed from 0.15)
 
             # Calculate confidence gap
             confidence_gap = best_score - second_score
@@ -589,6 +589,15 @@ class A2AHandler:
             if is_specialist and not (meets_threshold and has_confidence_gap):
                 best_agent = 'hostagent'
                 best_score = similarities.get('hostagent', 0.0)
+                # Recalculate gap and threshold for fallback scenario
+                # Find the next highest score after hostagent
+                hostagent_rank = next((i for i, (agent, _) in enumerate(sorted_agents) if agent == 'hostagent'), -1)
+                if hostagent_rank >= 0 and hostagent_rank + 1 < len(sorted_agents):
+                    second_score = sorted_agents[hostagent_rank + 1][1]
+                else:
+                    second_score = 0.0
+                confidence_gap = best_score - second_score
+                threshold = general_threshold  # hostagent uses general threshold
                 # Hostagent doesn't need delegation from itself
                 should_delegate = False
 

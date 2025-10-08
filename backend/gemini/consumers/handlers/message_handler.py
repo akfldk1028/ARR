@@ -23,7 +23,7 @@ class MessageHandler:
     def __init__(self, consumer):
         self.consumer = consumer
         self.websocket_send = consumer.send
-        self.session_id = consumer.session_id
+        self.session_id = consumer.browser_session_id
         self.user_obj = consumer.user_obj
         self.chat_session = consumer.chat_session
         self.gemini_service = consumer.gemini_service
