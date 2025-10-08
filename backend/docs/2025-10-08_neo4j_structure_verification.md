@@ -53,12 +53,14 @@ Multi-Agent 시스템의 Neo4j 그래프 데이터베이스 구조 검증 결과
 
 ### 3. 그래프 구조 다이어그램
 
+**실제 구조: 이중 연결 패턴**
+
 ```
 User -[STARTED_SESSION]-> Session
                             |
                             +-[HAS_TURN]-> Turn
                             |               |
-                            |               +-[HAS_MESSAGE]-> Message
+                            |               +-[HAS_MESSAGE]-> Message  (경로 1: 정식)
                             |               |
                             |               +-[EXECUTED_BY]-> AgentExecution
                             |               |                  |
@@ -76,10 +78,90 @@ User -[STARTED_SESSION]-> Session
                             |               |                                                          |
                             |               +-[GENERATED_TASK]-> Task -[EXECUTED_BY]-> AgentExecution-+
                             |
-                            +-[HAS_MESSAGE]-> Message
+                            +-[HAS_MESSAGE]-> Message  (경로 2: 직접 - 빠른 조회용)
                             |
                             +-[IN_CONTEXT]-> Context
 ```
+
+**중요**: Message 노드는 **두 가지 경로**로 접근 가능:
+1. `Session -[HAS_TURN]-> Turn -[HAS_MESSAGE]-> Message` (conversation_tracker.py)
+2. `Session -[HAS_MESSAGE]-> Message` (base_worker.py - 직접 연결)
+
+Message 노드에는 `session_id`와 `turn_id`가 **모두** 저장되어 있어 양쪽 경로 모두 사용 가능합니다.
+
+## 이중 경로 패턴 상세 분석
+
+### 패턴 1: Turn 기반 (실시간 사용자 대화)
+
+**사용처**:
+- `chat/consumers.py` - 텍스트 채팅 WebSocket
+- `gemini/consumers/simple_consumer.py` - 음성 WebSocket
+- 모든 실시간 사용자 대화
+
+**구조**:
+```
+User -> Session -> Turn -> Message
+                    └─> AgentExecution -> Decision -> Task -> Artifact
+```
+
+**왜 필요한가?**
+- 사용자 입력과 AI 응답을 **한 쌍(Turn)으로 묶기**
+- 에이전트 실행, 결정, 작업, 결과물 추적
+- 복잡한 multi-agent 상호작용 분석
+
+**예시**:
+```
+Turn #1: "서울→제주 항공편 예약"
+  ├─ Message (user)
+  ├─ Message (assistant)
+  ├─ AgentExecution (general-worker → flight-specialist)
+  ├─ Decision (delegation, confidence: 0.95)
+  ├─ Task (search_flights)
+  └─ Artifact (flight_results)
+```
+
+### 패턴 2: 직접 연결 (에이전트 간 통신)
+
+**사용처**:
+- `agents/worker_agents/base/base_worker.py` - Worker 에이전트 간 A2A 통신
+- 간단한 메시지 로깅
+
+**구조**:
+```
+Session -> Message (Turn 없이 직접)
+```
+
+**왜 필요한가?**
+- 에이전트 간 내부 통신은 **도구 호출**에 가까움
+- Turn 개념 불필요 (오버헤드 감소)
+- 빠른 메시지 저장/조회
+
+**예시**:
+```
+Session (inter_agent_comm)
+  ├─ Message (general-worker: "항공편 검색")
+  └─ Message (flight-specialist: "검색 결과...")
+```
+
+### Message 노드 속성으로 구분
+
+```json
+// Turn 기반 메시지
+{
+  "session_id": "abc...",
+  "turn_id": "def...",      // ✓ 있음
+  "role": "user"
+}
+
+// 직접 연결 메시지
+{
+  "session_id": "abc...",
+  "turn_id": null,          // ✗ 없음
+  "type": "agent_message"
+}
+```
+
+> **상세 분석**: `docs/NEO4J_DUAL_PATH_PATTERN.md` 참조
 
 ### 4. 실제 예시 경로
 

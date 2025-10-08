@@ -512,6 +512,9 @@ class A2AHandler:
             # Build capability texts from agent cards (ONLY EXAMPLES - like semantic-router)
             agent_capabilities = {}
             for slug, card in agent_cards.items():
+                # Normalize slug to hyphen format for consistency
+                normalized_slug = slug.replace('_', '-')
+
                 examples = []
 
                 # ONLY use example utterances from skills (NO tags, NO descriptions)
@@ -520,7 +523,7 @@ class A2AHandler:
                     examples.extend(skill.get('examples', []))
 
                 # Filter out empty strings
-                agent_capabilities[slug] = [ex for ex in examples if ex and ex.strip()]
+                agent_capabilities[normalized_slug] = [ex for ex in examples if ex and ex.strip()]
 
             # Load model with caching
             if not hasattr(self, '_embedding_model'):
@@ -556,30 +559,46 @@ class A2AHandler:
                 similarities = await loop.run_in_executor(executor, compute_similarities)
 
             # Determine best agent based on similarity
-            best_agent = max(similarities, key=similarities.get)
-            best_score = similarities[best_agent]
+            sorted_agents = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
+            best_agent, best_score = sorted_agents[0]
+            second_score = sorted_agents[1][1] if len(sorted_agents) > 1 else 0.0
 
-            # Threshold: specialist agents need higher confidence (0.6), general fallback to host (0.4)
-            specialist_threshold = 0.6
-            general_threshold = 0.4
+            # Best Practice Thresholds (based on semantic-router research)
+            specialist_threshold = 0.75  # High confidence for specialists
+            general_threshold = 0.5      # Medium confidence for general
+            confidence_gap_threshold = 0.15  # Gap between 1st and 2nd score
+
+            # Calculate confidence gap
+            confidence_gap = best_score - second_score
 
             # Check if best is specialist and meets threshold
-            is_specialist = best_agent in ['flight-specialist', 'hotel-specialist']
+            # Support both hyphen and underscore formats
+            is_specialist = best_agent in [
+                'flight-specialist', 'hotel-specialist',
+                'flight_specialist', 'hotel_specialist'
+            ]
             threshold = specialist_threshold if is_specialist else general_threshold
-            should_delegate = best_score >= threshold
 
-            # If specialist doesn't meet threshold, fallback to hostagent
-            if is_specialist and best_score < specialist_threshold:
+            # Decision logic with confidence gap consideration
+            meets_threshold = best_score >= threshold
+            has_confidence_gap = confidence_gap >= confidence_gap_threshold
+
+            should_delegate = meets_threshold and has_confidence_gap
+
+            # If specialist doesn't meet criteria, fallback to hostagent
+            if is_specialist and not (meets_threshold and has_confidence_gap):
                 best_agent = 'hostagent'
                 best_score = similarities.get('hostagent', 0.0)
-                should_delegate = best_score >= general_threshold
+                # Hostagent doesn't need delegation from itself
+                should_delegate = False
 
             from .utils import safe_log_text
             logger.info(f"Semantic similarity analysis: {safe_log_text(user_message)} | "
                        f"host: {similarities.get('hostagent', 0):.3f} | "
                        f"flight: {similarities.get('flight-specialist', 0):.3f} | "
                        f"hotel: {similarities.get('hotel-specialist', 0):.3f} | "
-                       f"best: {best_agent}({best_score:.3f}) | delegate: {should_delegate}")
+                       f"best: {best_agent}({best_score:.3f}) | gap: {confidence_gap:.3f} | "
+                       f"threshold: {threshold:.2f} | delegate: {should_delegate}")
 
             # Additional validation
             if should_delegate and best_agent == current_agent:
