@@ -33,12 +33,29 @@ from .queries import (
     MAINTENANCE_QUERIES
 )
 
+from .conversation_tracker import ConversationTracker
+from .task_manager import TaskManager
+from .provenance_tracker import ProvenanceTracker
+from .governance_manager import GovernanceManager
+
 __all__ = [
     # Service functions
     'Neo4jService',
     'get_neo4j_service',
     'initialize_neo4j',
     'shutdown_neo4j',
+
+    # Conversation tracking
+    'ConversationTracker',
+
+    # Task & Contract Net (Phase 2-1)
+    'TaskManager',
+
+    # Provenance tracking (Phase 2-2)
+    'ProvenanceTracker',
+
+    # Governance & RBAC (Phase 2-3)
+    'GovernanceManager',
 
     # Index functions
     'create_all_indexes',

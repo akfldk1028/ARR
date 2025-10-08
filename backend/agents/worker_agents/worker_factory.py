@@ -1,45 +1,84 @@
 """
 Worker Agent Factory
 Creates and manages different types of worker agents
+Dynamically loads worker classes from JSON agent cards
 """
 
 import logging
 from typing import Dict, Any, Optional, Type
 
 from .base import BaseWorkerAgent
-from .implementations import GeneralWorkerAgent, FlightSpecialistWorkerAgent
+from .implementations import HostAgent, FlightSpecialistWorkerAgent
 
 logger = logging.getLogger(__name__)
 
 class WorkerAgentFactory:
     """Factory for creating worker agents based on agent configuration"""
 
-    # Registry of available worker agent types
-    WORKER_TYPES: Dict[str, Type[BaseWorkerAgent]] = {
-        # 'general': GeneralWorkerAgent,  # 비활성화: Live API에서 직접 처리
-        'flight-specialist': FlightSpecialistWorkerAgent,
-        # Add more worker types here as needed
-        # 'test-agent': GeneralWorkerAgent,  # 비활성화: 테스트용 general worker
+    # Registry of available worker agent classes (class name -> class)
+    _WORKER_CLASSES: Dict[str, Type[BaseWorkerAgent]] = {
+        'HostAgent': HostAgent,
+        'FlightSpecialistWorkerAgent': FlightSpecialistWorkerAgent,
     }
+
+    # Runtime registry: agent_slug -> worker_class (populated from JSON cards)
+    _WORKER_REGISTRY: Dict[str, Type[BaseWorkerAgent]] = {}
+    _registry_loaded = False
+
+    @classmethod
+    def _load_worker_registry(cls):
+        """Load worker class mappings from JSON agent cards"""
+        if cls._registry_loaded:
+            return
+
+        from .card_loader import AgentCardLoader
+
+        try:
+            logger.info("Loading worker registry from JSON agent cards...")
+            cards = AgentCardLoader.load_all_cards()
+
+            for agent_slug, card in cards.items():
+                worker_class_name = card.get('django', {}).get('worker_class')
+
+                if not worker_class_name:
+                    logger.warning(f"No worker_class specified for {agent_slug}, using HostAgent")
+                    worker_class_name = 'HostAgent'
+
+                # Get worker class from registered classes
+                worker_class = cls._WORKER_CLASSES.get(worker_class_name)
+
+                if not worker_class:
+                    logger.error(f"Worker class '{worker_class_name}' not found for {agent_slug}, using HostAgent")
+                    worker_class = cls._WORKER_CLASSES.get('HostAgent')
+
+                cls._WORKER_REGISTRY[agent_slug] = worker_class
+                logger.info(f"Registered: {agent_slug} -> {worker_class.__name__}")
+
+            cls._registry_loaded = True
+            logger.info(f"Worker registry loaded: {len(cls._WORKER_REGISTRY)} agents")
+
+        except Exception as e:
+            logger.error(f"Error loading worker registry: {e}")
+            # Fallback to GeneralWorkerAgent
+            cls._WORKER_REGISTRY = {}
 
     @classmethod
     def create_worker(cls, agent_slug: str, agent_config: Dict[str, Any]) -> Optional[BaseWorkerAgent]:
         """Create a worker agent instance based on configuration"""
         try:
-            # Determine worker type from config or slug
-            worker_type = agent_config.get('agent_type', 'flight-specialist')  # 기본값을 flight-specialist로 변경
+            # Load registry from JSON cards if not loaded
+            if not cls._registry_loaded:
+                cls._load_worker_registry()
 
-            # Handle slug-based type mapping
-            if agent_slug == 'flight-specialist':
-                worker_type = 'flight-specialist'
-            # elif agent_slug == 'test-agent':
-            #     worker_type = 'general'  # 비활성화: general worker 사용 금지
+            # Get worker class from registry
+            worker_class = cls._WORKER_REGISTRY.get(agent_slug)
 
-            # Get worker class
-            worker_class = cls.WORKER_TYPES.get(worker_type)
             if not worker_class:
-                logger.error(f"Unknown worker type: {worker_type}")
-                # No fallback - return None to prevent general worker usage
+                logger.warning(f"No worker class registered for {agent_slug}, using HostAgent")
+                worker_class = cls._WORKER_CLASSES.get('HostAgent')
+
+            if not worker_class:
+                logger.error(f"Could not create worker for {agent_slug}")
                 return None
 
             # Create worker instance
@@ -53,18 +92,30 @@ class WorkerAgentFactory:
             return None
 
     @classmethod
-    def register_worker_type(cls, worker_type: str, worker_class: Type[BaseWorkerAgent]):
-        """Register a new worker agent type"""
-        cls.WORKER_TYPES[worker_type] = worker_class
-        logger.info(f"Registered new worker type: {worker_type}")
+    def register_worker_class(cls, class_name: str, worker_class: Type[BaseWorkerAgent]):
+        """Register a new worker agent class for dynamic loading"""
+        cls._WORKER_CLASSES[class_name] = worker_class
+        logger.info(f"Registered new worker class: {class_name}")
+        # Force reload of registry to pick up new class
+        cls._registry_loaded = False
 
     @classmethod
     def get_available_worker_types(cls) -> Dict[str, str]:
-        """Get list of available worker types"""
+        """Get list of available worker types from registry"""
+        if not cls._registry_loaded:
+            cls._load_worker_registry()
+
         return {
-            worker_type: worker_class.__name__
-            for worker_type, worker_class in cls.WORKER_TYPES.items()
+            agent_slug: worker_class.__name__
+            for agent_slug, worker_class in cls._WORKER_REGISTRY.items()
         }
+
+    @classmethod
+    def reload_registry(cls):
+        """Force reload of worker registry from JSON cards"""
+        cls._registry_loaded = False
+        cls._WORKER_REGISTRY = {}
+        cls._load_worker_registry()
 
     @classmethod
     def create_worker_from_django_model(cls, agent_model) -> Optional[BaseWorkerAgent]:

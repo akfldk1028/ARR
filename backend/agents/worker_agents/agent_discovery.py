@@ -29,6 +29,9 @@ class AgentDiscoveryService:
     def __init__(self, llm: ChatOpenAI):
         self.llm = llm
         self._agent_cards_cache: Dict[str, Dict] = {}
+        self._semantic_model = None
+        self._categories = {}
+        self._category_embeddings = {}
 
     async def discover_available_agents(self) -> Dict[str, Dict]:
         """Discover all available agents via their agent cards"""
@@ -138,8 +141,8 @@ class AgentDiscoveryService:
             logger.info(f"AgentDiscoveryService: Checking delegation for '{safe_log_text(user_request)}' from {current_agent_slug}")
 
             # Don't delegate if we're already a specialist being consulted
-            # Allow both test-agent and general-worker to delegate to specialists
-            if current_agent_slug not in ['test-agent', 'general-worker']:
+            # Allow hostagent (and legacy test-agent/general-worker) to delegate to specialists
+            if current_agent_slug not in ['hostagent', 'test-agent', 'general-worker']:
                 logger.info(f"Not delegating - current agent {current_agent_slug} is a specialist")
                 return False, None
 
@@ -149,33 +152,20 @@ class AgentDiscoveryService:
                 from sklearn.metrics.pairwise import cosine_similarity
                 import numpy as np
 
-                # Initialize model (cache for reuse)
-                if not hasattr(self, '_semantic_model'):
-                    logger.info("Loading semantic routing model...")
-                    self._semantic_model = SentenceTransformer('all-MiniLM-L6-v2')
+                # Initialize model and load categories from JSON cards (cache for reuse)
+                if self._semantic_model is None:
+                    logger.info("Loading semantic routing model and categories from JSON cards...")
+                    # Use lightweight multilingual model for fast Korean support
+                    self._semantic_model = SentenceTransformer('distiluse-base-multilingual-cased-v2')
 
-                    # Define semantic categories with examples
-                    self._categories = {
-                        'greetings': [
-                            "안녕하세요", "hello", "hi there", "good morning",
-                            "안녕", "반갑습니다", "어떻게 지내세요", "뭐하고 계세요"
-                        ],
-                        'flight_booking': [
-                            "비행기 예약해주세요", "항공편 알아봐주세요", "비행기표 예약",
-                            "book a flight", "flight reservation", "airline tickets",
-                            "항공료 확인", "비행 스케줄", "항공권 예약"
-                        ],
-                        'hotel_booking': [
-                            "호텔 예약", "숙박 예약", "accommodation booking",
-                            "hotel reservation", "숙소 찾아주세요", "room booking"
-                        ]
-                    }
+                    # Load categories dynamically from agent card skills
+                    await self._load_categories_from_cards()
 
                     # Pre-compute embeddings for categories
-                    self._category_embeddings = {}
                     for category, examples in self._categories.items():
-                        embeddings = self._semantic_model.encode(examples)
-                        self._category_embeddings[category] = np.mean(embeddings, axis=0)
+                        if examples:  # Only encode if we have examples
+                            embeddings = self._semantic_model.encode(examples)
+                            self._category_embeddings[category] = np.mean(embeddings, axis=0)
 
                 # Encode user request
                 user_embedding = self._semantic_model.encode([user_request])
@@ -192,12 +182,15 @@ class AgentDiscoveryService:
 
                 logger.info(f"Semantic routing: '{safe_log_text(user_request[:50])}...' → {best_category} (score: {best_score:.3f})")
 
-                # Decision thresholds - 비행기 예약 우선순위 높임
-                if best_category == 'greetings' and best_score > 0.8:
-                    logger.info(f"Greeting detected via semantic similarity, no delegation needed")
+                # Decision thresholds - Dynamic based on skill categories
+                # General chat skills should not trigger delegation
+                general_skills = ['general_chat', 'greetings', 'semantic_routing']
+
+                if best_category in general_skills and best_score > 0.8:
+                    logger.info(f"General chat detected ({best_category}), no delegation needed")
                     return False, None
-                elif best_category in ['flight_booking', 'hotel_booking'] and best_score > 0.2:
-                    logger.info(f"Specialized task detected: {best_category}, proceeding with delegation")
+                elif best_category not in general_skills and best_score > 0.2:
+                    logger.info(f"Specialized task detected: {best_category} (score: {best_score:.3f}), proceeding with delegation")
                     # Continue to agent selection logic
                 else:
                     logger.info(f"Low confidence or general conversation, no delegation needed")
@@ -221,19 +214,22 @@ class AgentDiscoveryService:
 
             # If LLM failed to select, fallback based on detected category
             if not selected_agent:
-                # Get the detected category from semantic routing
-                if best_category == 'flight_booking':
-                    if 'flight-specialist' in available_agents:
-                        selected_agent = 'flight-specialist'
-                        logger.info(f"LLM failed, fallback to flight-specialist for flight_booking")
-                    else:
-                        selected_agent = 'general-worker' if 'general-worker' in available_agents else 'test-agent'
-                elif best_category == 'hotel_booking':
-                    # For hotel booking, use general-worker or test-agent as fallback
-                    selected_agent = 'general-worker' if 'general-worker' in available_agents else 'test-agent'
-                    logger.info(f"LLM failed, fallback to {selected_agent} for hotel_booking")
-                else:
-                    logger.info(f"LLM failed and no specific category, no delegation")
+                # Map skill category to agent slug by checking which agent has this skill
+                from agents.worker_agents.card_loader import AgentCardLoader
+                cards = AgentCardLoader.load_all_cards()
+
+                for agent_slug, card in cards.items():
+                    for skill in card.get('skills', []):
+                        if skill.get('id') == best_category:
+                            selected_agent = agent_slug
+                            logger.info(f"LLM failed, fallback to {selected_agent} based on skill match: {best_category}")
+                            break
+                    if selected_agent:
+                        break
+
+                # If still no match, no delegation
+                if not selected_agent:
+                    logger.info(f"LLM failed and no agent found for category {best_category}, no delegation")
                     return False, None
 
             # Delegate if a different (specialist) agent was selected
@@ -251,3 +247,49 @@ class AgentDiscoveryService:
     def get_cached_agent_info(self, agent_slug: str) -> Optional[Dict]:
         """Get cached agent card information"""
         return self._agent_cards_cache.get(agent_slug)
+
+    async def _load_categories_from_cards(self):
+        """
+        Load semantic routing categories from JSON agent card skills
+        Replaces hardcoded categories with dynamic loading from source of truth
+        """
+        from agents.worker_agents.card_loader import AgentCardLoader
+
+        try:
+            # Load all agent cards
+            cards = AgentCardLoader.load_all_cards()
+            logger.info(f"Loading semantic categories from {len(cards)} agent cards")
+
+            # Build categories from card skills
+            for agent_slug, card in cards.items():
+                skills = card.get('skills', [])
+
+                for skill in skills:
+                    skill_id = skill.get('id')
+                    if not skill_id:
+                        continue
+
+                    # Initialize category if not exists
+                    if skill_id not in self._categories:
+                        self._categories[skill_id] = []
+
+                    # Add tags as training examples
+                    tags = skill.get('tags', [])
+                    self._categories[skill_id].extend(tags)
+
+                    # Add examples as training data
+                    examples = skill.get('examples', [])
+                    self._categories[skill_id].extend(examples)
+
+                    logger.debug(f"Loaded skill '{skill_id}' from {agent_slug}: {len(tags)} tags, {len(examples)} examples")
+
+            logger.info(f"Loaded {len(self._categories)} semantic categories from JSON cards")
+            for category, examples in self._categories.items():
+                logger.info(f"  - {category}: {len(examples)} training examples")
+
+        except Exception as e:
+            logger.error(f"Error loading categories from cards: {e}")
+            # Fallback to minimal general category if loading fails
+            self._categories = {
+                'general_chat': ["hello", "hi", "안녕", "안녕하세요"]
+            }

@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('gemini/', include('gemini.urls')),
     path('agents/', include('agents.urls')),
+    path('chat/', include('chat.urls')),
+    path('.well-known/', include('agents.well_known_urls')),  # A2A agent cards
 ]

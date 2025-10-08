@@ -18,9 +18,13 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 # is populated before importing code that may import ORM models.
 django_asgi_app = get_asgi_application()
 
-from gemini.routing import websocket_urlpatterns
+from gemini.routing import websocket_urlpatterns as gemini_ws_patterns
+from chat.routing import websocket_urlpatterns as chat_ws_patterns
+
+# Combine WebSocket URL patterns
+all_websocket_patterns = gemini_ws_patterns + chat_ws_patterns
 
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
-    "websocket": URLRouter(websocket_urlpatterns),
+    "websocket": URLRouter(all_websocket_patterns),
 })

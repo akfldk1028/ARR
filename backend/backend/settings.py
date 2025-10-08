@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     # Live API + A2A Integration
     'live_a2a_bridge',
 
+    # Chat app (text-based A2A)
+    'chat',
+
     # Legacy (to be migrated)
     'gemini',
 ]
@@ -269,5 +272,5 @@ LOGGING = {
 }
 
 # A2A (Agent-to-Agent) Configuration
-A2A_BASE_URL = "http://localhost:8000"
+A2A_BASE_URL = "http://localhost:8004"
 A2A_SERVER_PORT = 8000

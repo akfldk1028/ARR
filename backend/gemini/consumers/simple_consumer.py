@@ -57,10 +57,20 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         self.user_obj = None
         self.gemini_service = None
         self.worker_manager = WorkerAgentManager()
-        self.current_agent_slug = "general-worker"
+        self.current_agent_slug = "hostagent"
         self.voice_session = None
         self.a2a_handler = None
         self.vad_stt_service = None  # VAD + STT integrated service
+
+        # Neo4j Integration (Required for A2A Handler)
+        from agents.database.neo4j.service import get_neo4j_service
+        from agents.database.neo4j import ConversationTracker, TaskManager, ProvenanceTracker
+        self.neo4j_service = get_neo4j_service()
+        self.conversation_tracker = ConversationTracker(self.neo4j_service)
+        self.task_manager = TaskManager(self.neo4j_service)
+        self.provenance_tracker = ProvenanceTracker(self.neo4j_service)
+        self.neo4j_session_id = None  # Neo4j Session ID
+        self.turn_counter = 0  # Turn counter for this session
 
     # ============== 1. CONNECTION MANAGEMENT ==============
 
@@ -75,12 +85,20 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
             self.chat_session = await self._get_or_create_session()
             self.session_id = str(self.chat_session.id)
 
+            # Neo4j Session 생성
+            username = self.user_obj.username if self.user_obj else 'anonymous'
+            self.neo4j_session_id = self.conversation_tracker.create_session(
+                username,
+                metadata={'django_session_id': self.session_id, 'agent': self.current_agent_slug}
+            )
+            logger.info(f"Neo4j Session created: {self.neo4j_session_id}")
+
             # Initialize handlers
             from .handlers.a2a_handler import A2AHandler
             self.a2a_handler = A2AHandler(self)
 
             await self._send_welcome_message()
-            logger.info(f"Connection established: {self.session_id}")
+            logger.info(f"Connection established: Django={self.session_id}, Neo4j={self.neo4j_session_id}")
 
         except Exception as e:
             logger.error(f"Connection failed: {e}")
@@ -165,53 +183,18 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
                     if message_type == 'transcript':
                         if sender == 'user' and source == 'live_api_input':
-                            # 사용자 입력에 대해 semantic routing 적용
+                            # LiveAPI transcript는 한글 부정확 - 단순 표시용으로만 사용
                             user_text = message.get('text', '')
-                            logger.info(f"사용자 입력 transcript: {safe_log_text(user_text)}")
+                            logger.info(f"LiveAPI transcript (표시용): {safe_log_text(user_text)}")
 
                             # Filter out noise/silence tags from Gemini Live API
                             if user_text.strip() in ['<noise>', '<silence>', '<background>', '']:
                                 logger.info(f"Skipping noise/silence tag: {user_text}")
                                 return
 
-                            # STEP 2: Immediately interrupt Live API to prevent competing responses
-                            if self.voice_session and hasattr(self.voice_session, 'send_interrupt'):
-                                await self.voice_session.send_interrupt()
-                                logger.info("Live API interrupted for A2A processing")
-
-                            # Semantic routing 수행 (a2a_handler의 임베딩 기반 유사도 사용)
-                            routing_result = await self.a2a_handler._analyze_intent_with_similarity(user_text, 'live-api')
-
-                            if routing_result.get('should_delegate', False):
-                                # A2A 처리 필요 - Keep Live API paused
-                                target_agent = routing_result.get('target_agent')
-                                logger.info(f"A2A 라우팅: {target_agent} - Live API stays paused")
-
-                                try:
-                                    # A2A 에이전트로 요청 전송
-                                    agent = await self.worker_manager.get_worker(target_agent)
-                                    if agent:
-                                        a2a_response = await agent.process_request(
-                                            user_input=user_text,
-                                            context_id=self.session_id,
-                                            session_id=self.session_id,
-                                            user_name=self.user_obj.username if self.user_obj else "user"
-                                        )
-
-                                        # A2A 응답을 음성으로 변환하여 전송 (Live API remains paused)
-                                        voice_name = 'Kore' if target_agent == 'flight-specialist' else 'Aoede'
-                                        await self._process_a2a_response(a2a_response, voice_name, user_text)
-
-                                    else:
-                                        logger.error(f"Agent {target_agent} not available")
-                                        # Fallback to Live API (interrupt already sent, no resume needed)
-
-                                except Exception as e:
-                                    logger.error(f"A2A processing failed: {e}")
-                                    # Fallback to Live API (interrupt already sent, no resume needed)
-                            else:
-                                # Live API에서 직접 처리 (no interrupt needed, continues normally)
-                                logger.info("Live API 직접 처리 - no A2A routing needed")
+                            # ❌ A2A routing 제거 - STT transcript만 사용
+                            # LiveAPI의 한글 인식이 부정확하므로 A2A routing에 사용하지 않음
+                            logger.info("LiveAPI transcript는 A2A routing에 사용하지 않음 (STT 사용)")
 
                         elif sender == 'ai' and source == 'live_api_output':
                             # AI 출력은 그대로 frontend로 전송
@@ -250,20 +233,51 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                         logger.info(f"Skipping noise/silence: {transcript_text}")
                         return
 
-                    # STEP 1: Interrupt Live API to prevent competing responses
-                    if self.voice_session and hasattr(self.voice_session, 'send_interrupt'):
-                        await self.voice_session.send_interrupt()
-                        logger.info("Live API interrupted for STT-based A2A processing")
+                    # Send STT transcript to frontend for display
+                    await self.send(text_data=json.dumps({
+                        'type': 'transcript',
+                        'text': transcript_text,
+                        'sender': 'user',
+                        'source': 'stt'
+                    }))
+                    logger.info(f"Sent STT transcript to frontend: {safe_log_text(transcript_text)}")
 
-                    # STEP 2: Semantic routing with embedding similarity
+                    # === Neo4j 저장 추가 (음성 입력도 기록) ===
+                    turn_id = None  # Initialize for later use
+                    if self.neo4j_session_id and self.conversation_tracker:
+                        # Create Turn
+                        self.turn_counter += 1
+                        turn_id = self.conversation_tracker.create_turn(
+                            session_id=self.neo4j_session_id,
+                            sequence=self.turn_counter,
+                            user_query=transcript_text
+                        )
+                        logger.info(f"Neo4j Turn created for voice: {turn_id}")
+
+                        # Create User Message
+                        user_msg_id = self.conversation_tracker.add_message(
+                            session_id=self.neo4j_session_id,
+                            turn_id=turn_id,
+                            role='user',
+                            content=transcript_text,
+                            sequence=1,
+                            metadata={'source': 'stt', 'django_session': self.session_id}
+                        )
+                        logger.info(f"Neo4j User Message created for voice: {user_msg_id}")
+
+                    # STEP 1: Semantic routing FIRST to determine if interrupt is needed
                     routing_result = await self.a2a_handler._analyze_intent_with_similarity(
                         transcript_text, 'speech-to-text'
                     )
 
                     if routing_result.get('should_delegate', False):
-                        # A2A processing needed
+                        # A2A processing needed - NOW interrupt Live API
+                        if self.voice_session and hasattr(self.voice_session, 'send_interrupt'):
+                            await self.voice_session.send_interrupt()
+                            logger.info("Live API interrupted for A2A processing")
+
                         target_agent = routing_result.get('target_agent')
-                        logger.info(f"STT A2A routing: {target_agent}")
+                        logger.info(f"STT A2A routing to: {target_agent}")
 
                         try:
                             # Get agent and process request
@@ -278,15 +292,20 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
 
                                 # Convert A2A response to voice
                                 voice_name = 'Kore' if target_agent == 'flight-specialist' else 'Aoede'
-                                await self._process_a2a_response(a2a_response, voice_name, transcript_text)
+                                await self._process_a2a_response(a2a_response, voice_name, transcript_text, turn_id)
+
+                                # After A2A TTS completes, Live API auto-resumes on next input
+                                logger.info("A2A processing complete - Live API will auto-resume")
                             else:
                                 logger.error(f"Agent {target_agent} not available")
+                                # Live API will auto-resume since it was interrupted
 
                         except Exception as e:
                             logger.error(f"STT A2A processing failed: {e}")
+                            # Live API will auto-resume since it was interrupted
                     else:
-                        # No A2A routing needed - Live API continues normally
-                        logger.info("STT: No A2A routing needed - Live API continues")
+                        # No A2A routing needed - DO NOT interrupt Live API
+                        logger.info("STT: No A2A routing needed - Live API continues uninterrupted")
 
                 except Exception as e:
                     logger.error(f"STT transcript callback error: {e}")
@@ -384,37 +403,10 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
     # ============== 4. A2A PROCESSING ==============
 
     async def _handle_text(self, data):
-        """Handle text messages with A2A integration"""
-        content = data.get('message', '').strip()
-        if not content or len(content) > 10000:
-            await self._send_error("Invalid message content")
-            return
-
+        """Handle text messages with A2A integration - Delegate to A2A handler"""
         try:
-            # Save user message
-            user_message = await self._save_message(content, 'text', 'user')
-
-            # Process with A2A
-            result = await self._process_with_a2a(content)
-
-            if result['success']:
-                # Save and send A2A response
-                await self._save_message(result['response'], 'text', 'assistant', {
-                    'agent_slug': self.current_agent_slug,
-                    'processing_type': 'a2a_agent'
-                })
-
-                await self.send(text_data=json.dumps({
-                    'type': 'response',
-                    'message': result['response'],
-                    'user_message_id': str(user_message.id),
-                    'agent_slug': self.current_agent_slug,
-                    'success': True
-                }))
-            else:
-                # Fallback to Gemini
-                await self._fallback_to_gemini(content, user_message)
-
+            # Delegate to A2A handler which includes semantic routing
+            await self.a2a_handler.handle_text(data)
         except Exception as e:
             logger.error(f"Text processing failed: {e}")
             await self._send_error(f"Text processing failed: {str(e)}")
@@ -1002,7 +994,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             logger.error(f"Error in TTS playback timer: {e}")
 
-    async def _process_a2a_response(self, a2a_response: str, voice_name: str, user_text: str):
+    async def _process_a2a_response(self, a2a_response: str, voice_name: str, user_text: str, turn_id: str = None):
         """A2A 응답을 TTS로 변환하여 전송"""
         try:
             import base64
@@ -1012,7 +1004,7 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                 a2a_response, voice_name, self.session_id, callback=None
             )
 
-            # 메시지 저장
+            # Django 모델에 메시지 저장
             await self._save_message(user_text, 'text', 'user', {
                 'delegated_to_a2a': True,
                 'target_agent': voice_name
@@ -1026,6 +1018,23 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
                     'input_transcript': user_text
                 }
             )
+
+            # === Neo4j에 A2A 응답 저장 (음성 플로우) ===
+            if turn_id and self.neo4j_session_id and self.conversation_tracker:
+                assistant_msg_id = self.conversation_tracker.add_message(
+                    session_id=self.neo4j_session_id,
+                    turn_id=turn_id,
+                    role='assistant',
+                    content=a2a_response,
+                    sequence=2,
+                    metadata={
+                        'source': 'a2a',
+                        'agent': voice_name,
+                        'voice': voice_name,
+                        'django_session': self.session_id
+                    }
+                )
+                logger.info(f"Neo4j Assistant Message created for A2A voice response: {assistant_msg_id}")
 
             # 오디오 응답 전송
             audio_base64 = None

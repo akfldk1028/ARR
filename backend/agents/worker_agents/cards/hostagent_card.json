@@ -1,0 +1,84 @@
+{
+  "name": "Host Agent",
+  "description": "Primary coordination agent with semantic routing and specialist delegation",
+  "url": "http://localhost:8004/agents/hostagent",
+  "version": "1.0.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": ["text", "text/plain"],
+  "defaultOutputModes": ["text", "text/plain"],
+  "skills": [
+    {
+      "id": "general_chat",
+      "name": "General Conversation",
+      "description": "General conversation, greetings, chitchat, and user assistance",
+      "tags": [
+        "chat", "conversation", "general", "greeting", "chitchat", "대화", "일반", "인사", "잡담"
+      ],
+      "examples": [
+        "안녕하세요",
+        "안녕",
+        "ㅎㅇ",
+        "하이",
+        "헬로",
+        "반가워요",
+        "반갑습니다",
+        "좋은 아침이에요",
+        "좋은 하루 되세요",
+        "Hello",
+        "Hi",
+        "Hey",
+        "Good morning",
+        "Good afternoon",
+        "Good evening",
+        "How are you?",
+        "How's it going?",
+        "What's up?",
+        "How are things?",
+        "Nice to meet you",
+        "뭐하고 계세요",
+        "오늘 날씨 어때요",
+        "잘 지내세요",
+        "요즘 어떻게 지내세요",
+        "how's the weather today?",
+        "how are things going?",
+        "lovely weather today",
+        "what's new?",
+        "long time no see",
+        "오랜만이에요",
+        "잘 있었어요",
+        "어떻게 지냈어요"
+      ]
+    },
+    {
+      "id": "semantic_routing",
+      "name": "Intent Routing",
+      "description": "Analyze user intent and route to appropriate specialist agents",
+      "tags": [
+        "routing", "coordination", "delegation", "라우팅", "조정"
+      ],
+      "examples": [
+        "User asks about flights - route to flight specialist",
+        "User asks about hotels - route to hotel specialist",
+        "Complex multi-step request - route to orchestrator"
+      ]
+    }
+  ],
+  "django": {
+    "agent_type": "coordinator",
+    "worker_class": "HostAgent",
+    "model_config": {
+      "provider": "openai",
+      "model_name": "gpt-3.5-turbo",
+      "temperature": 0.7,
+      "max_tokens": 2048
+    },
+    "embedding_model": "distiluse-base-multilingual-cased-v2",
+    "delegation_threshold": 0.6,
+    "neo4j_enabled": true,
+    "a2a_enabled": true
+  }
+}

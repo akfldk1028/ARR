@@ -1,53 +1,118 @@
 {
-  "name": "Flight Specialist Worker",
+  "name": "Flight Specialist Agent",
   "description": "Specialized agent for flight booking and travel information",
+  "url": "http://localhost:8004/agents/flight-specialist",
   "version": "1.0.0",
-  "agent_type": "worker",
-  "worker_class": "FlightSpecialistWorkerAgent",
-  "capabilities": ["text", "flight_booking", "travel_info", "airline_data", "route_planning"],
-  "protocols": ["a2a", "json-rpc-2.0"],
-  "transport": ["http", "https"],
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": ["text", "text/plain"],
+  "defaultOutputModes": ["text", "text/plain"],
   "skills": [
     {
-      "name": "flight_search",
-      "description": "Search for available flights between cities",
-      "type": "flight_booking",
-      "input_types": ["text"],
-      "output_types": ["text", "flight_data"]
+      "id": "book_flights",
+      "name": "Book Air Tickets",
+      "description": "Search and book flights between cities",
+      "tags": [
+        "flight", "flights", "airline", "airlines", "booking",
+        "비행기", "항공권", "예약", "항공", "비행", "항공편",
+        "fly", "air ticket", "plane"
+      ],
+      "examples": [
+        "서울에서 도쿄 비행기 예약해줘",
+        "Book flights from Seoul to Tokyo",
+        "Find airline tickets from SFO to LHR",
+        "대한항공 도쿄행 알아봐줘",
+        "Show me flights to New York next week",
+        "비행기표 예약",
+        "항공권 검색해줘",
+        "비행기 알아봐줘",
+        "비행기 찾아줘",
+        "항공편 알아봐",
+        "비행기 정보",
+        "비행기 보여줘",
+        "항공권 알아봐줘",
+        "비행기표 찾아줘",
+        "항공편 검색",
+        "비행기편 알아봐",
+        "비행기 예약하고 싶어",
+        "항공권 예약하고 싶어요",
+        "비행기 타고 싶어요",
+        "항공편 찾아주세요",
+        "flight info",
+        "flight information",
+        "show me flights",
+        "find flights",
+        "search flights",
+        "I want to fly",
+        "need a flight",
+        "book a flight",
+        "get me a flight"
+      ]
     },
     {
-      "name": "airline_info",
+      "id": "airline_info",
+      "name": "Airline Information",
       "description": "Provide airline information and recommendations",
-      "type": "information_retrieval",
-      "input_types": ["text"],
-      "output_types": ["text"]
+      "tags": [
+        "airline", "airlines", "carrier", "information",
+        "항공사", "항공사정보", "airline info"
+      ],
+      "examples": [
+        "대한항공 정보 알려줘",
+        "Which airlines fly to Tokyo?",
+        "Best airlines for international flights",
+        "아시아나 항공 어때?"
+      ]
     },
     {
-      "name": "route_planning",
+      "id": "route_planning",
+      "name": "Route Planning",
       "description": "Help with travel route planning",
-      "type": "travel_planning",
-      "input_types": ["text"],
-      "output_types": ["text", "itinerary"]
+      "tags": [
+        "route", "routing", "itinerary", "travel plan",
+        "경로", "여행경로", "일정"
+      ],
+      "examples": [
+        "서울에서 파리 가는 최적 경로",
+        "Best route from Seoul to Paris",
+        "Plan my trip from SFO to multiple cities in Europe",
+        "제주에서 서울",
+        "서울에서 제주",
+        "부산에서 서울",
+        "서울에서 부산",
+        "도쿄에서 서울",
+        "서울에서 도쿄",
+        "서울 제주 항공편",
+        "제주도 가는 비행기",
+        "서울발 제주행",
+        "제주 출발 서울 도착",
+        "인천에서 김포",
+        "from Seoul to Jeju",
+        "Seoul to Busan flight",
+        "Jeju to Seoul",
+        "Incheon to Gimpo"
+      ]
     }
   ],
-  "specialization": {
-    "primary": "flight_booking",
+  "django": {
+    "agent_type": "specialist",
+    "worker_class": "FlightSpecialistWorkerAgent",
+    "model_config": {
+      "provider": "openai",
+      "model_name": "gpt-4o-mini",
+      "temperature": 0.3,
+      "max_tokens": 1024
+    },
+    "specialization_focus": "factual_accuracy",
     "expertise_areas": [
       "flight_schedules",
       "airline_recommendations",
       "travel_routes",
       "pricing_information",
       "airport_codes"
-    ],
-    "collaboration_offers": {
-      "hotel": "Can coordinate with hotel booking specialist for complete trip planning",
-      "general": "Provides specialized flight information to general assistants"
-    }
-  },
-  "configuration": {
-    "default_temperature": 0.3,
-    "max_tokens": 1024,
-    "model": "gpt-3.5-turbo",
-    "specialization_focus": "factual_accuracy"
+    ]
   }
 }

@@ -1,53 +1,106 @@
 {
-  "name": "Hotel Specialist Worker",
-  "description": "Specialized agent for hotel booking and accommodation information",
+  "name": "Hotel Specialist Agent",
+  "description": "Specialized agent for hotel bookings and accommodation recommendations",
+  "url": "http://localhost:8004/agents/hotel-specialist",
   "version": "1.0.0",
-  "agent_type": "worker",
-  "worker_class": "HotelSpecialistWorkerAgent",
-  "capabilities": ["text", "hotel_booking", "accommodation_info", "hotel_data", "stay_planning"],
-  "protocols": ["a2a", "json-rpc-2.0"],
-  "transport": ["http", "https"],
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": ["text", "text/plain"],
+  "defaultOutputModes": ["text", "text/plain"],
   "skills": [
     {
-      "name": "hotel_search",
-      "description": "Search for available hotels in cities",
-      "type": "hotel_booking",
-      "input_types": ["text"],
-      "output_types": ["text", "hotel_data"]
+      "id": "book_hotels",
+      "name": "Book Hotels",
+      "description": "Search and book hotels in a location",
+      "tags": [
+        "hotel", "hotels", "accommodation", "booking", "reservation",
+        "호텔", "숙박", "숙소", "예약", "숙박예약",
+        "stay", "lodging", "room"
+      ],
+      "examples": [
+        "도쿄 호텔 예약해줘",
+        "Book a hotel in Tokyo",
+        "Find hotels in New York City",
+        "서울 숙소 알아봐줘",
+        "Reserve a room in Paris",
+        "호텔 검색",
+        "숙박 시설 찾아줘",
+        "호텔 찾아줘",
+        "호텔 알아봐줘",
+        "호텔 예약",
+        "숙소 찾아줘",
+        "숙소 알아봐줘",
+        "숙박 찾아줘",
+        "숙박 알아봐줘",
+        "호텔 보여줘",
+        "숙소 보여줘",
+        "호텔 정보",
+        "숙소 정보",
+        "호텔 예약하고 싶어",
+        "숙소 예약하고 싶어요",
+        "호텔 찾고 있어요",
+        "숙박 시설 필요해",
+        "find hotel",
+        "search hotel",
+        "show me hotels",
+        "hotel info",
+        "hotel information",
+        "I need a hotel",
+        "looking for hotel",
+        "want to book a hotel",
+        "get me a hotel"
+      ]
     },
     {
-      "name": "accommodation_info",
-      "description": "Provide hotel information and recommendations",
-      "type": "information_retrieval",
-      "input_types": ["text"],
-      "output_types": ["text"]
+      "id": "accommodation_recommendations",
+      "name": "Accommodation Recommendations",
+      "description": "Provide accommodation recommendations based on preferences",
+      "tags": [
+        "recommendation", "suggestions", "accommodation",
+        "추천", "숙소추천", "호텔추천"
+      ],
+      "examples": [
+        "도쿄에서 가성비 좋은 호텔 추천해줘",
+        "Best budget hotels in Tokyo",
+        "Luxury hotels near Eiffel Tower",
+        "가족 여행하기 좋은 숙소"
+      ]
     },
     {
-      "name": "stay_planning",
-      "description": "Help with accommodation planning and booking",
-      "type": "travel_planning",
-      "input_types": ["text"],
-      "output_types": ["text", "booking_info"]
+      "id": "hotel_info",
+      "name": "Hotel Information",
+      "description": "Provide detailed information about hotels and amenities",
+      "tags": [
+        "information", "amenities", "facilities", "details",
+        "정보", "시설", "편의시설"
+      ],
+      "examples": [
+        "이 호텔 시설 알려줘",
+        "What amenities does this hotel have?",
+        "Tell me about hotel facilities",
+        "조식 포함되어 있어?"
+      ]
     }
   ],
-  "specialization": {
-    "primary": "hotel_booking",
+  "django": {
+    "agent_type": "specialist",
+    "worker_class": "HotelSpecialistWorkerAgent",
+    "model_config": {
+      "provider": "openai",
+      "model_name": "gpt-3.5-turbo",
+      "temperature": 0.3,
+      "max_tokens": 1024
+    },
+    "specialization_focus": "user_preferences",
     "expertise_areas": [
       "hotel_availability",
       "accommodation_recommendations",
       "pricing_information",
       "room_types",
       "location_insights"
-    ],
-    "collaboration_offers": {
-      "flight": "Can coordinate with flight booking specialist for complete trip planning",
-      "general": "Provides specialized accommodation information to general assistants"
-    }
-  },
-  "configuration": {
-    "default_temperature": 0.3,
-    "max_tokens": 1024,
-    "model": "gpt-3.5-turbo",
-    "specialization_focus": "factual_accuracy"
+    ]
   }
 }

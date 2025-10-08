@@ -15,7 +15,7 @@ Usage:
 from .base import BaseWorkerAgent
 from .worker_factory import WorkerAgentFactory
 from .worker_manager import worker_manager, get_worker_for_slug, get_worker_card_for_slug
-from .implementations import GeneralWorkerAgent, FlightSpecialistWorkerAgent
+from .implementations import HostAgent, FlightSpecialistWorkerAgent
 
 __all__ = [
     'BaseWorkerAgent',
@@ -23,6 +23,6 @@ __all__ = [
     'worker_manager',
     'get_worker_for_slug',
     'get_worker_card_for_slug',
-    'GeneralWorkerAgent',
+    'HostAgent',
     'FlightSpecialistWorkerAgent'
 ]

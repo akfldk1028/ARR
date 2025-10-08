@@ -51,7 +51,7 @@ class WebSocketLiveClient:
         self.input_transcript_buffer = []
         self.output_transcript_buffer = []
         self.last_transcript_time = 0
-        self.transcript_timeout = 0.5  # 500ms timeout to flush buffer (Korean text needs time to combine)
+        self.transcript_timeout = 0.1  # 100ms timeout - balance between responsiveness and text combining
 
         # Voice session state management for A2A coordination
         self.session_state = VoiceSessionState.LISTENING  # Start in listening mode
@@ -243,7 +243,7 @@ class WebSocketLiveClient:
             await asyncio.gather(*tasks, return_exceptions=True)
 
     async def _handle_input_transcript(self, transcript_text: str):
-        """Handle input transcript with buffering for Korean text"""
+        """Handle input transcript with fast buffering for Korean text combining"""
         try:
             if isinstance(transcript_text, bytes):
                 transcript_text = transcript_text.decode('utf-8')
@@ -253,17 +253,17 @@ class WebSocketLiveClient:
             current_time = time.time()
             self.last_transcript_time = current_time
 
-            # Add to buffer (don't send immediately - wait for flush)
+            # Add to buffer for Korean text combining (Live API sends syllable by syllable)
             self.input_transcript_buffer.append(transcript_text)
 
-            # Start timer to flush buffer after timeout
+            # Start fast flush timer (100ms)
             asyncio.create_task(self._flush_input_buffer_after_delay())
 
         except UnicodeError as e:
             logger.error(f"Encoding error in input transcript: {e}")
 
     async def _handle_output_transcript(self, transcript_text: str):
-        """Handle output transcript with buffering for Korean text"""
+        """Handle output transcript with fast buffering for Korean text combining"""
         try:
             # Ensure we have a proper string, avoid double encoding/decoding
             if isinstance(transcript_text, bytes):
@@ -279,16 +279,14 @@ class WebSocketLiveClient:
             current_time = time.time()
             self.last_transcript_time = current_time
 
-            # Add to buffer
+            # Add to buffer for Korean text combining (Live API sends syllable by syllable)
             self.output_transcript_buffer.append(transcript_text)
 
-            # Start timer to flush buffer
+            # Start fast flush timer (100ms)
             asyncio.create_task(self._flush_output_buffer_after_delay())
 
         except Exception as e:
             logger.error(f"Error processing output transcript: {e}")
-            # Fallback to safe text
-            self.output_transcript_buffer.append("[AI 응답]")
 
     async def _flush_input_buffer_after_delay(self):
         """Flush input transcript buffer after delay"""

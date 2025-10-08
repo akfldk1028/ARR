@@ -14,6 +14,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from asgiref.sync import sync_to_async
 
+from django.conf import settings
+
 from .models import Agent
 from .worker_agents import get_worker_for_slug
 
@@ -54,10 +56,10 @@ class AgentCardView(View):
                     }
                 ],
                 "endpoints": {
-                    "chat": f"http://localhost:8000/agents/{agent.slug}/chat/",
-                    "status": f"http://localhost:8000/agents/{agent.slug}/status/",
-                    "a2a": f"http://localhost:8000/agents/{agent.slug}/a2a/",
-                    "jsonrpc": f"http://localhost:8000/agents/{agent.slug}/chat/",  # A2A compatible endpoint
+                    "chat": f"{settings.A2A_BASE_URL}/agents/{agent.slug}/chat/",
+                    "status": f"{settings.A2A_BASE_URL}/agents/{agent.slug}/status/",
+                    "a2a": f"{settings.A2A_BASE_URL}/agents/{agent.slug}/a2a/",
+                    "jsonrpc": f"{settings.A2A_BASE_URL}/agents/{agent.slug}/chat/",  # A2A compatible endpoint
                 },
                 "authentication": {
                     "type": "none",  # Could be "bearer", "api_key", etc.

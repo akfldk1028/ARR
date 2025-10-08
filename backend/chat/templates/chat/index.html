@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2A Chat - 텍스트 채팅 with Agent Routing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .agent-status {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            gap: 12px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message.assistant .message-avatar {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .message.specialist .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message.announcement .message-avatar {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+        }
+
+        .message-content {
+            max-width: 70%;
+        }
+
+        .message.user .message-content {
+            text-align: right;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant .message-bubble {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .message-meta {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message.user .message-meta {
+            justify-content: flex-end;
+        }
+
+        .agent-badge {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .delegation-badge {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .input-container {
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+            background: white;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        #messageInput:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #sendButton {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #sendButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        #sendButton:active {
+            transform: translateY(0);
+        }
+
+        #sendButton:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 12px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 13px;
+            border-radius: 12px;
+            margin: 10px 20px;
+        }
+
+        .status-message.error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-message.success {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: fit-content;
+        }
+
+        .typing-indicator.active {
+            display: inline-block;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 A2A Chat System</h1>
+            <div class="agent-info">
+                <div class="agent-status"></div>
+                <span id="currentAgent">General Assistant</span>
+            </div>
+        </div>
+
+        <div class="messages-container" id="messages">
+            <div class="status-message success">
+                WebSocket 연결 중...
+            </div>
+        </div>
+
+        <div class="input-container">
+            <div class="input-wrapper">
+                <input
+                    type="text"
+                    id="messageInput"
+                    placeholder="메시지를 입력하세요... (예: 서울에서 도쿄 비행기 알아봐줘)"
+                    autocomplete="off"
+                >
+                <button id="sendButton" disabled>전송</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        let currentAgentSlug = 'general-worker';
+        const messagesContainer = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const currentAgentDisplay = document.getElementById('currentAgent');
+
+        // WebSocket 연결
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/chat/`;
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+                addStatusMessage('✅ 연결 완료! A2A 채팅을 시작하세요.', 'success');
+                sendButton.disabled = false;
+                messageInput.focus();
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                console.log('Received:', data);
+                handleWebSocketMessage(data);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                addStatusMessage('❌ 연결 오류 발생', 'error');
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket disconnected');
+                addStatusMessage('🔌 연결 종료됨', 'error');
+                sendButton.disabled = true;
+            };
+        }
+
+        // WebSocket 메시지 처리
+        function handleWebSocketMessage(data) {
+            switch(data.type) {
+                case 'connection':
+                    addStatusMessage(`🎉 ${data.message}`, 'success');
+                    if (data.current_agent) {
+                        updateCurrentAgent(data.current_agent);
+                    }
+                    break;
+
+                case 'chat_response':
+                    // Parse delegation markers
+                    const message = data.message;
+                    const delegationMatch = message.match(/\[DELEGATION_OCCURRED:(.*?)\]/);
+                    const specialistMatch = message.match(/\[SPECIALIST_RESPONSE:(.*?)\]/);
+
+                    if (delegationMatch && specialistMatch) {
+                        // Delegated to specialist - show specialist response directly
+                        const targetAgent = delegationMatch[1];
+                        const specialistResponse = specialistMatch[1];
+
+                        // Show specialist response with appropriate agent badge
+                        const agentNames = {
+                            'flight-specialist': 'Flight Specialist',
+                            'hotel-specialist': 'Hotel Specialist',
+                        };
+
+                        addMessage('specialist', specialistResponse, {
+                            agent: agentNames[targetAgent] || targetAgent,
+                            agentSlug: targetAgent
+                        });
+                    } else {
+                        // Regular response from host agent
+                        addMessage('assistant', data.message, {
+                            agent: data.agent_name || 'Host Agent',
+                            agentSlug: data.agent_slug
+                        });
+                    }
+                    break;
+
+                case 'agent_switched':
+                    addStatusMessage(`🔄 에이전트 전환: ${data.old_agent} → ${data.new_agent}`, 'success');
+                    updateCurrentAgent(data.new_agent);
+                    break;
+
+                case 'error':
+                    addStatusMessage(`❌ 오류: ${data.message}`, 'error');
+                    break;
+
+                case 'session_info':
+                    console.log('Session info:', data);
+                    break;
+
+                default:
+                    console.log('Unknown message type:', data);
+            }
+        }
+
+        // 메시지 추가
+        function addMessage(sender, text, meta = {}) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+
+            // Avatar text based on sender type and agent
+            let avatarText = 'AI';
+            if (sender === 'user') {
+                avatarText = 'U';
+            } else if (sender === 'specialist') {
+                // Specialist agents get their own icons
+                if (meta.agentSlug === 'flight-specialist') avatarText = '✈️';
+                else if (meta.agentSlug === 'hotel-specialist') avatarText = '🏨';
+                else avatarText = '🔧';
+            } else if (sender === 'announcement') {
+                avatarText = '📢';
+            } else if (sender === 'assistant') {
+                // Host agent
+                avatarText = '🤖';
+            }
+
+            avatar.textContent = avatarText;
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = text;
+
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'message-meta';
+
+            const timestamp = new Date().toLocaleTimeString('ko-KR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            metaDiv.innerHTML = `<span>${timestamp}</span>`;
+
+            if (meta.agentSlug) {
+                metaDiv.innerHTML += `<span class="agent-badge">${meta.agent || meta.agentSlug}</span>`;
+            }
+
+            if (meta.delegatedFrom) {
+                metaDiv.innerHTML += `<span class="delegation-badge">위임: ${meta.delegatedFrom} → ${meta.agentSlug}</span>`;
+            }
+
+            content.appendChild(bubble);
+            content.appendChild(metaDiv);
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // 상태 메시지 추가
+        function addStatusMessage(text, type = '') {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status-message ${type}`;
+            statusDiv.textContent = text;
+            messagesContainer.appendChild(statusDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // 현재 에이전트 업데이트
+        function updateCurrentAgent(agentSlug) {
+            currentAgentSlug = agentSlug;
+            const agentNames = {
+                'general-worker': 'General Assistant',
+                'flight-specialist': 'Flight Specialist ✈️',
+                'hotel-specialist': 'Hotel Specialist 🏨'
+            };
+            currentAgentDisplay.textContent = agentNames[agentSlug] || agentSlug;
+        }
+
+        // 메시지 전송
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text || !ws || ws.readyState !== WebSocket.OPEN) return;
+
+            // 사용자 메시지 표시
+            addMessage('user', text);
+
+            // WebSocket으로 전송
+            ws.send(JSON.stringify({
+                type: 'chat_message',
+                message: text
+            }));
+
+            messageInput.value = '';
+            messageInput.focus();
+        }
+
+        // 이벤트 리스너
+        sendButton.addEventListener('click', sendMessage);
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // 페이지 로드 시 WebSocket 연결
+        connectWebSocket();
+    </script>
+</body>
+</html>

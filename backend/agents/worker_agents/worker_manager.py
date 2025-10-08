@@ -25,7 +25,7 @@ class WorkerAgentManager:
         if agent_slug in self._workers:
             return self._workers[agent_slug]
 
-        # Try to create from Django model
+        # Try to create from Django model first
         try:
             from django.core.asgi import get_asgi_application
             from agents.models import Agent
@@ -39,14 +39,39 @@ class WorkerAgentManager:
 
             if worker:
                 self._workers[agent_slug] = worker
-                logger.info(f"Created and cached worker: {agent_slug}")
+                logger.info(f"Created and cached worker from Django model: {agent_slug}")
                 return worker
             else:
-                logger.error(f"Failed to create worker for {agent_slug}")
+                logger.error(f"Failed to create worker from Django model for {agent_slug}")
+                # Fall through to JSON card loading
+        except Exception as e:
+            logger.warning(f"Django model not found for {agent_slug}: {e}, trying JSON card...")
+
+        # Fallback: Try to create from JSON card
+        try:
+            from .card_loader import AgentCardLoader
+
+            # Load JSON card
+            cards = AgentCardLoader.load_all_cards()
+            agent_config = cards.get(agent_slug)
+
+            if agent_config:
+                # Create worker from JSON card config
+                worker = WorkerAgentFactory.create_worker(agent_slug, agent_config)
+
+                if worker:
+                    self._workers[agent_slug] = worker
+                    logger.info(f"Created and cached worker from JSON card: {agent_slug}")
+                    return worker
+                else:
+                    logger.error(f"Failed to create worker from JSON card for {agent_slug}")
+                    return None
+            else:
+                logger.error(f"No JSON card found for {agent_slug}")
                 return None
 
         except Exception as e:
-            logger.error(f"Error getting worker for slug {agent_slug}: {e}")
+            logger.error(f"Error loading worker from JSON card for {agent_slug}: {e}")
             return None
 
     def register_worker(self, agent_slug: str, worker: BaseWorkerAgent):

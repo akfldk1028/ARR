@@ -1,5 +1,5 @@
 """
-Flight Specialist Worker Agent - 항공편 예약 및 여행 정보 전문 에이전트
+Hotel Specialist Worker Agent - 호텔 예약 및 숙박 정보 전문 에이전트
 """
 
 import os
@@ -34,8 +34,8 @@ def remove_emojis(text: str) -> str:
     )
     return emoji_pattern.sub('', text)
 
-class FlightSpecialistWorkerAgent(BaseWorkerAgent):
-    """Specialized worker agent for flight booking and travel information"""
+class HotelSpecialistWorkerAgent(BaseWorkerAgent):
+    """Specialized worker agent for hotel booking and accommodation information"""
 
     def __init__(self, agent_slug: str, agent_config: Dict[str, Any]):
         super().__init__(agent_slug, agent_config)
@@ -50,7 +50,7 @@ class FlightSpecialistWorkerAgent(BaseWorkerAgent):
         model_config = django_config.get('model_config', {})
 
         # Use model config or defaults
-        model_name = model_config.get('model_name', 'gpt-4o-mini') if model_config else 'gpt-4o-mini'
+        model_name = model_config.get('model_name', 'gpt-3.5-turbo') if model_config else 'gpt-3.5-turbo'
         temperature = model_config.get('temperature', 0.3) if model_config else 0.3
         max_tokens = model_config.get('max_tokens', 1024) if model_config else 1024
 
@@ -61,48 +61,48 @@ class FlightSpecialistWorkerAgent(BaseWorkerAgent):
             max_tokens=max_tokens
         )
 
-        logger.info(f"FlightSpecialist initialized with model: {model_name}")
+        logger.info(f"HotelSpecialist initialized with model: {model_name}")
 
     @property
     def agent_name(self) -> str:
-        return self.config.get('name', 'Flight Specialist Agent')
+        return self.config.get('name', 'Hotel Specialist Agent')
 
     @property
     def agent_description(self) -> str:
-        return self.config.get('description', 'Specialized agent for flight booking and travel information')
+        return self.config.get('description', 'Specialized agent for hotel booking and accommodation recommendations')
 
     @property
     def capabilities(self) -> List[str]:
-        return self.config.get('capabilities', ['text', 'flight_booking', 'travel_info', 'airline_data', 'route_planning'])
+        return self.config.get('capabilities', ['text', 'hotel_booking', 'accommodation_info', 'pricing', 'recommendations'])
 
     @property
     def system_prompt(self) -> str:
-        return self.config.get('system_prompt', '''You are a specialized flight booking agent with extensive knowledge of:
+        return self.config.get('system_prompt', '''You are a specialized hotel booking agent with extensive knowledge of:
 
-1. Flight schedules and routes between major cities
-2. Airline information and recommendations
-3. Travel times and connecting flights
-4. Seasonal pricing and availability patterns
-5. Airport information and codes
-6. Travel documentation requirements
+1. Hotel availability and booking systems
+2. Accommodation types and amenities
+3. Location-based recommendations
+4. Pricing and special offers
+5. Room types and configurations
+6. Customer preferences and requirements
 
-Provide detailed, helpful flight information including:
-- Specific flight numbers and times (use realistic examples)
-- Multiple airline options
+Provide detailed, helpful hotel information including:
+- Specific hotel names and locations (use realistic examples)
+- Multiple accommodation options
 - Price ranges and booking recommendations
-- Travel tips and considerations
+- Amenities and facility information
 
 IMPORTANT:
 1. Never use emojis in your responses. Always respond in plain text without any emoji characters.
-2. If the user does not specify origin and destination, ASK for them. DO NOT assume or guess routes.
-3. Only provide specific flight information when both origin and destination are clearly stated.
+2. If the user does not specify location or dates, ASK for them. DO NOT assume or guess locations.
+3. Only provide specific hotel information when location is clearly stated.
 
-Always be specific and informative in your responses about flight-related queries.
+Always be specific and informative in your responses about hotel-related queries.
 
-When user provides both origin and destination, provide realistic flight times, prices, and airline recommendations based on typical routes and carriers.''')
+When user provides location and dates, provide realistic hotel options, prices, and recommendations based on typical accommodations in that area.''')
 
     async def _generate_response(self, user_input: str, context_id: str, session_id: str, user_name: str) -> str:
-        """Generate specialized flight booking response"""
+        """Generate specialized hotel booking response"""
         try:
             messages = [SystemMessage(content=self.system_prompt)]
 
@@ -139,27 +139,27 @@ When user provides both origin and destination, provide realistic flight times, 
 
             # Generate specialized response with timeout
             try:
-                logger.info(f"Flight specialist processing: {user_input[:100]}")
+                logger.info(f"Hotel specialist processing: {user_input[:100]}")
                 response = await asyncio.wait_for(self.llm.ainvoke(messages), timeout=30.0)
-                flight_response = response.content
-                logger.info(f"[DEBUG] OpenAI response type: {type(flight_response)}")
-                logger.info(f"[DEBUG] OpenAI response length: {len(flight_response) if flight_response else 0}")
-                logger.info(f"[DEBUG] OpenAI response content (first 200 chars): {flight_response[:200] if flight_response else 'EMPTY'}")
+                hotel_response = response.content
+                logger.info(f"[DEBUG] OpenAI response type: {type(hotel_response)}")
+                logger.info(f"[DEBUG] OpenAI response length: {len(hotel_response) if hotel_response else 0}")
+                logger.info(f"[DEBUG] OpenAI response content (first 200 chars): {hotel_response[:200] if hotel_response else 'EMPTY'}")
             except asyncio.TimeoutError:
                 logger.warning("LLM response timeout, using fallback response")
-                flight_response = "안녕하세요! 항공편 예약을 도와드리겠습니다. 어디서 어디로 가는 항공편을 찾고 계신가요? 출발지와 목적지, 그리고 선호하는 날짜를 알려주시면 최적의 항공편을 찾아드리겠습니다."
+                hotel_response = "안녕하세요! 호텔 예약을 도와드리겠습니다. 어느 지역의 호텔을 찾고 계신가요? 목적지와 체크인/체크아웃 날짜를 알려주시면 최적의 숙소를 찾아드리겠습니다."
 
             # Check if we should coordinate with other agents
-            if any(word in user_input.lower() for word in ['hotel', 'accommodation', 'stay', 'complete trip']):
-                # Offer to coordinate with hotel specialist
-                flight_response += "\n\n숙박도 필요하시다면 호텔 예약 전문가와 연결해드릴 수 있습니다. 완전한 여행 계획을 원하시나요?"
+            if any(word in user_input.lower() for word in ['flight', 'airplane', 'travel', 'trip planning']):
+                # Offer to coordinate with flight specialist
+                hotel_response += "\n\n항공편도 필요하시다면 항공 예약 전문가와 연결해드릴 수 있습니다. 완전한 여행 계획을 원하시나요?"
 
             # Remove emojis from response
-            final_response = remove_emojis(flight_response)
+            final_response = remove_emojis(hotel_response)
             logger.info(f"[DEBUG] After emoji removal: {len(final_response) if final_response else 0} chars")
             logger.info(f"[DEBUG] Final response (first 200 chars): {final_response[:200] if final_response else 'EMPTY'}")
             return final_response
 
         except Exception as e:
-            logger.error(f"Error generating response in FlightSpecialistWorkerAgent: {e}")
-            return f"I apologize, but I encountered an error while looking up flight information: {str(e)}. Please try again or contact our general support."
+            logger.error(f"Error generating response in HotelSpecialistWorkerAgent: {e}")
+            return f"I apologize, but I encountered an error while looking up hotel information: {str(e)}. Please try again or contact our general support."
