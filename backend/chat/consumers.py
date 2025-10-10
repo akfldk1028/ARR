@@ -18,8 +18,8 @@ from gemini.models import ChatSession, ChatMessage
 
 # A2A Worker Agent System (agents/ 구현 참조)
 from agents.worker_agents.worker_manager import WorkerAgentManager
-from agents.database.neo4j.service import get_neo4j_service
-from agents.database.neo4j import ConversationTracker, TaskManager, ProvenanceTracker
+from graph_db.services import get_neo4j_service
+from graph_db.tracking import ConversationTracker, TaskManager, ProvenanceTracker
 
 logger = logging.getLogger(__name__)
 
@@ -62,11 +62,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.chat_session = await self._get_or_create_session()
             self.browser_session_id = str(self.chat_session.id)
 
-            # Neo4j Conversation 생성 또는 재사용
+            # Neo4j Conversation 생성 (WebSocket 연결마다 새 대화)
             username = self.user_obj.username if self.user_obj else 'anonymous'
-            self.conversation_id = self.conversation_tracker.get_or_create_conversation(
+            self.conversation_id = self.conversation_tracker.create_conversation(
                 username,
-                self.browser_session_id,
                 metadata={'django_session_id': self.browser_session_id, 'agent': self.current_agent_slug}
             )
 
@@ -263,22 +262,28 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # ============== DATABASE OPERATIONS ==============
 
     async def _get_or_create_session(self):
-        """채팅 세션 가져오기 또는 생성"""
+        """채팅 세션 생성 (WebSocket 연결마다 새 세션)"""
         from django.utils import timezone
 
+        # 기존 활성 세션 비활성화 (새로고침/재연결 시)
         try:
-            session = await sync_to_async(ChatSession.objects.get)(
+            old_session = await sync_to_async(ChatSession.objects.get)(
                 user=self.user_obj,
                 is_active=True
             )
-            return session
+            old_session.is_active = False
+            await sync_to_async(old_session.save)()
+            logger.info(f"Deactivated old session {old_session.id}")
         except ChatSession.DoesNotExist:
-            return await sync_to_async(ChatSession.objects.create)(
-                user=self.user_obj,
-                is_active=True,
-                title=f"Chat {timezone.now().strftime('%Y-%m-%d %H:%M')}",
-                metadata={'system': 'a2a_chat'}
-            )
+            pass
+
+        # 항상 새 세션 생성
+        return await sync_to_async(ChatSession.objects.create)(
+            user=self.user_obj,
+            is_active=True,
+            title=f"Chat {timezone.now().strftime('%Y-%m-%d %H:%M')}",
+            metadata={'system': 'a2a_chat'}
+        )
 
     async def _save_message(self, content: str, message_type: str, sender_type: str, metadata=None):
         """메시지 저장"""

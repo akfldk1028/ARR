@@ -26,19 +26,19 @@
         "Find airline tickets from SFO to LHR",
         "대한항공 도쿄행 알아봐줘",
         "Show me flights to New York next week",
-        "비행기표 예약",
+        "비행기표 검색해줘",
         "항공권 검색해줘",
         "비행기 알아봐줘",
         "비행기 찾아줘",
         "항공편 알아봐",
-        "비행기 정보",
+        "비행기 정보 알려줘",
         "비행기 보여줘",
         "항공권 알아봐줘",
         "비행기표 찾아줘",
         "항공편 검색",
         "비행기편 알아봐",
-        "비행기 예약하고 싶어",
-        "항공권 예약하고 싶어요",
+        "비행기 티켓 구하고 싶어",
+        "항공권 구하고 싶어요",
         "비행기 타고 싶어요",
         "항공편 찾아주세요",
         "flight info",
@@ -48,8 +48,8 @@
         "search flights",
         "I want to fly",
         "need a flight",
-        "book a flight",
-        "get me a flight"
+        "book a plane ticket",
+        "get me a flight ticket"
       ]
     },
     {
@@ -113,6 +113,11 @@
       "travel_routes",
       "pricing_information",
       "airport_codes"
-    ]
+    ],
+    "routing_config": {
+      "specialist_threshold": 0.70,
+      "general_threshold": 0.50,
+      "confidence_gap_threshold": 0.01
+    }
   }
 }

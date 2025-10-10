@@ -63,8 +63,8 @@ class SimpleChatConsumer(AsyncWebsocketConsumer):
         self.vad_stt_service = None  # VAD + STT integrated service
 
         # Neo4j Integration (Required for A2A Handler)
-        from agents.database.neo4j.service import get_neo4j_service
-        from agents.database.neo4j import ConversationTracker, TaskManager, ProvenanceTracker
+        from graph_db.services import get_neo4j_service
+        from graph_db.tracking import ConversationTracker, TaskManager, ProvenanceTracker
         self.neo4j_service = get_neo4j_service()
         self.conversation_tracker = ConversationTracker(self.neo4j_service)
         self.task_manager = TaskManager(self.neo4j_service)

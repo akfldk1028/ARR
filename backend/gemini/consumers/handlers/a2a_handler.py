@@ -558,47 +558,73 @@ class A2AHandler:
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 similarities = await loop.run_in_executor(executor, compute_similarities)
 
+            # ============== AGENT REGISTRY-BASED ROUTING ==============
+            # Use AgentRegistry for metadata-driven routing (no hardcoded lists)
+            from agents.worker_agents.agent_registry import AgentRegistry
+
+            # Ensure registry is loaded
+            AgentRegistry.load_registry()
+
             # Determine best agent based on similarity
             sorted_agents = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
             best_agent, best_score = sorted_agents[0]
             second_score = sorted_agents[1][1] if len(sorted_agents) > 1 else 0.0
 
-            # Best Practice Thresholds (based on semantic-router research)
-            specialist_threshold = 0.75  # High confidence for specialists
-            general_threshold = 0.5      # Medium confidence for general
-            confidence_gap_threshold = 0.10  # Gap between 1st and 2nd score (relaxed from 0.15)
+            # Get routing thresholds from registry (configuration-driven, not hardcoded)
+            thresholds = AgentRegistry.get_routing_thresholds(best_agent)
+            specialist_threshold = thresholds['specialist_threshold']
+            general_threshold = thresholds['general_threshold']
+            confidence_gap_threshold = thresholds['confidence_gap_threshold']
 
             # Calculate confidence gap
             confidence_gap = best_score - second_score
 
-            # Check if best is specialist and meets threshold
-            # Support both hyphen and underscore formats
-            is_specialist = best_agent in [
-                'flight-specialist', 'hotel-specialist',
-                'flight_specialist', 'hotel_specialist'
-            ]
+            # Check if best agent is specialist (metadata-driven)
+            is_specialist = AgentRegistry.is_specialist(best_agent)
             threshold = specialist_threshold if is_specialist else general_threshold
 
             # Decision logic with confidence gap consideration
             meets_threshold = best_score >= threshold
             has_confidence_gap = confidence_gap >= confidence_gap_threshold
 
-            should_delegate = meets_threshold and has_confidence_gap
+            # Check if current agent is a specialist (metadata-driven)
+            current_is_specialist = AgentRegistry.is_specialist(current_agent)
 
-            # If specialist doesn't meet criteria, fallback to hostagent
-            if is_specialist and not (meets_threshold and has_confidence_gap):
+            # PRIORITY 1: Specialist-to-specialist switching
+            # Allow switching between different specialists with relaxed criteria
+            if current_is_specialist and is_specialist and best_agent != current_agent:
+                # Only require threshold (not gap) for specialist-to-specialist switch
+                if best_score >= specialist_threshold:
+                    should_delegate = True
+                    logger.info(f"Specialist-to-specialist switch: {current_agent} -> {best_agent} (score: {best_score:.3f} >= {specialist_threshold})")
+                else:
+                    # Best specialist doesn't meet threshold, fallback to hostagent
+                    best_agent = 'hostagent'
+                    best_score = similarities.get('hostagent', 0.0)
+                    hostagent_rank = next((i for i, (agent, _) in enumerate(sorted_agents) if agent == 'hostagent'), -1)
+                    if hostagent_rank >= 0 and hostagent_rank + 1 < len(sorted_agents):
+                        second_score = sorted_agents[hostagent_rank + 1][1]
+                    else:
+                        second_score = 0.0
+                    confidence_gap = best_score - second_score
+                    threshold = general_threshold
+                    should_delegate = False
+            # PRIORITY 2: Normal delegation logic with gap
+            elif meets_threshold and has_confidence_gap:
+                should_delegate = True
+            # PRIORITY 3: Specialist doesn't meet criteria, fallback to hostagent
+            elif is_specialist and not (meets_threshold and has_confidence_gap):
                 best_agent = 'hostagent'
                 best_score = similarities.get('hostagent', 0.0)
-                # Recalculate gap and threshold for fallback scenario
-                # Find the next highest score after hostagent
                 hostagent_rank = next((i for i, (agent, _) in enumerate(sorted_agents) if agent == 'hostagent'), -1)
                 if hostagent_rank >= 0 and hostagent_rank + 1 < len(sorted_agents):
                     second_score = sorted_agents[hostagent_rank + 1][1]
                 else:
                     second_score = 0.0
                 confidence_gap = best_score - second_score
-                threshold = general_threshold  # hostagent uses general threshold
-                # Hostagent doesn't need delegation from itself
+                threshold = general_threshold
+                should_delegate = False
+            else:
                 should_delegate = False
 
             from .utils import safe_log_text

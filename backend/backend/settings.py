@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'conversations',
     'rules',
 
+    # Graph Database (Neo4j)
+    'graph_db',
+
     # Live API + A2A Integration
     'live_a2a_bridge',
 

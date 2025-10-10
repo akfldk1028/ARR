@@ -13,7 +13,7 @@ from uuid import uuid4
 from datetime import datetime
 
 from django.conf import settings
-from agents.database.neo4j import Neo4jService
+from graph_db.services import Neo4jService
 from agents.a2a_client import A2AClient, A2AAgentCard
 
 logger = logging.getLogger(__name__)

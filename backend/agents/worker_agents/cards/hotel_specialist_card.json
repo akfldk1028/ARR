@@ -101,6 +101,11 @@
       "pricing_information",
       "room_types",
       "location_insights"
-    ]
+    ],
+    "routing_config": {
+      "specialist_threshold": 0.70,
+      "general_threshold": 0.50,
+      "confidence_gap_threshold": 0.01
+    }
   }
 }
