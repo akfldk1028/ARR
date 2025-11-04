@@ -61,11 +61,18 @@ INSTALLED_APPS = [
 
     # Legacy (to be migrated)
     'gemini',
+
+    # Parser app
+    'parser',
+
+    # Law app
+    'law',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -93,6 +100,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 ASGI_APPLICATION = 'backend.asgi.application'
+
+# Django Channels Configuration
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
 
 
 # Database
@@ -147,6 +161,23 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CORS Settings
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+# REST Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'UNAUTHENTICATED_USER': None,
+}
+
+# Disable CSRF for API endpoints (since we're using CORS)
+CSRF_TRUSTED_ORIGINS = ['http://localhost:*', 'http://127.0.0.1:*']
+
+
+
 # Create structured logs directory like SK system
 LOGS_DIR = os.path.join(BASE_DIR, 'agents', 'logs')
 os.makedirs(LOGS_DIR, exist_ok=True)
@@ -155,6 +186,9 @@ os.makedirs(LOGS_DIR, exist_ok=True)
 from datetime import datetime
 LOG_DATE = datetime.now().strftime('%Y%m%d')
 LOG_TIMESTAMP = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+
+
 
 # Logging Configuration with timestamped files
 LOGGING = {
@@ -277,3 +311,6 @@ LOGGING = {
 # A2A (Agent-to-Agent) Configuration
 A2A_BASE_URL = "http://localhost:8004"
 A2A_SERVER_PORT = 8000
+
+# OpenAI Configuration (for LLM-based domain naming)
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
