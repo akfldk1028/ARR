@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/Data/11_Backend/01_ARR/**)",
+      "Bash(uv --version:*)",
+      "Bash(for dir in */)",
+      "Bash(do echo \"=== $dir%/ ===\")",
+      "Bash(if [ -f \"$dir.python-version\" ])",
+      "Bash(else echo \"Python: NO VERSION FILE\")",
+      "Bash(fi)",
+      "Bash(if [ -d \"$dir.venv\" ])",
+      "Bash(then echo \".venv: EXISTS\")",
+      "Bash(else echo \".venv: MISSING\")",
+      "Bash(if [ -f \"$dirpyproject.toml\" ])",
+      "Bash(then echo \"pyproject.toml: EXISTS\")",
+      "Bash(else echo \"pyproject.toml: MISSING\")",
+      "Bash(done)",
+      "Bash(pip install:*)",
+      "Bash(python -m uv:*)",
+      "Bash(.venv/Scripts/python:*)",
+      "Bash(.venv/Scripts/pip:*)",
+      "Bash(do if [ -f \"$dir.python-version\" ])",
+      "Bash(then echo \"=== $dir%/ ===\")",
+      "Bash(curl:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout 10 python:*)",
+      "Bash(timeout 5 python:*)",
+      "Bash(timeout 3 python:*)",
+      "Bash(python test_langgraph_api.py:*)",
+      "Bash(if [ -f \"$dir.gitignore\" ])",
+      "Bash(then echo \".gitignore: EXISTS\")",
+      "Bash(else echo \".gitignore: MISSING\")",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

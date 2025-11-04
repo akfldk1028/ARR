@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>법률 검색 챗봇 - Law Search AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            height: 95vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 25px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #1e40af;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-icon {
+            font-size: 32px;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .agent-status {
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 320px;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            font-size: 16px;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .example-query {
+            background: white;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .example-query:hover {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            transform: translateX(5px);
+        }
+
+        .example-query .query-icon {
+            color: #3b82f6;
+            margin-right: 8px;
+        }
+
+        .stats-section {
+            margin-top: 25px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #64748b;
+        }
+
+        .stat-value {
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .messages-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            background: #ffffff;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 14px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+            color: white;
+        }
+
+        .message.assistant .message-avatar {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .message-content {
+            max-width: 75%;
+        }
+
+        .message.user .message-content {
+            text-align: right;
+        }
+
+        .message-bubble {
+            padding: 14px 18px;
+            border-radius: 18px;
+            line-height: 1.7;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant .message-bubble {
+            background: #f8fafc;
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-left: 3px solid #3b82f6;
+        }
+
+        .message-meta {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message.user .message-meta {
+            justify-content: flex-end;
+        }
+
+        .agent-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .law-badge {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .input-container {
+            border-top: 2px solid #e2e8f0;
+            padding: 25px;
+            background: white;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 14px 22px;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+            resize: none;
+            min-height: 50px;
+            max-height: 150px;
+        }
+
+        #messageInput:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        #sendButton {
+            padding: 14px 35px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        #sendButton:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(59, 130, 246, 0.5);
+        }
+
+        #sendButton:active {
+            transform: translateY(-1px);
+        }
+
+        #sendButton:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 14px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 14px;
+            border-radius: 14px;
+            margin: 15px 25px;
+        }
+
+        .status-message.error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-message.success {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 10px 18px;
+            background: #f8fafc;
+            border-radius: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            width: fit-content;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .typing-indicator.active {
+            display: inline-block;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .typing-dots span {
+            width: 9px;
+            height: 9px;
+            background: #3b82f6;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-12px);
+                opacity: 1;
+            }
+        }
+
+        /* 스크롤바 커스터마이징 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span class="header-icon">⚖️</span>
+                법률 검색 챗봇
+            </h1>
+            <div class="agent-info">
+                <div class="agent-status"></div>
+                <span id="currentAgent">Law Coordinator</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- 사이드바: 예시 질문 및 통계 -->
+            <div class="sidebar">
+                <h3>📋 예시 질문</h3>
+                <div class="example-query" data-query="도시지역 용적률 기준은?">
+                    <span class="query-icon">🏙️</span>
+                    도시지역 용적률 기준은?
+                </div>
+                <div class="example-query" data-query="건축물 높이 제한 규정 알려줘">
+                    <span class="query-icon">🏢</span>
+                    건축물 높이 제한 규정 알려줘
+                </div>
+                <div class="example-query" data-query="토지 형질 변경 허가 절차는?">
+                    <span class="query-icon">🌱</span>
+                    토지 형질 변경 허가 절차는?
+                </div>
+                <div class="example-query" data-query="개발행위허가 대상은 무엇인가요?">
+                    <span class="query-icon">🏗️</span>
+                    개발행위허가 대상은 무엇인가요?
+                </div>
+                <div class="example-query" data-query="국토계획법 제12조 내용이 뭐야?">
+                    <span class="query-icon">📖</span>
+                    국토계획법 제12조 내용이 뭐야?
+                </div>
+                <div class="example-query" data-query="법률과 시행령의 차이점은?">
+                    <span class="query-icon">⚖️</span>
+                    법률과 시행령의 차이점은?
+                </div>
+
+                <div class="stats-section">
+                    <h3>📊 검색 통계</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">검색된 조항</span>
+                        <span class="stat-value" id="statHangCount">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">도메인 수</span>
+                        <span class="stat-value" id="statDomainCount">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">평균 유사도</span>
+                        <span class="stat-value" id="statAvgSimilarity">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Cross-law 참조</span>
+                        <span class="stat-value" id="statCrossLaw">-</span>
+                    </div>
+                </div>
+
+                <div class="stats-section" style="margin-top: 15px;">
+                    <h3>ℹ️ 시스템 정보</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">알고리즘</span>
+                        <span class="stat-value">RNE/INE</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">검색 방식</span>
+                        <span class="stat-value">3-Stage RAG</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">벡터 DB</span>
+                        <span class="stat-value">Neo4j</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 메시지 영역 -->
+            <div class="messages-area">
+                <div class="messages-container" id="messages">
+                    <div class="status-message success">
+                        WebSocket 연결 중...
+                    </div>
+                </div>
+
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <input
+                            type="text"
+                            id="messageInput"
+                            placeholder="법률 관련 질문을 입력하세요... (예: 도시지역 용적률 기준은?)"
+                            autocomplete="off"
+                        >
+                        <button id="sendButton" disabled>전송</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        const LAW_COORDINATOR_SLUG = 'law-coordinator';
+        const messagesContainer = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const currentAgentDisplay = document.getElementById('currentAgent');
+
+        // WebSocket 연결
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/chat/`;
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('✅ WebSocket connected');
+                addStatusMessage('✅ 연결 완료! 법률 검색을 시작하세요.', 'success');
+                sendButton.disabled = false;
+                messageInput.focus();
+
+                // law-coordinator로 에이전트 전환
+                switchToLawCoordinator();
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                console.log('📨 Received:', data);
+                handleWebSocketMessage(data);
+            };
+
+            ws.onerror = (error) => {
+                console.error('❌ WebSocket error:', error);
+                addStatusMessage('❌ 연결 오류 발생', 'error');
+            };
+
+            ws.onclose = () => {
+                console.log('🔌 WebSocket disconnected');
+                addStatusMessage('🔌 연결 종료됨', 'error');
+                sendButton.disabled = true;
+            };
+        }
+
+        // law-coordinator로 전환
+        function switchToLawCoordinator() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'switch_agent',
+                    agent_slug: LAW_COORDINATOR_SLUG
+                }));
+                console.log('🔄 Switching to law-coordinator...');
+            }
+        }
+
+        // WebSocket 메시지 처리
+        function handleWebSocketMessage(data) {
+            switch(data.type) {
+                case 'connection':
+                    addStatusMessage(`🎉 ${data.message}`, 'success');
+                    break;
+
+                case 'chat_response':
+                    addMessage('assistant', data.message, {
+                        agent: data.agent_name || 'Law Coordinator',
+                        agentSlug: data.agent_slug || LAW_COORDINATOR_SLUG
+                    });
+
+                    // 통계 업데이트 (메타데이터에서 추출)
+                    if (data.metadata) {
+                        updateStats(data.metadata);
+                    }
+                    break;
+
+                case 'agent_switched':
+                    if (data.new_agent === LAW_COORDINATOR_SLUG) {
+                        addStatusMessage(`✅ 법률 검색 시스템 준비 완료`, 'success');
+                        updateCurrentAgent(LAW_COORDINATOR_SLUG);
+                    }
+                    break;
+
+                case 'error':
+                    addStatusMessage(`❌ 오류: ${data.message}`, 'error');
+                    break;
+
+                case 'session_info':
+                    console.log('📊 Session info:', data);
+                    break;
+
+                default:
+                    console.log('❓ Unknown message type:', data);
+            }
+        }
+
+        // 메시지 추가
+        function addMessage(sender, text, meta = {}) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = sender === 'user' ? '👤' : '⚖️';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = text;
+
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'message-meta';
+
+            const timestamp = new Date().toLocaleTimeString('ko-KR', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            metaDiv.innerHTML = `<span>${timestamp}</span>`;
+
+            if (meta.agentSlug) {
+                metaDiv.innerHTML += `<span class="agent-badge">${meta.agent || meta.agentSlug}</span>`;
+            }
+
+            content.appendChild(bubble);
+            content.appendChild(metaDiv);
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // 상태 메시지 추가
+        function addStatusMessage(text, type = '') {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status-message ${type}`;
+            statusDiv.textContent = text;
+            messagesContainer.appendChild(statusDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // 현재 에이전트 업데이트
+        function updateCurrentAgent(agentSlug) {
+            if (agentSlug === LAW_COORDINATOR_SLUG) {
+                currentAgentDisplay.textContent = 'Law Coordinator ⚖️';
+            }
+        }
+
+        // 통계 업데이트
+        function updateStats(metadata) {
+            if (metadata.hang_count) {
+                document.getElementById('statHangCount').textContent = metadata.hang_count;
+            }
+            if (metadata.domain_count) {
+                document.getElementById('statDomainCount').textContent = metadata.domain_count;
+            }
+            if (metadata.avg_similarity) {
+                document.getElementById('statAvgSimilarity').textContent =
+                    (metadata.avg_similarity * 100).toFixed(1) + '%';
+            }
+            if (metadata.cross_law_count) {
+                document.getElementById('statCrossLaw').textContent = metadata.cross_law_count;
+            }
+        }
+
+        // 메시지 전송
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text || !ws || ws.readyState !== WebSocket.OPEN) return;
+
+            // 사용자 메시지 표시
+            addMessage('user', text);
+
+            // WebSocket으로 전송
+            ws.send(JSON.stringify({
+                type: 'chat_message',
+                message: text
+            }));
+
+            messageInput.value = '';
+            messageInput.focus();
+        }
+
+        // 예시 질문 클릭 이벤트
+        document.querySelectorAll('.example-query').forEach(element => {
+            element.addEventListener('click', () => {
+                const query = element.getAttribute('data-query');
+                messageInput.value = query;
+                sendMessage();
+            });
+        });
+
+        // 이벤트 리스너
+        sendButton.addEventListener('click', sendMessage);
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // 페이지 로드 시 WebSocket 연결
+        connectWebSocket();
+    </script>
+</body>
+</html>

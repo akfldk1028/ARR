@@ -52,7 +52,7 @@ class WorkerAgentFactory:
                 worker_class is not BaseWorkerAgent):
 
                 cls._WORKER_CLASSES[class_name] = worker_class
-                logger.info(f"  ✓ Registered: {class_name}")
+                logger.info(f"  [OK] Registered: {class_name}")
 
         cls._auto_discovery_done = True
         logger.info(f"Auto-discovery complete: {len(cls._WORKER_CLASSES)} worker classes available")

@@ -1,0 +1,20 @@
+# Django (Django 프로젝트에서 사용 시)
+# Django>=4.2.0
+
+# Neo4j 드라이버
+neo4j==5.14.1
+
+# 임베딩 모델 (필수!)
+sentence-transformers>=2.2.0
+torch>=2.0.0
+
+# 데이터 처리
+python-dotenv==1.0.0
+
+# PDF 파싱
+PyPDF2==3.0.1
+pdfplumber==0.10.3
+
+# 유틸리티
+python-dateutil==2.8.2
+numpy>=1.24.0

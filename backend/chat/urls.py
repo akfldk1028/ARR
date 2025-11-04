@@ -9,4 +9,5 @@ app_name = 'chat'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('law/', views.law_chat, name='law_chat'),
 ]

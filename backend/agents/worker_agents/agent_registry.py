@@ -91,7 +91,7 @@ class AgentRegistry:
 
                 cls._registry[agent_slug] = metadata
 
-                agent_type_label = "🎯 SPECIALIST" if metadata.is_specialist else "🔄 COORDINATOR" if metadata.is_coordinator else "⚙️ CUSTOM"
+                agent_type_label = "[SPECIALIST]" if metadata.is_specialist else "[COORDINATOR]" if metadata.is_coordinator else "[CUSTOM]"
                 logger.info(f"  {agent_type_label}: {agent_slug} -> {metadata.worker_class}")
 
             except Exception as e:

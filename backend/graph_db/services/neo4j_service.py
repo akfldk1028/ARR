@@ -58,6 +58,13 @@ class Neo4jService:
             self._driver = None
             logger.info("🔌 Disconnected from Neo4j")
 
+    @property
+    def driver(self) -> Driver:
+        """Get the driver instance (read-only property)"""
+        if not self._driver:
+            raise RuntimeError("Not connected to database. Call connect() first.")
+        return self._driver
+
     def get_session(self) -> Session:
         """Get a new database session"""
         if not self._driver:

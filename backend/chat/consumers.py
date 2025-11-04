@@ -80,6 +80,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
             from gemini.consumers.handlers.a2a_handler import A2AHandler
             self.a2a_handler = A2AHandler(self)
 
+            # Join conversation group for Neo4j real-time updates
+            conversation_group = f"conversation_{self.conversation_id}"
+            await self.channel_layer.group_add(
+                conversation_group,
+                self.channel_name
+            )
+            logger.info(f"Joined conversation group: {conversation_group}")
+
             await self._send_welcome_message()
             logger.info(f"Chat connected: Browser={self.browser_session_id[:16]}..., Conversation={self.conversation_id[:16]}...")
 
@@ -91,6 +99,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         """연결 종료"""
         try:
+            # Leave conversation group
+            if self.conversation_id:
+                conversation_group = f"conversation_{self.conversation_id}"
+                await self.channel_layer.group_discard(
+                    conversation_group,
+                    self.channel_name
+                )
+                logger.info(f"Left conversation group: {conversation_group}")
+
             if self.chat_session:
                 await self._update_session_activity()
             logger.info(f"Chat disconnected: Browser={self.browser_session_id[:16] if self.browser_session_id else 'N/A'}...")
@@ -325,3 +342,34 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await sync_to_async(ChatSession.objects.filter(id=self.chat_session.id).update)(
                 updated_at=timezone.now()
             )
+
+    # ============== NEO4J REAL-TIME EVENT HANDLER ==============
+
+    async def neo4j_event(self, event):
+        """
+        Neo4j CDC 이벤트 처리
+        Kafka Listener로부터 받은 Neo4j 변경 이벤트를 클라이언트에 전송
+
+        Args:
+            event: {
+                'type': 'neo4j_event',
+                'event_type': 'conversation_created' | 'message_created' | ...,
+                'data': {...}
+            }
+        """
+        try:
+            event_type = event.get('event_type')
+            data = event.get('data', {})
+
+            logger.info(f"Broadcasting Neo4j event to client: {event_type}")
+
+            # Send to WebSocket client
+            await self.send(text_data=json.dumps({
+                'type': 'neo4j_update',
+                'event_type': event_type,
+                'data': data,
+                'success': True
+            }))
+
+        except Exception as e:
+            logger.error(f"Failed to broadcast Neo4j event: {e}", exc_info=True)

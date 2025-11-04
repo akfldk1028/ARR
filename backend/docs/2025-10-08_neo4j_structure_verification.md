@@ -78,7 +78,6 @@ User -[STARTED_SESSION]-> Session
                             |               |                                                          |
                             |               +-[GENERATED_TASK]-> Task -[EXECUTED_BY]-> AgentExecution-+
                             |
-                            +-[HAS_MESSAGE]-> Message  (경로 2: 직접 - 빠른 조회용)
                             |
                             +-[IN_CONTEXT]-> Context
 ```

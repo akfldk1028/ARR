@@ -1,0 +1,118 @@
+{
+  "name": "Law Coordinator Agent",
+  "description": "한국 법률 검색 전문 에이전트 (Multi-Agent System 기반)",
+  "url": "http://localhost:8004/agents/law-coordinator",
+  "version": "1.0.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": ["text", "text/plain"],
+  "defaultOutputModes": ["text", "text/plain"],
+  "skills": [
+    {
+      "id": "legal_search",
+      "name": "법률 검색",
+      "description": "한국 법률 조항 검색 및 해석",
+      "tags": [
+        "법률", "법", "조항", "법령", "규정",
+        "law", "legal", "statute", "regulation",
+        "시행령", "시행규칙", "enforcement decree",
+        "검색", "찾기", "알아보기", "search"
+      ],
+      "examples": [
+        "도시지역 용적률 기준은?",
+        "건축물 건폐율 산정 방법",
+        "용도지역 변경 절차",
+        "개발행위허가 대상",
+        "국토계획법 용적률 관련 조항",
+        "주택법 공동주택 정의",
+        "건축법 용도변경 규정",
+        "산업입지법 산업단지 설치",
+        "What is the floor area ratio in urban areas?",
+        "법률 13조 관련 시행규칙",
+        "법률 검색",
+        "법 조항 찾기",
+        "관련 법규 알아봐",
+        "법적 근거 찾아줘"
+      ]
+    },
+    {
+      "id": "cross_law_reference",
+      "name": "Cross-law 참조",
+      "description": "법률 → 시행령 → 시행규칙 자동 참조 검색",
+      "tags": [
+        "cross-law", "시행령", "시행규칙", "참조",
+        "enforcement decree", "enforcement rule", "reference"
+      ],
+      "examples": [
+        "법률 13조에 대한 시행령은?",
+        "이 조항 관련 시행규칙 찾아줘",
+        "법률에서 시행령으로 위임한 내용",
+        "시행규칙까지 포함해서 검색해줘"
+      ]
+    },
+    {
+      "id": "semantic_graph_search",
+      "name": "의미론적 그래프 검색",
+      "description": "RNE/INE 알고리즘 기반 그래프 탐색",
+      "tags": [
+        "semantic", "graph", "RNE", "INE",
+        "의미론적", "그래프", "연관 조항"
+      ],
+      "examples": [
+        "용적률 관련 모든 조항",
+        "도시계획 수립 절차 전체",
+        "건축 허가 관련 연관 규정",
+        "개발행위와 관련된 모든 법규"
+      ]
+    },
+    {
+      "id": "multi_domain_search",
+      "name": "다중 도메인 검색",
+      "description": "여러 법률 영역 통합 검색 (MAS)",
+      "tags": [
+        "multi-domain", "integration", "MAS",
+        "다중", "통합", "여러 법률"
+      ],
+      "examples": [
+        "건축법과 주택법 모두 검색",
+        "국토계획법 및 관련 법령",
+        "도시개발 관련 모든 법률",
+        "산업단지 관련 통합 검색"
+      ]
+    }
+  ],
+  "django": {
+    "agent_type": "specialist",
+    "worker_class": "LawCoordinatorWorker",
+    "model_config": {
+      "provider": "openai",
+      "model_name": "gpt-4o-mini",
+      "temperature": 0.3,
+      "max_tokens": 2048
+    },
+    "specialization_focus": "legal_accuracy",
+    "expertise_areas": [
+      "korean_law",
+      "legal_search",
+      "cross_law_reference",
+      "semantic_graph_search",
+      "multi_agent_coordination"
+    ],
+    "mas_config": {
+      "auto_domain_creation": true,
+      "domain_similarity_threshold": 0.85,
+      "max_agent_size": 300,
+      "min_agent_size": 50,
+      "rne_threshold": 0.75,
+      "ine_k": 10
+    },
+    "routing_config": {
+      "specialist_threshold": 0.70,
+      "general_threshold": 0.50,
+      "confidence_gap_threshold": 0.01
+    }
+  }
+}
