@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Law A2A Parallel Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        button {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: translateY(-2px); }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .badge-a2a {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .badge-my {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        .results {
+            margin-top: 30px;
+        }
+        .section-title {
+            font-size: 1.5em;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        .result-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        .result-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        .result-card.a2a {
+            border-left: 5px solid #f5576c;
+        }
+        .result-card.my {
+            border-left: 5px solid #00f2fe;
+        }
+        .a2a-banner {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f5576c;
+        }
+        .result-rank {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .result-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .result-path {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .result-meta {
+            display: flex;
+            gap: 15px;
+            color: #999;
+            font-size: 0.85em;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+        .error {
+            background: #fee;
+            border: 2px solid #fcc;
+            border-radius: 10px;
+            padding: 20px;
+            color: #c00;
+            margin: 20px 0;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Law A2A Parallel Collaboration Test</h1>
+        <p class="subtitle">Phase 2.0: DynTaskMAS APEE Pattern - Parallel Agent-to-Agent Search</p>
+
+        <div class="search-box">
+            <input type="text" id="queryInput" placeholder="검색어를 입력하세요 (예: 용도지역)" value="용도지역">
+            <button onclick="search()">검색</button>
+        </div>
+
+        <div id="stats" style="display: none;"></div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000/agents/law/api/search';
+
+        async function search() {
+            const query = document.getElementById('queryInput').value.trim();
+            if (!query) {
+                alert('검색어를 입력해주세요');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('results');
+            const statsDiv = document.getElementById('stats');
+
+            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div>검색 중... (약 30-40초 소요)</div>';
+            statsDiv.style.display = 'none';
+
+            const startTime = Date.now();
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        limit: 10
+                    })
+                });
+
+                const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                displayStats(data, elapsed);
+                displayResults(data);
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="error">
+                        <h3>❌ 검색 실패</h3>
+                        <p>${error.message}</p>
+                        <p><strong>확인사항:</strong></p>
+                        <ul>
+                            <li>Django 백엔드가 http://127.0.0.1:8000 에서 실행 중인지 확인</li>
+                            <li>CORS 설정이 올바른지 확인</li>
+                            <li>네트워크 연결 상태 확인</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        function displayStats(data, elapsed) {
+            const statsDiv = document.getElementById('stats');
+            const stats = data.stats || {};
+            const a2aDomains = data.a2a_domains || [];
+
+            const responseTime = (data.response_time / 1000).toFixed(2);
+            const improvement = ((46.845 - responseTime) / 46.845 * 100).toFixed(1);
+
+            statsDiv.style.display = 'block';
+            statsDiv.innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-label">총 결과</div>
+                    <div class="stat-value">${stats.total || 0}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">응답 시간</div>
+                    <div class="stat-value">${responseTime}s</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">성능 개선</div>
+                    <div class="stat-value">${improvement}%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">A2A 협업</div>
+                    <div class="stat-value">${stats.a2a_collaborations || 0}개</div>
+                </div>
+                <div class="stat-item" style="grid-column: 1 / -1;">
+                    <div class="stat-label">협업 도메인</div>
+                    <div>
+                        ${a2aDomains.map(d => `<span class="badge badge-a2a">🔗 ${d}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            const results = data.results || [];
+
+            const myResults = results.filter(r => !r.via_a2a);
+            const a2aResults = results.filter(r => r.via_a2a);
+
+            let html = '';
+
+            if (myResults.length > 0) {
+                html += `<div class="section-title">🏠 자체 도메인 결과 (${myResults.length}개)</div>`;
+                html += myResults.map((r, i) => renderResult(r, i + 1, false)).join('');
+            }
+
+            if (a2aResults.length > 0) {
+                html += `<div class="section-title" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🔗 A2A 협업 결과 (${a2aResults.length}개)</div>`;
+                html += a2aResults.map((r, i) => renderResult(r, myResults.length + i + 1, true)).join('');
+            }
+
+            resultsDiv.innerHTML = html || '<p class="loading">결과가 없습니다.</p>';
+        }
+
+        function renderResult(result, rank, isA2A) {
+            const a2aBanner = isA2A ? `
+                <div class="a2a-banner">
+                    <strong>🔗 A2A 협업 from ${result.source_domain || 'Unknown'}</strong>
+                    ${result.a2a_refined_query ? `<br><small>Refined Query: ${result.a2a_refined_query}</small>` : ''}
+                </div>
+            ` : '';
+
+            return `
+                <div class="result-card ${isA2A ? 'a2a' : 'my'}">
+                    ${a2aBanner}
+                    <div>
+                        <span class="result-rank">${rank}</span>
+                        <span class="result-title">${result.content || 'N/A'}</span>
+                    </div>
+                    <div class="result-path">📍 ${result.unit_path || result.hang_id || 'N/A'}</div>
+                    <div class="result-meta">
+                        <span>🎯 유사도: ${(result.similarity * 100).toFixed(2)}%</span>
+                        <span>📊 Stages: ${(result.stages || []).join(', ')}</span>
+                        <span>🏷️ Source: <span class="badge ${isA2A ? 'badge-a2a' : 'badge-my'}">${result.source || 'unknown'}</span></span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 페이지 로드 시 자동 검색 (옵션)
+        // window.addEventListener('load', () => search());
+    </script>
+</body>
+</html>

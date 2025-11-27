@@ -96,7 +96,8 @@ class Neo4jLawLoader:
         """법률 노드 생성 - 각 파일(법률, 시행령, 시행규칙)마다 별도 LAW 노드"""
         with self.driver.session() as session:
             # full_id에 law_type 포함하여 각 파일마다 고유한 LAW 노드 생성
-            full_id = f"{law_name}::{law_type}"
+            # 형식: "국토의 계획 및 이용에 관한 법률(법률)"
+            full_id = f"{law_name}({law_type})"
 
             query = """
             MERGE (law:LAW {full_id: $full_id})

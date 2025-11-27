@@ -1,0 +1,305 @@
+================================================================================
+                    NEO4J GRAPH STRUCTURE - COMPLETE DIAGRAM
+================================================================================
+
+USER MAKES A REQUEST
+│
+│
+▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                 USER NODE                                    │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │ user_id: "anonymous"                                                │    │
+│  │ name: "Anonymous User"                                              │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    │ [STARTED_SESSION]
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                               SESSION NODE                                   │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │ session_id: "afecf305-dbf9-4c2e-82a0-3ed7f7688165"                 │    │
+│  │ user_id: "anonymous"                                                │    │
+│  │ status: "active"                                                    │    │
+│  │ started_at: "2025-10-04T07:11:33.714493Z"                          │    │
+│  │ metadata: {"django_session_id": "...", "agent": "hostagent"}       │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────────────────────┘
+                │                                   │
+                │ [HAS_TURN]                        │ [HAS_MESSAGE]
+                │                                   │ (전체 세션 메시지 직접 연결)
+                │                                   │
+                ▼                                   ▼
+    ┌─────────────────────┐              ┌──────────────────────────────────┐
+    │  TURN NODE (Turn#1) │              │     MESSAGE NODE (User)          │
+    │  ─────────────────  │              │  ┌─────────────────────────┐    │
+    │  turn_id: "e437..." │              │  │ message_id: "9c39..."   │    │
+    │  sequence: 1        │              │  │ role: "user"            │    │
+    │  user_query: "ㅎㅇ" │              │  │ content: "ㅎㅇ"         │    │
+    │  started_at: "..."  │              │  │ timestamp: "..."        │    │
+    └─────────────────────┘              │  │ sequence: 1             │    │
+            │                             │  └─────────────────────────┘    │
+            │ [HAS_MESSAGE]               └──────────────────────────────────┘
+            │ (이 턴의 메시지)                        ▲
+            │                                         │
+            └─────────────────────────────────────────┘
+                                                      │
+                                           (같은 Message 노드를
+                                            Session과 Turn이 공유!)
+            │
+            │ [EXECUTED_BY]
+            │
+            ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│                       AGENTEXECUTION NODE                                 │
+│  ┌──────────────────────────────────────────────────────────────────┐   │
+│  │ execution_id: "56c62abb-1d4e-41ed-bd1a-a77589a9c02d"             │   │
+│  │ agent_slug: "hotel-specialist"                                    │   │
+│  │ status: "completed"                                               │   │
+│  │ execution_time_ms: 2553                                           │   │
+│  │ started_at: "2025-10-04T07:26:40.045203Z"                        │   │
+│  │ completed_at: "2025-10-04T07:26:42.598803Z"                      │   │
+│  │ metadata: {                                                       │   │
+│  │   "user_query": "ㅎㅇ",                                           │   │
+│  │   "original_agent": "hostagent",                                 │   │
+│  │   "routed_to": "hotel-specialist",                               │   │
+│  │   "routing_confidence": 0.856,                                   │   │
+│  │   "was_delegated": true                                          │   │
+│  │ }                                                                 │   │
+│  └──────────────────────────────────────────────────────────────────┘   │
+└──────────────────────────────────────────────────────────────────────────┘
+       │                        │                        │
+       │ [USED_AGENT]           │ [MADE_DECISION]        │ [PRODUCED]
+       │                        │                        │
+       ▼                        ▼                        ▼
+┌────────────┐   ┌──────────────────────────────┐   ┌──────────────────┐
+│ AGENT NODE │   │      DECISION NODE           │   │  ARTIFACT NODE   │
+│ ──────────│   │  ┌────────────────────────┐  │   │  ──────────────  │
+│ slug:      │   │  │ decision_id: "cd5d..." │  │   │  artifact_id:    │
+│ "hotel-    │   │  │ decision_type:         │  │   │  "c5d9c21d-..."  │
+│ specialist"│   │  │  "response_generation" │  │   │                  │
+│            │   │  │ confidence: 1.0        │  │   │  artifact_type:  │
+│ name:      │   │  │ rationale:             │  │   │  "assistant_     │
+│ "Hotel     │   │  │  "Processed user..."   │  │   │   response"      │
+│ Specialist │   │  │ description:           │  │   │                  │
+│ Agent"     │   │  │  "Generated response"  │  │   │  format: "text"  │
+│            │   │  │ created_at: "..."      │  │   │                  │
+│            │   │  └────────────────────────┘  │   │  content:        │
+│            │   └──────────────────────────────┘   │  "Hello! How     │
+│            │            │                         │   can I assist   │
+│            │            │ [MADE_BY]               │   you today?"    │
+│            │ ◄──────────┘                         │                  │
+└────────────┘            │                         │  created_at:     │
+                          │ [CREATES_TASK]          │  "..."           │
+                          │                         └──────────────────┘
+                          ▼                                  ▲
+                  ┌────────────────────┐                    │
+                  │    TASK NODE       │                    │
+                  │  ────────────────  │                    │
+                  │  task_id:          │                    │
+                  │  "1265db5d-..."    │                    │
+                  │                    │                    │
+                  │  assigned_to:      │                    │
+                  │  "hotel-specialist"│                    │
+                  │                    │                    │
+                  │  status: "DOING"   │                    │
+                  │  priority: 5       │                    │
+                  │                    │                    │
+                  │  description:      │                    │
+                  │  "Generate         │                    │
+                  │   response for:    │                    │
+                  │   ㅎㅇ..."         │                    │
+                  │                    │                    │
+                  │  created_at: "..." │                    │
+                  │  started_at: "..." │                    │
+                  └────────────────────┘                    │
+                          │                                 │
+                          │ [PRODUCED]                      │
+                          └─────────────────────────────────┘
+
+
+    ┌──────────────────────────────────────────────────────────────┐
+    │  ALSO: Turn has direct relationships to Decision and Task    │
+    └──────────────────────────────────────────────────────────────┘
+
+
+         TURN NODE
+             │
+             ├──[HAS_DECISION]────────────► DECISION NODE
+             │
+             └──[GENERATED_TASK]──────────► TASK NODE
+
+
+    ┌──────────────────────────────────────────────────────────────┐
+    │  ALSO: Task links back to AgentExecution                     │
+    └──────────────────────────────────────────────────────────────┘
+
+         TASK NODE ──[EXECUTED_BY]──► AGENTEXECUTION NODE
+
+
+================================================================================
+                              COMPLETE FLOW
+================================================================================
+
+1. USER submits a message
+   ↓
+2. SESSION is created/retrieved
+   ↓
+3. TURN is created for this conversation exchange
+   ↓
+4. USER MESSAGE is stored (role: "user", content: "ㅎㅇ")
+   ↓
+5. System performs SEMANTIC ROUTING
+   ↓
+6. AGENTEXECUTION begins (hotel-specialist selected)
+   ↓
+7. Agent links to AGENT NODE (metadata about the agent)
+   ↓
+8. Agent makes a DECISION (what to do)
+   ↓
+9. Decision CREATES_TASK ("Generate response for: ㅎㅇ")
+   ↓
+10. Task is EXECUTED_BY the AgentExecution
+   ↓
+11. AgentExecution PRODUCES an ARTIFACT (the actual response text)
+   ↓
+12. Task also PRODUCES the same ARTIFACT
+   ↓
+13. ASSISTANT MESSAGE is created (role: "assistant", content: "Hello!")
+   ↓
+14. User receives the response
+
+
+================================================================================
+                         KEY DIFFERENCES SUMMARY
+================================================================================
+
+NODE TYPE          PURPOSE                    CONTAINS
+─────────────────  ─────────────────────────  ────────────────────────────
+User               Who is interacting         User identification
+Session            Conversation container     Session metadata, timing
+Turn               Single exchange            Sequence, query text
+Message            Actual chat messages       role, content, timestamp
+AgentExecution     Execution record           Agent used, timing, status
+Agent              Agent metadata             Name, capabilities
+Decision           What to do                 Rationale, confidence
+Task               Work to be done            Status, priority, description
+Artifact           Actual output              Content, format, type
+
+
+================================================================================
+                              RELATIONSHIPS
+================================================================================
+
+FROM               RELATIONSHIP              TO
+─────────────────  ────────────────────────  ─────────────────
+User               STARTED_SESSION           Session
+Session            HAS_TURN                  Turn
+Session            HAS_MESSAGE               Message
+Turn               HAS_MESSAGE               Message
+Turn               EXECUTED_BY               AgentExecution
+Turn               HAS_DECISION              Decision
+Turn               GENERATED_TASK            Task
+AgentExecution     MADE_DECISION             Decision
+AgentExecution     PRODUCED                  Artifact
+AgentExecution     USED_AGENT                Agent
+Decision           CREATES_TASK              Task
+Decision           MADE_BY                   Agent
+Task               EXECUTED_BY               AgentExecution
+Task               PRODUCED                  Artifact
+
+
+================================================================================
+                          EXAMPLE VALUES
+================================================================================
+
+User Message: "ㅎㅇ"
+    ↓
+Semantic Routing: Confidence 0.856 → hotel-specialist
+    ↓
+Decision: "Generate response for user greeting"
+    ↓
+Task: "Generate response for: ㅎㅇ..." (Status: DOING, Priority: 5)
+    ↓
+Artifact: "Hello! How can I assist you today?"
+    ↓
+Assistant Message: "Hello! How can I assist you today?"
+
+
+================================================================================
+                               WHY THIS STRUCTURE?
+================================================================================
+
+✓ TRACEABILITY: Every response can be traced back to:
+  - Which agent made it
+  - What decision led to it
+  - What task was created
+  - The actual execution details
+
+✓ GOVERNANCE: Track who did what, when, and why
+  - Decision rationale stored
+  - Confidence scores tracked
+  - Execution timing recorded
+
+✓ AUDITABILITY: Full provenance chain
+  - Session → Turn → Message → Execution → Decision → Task → Artifact
+
+✓ DEBUGGING: When something goes wrong, trace the entire path
+  - See which agent was selected
+  - Check routing confidence
+  - Review decision rationale
+  - Examine task status
+
+✓ ANALYTICS: Understand system behavior
+  - Agent performance (execution times)
+  - Routing accuracy (confidence scores)
+  - Task completion rates
+
+
+================================================================================
+                    WHY DUAL MESSAGE RELATIONSHIPS?
+================================================================================
+
+MESSAGE 노드가 Session과 Turn 둘 다에 연결되는 이유:
+
+1. SESSION → MESSAGE (전체 대화 히스토리)
+   ┌─────────────────────────────────────────────────┐
+   │  "이 세션의 모든 메시지를 시간순으로 보여줘"    │
+   │                                                  │
+   │  MATCH (s:Session)-[:HAS_MESSAGE]->(m:Message)  │
+   │  WHERE s.id = "session123"                       │
+   │  RETURN m ORDER BY m.timestamp                   │
+   └─────────────────────────────────────────────────┘
+
+2. TURN → MESSAGE (특정 턴의 메시지만)
+   ┌─────────────────────────────────────────────────┐
+   │  "이 턴의 질문과 답변만 보여줘"                 │
+   │                                                  │
+   │  MATCH (t:Turn)-[:HAS_MESSAGE]->(m:Message)     │
+   │  WHERE t.sequence = 1                            │
+   │  RETURN m                                        │
+   │  // User 메시지 + Assistant 응답 1쌍           │
+   └─────────────────────────────────────────────────┘
+
+3. 성능 최적화
+   - Session 레벨: 전체 대화 검색 (채팅 히스토리 UI)
+   - Turn 레벨: 턴별 메시지 검색 (디버깅, 분석)
+   - 각 경로가 독립적으로 쿼리 가능
+
+4. Neo4j 베스트 프랙티스
+   - "Multiple Relationship Types" 패턴
+   - 같은 노드를 여러 경로로 접근
+   - Denormalization for Query Performance
+
+
+실제 데이터:
+- Message 노드: 60개
+- Session → Message: 30개 관계
+- Turn → Message: 30개 관계
+
+→ 60개 Message가 각각 Session과 Turn 둘 다와 연결됨!
+
+
+================================================================================

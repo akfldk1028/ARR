@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django SSE 스트리밍 테스트</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .progress-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .progress-container.active {
+            display: block;
+        }
+        .agent-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .stage-info {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background-color: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007bff 0%, #00d4ff 100%);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .stage-checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .stage-checklist li {
+            padding: 8px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        .stage-checklist li.done {
+            background: #d4edda;
+            color: #155724;
+        }
+        .results-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            display: none;
+        }
+        .results-container.active {
+            display: block;
+        }
+        .result-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            background: #f8f9fa;
+        }
+        .result-card h4 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #f5c6cb;
+        }
+        .success-header {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+        .logs {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .log-entry {
+            padding: 2px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Django SSE 스트리밍 테스트</h1>
+
+    <div class="search-box">
+        <input type="text" id="queryInput" placeholder="검색어 입력 (예: 36조)" value="36조">
+        <button id="searchBtn" onclick="startSearch()">검색</button>
+        <button id="stopBtn" onclick="stopSearch()" disabled style="background-color: #dc3545;">중단</button>
+    </div>
+
+    <div class="progress-container" id="progressContainer">
+        <div class="agent-badge" id="agentBadge">
+            🤖 Agent: <span id="agentName">-</span> | 📊 <span id="nodeCount">-</span> nodes
+        </div>
+
+        <div class="stage-info" id="stageInfo">
+            📋 대기 중...
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%">
+                <span id="progressPercent">0%</span>
+            </div>
+        </div>
+
+        <ul class="stage-checklist">
+            <li id="stage-exact">⏳ 정확 일치 검색</li>
+            <li id="stage-vector">⏳ 벡터 유사도 검색</li>
+            <li id="stage-relationship">⏳ 관계 임베딩 검색</li>
+            <li id="stage-rne">⏳ RNE 그래프 확장</li>
+            <li id="stage-enrichment">⏳ 결과 강화</li>
+        </ul>
+
+        <div class="logs" id="logs"></div>
+    </div>
+
+    <div class="results-container" id="resultsContainer"></div>
+
+    <script>
+        let eventSource = null;
+
+        function addLog(message) {
+            const logs = document.getElementById('logs');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logs.appendChild(entry);
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function startSearch() {
+            const query = document.getElementById('queryInput').value;
+            if (!query.trim()) {
+                alert('검색어를 입력하세요');
+                return;
+            }
+
+            // Reset UI
+            document.getElementById('progressContainer').classList.add('active');
+            document.getElementById('resultsContainer').classList.remove('active');
+            document.getElementById('resultsContainer').innerHTML = '';
+            document.getElementById('searchBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+            document.getElementById('logs').innerHTML = '';
+
+            // Reset checklist
+            ['exact', 'vector', 'relationship', 'rne', 'enrichment'].forEach(stage => {
+                const el = document.getElementById(`stage-${stage}`);
+                el.classList.remove('done');
+                el.textContent = `⏳ ${el.textContent.split(' ').slice(1).join(' ')}`;
+            });
+
+            addLog(`Starting search for: "${query}"`);
+
+            // Create SSE connection
+            const url = `http://localhost:8000/agents/law/api/search/stream`;
+
+            // Use fetch with POST for initial request, then EventSource
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query, limit: 5 })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Read the stream
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                function read() {
+                    reader.read().then(({ done, value }) => {
+                        if (done) {
+                            cleanup();
+                            return;
+                        }
+
+                        const text = decoder.decode(value);
+                        const lines = text.split('\n\n');
+
+                        lines.forEach(line => {
+                            if (line.startsWith('data: ')) {
+                                const data = JSON.parse(line.substring(6));
+                                handleSSEMessage(data);
+                            }
+                        });
+
+                        read();
+                    });
+                }
+
+                read();
+            }).catch(error => {
+                console.error('Error:', error);
+                addLog(`Error: ${error.message}`);
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="error">
+                        <h3>오류 발생</h3>
+                        <p>${error.message}</p>
+                        <p>Django 서버가 실행 중인지 확인하세요 (http://localhost:8000)</p>
+                    </div>
+                `;
+                document.getElementById('resultsContainer').classList.add('active');
+                cleanup();
+            });
+        }
+
+        function handleSSEMessage(data) {
+            console.log('SSE:', data);
+            addLog(`Status: ${data.status}${data.stage ? ` (${data.stage})` : ''}`);
+
+            if (data.status === 'started') {
+                document.getElementById('agentName').textContent = data.agent || 'Unknown';
+                document.getElementById('nodeCount').textContent = data.node_count || 0;
+                document.getElementById('stageInfo').textContent = `🚀 검색 시작...`;
+            }
+
+            if (data.status === 'searching') {
+                document.getElementById('stageInfo').textContent = `📋 ${data.stage_name || '검색 중...'}`;
+                const progress = Math.round((data.progress || 0) * 100);
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                document.getElementById('progressPercent').textContent = `${progress}%`;
+
+                // Update checklist
+                const stageMap = {
+                    'exact_match': 'exact',
+                    'vector_search': 'vector',
+                    'relationship_search': 'relationship',
+                    'rne_expansion': 'rne'
+                };
+
+                const stageId = stageMap[data.stage];
+                if (stageId) {
+                    const el = document.getElementById(`stage-${stageId}`);
+                    el.classList.add('done');
+                    el.innerHTML = `✅ ${data.stage_name}`;
+                }
+            }
+
+            if (data.status === 'processing') {
+                document.getElementById('stageInfo').textContent = `✨ ${data.stage_name || '결과 처리 중...'}`;
+                const progress = Math.round((data.progress || 0) * 100);
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                document.getElementById('progressPercent').textContent = `${progress}%`;
+
+                const el = document.getElementById('stage-enrichment');
+                el.classList.add('done');
+                el.innerHTML = `✅ 결과 강화`;
+            }
+
+            if (data.status === 'complete') {
+                document.getElementById('progressFill').style.width = '100%';
+                document.getElementById('progressPercent').textContent = '100%';
+                document.getElementById('stageInfo').textContent = `✅ 검색 완료!`;
+
+                displayResults(data);
+                cleanup();
+            }
+
+            if (data.status === 'error') {
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="error">
+                        <h3>오류 발생</h3>
+                        <p>${data.message || '알 수 없는 오류'}</p>
+                    </div>
+                `;
+                document.getElementById('resultsContainer').classList.add('active');
+                cleanup();
+            }
+        }
+
+        function displayResults(data) {
+            const container = document.getElementById('resultsContainer');
+
+            let html = `
+                <div class="success-header">
+                    <h3>✅ 검색 완료!</h3>
+                    <p>도메인: ${data.domain_name} | 결과: ${data.result_count}개 | 응답시간: ${data.response_time}ms</p>
+                </div>
+            `;
+
+            if (data.results && data.results.length > 0) {
+                data.results.forEach((result, index) => {
+                    html += `
+                        <div class="result-card">
+                            <h4>${index + 1}. ${result.hang_id}</h4>
+                            <p>${result.content.substring(0, 200)}${result.content.length > 200 ? '...' : ''}</p>
+                            <p><strong>경로:</strong> ${result.unit_path || 'N/A'}</p>
+                            <p><strong>유사도:</strong> ${(result.similarity * 100).toFixed(1)}%</p>
+                            <p><strong>검색 단계:</strong> ${result.stages ? result.stages.join(', ') : 'N/A'}</p>
+                        </div>
+                    `;
+                });
+            } else {
+                html += '<p>검색 결과가 없습니다.</p>';
+            }
+
+            container.innerHTML = html;
+            container.classList.add('active');
+        }
+
+        function stopSearch() {
+            addLog('Search stopped by user');
+            cleanup();
+        }
+
+        function cleanup() {
+            if (eventSource) {
+                eventSource.close();
+                eventSource = null;
+            }
+            document.getElementById('searchBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+        }
+    </script>
+</body>
+</html>

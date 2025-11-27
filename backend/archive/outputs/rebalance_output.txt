@@ -1,0 +1,359 @@
+[INFO] 2025-11-03 00:25:55,779 numexpr.utils: Note: NumExpr detected 24 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+[INFO] 2025-11-03 00:25:55,779 numexpr.utils: NumExpr defaulting to 16 threads.
+
+======================================================================
+도메인 자동 재구성 시작
+======================================================================
+[INFO] 2025-11-03 00:25:57,238 __main__: Initializing AgentManager...
+[INFO] 2025-11-03 00:25:57,241 graph_db.services.neo4j_service: Successfully connected to Neo4j at neo4j://127.0.0.1:7687
+[INFO] 2025-11-03 00:25:57,445 agents.law.agent_manager: Loaded domain from Neo4j: 광역 도시 계획 (103 nodes)
+[INFO] 2025-11-03 00:25:57,445 agents.law.agent_manager: Loaded domain from Neo4j: 기반시설 설치 및 비용 (246 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 납부 및 허가 절차 (340 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 도로 및 국토 규제 (282 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 도시 계획 및 관리 (102 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 도시계획 및 개발 (254 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 도시계획 및 개발 (543 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 도시계획 및 건축규제 (297 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 도시계획 및 관리 (164 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 도시계획 및 관리 (268 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 법령 및 규정 정의 (245 nodes)
+[INFO] 2025-11-03 00:25:57,450 agents.law.agent_manager: Loaded domain from Neo4j: 부동산 거래 및 규제 (143 nodes)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2713' in position 57: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 45, in main
+    agent_manager = AgentManager()
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 116, in __init__
+    loaded_domains = self._load_domains_from_neo4j()
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 1127, in _load_domains_from_neo4j
+    logger.info(f"\u2713 Loaded {len(domains)} domains from Neo4j")
+Message: '\u2713 Loaded 12 domains from Neo4j'
+Arguments: ()
+[INFO] 2025-11-03 00:25:57,452 agents.law.agent_manager: Loaded 12 domains from Neo4j
+[INFO] 2025-11-03 00:25:57,452 agents.law.agent_manager: Loading embeddings for 2987 nodes from Neo4j...
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2713' in position 57: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 45, in main
+    agent_manager = AgentManager()
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 129, in __init__
+    self.embeddings_cache = self._load_embeddings_from_neo4j(all_node_ids)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 1187, in _load_embeddings_from_neo4j
+    logger.info(f"\u2713 Loaded {len(embeddings)} embeddings from Neo4j")
+Message: '\u2713 Loaded 2987 embeddings from Neo4j'
+Arguments: ()
+[INFO] 2025-11-03 00:25:59,317 agents.law.agent_manager: AgentManager initialized
+[INFO] 2025-11-03 00:25:59,317 __main__: 
+[현재 도메인 상태]
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 65: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 광역 도시 계획: 103 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 69: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 기반시설 설치 및 비용: 246 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 67: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 납부 및 허가 절차: 340 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 67: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 도로 및 국토 규제: 282 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 67: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 도시 계획 및 관리: 102 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 66: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 도시계획 및 개발: 254 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u26a0' in position 66: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 도시계획 및 개발: 543 nodes \u26a0\ufe0f 분할 필요'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 68: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 도시계획 및 건축규제: 297 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 66: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 도시계획 및 관리: 164 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 66: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 도시계획 및 관리: 268 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 67: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 법령 및 규정 정의: 245 nodes \u2705 적정'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 68: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 58, in main
+    logger.info(f"  - {domain.domain_name}: {domain.size()} nodes {status}")
+Message: '  - 부동산 거래 및 규제: 143 nodes \u2705 적정'
+Arguments: ()
+[INFO] 2025-11-03 00:25:59,319 __main__: 
+총 12개 도메인
+[INFO] 2025-11-03 00:25:59,319 __main__: 
+[재구성 실행]
+[INFO] 2025-11-03 00:25:59,319 agents.law.agent_manager: ============================================================
+[INFO] 2025-11-03 00:25:59,319 agents.law.agent_manager: Starting automatic domain rebalancing...
+[INFO] 2025-11-03 00:25:59,319 agents.law.agent_manager: ============================================================
+[INFO] 2025-11-03 00:25:59,319 agents.law.agent_manager: Found oversized domain: 도시계획 및 개발 (543 nodes)
+[INFO] 2025-11-03 00:25:59,319 agents.law.agent_manager: Splitting domain: 도시계획 및 개발 (543 nodes)...
+[INFO] 2025-11-03 00:25:59,319 agents.law.agent_manager: Splitting domain '도시계획 및 개발' (size=543)
+[INFO] 2025-11-03 00:26:01,338 httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+[INFO] 2025-11-03 00:26:01,340 agents.law.agent_manager: Generated domain name: 도시 관리 계획
+[INFO] 2025-11-03 00:26:01,368 graph_db.services.neo4j_service: Successfully connected to Neo4j at neo4j://127.0.0.1:7687
+[INFO] 2025-11-03 00:26:01,368 agents.law.domain_agent: DomainAgent '도시 관리 계획' initialized with 318 nodes
+[INFO] 2025-11-03 00:26:01,368 agents.law.agent_manager: Created DomainAgent instance for '도시 관리 계획' (318 nodes)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2713' in position 57: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 64, in main
+    results = agent_manager.rebalance_all_domains()
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 641, in rebalance_all_domains
+    self._split_agent(domain)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 559, in _split_agent
+    domain_0 = self._create_new_domain(cluster_0, embeddings_0)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 408, in _create_new_domain
+    self._sync_domain_to_neo4j(domain)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 990, in _sync_domain_to_neo4j
+    logger.info(f"\u2713 Domain synced to Neo4j: {domain_info.domain_name} ({domain_info.size()} nodes)")
+Message: '\u2713 Domain synced to Neo4j: 도시 관리 계획 (318 nodes)'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2713' in position 57: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 64, in main
+    results = agent_manager.rebalance_all_domains()
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 641, in rebalance_all_domains
+    self._split_agent(domain)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 559, in _split_agent
+    domain_0 = self._create_new_domain(cluster_0, embeddings_0)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 410, in _create_new_domain
+    self._sync_domain_assignments_neo4j(domain_id, hang_ids, embeddings_dict)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 1048, in _sync_domain_assignments_neo4j
+    logger.info(f"\u2713 {len(hang_ids)} HANG nodes assigned to {domain_info.domain_name}")
+Message: '\u2713 318 HANG nodes assigned to 도시 관리 계획'
+Arguments: ()
+[INFO] 2025-11-03 00:26:01,479 agents.law.agent_manager: Created domain: 도시 관리 계획 (ID: domain_6d76cb7e, Agent: law_도시_관리_계획)
+[INFO] 2025-11-03 00:26:02,283 httpx: HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+[INFO] 2025-11-03 00:26:02,284 agents.law.agent_manager: Generated domain name: 국토 계획 및 관리
+[INFO] 2025-11-03 00:26:02,303 graph_db.services.neo4j_service: Successfully connected to Neo4j at neo4j://127.0.0.1:7687
+[INFO] 2025-11-03 00:26:02,303 agents.law.domain_agent: DomainAgent '국토 계획 및 관리' initialized with 225 nodes
+[INFO] 2025-11-03 00:26:02,303 agents.law.agent_manager: Created DomainAgent instance for '국토 계획 및 관리' (225 nodes)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2713' in position 57: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 64, in main
+    results = agent_manager.rebalance_all_domains()
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 641, in rebalance_all_domains
+    self._split_agent(domain)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 560, in _split_agent
+    domain_1 = self._create_new_domain(cluster_1, embeddings_1)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 408, in _create_new_domain
+    self._sync_domain_to_neo4j(domain)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 990, in _sync_domain_to_neo4j
+    logger.info(f"\u2713 Domain synced to Neo4j: {domain_info.domain_name} ({domain_info.size()} nodes)")
+Message: '\u2713 Domain synced to Neo4j: 국토 계획 및 관리 (225 nodes)'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2713' in position 57: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 64, in main
+    results = agent_manager.rebalance_all_domains()
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 641, in rebalance_all_domains
+    self._split_agent(domain)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 560, in _split_agent
+    domain_1 = self._create_new_domain(cluster_1, embeddings_1)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 410, in _create_new_domain
+    self._sync_domain_assignments_neo4j(domain_id, hang_ids, embeddings_dict)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 1048, in _sync_domain_assignments_neo4j
+    logger.info(f"\u2713 {len(hang_ids)} HANG nodes assigned to {domain_info.domain_name}")
+Message: '\u2713 225 HANG nodes assigned to 국토 계획 및 관리'
+Arguments: ()
+[INFO] 2025-11-03 00:26:02,398 agents.law.agent_manager: Created domain: 국토 계획 및 관리 (ID: domain_1436c0eb, Agent: law_국토_계획_및_관리)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\SOGANG1\AppData\Local\Programs\Python\Python312\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2713' in position 57: illegal multibyte sequence
+Call stack:
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 99, in <module>
+    sys.exit(main())
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 64, in main
+    results = agent_manager.rebalance_all_domains()
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 641, in rebalance_all_domains
+    self._split_agent(domain)
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 563, in _split_agent
+    self._delete_domain_from_neo4j(domain.domain_id)  # \u2705 Neo4j 동기화
+  File "D:\Data\11_Backend\01_ARR\backend\agents\law\agent_manager.py", line 1067, in _delete_domain_from_neo4j
+    logger.info(f"\u2713 Domain deleted from Neo4j: {domain_id}")
+Message: '\u2713 Domain deleted from Neo4j: domain_e83f2c64'
+Arguments: ()
+[INFO] 2025-11-03 00:26:02,417 agents.law.agent_manager: Split complete: '도시계획 및 개발' -> '도시 관리 계획' (318) + '국토 계획 및 관리' (225)
+[INFO] 2025-11-03 00:26:02,417 agents.law.agent_manager: ============================================================
+[INFO] 2025-11-03 00:26:02,417 agents.law.agent_manager: Rebalancing complete!
+[INFO] 2025-11-03 00:26:02,417 agents.law.agent_manager:   Domains before: 12
+[INFO] 2025-11-03 00:26:02,417 agents.law.agent_manager:   Domains split: 1
+[INFO] 2025-11-03 00:26:02,417 agents.law.agent_manager:   Domains merged: 0
+[INFO] 2025-11-03 00:26:02,417 agents.law.agent_manager:   Domains after: 13
+[INFO] 2025-11-03 00:26:02,417 agents.law.agent_manager: ============================================================
+
+======================================================================
+재구성 완료
+======================================================================
+  도메인 변경: 12 → 13
+  분할: 1개
+  병합: 0개
+
+[재구성 후 도메인 상태]
+  - 광역 도시 계획: 103 nodes
+  - 기반시설 설치 및 비용: 246 nodes
+  - 납부 및 허가 절차: 340 nodes
+  - 도로 및 국토 규제: 282 nodes
+  - 도시 계획 및 관리: 102 nodes
+  - 도시계획 및 개발: 254 nodes
+  - 도시계획 및 건축규제: 297 nodes
+  - 도시계획 및 관리: 164 nodes
+  - 도시계획 및 관리: 268 nodes
+  - 법령 및 규정 정의: 245 nodes
+  - 부동산 거래 및 규제: 143 nodes
+  - 도시 관리 계획: 318 nodes
+  - 국토 계획 및 관리: 225 nodes
+
+[상세 액션]
+  1. 분할: 도시계획 및 개발 (543 nodes)
+[ERROR] 2025-11-03 00:26:02,417 __main__: 오류 발생: 'cp949' codec can't encode character '\u2705' in position 2: illegal multibyte sequence
+Traceback (most recent call last):
+  File "D:\Data\11_Backend\01_ARR\backend\rebalance_law_domains.py", line 88, in main
+    print("\n\u2705 성공!")
+UnicodeEncodeError: 'cp949' codec can't encode character '\u2705' in position 2: illegal multibyte sequence

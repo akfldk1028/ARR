@@ -74,6 +74,23 @@ class Neo4jService:
     def execute_query(self, query: str, parameters: Dict[str, Any] = None) -> List[Dict]:
         """Execute a Cypher query and return results"""
         try:
+            # Ensure string parameters are properly encoded
+            if parameters:
+                encoded_params = {}
+                for key, value in parameters.items():
+                    if isinstance(value, str):
+                        # Ensure UTF-8 encoding for string parameters
+                        encoded_params[key] = value.encode('utf-8').decode('utf-8')
+                    elif isinstance(value, list):
+                        # Handle list of strings
+                        encoded_params[key] = [
+                            v.encode('utf-8').decode('utf-8') if isinstance(v, str) else v
+                            for v in value
+                        ]
+                    else:
+                        encoded_params[key] = value
+                parameters = encoded_params
+
             with self.get_session() as session:
                 result = session.run(query, parameters or {})
                 return [record.data() for record in result]

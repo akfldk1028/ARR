@@ -1,0 +1,146 @@
+{
+  "results": [
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제36조",
+      "content": "용도지역의 지정",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제36조",
+      "similarity": 0.7757882274994359,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "국토 계획 및 이용",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 국토 계획"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제36조",
+      "content": "용도지역의 지정",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제36조",
+      "similarity": 0.7690511124262001,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제1장::제7조",
+      "content": "용도지역별 관리 의무",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제1장::제7조",
+      "similarity": 0.7630158082955244,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "국토 계획 및 이용",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 국토 계획"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제30조",
+      "content": "용도지역의 세분",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제30조",
+      "similarity": 0.7563860594447406,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제1장::제7조",
+      "content": "용도지역별 관리 의무",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제1장::제7조",
+      "similarity": 0.7441230716372957,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제6장::제85조",
+      "content": "용도지역 안에서의 용적률",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제6장::제85조",
+      "similarity": 0.7322433021988336,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제6장::제83조",
+      "content": "용도지역ㆍ용도지구 및 용도구역안에서의 건축제한의 예외 등",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제6장::제83조",
+      "similarity": 0.7270565357675897,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "국토 계획 및 이용",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 국토 계획"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제1절::제19조의2",
+      "content": "도시ㆍ군관리계획 입안의 제안",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제1절::제19조의2",
+      "similarity": 0.7270460425363581,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "도시 및 군 계획",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 도시 계획"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제6장::제77조",
+      "content": "용도지역의 건폐율",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제6장::제77조",
+      "similarity": 0.7207290641277088,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제31조",
+      "content": "용도지구의 지정",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제31조",
+      "similarity": 0.7095637423617694,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    }
+  ],
+  "stats": {
+    "total": 10,
+    "vector_count": 10,
+    "relationship_count": 0,
+    "graph_expansion_count": 0,
+    "my_domain_count": 6,
+    "neighbor_count": 4,
+    "domains_queried": 3,
+    "a2a_collaboration_triggered": true,
+    "a2a_collaborations": 2,
+    "a2a_results_count": 4
+  },
+  "domain_id": "domain_676e7400",
+  "domain_name": "토지 이용 및 기반시설",
+  "domains_queried": [
+    "토지 이용 및 기반시설",
+    "도시 및 군 계획",
+    "국토 계획 및 이용"
+  ],
+  "a2a_domains": [
+    "도시 및 군 계획",
+    "국토 계획 및 이용"
+  ],
+  "response_time": 46845
+}

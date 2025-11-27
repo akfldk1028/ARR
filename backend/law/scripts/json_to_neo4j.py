@@ -43,11 +43,28 @@ def standard_json_to_neo4j_format(data: Dict) -> Dict:
         '세목': 'SEMOK'
     }
 
+    # 법률명에 법률 타입을 추가하여 full_id를 고유하게 만듦
+    # 예: "국토의 계획 및 이용에 관한 법률" -> "국토의 계획 및 이용에 관한 법률(법률)"
+    #     "국토의 계획 및 이용에 관한 법률" -> "국토의 계획 및 이용에 관한 법률(시행령)"
+    #     "국토의 계획 및 이용에 관한 법률" -> "국토의 계획 및 이용에 관한 법률(시행규칙)"
+    law_name = law_info['law_name']
+    law_type = law_info['law_type']
+    law_with_type = f"{law_name}({law_type})"
+
     # 노드 생성
     nodes = []
     for unit in units:
         unit_type_korean = unit['unit_type']
         unit_type_english = unit_type_mapping.get(unit_type_korean, unit_type_korean.upper())
+
+        # full_id에 법률 타입 추가
+        # 예: "국토법::제1장::제1조" -> "국토법(법률)::제1장::제1조"
+        original_full_id = unit['full_id']
+        new_full_id = original_full_id.replace(law_name, law_with_type, 1)
+
+        # unit_path에도 법률 타입 추가
+        original_unit_path = unit['unit_path']
+        new_unit_path = original_unit_path.replace(law_name, law_with_type, 1)
 
         node = {
             'labels': [unit_type_english],  # JO, HANG, HO, MOK 등
@@ -56,8 +73,8 @@ def standard_json_to_neo4j_format(data: Dict) -> Dict:
                 'number': unit['unit_number'],
                 'title': unit['title'],
                 'content': unit['content'],
-                'full_id': unit['full_id'],
-                'unit_path': unit['unit_path'],  # DomainAgent와 일치하도록 수정
+                'full_id': new_full_id,  # 법률 타입이 포함된 full_id
+                'unit_path': new_unit_path,  # 법률 타입이 포함된 unit_path
                 'order': unit['order']
             }
         }
@@ -75,24 +92,34 @@ def standard_json_to_neo4j_format(data: Dict) -> Dict:
     # 관계 생성
     relationships = []
 
-    # LAW 노드의 full_id
-    law_full_id = f"{law_info['law_name']}::{law_info['law_type']}"
-    law_name = law_info['law_name']
+    # LAW 노드의 full_id (법률 타입 포함)
+    # LAW 노드는 "국토법(법률)" 형식이므로 law_with_type만 사용
+    law_full_id = law_with_type
 
     # 1. CONTAINS 관계 (부모-자식)
     for unit in units:
-        parent_id = unit['parent_id']
+        original_parent_id = unit['parent_id']
 
-        # parent_id가 법률명과 같으면 LAW full_id로 변환
-        if parent_id == law_name:
-            parent_id = law_full_id
+        # parent_id에도 법률 타입 추가
+        if original_parent_id == law_name:
+            # parent_id가 법률명과 같으면 LAW full_id로 변환
+            new_parent_id = law_full_id
+        elif original_parent_id:
+            # parent_id에 법률 타입 추가
+            new_parent_id = original_parent_id.replace(law_name, law_with_type, 1)
+        else:
+            new_parent_id = None
 
-        if parent_id:
+        # full_id에도 법률 타입 추가
+        original_full_id = unit['full_id']
+        new_full_id = original_full_id.replace(law_name, law_with_type, 1)
+
+        if new_parent_id:
             # 부모가 있으면 부모와 연결
             relationships.append({
                 'type': 'CONTAINS',
-                'from_id': parent_id,
-                'to_id': unit['full_id'],
+                'from_id': new_parent_id,
+                'to_id': new_full_id,
                 'properties': {
                     'order': unit['order']
                 }
@@ -102,7 +129,7 @@ def standard_json_to_neo4j_format(data: Dict) -> Dict:
             relationships.append({
                 'type': 'CONTAINS',
                 'from_id': law_full_id,
-                'to_id': unit['full_id'],
+                'to_id': new_full_id,
                 'properties': {
                     'order': unit['order']
                 }
@@ -121,10 +148,14 @@ def standard_json_to_neo4j_format(data: Dict) -> Dict:
     for units_group in units_by_parent_and_type.values():
         sorted_units = sorted(units_group, key=lambda x: x['order'])
         for i in range(len(sorted_units) - 1):
+            # full_id에 법률 타입 추가
+            from_full_id = sorted_units[i]['full_id'].replace(law_name, law_with_type, 1)
+            to_full_id = sorted_units[i+1]['full_id'].replace(law_name, law_with_type, 1)
+
             relationships.append({
                 'type': 'NEXT',
-                'from_id': sorted_units[i]['full_id'],
-                'to_id': sorted_units[i+1]['full_id'],
+                'from_id': from_full_id,
+                'to_id': to_full_id,
                 'properties': {}
             })
 
@@ -132,9 +163,12 @@ def standard_json_to_neo4j_format(data: Dict) -> Dict:
     for unit in units:
         referenced_laws = unit['metadata'].get('referenced_laws', [])
         for ref_law in referenced_laws:
+            # full_id에 법률 타입 추가
+            from_full_id = unit['full_id'].replace(law_name, law_with_type, 1)
+
             relationships.append({
                 'type': 'CITES',
-                'from_id': unit['full_id'],
+                'from_id': from_full_id,
                 'to_id': ref_law,
                 'properties': {
                     'citation_text': ref_law

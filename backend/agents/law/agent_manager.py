@@ -1120,6 +1120,9 @@ class AgentManager:
                 hang_ids = [hid for hid in record.get('hang_ids', []) if hid]
                 domain_info.node_ids = set(hang_ids)
 
+                # ✅ DomainAgent 인스턴스 생성 (필수!)
+                domain_info.agent_instance = self._create_domain_agent_instance(domain_info)
+
                 domains[domain_id] = domain_info
 
                 logger.info(f"Loaded domain from Neo4j: {domain_name} ({len(hang_ids)} nodes)")

@@ -1,0 +1,36 @@
+{
+  "test_date": "2025-11-24T10:01:33.018080",
+  "tests": [
+    {
+      "test_name": "System Readiness",
+      "status": "PASS",
+      "data": {
+        "hang_nodes_with_embedding": 1591,
+        "embedding_dimension": 3072,
+        "domain_count": 5,
+        "hang_in_domains": 1591,
+        "contains_embeddings": 3978
+      }
+    },
+    {
+      "test_name": "36조 검색",
+      "status": "FAIL",
+      "error": "'AgentManager' object has no attribute 'search'"
+    },
+    {
+      "test_name": "용도지역 검색",
+      "status": "FAIL",
+      "error": "'AgentManager' object has no attribute 'search'"
+    },
+    {
+      "test_name": "개발행위허가 검색",
+      "status": "FAIL",
+      "error": "'AgentManager' object has no attribute 'search'"
+    },
+    {
+      "test_name": "A2A 협업 테스트",
+      "status": "FAIL",
+      "error": "'AgentManager' object has no attribute 'search'"
+    }
+  ]
+}

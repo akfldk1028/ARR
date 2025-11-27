@@ -17,8 +17,10 @@ Semantic RNE (Range Network Expansion) - 법규용
 """
 
 import heapq
+import os
 from typing import Dict, List, Set, Tuple, Optional
 import numpy as np
+from openai import OpenAI
 from .base import BaseSpatialAlgorithm
 from ..domain import Context
 
@@ -58,10 +60,11 @@ class SemanticRNE(BaseSpatialAlgorithm):
         Args:
             cost_calculator: CostCalculator (법규는 사용 안 함, 호환성 유지)
             repository: LawRepository 인스턴스
-            embedding_model: SentenceTransformer 모델 (jhgan/ko-sbert-sts)
+            embedding_model: SentenceTransformer 모델 (KR-SBERT, sibling 관계 유사도용)
         """
         super().__init__(cost_calculator, repository)
-        self.model = embedding_model
+        self.model = embedding_model  # KR-SBERT for sibling similarity only
+        self.openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))  # For vector search
         self.INF = 10 ** 18
 
     def execute(self, start_node_id: int, radius_or_k: float, context: Context) -> Tuple[Set[int], Dict[int, float]]:
@@ -126,8 +129,14 @@ class SemanticRNE(BaseSpatialAlgorithm):
             >>> for r in results[:5]:
             ...     print(f"{r['article_number']}: {r['similarity']:.4f}")
         """
-        # [1] 쿼리 임베딩 생성
-        query_emb = self.model.encode(query_text)
+        # [1] 쿼리 임베딩 생성 (OpenAI 3072-dim)
+        # ✅ FIXED: Use OpenAI embeddings (3072-dim) instead of KR-SBERT (768-dim)
+        # HANG nodes in Neo4j have OpenAI embeddings, so we must match dimensions
+        response = self.openai_client.embeddings.create(
+            input=query_text,
+            model="text-embedding-3-large"
+        )
+        query_emb = np.array(response.data[0].embedding)
 
         # [2] Stage 1: 벡터 검색 (초기 후보)
         initial_results = self.repository.vector_search(

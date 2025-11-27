@@ -43,12 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
+    'corsheaders',  # CORS support for frontend
 
     # Core apps
     'core',
     'agents',
     'conversations',
-    'rules',
+    # 'rules',  # Removed - package not installed
 
     # Graph Database (Neo4j)
     'graph_db',

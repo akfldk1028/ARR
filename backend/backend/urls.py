@@ -20,11 +20,11 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gemini/', include('gemini.urls')),
-    path('agents/', include('agents.urls')),
-    path('agents/law/', include('agents.law.urls')),  # Law MAS API (PDF upload)
+    path('agents/law/', include('agents.law.urls')),  # Law MAS API (AgentManager + REST API) - MUST be before 'agents/'
+    path('agents/', include('agents.urls')),  # General agents
     path('chat/', include('chat.urls')),
     path('api/', include('graph_db.urls')),  # Neo4j CDC events
     path('.well-known/', include('agents.well_known_urls')),  # A2A agent cards
     path('parser/', include('parser.urls')),  # Parser app
-    path('law/', include('law.urls')),  # Law app
+    path('law/', include('law.urls')),  # Law app (old SemanticRNE/INE)
 ]

@@ -1,0 +1,205 @@
+================================================================================
+Phase 1.1: Database State Verification
+================================================================================
+
+[1] Total JO Nodes
+--------------------------------------------------------------------------------
+Total JO nodes: 770
+JO nodes with embeddings: 0
+JO nodes without embeddings: 770
+[OK] Confirmed: NO JO nodes have embeddings (expected)
+
+[2] JO Nodes Without HANG Children (Currently Invisible)
+--------------------------------------------------------------------------------
+JO nodes without HANG children: 394
+Impact: 394/770 (51.2%) articles are INVISIBLE to current search
+
+Sample invisible JO nodes (first 10):
+  1. 국토의 계획 및 이용에 관한 법률::제10장::제116조
+     None
+  2. 국토의 계획 및 이용에 관한 법률::제10장::제117조
+     None
+  3. 국토의 계획 및 이용에 관한 법률::제10장::제118조
+     None
+  4. 국토의 계획 및 이용에 관한 법률::제10장::제119조
+     None
+  5. 국토의 계획 및 이용에 관한 법률::제10장::제120조
+     None
+  6. 국토의 계획 및 이용에 관한 법률::제10장::제121조
+     None
+  7. 국토의 계획 및 이용에 관한 법률::제10장::제122조
+     None
+  8. 국토의 계획 및 이용에 관한 법률::제10장::제123조
+     None
+  9. 국토의 계획 및 이용에 관한 법률::제10장::제124조
+     None
+  10. 국토의 계획 및 이용에 관한 법률::제10장::제124조의2
+     None
+
+[3] Critical Test Case: 용도지역 (Article 36)
+--------------------------------------------------------------------------------
+Found 27 articles containing '용도지역':
+
+[APPENDIX] | VISIBLE (5 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제2절::제30조
+  Title: 용도지역의 세분
+  Sample HANG content:
+    - 에 따라 관계 행 정기관의 장과 협의하는 경우 협의 요청을 받은 기관의 장은 그 요청을 받은 날부터 10일(근무일 기준) 이내에 의견 을 회신하...
+    - 삭제 지규제최소구역의 지정과 입지규제최소구역계획을 결정할 수 없다....
+
+[APPENDIX] | VISIBLE (1 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제2절::제33조
+  Title: 공유수면매립지에 관한 용도지역의 지정
+  Sample HANG content:
+    - 법 제41조제1항 전단 및 같은 조 제2항에서 “용도지역”이란 법 제 하여 지정된 용도지역을 말한다. <개정 2019. 8. 6.>...
+
+[APPENDIX] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제2절::제34조
+  Title: 용도지역 환원의 고시
+
+[APPENDIX] | VISIBLE (2 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제2절::제36조
+  Title: 용도지역의 지정
+  Sample HANG content:
+    - 국토교통부장관, 시ㆍ도지사 또는 대도시 시장은 다음 각 호의 어느 하나에 해당하는 용도 지역의 지정 또는 변경을 도시ㆍ군관리계획으로 결정한다. ...
+    - 국토교통부장관, 시ㆍ도지사 또는 대도시 시장은 대통령령으로 정하는 바에 따라 제1항 각 호 및 같은 항 각 호 각 목의 용도지역을 도시ㆍ군관리계...
+
+[APPENDIX] | VISIBLE (2 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제2절::제41조
+  Title: 공유수면매립지에 관한 용도지역의 지정
+  Sample HANG content:
+    - 공유수면(바다만 해당한다)의 매립 목적이 그 매립구역과 이웃하...
+    - 후단에 따른 고시는 해당 시ㆍ도의 공보와 인터넷 홈페이지에 게재하는 방법으로 한다.<개정...
+
+[APPENDIX] | VISIBLE (1 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제2절::제42조
+  Title: 다른 법률에 따라 지정된 지역의 용도지역 지정 등의 의제
+  Sample HANG content:
+    - 다음 각 호의 어느 하나의 구역 등으로 지정ㆍ고 시된 지역은 이 법에 따른 도시지역으로 결정ㆍ고시된 것으로 본다. <개정 2011. 5. 30....
+
+[APPENDIX] | VISIBLE (3 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제4절::제71조
+  Title: 용도지역안에서의 건축제한
+  Sample HANG content:
+    - 법 제76조제1항에 따른 용도지역안에서의 건축물의 용도ㆍ종류 및 규모 등의 제한(이하 “건축제한”이라 한다)은 다음 각호와 같다. <개정 201...
+    - 제1항의 규정에 의한 건축제한을 적용함에 있어서 부속건축물에 대하여는 주된 건축물에 대한 건축제한에 의한...
+
+[APPENDIX] | VISIBLE (3 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제4절::제83조
+  Title: 용도지역ㆍ용도지구 및 용도구역안에서의 건축제한의 예외 등
+  Sample HANG content:
+    - 용도지역ㆍ용도지구안에서의 도시ㆍ군계획...
+    - 제6호에 따른 리모델링이 필요한 건축물에 대해 모 등의 제한을 완화하여 제한할 수 있다.<개정 2017. 12. 29., 2021. 7. 6.>...
+
+[APPENDIX] | VISIBLE (7 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제4절::제84조
+  Title: 둘 이상의 용도지역ㆍ용도지구ㆍ용도구역에 걸치는 대지에 대한 적용 기준
+  Sample HANG content:
+    - 하나의 대지가 둘 이상의 용도 지역ㆍ용도지구 또는 용도구역(이하 이 항에서 “용도지역등”이라 한다)에 걸치는 경우로서 각 용도지역등에 걸치는 부...
+    - 하나의 건축물이 방화지구와 그 밖의 용도지역ㆍ용도지구 또는 용도구역에 걸쳐 있는 경우에는 제1항에도 불구 하고 그 전부에 대하여 방화지구의 건축...
+
+[APPENDIX] | VISIBLE (7 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제4절::제86조
+  Title: 용도지역 미세분지역에서의 행위제한 등
+  Sample HANG content:
+    - 특별시장ㆍ광역시장ㆍ특별자치시장ㆍ특별자치도지사ㆍ시장 또는 군수는 이 법 또는 다른 법률에 특별한 규정이 있는 경우 외에는 관할 구역의 도시ㆍ군계획...
+    - 도시ㆍ군계획시설사업이 둘 이상의 특별시ㆍ광역시ㆍ특별자치시ㆍ특별자치도ㆍ시 또는 군의 관할 구역에 걸쳐 시행되게 되는 경우에는 관계 특별시장ㆍ광역시...
+
+[APPENDIX] | VISIBLE (2 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제4절::제94조
+  Title: 2 이상의 용도지역ㆍ용도지구ㆍ용도구역에 걸치는 토지에 대한 적용기준
+  Sample HANG content:
+    - 도시ㆍ군계획시설사업의 시행자는 이해관계인에게 서류를 송달할 필요가 있으나 이해관계인 의 주소 또는 거소(居所)가 불분명하거나 그 밖의 사유로 서...
+    - 제1항에 따른 서류의 공시송달에 관하여는 「민사소송법」의 공시송달의 예에 따른다. [전문개정 2009. 2. 6.]...
+
+[APPENDIX] | VISIBLE (1 HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제12장::제6조
+  Title: 다른 법률에 의한 용도지역 등의 변경제한
+  Sample HANG content:
+    - 법 제9조 각 호 외의 부분 본문에 따라 중앙행정기관의 장 또는 지 방자치단체의 장은 용도지역ㆍ용도지구ㆍ용도구역의 지정 또는 변경에 대한 도시ㆍ...
+
+[UNKNOWN] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제1장::제6조
+  Title: 다른 법률에 의한 용도지역 등의 변경제한
+
+[UNKNOWN] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제1장::제7조
+  Title: 용도지역별 관리 의무
+
+[MAIN CONTENT] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제4장::제2절::제30조
+  Title: 용도지역의 세분
+
+[MAIN CONTENT] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제4장::제2절::제33조
+  Title: 공유수면매립지에 관한 용도지역의 지정
+
+[MAIN CONTENT] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제4장::제2절::제34조
+  Title: 용도지역 환원의 고시
+
+[MAIN CONTENT] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제4장::제2절::제36조
+  Title: 용도지역의 지정
+
+[MAIN CONTENT] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제4장::제2절::제41조
+  Title: 공유수면매립지에 관한 용도지역의 지정
+
+[MAIN CONTENT] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제4장::제2절::제42조
+  Title: 다른 법률에 따라 지정된 지역의 용도지역 지정 등의 의제
+
+[UNKNOWN] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제6장::제71조
+  Title: 용도지역안에서의 건축제한
+
+[UNKNOWN] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제6장::제77조
+  Title: 용도지역의 건폐율
+
+[UNKNOWN] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제6장::제83조
+  Title: 용도지역ㆍ용도지구 및 용도구역안에서의 건축제한의 예외 등
+
+[UNKNOWN] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제6장::제84조
+  Title: 용도지역안에서의 건폐율
+
+[UNKNOWN] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제6장::제85조
+  Title: 용도지역 안에서의 용적률
+
+[UNKNOWN] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제6장::제86조
+  Title: 용도지역 미세분지역에서의 행위제한 등
+
+[UNKNOWN] | INVISIBLE (no HANGs)
+  ID: 국토의 계획 및 이용에 관한 법률::제6장::제94조
+  Title: 2 이상의 용도지역ㆍ용도지구ㆍ용도구역에 걸치는 토지에 대한 적용기준
+
+
+[4] Problem Analysis
+--------------------------------------------------------------------------------
+[CRITICAL ISSUE CONFIRMED]
+   The correct article (제4장 제36조) has NO HANG children
+   --> Currently INVISIBLE to search
+
+[SEARCH MISDIRECTION CONFIRMED]
+   The appendix article (제12장) has 1 HANG children
+   --> Currently VISIBLE and being returned instead of correct article
+
+[ROOT CAUSE IDENTIFIED]
+   Current system only searches HANG nodes
+   --> Correct article (제4장::제36조) invisible --> skipped
+   --> Appendix article (제12장::제36조) visible --> returned (WRONG)
+
+[SOLUTION]
+   Add JO-level embeddings --> Make ALL articles searchable
+   Add path scoring --> Penalize 제12장 (appendix)
+   --> Correct article will be found and ranked higher
+
+================================================================================
+Verification Complete
+Results saved to: D:\Data\11_Backend\01_ARR\agent\law-domain-agents\multilayer_embedding_redesign\verification_results.txt
+================================================================================

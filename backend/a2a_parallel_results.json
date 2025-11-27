@@ -1,0 +1,150 @@
+{
+  "results": [
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제36조",
+      "content": "용도지역의 지정",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제36조",
+      "similarity": 0.7690511124262001,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제3장::제18조",
+      "content": "도시ㆍ군기본계획의 수립권자와 대상지역",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제3장::제18조",
+      "similarity": 0.7690088642728138,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "도시 및 군 계획",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 도시 및 군 계획"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제30조",
+      "content": "용도지역의 세분",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제30조",
+      "similarity": 0.7563860594447406,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제1절::제19조의2",
+      "content": "도시ㆍ군관리계획 입안의 제안",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제1절::제19조의2",
+      "similarity": 0.756348059122837,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "도시 및 군 계획",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 도시 및 군 계획"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제36조",
+      "content": "용도지역의 지정",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제2절::제36조",
+      "similarity": 0.7549113223213203,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "국토 계획 및 이용",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 국토 계획 및 이용"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제1장::제7조",
+      "content": "용도지역별 관리 의무",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제1장::제7조",
+      "similarity": 0.7441230716372957,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제9장::제116조",
+      "content": "도시ㆍ군계획상임기획단",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제9장::제116조",
+      "similarity": 0.7440891842950819,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "도시 및 군 계획",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 도시 및 군 계획"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제1장::제7조",
+      "content": "용도지역별 관리 의무",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제1장::제7조",
+      "similarity": 0.7424826162277183,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "국토 계획 및 이용",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 국토 계획 및 이용"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제6장::제85조",
+      "content": "용도지역 안에서의 용적률",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제6장::제85조",
+      "similarity": 0.7322433021988336,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "my_domain",
+      "source_domain": "토지 이용 및 기반시설"
+    },
+    {
+      "hang_id": "국토의 계획 및 이용에 관한 법률::제4장::제3절::제47조",
+      "content": "도시ㆍ군계획시설 부지의 매수 청구",
+      "unit_path": "국토의 계획 및 이용에 관한 법률::제4장::제3절::제47조",
+      "similarity": 0.7322133993056941,
+      "stages": [
+        "jo_vector"
+      ],
+      "source": "a2a",
+      "source_domain": "도시 및 군 계획",
+      "via_a2a": true,
+      "a2a_refined_query": "용도지역 관련 도시 및 군 계획"
+    }
+  ],
+  "stats": {
+    "total": 10,
+    "vector_count": 10,
+    "relationship_count": 0,
+    "graph_expansion_count": 0,
+    "my_domain_count": 4,
+    "neighbor_count": 6,
+    "domains_queried": 3,
+    "a2a_collaboration_triggered": true,
+    "a2a_collaborations": 2,
+    "a2a_results_count": 6
+  },
+  "domain_id": "domain_676e7400",
+  "domain_name": "토지 이용 및 기반시설",
+  "domains_queried": [
+    "토지 이용 및 기반시설",
+    "도시 및 군 계획",
+    "국토 계획 및 이용"
+  ],
+  "a2a_domains": [
+    "도시 및 군 계획",
+    "국토 계획 및 이용"
+  ],
+  "response_time": 33890
+}
