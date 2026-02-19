@@ -1,0 +1,137 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+node-compile-cache
+
+node_modules
+dist
+!package/**/dist
+dist-ssr
+dist-electron
+release
+*.local
+
+# Editor directories and files
+.vscode/.debug.env
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+#lockfile
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+.env
+.env.local
+.env.production
+.env.development
+
+.cursor
+.claude/
+
+# Public directory (large media files)
+public/
+
+# Testing
+coverage/
+.traceroot-config.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# uv (Python package manager)
+uv.lock
+uv_installed.lock
+
+# FastAPI / Backend
+backend/.venv/
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/runtime/
+backend/**/*.pyc
+backend/lang/**/*.mo
+
+# Babel compiled translations
+*.mo
+
+# Electron Builder
+out/
+app-builds/
+.electron-builder-cache/
+*.dmg
+*.zip
+*.tar.gz
+*.exe
+*.AppImage
+*.snap
+
+# OS
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# User data
+.eigent/
+eigent/

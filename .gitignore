@@ -264,6 +264,13 @@ docker-compose.override.yml
 .vscode/
 *.code-workspace
 
+# === Frontend (Electron + Vite) ===
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/dist-electron/
+frontend/nul
+
 # === Custom Project Dirs ===
 # Add any custom directories specific to your project
 # /custom_data/
