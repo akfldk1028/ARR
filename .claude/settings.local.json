@@ -39,7 +39,15 @@
       "Bash(powershell -Command \"Stop-Process -Id 34180 -Force\")",
       "Bash(powershell:*)",
       "Bash(taskkill:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "mcp__filesystem__directory_tree",
+      "mcp__filesystem__list_directory_with_sizes",
+      "mcp__filesystem__list_directory",
+      "mcp__memory-service__store_memory",
+      "Skill(memory:memory-search)",
+      "Bash(sqlite3:*)",
+      "mcp__obsidian-claude__search-vault",
+      "mcp__obsidian-local-claude__search-vault"
     ],
     "deny": [],
     "ask": []

@@ -268,3 +268,4 @@ docker-compose.override.yml
 # Add any custom directories specific to your project
 # /custom_data/
 # /experiments/backend/law/relationship_embedding/data/relationship_contexts_with_embeddings.json
+frontend/

@@ -1,9 +1,0 @@
-{
-    "dependencies": [
-        "graph.py"
-    ],
-    "graphs": {
-        "mr_thumbs": "./graph.py:graph"
-    },
-    "env": ".env"
-}

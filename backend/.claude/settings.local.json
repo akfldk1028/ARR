@@ -31,7 +31,13 @@
       "Bash(pkill:*)",
       "Bash(find:*)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(set DJANGO_SETTINGS_MODULE=backend.settings)"
+      "Bash(set DJANGO_SETTINGS_MODULE=backend.settings)",
+      "Bash(claude mcp list:*)",
+      "mcp__brave-search__brave_web_search",
+      "WebFetch(domain:www.jetbrains.com)",
+      "mcp__ide__getDiagnostics",
+      "Bash(where claude)",
+      "Bash(claude --version)"
     ],
     "deny": [],
     "ask": []
