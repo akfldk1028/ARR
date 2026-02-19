@@ -47,7 +47,8 @@
       "Skill(memory:memory-search)",
       "Bash(sqlite3:*)",
       "mcp__obsidian-claude__search-vault",
-      "mcp__obsidian-local-claude__search-vault"
+      "mcp__obsidian-local-claude__search-vault",
+      "Bash(du:*)"
     ],
     "deny": [],
     "ask": []
