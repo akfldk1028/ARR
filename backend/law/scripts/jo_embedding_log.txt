@@ -1,0 +1,49 @@
+
+======================================================================
+Phase 1.2: JO 노드 임베딩 생성
+Strategy: Option C (Title + HANG summary)
+======================================================================
+
+Statistics:
+  Total JO nodes: 1053
+  JO with HANG children: 496
+  JO without HANG children: 557 (will use title only)
+
+Sample JO nodes (first 3):
+
+1. 국토의 계획 및 이용에 관한 법률(법률)::제10장::제117조
+   Title: 
+   Has HANG: NO
+   Embedding text: ...
+
+2. 국토의 계획 및 이용에 관한 법률(법률)::제10장::제118조
+   Title: 
+   Has HANG: NO
+   Embedding text: ...
+
+3. 국토의 계획 및 이용에 관한 법률(법률)::제10장::제119조
+   Title: 
+   Has HANG: NO
+   Embedding text: ...
+
+Using embedding model: openai
+Embedding dimension: 3072
+
+Processing 1053 JO nodes in batches of 100...
+
+======================================================================
+JO 임베딩 생성 완료!
+======================================================================
+  총 대상 노드: 1053
+  성공적으로 저장: 1053
+  실패: 0
+  임베딩 차원: 3072
+
+Batch Statistics:
+  Total batches: 11
+  Full success: 11
+  Partial success: 0
+  Failed: 0
+
+Results saved to: D:\Data\11_Backend\01_ARR\backend\law\scripts\jo_embedding_log.txt
+======================================================================
