@@ -25,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#-pau4zn)&va^of8ov&nu34y8#_k&=24f3@$c3*%#2&+-*_%h+'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-only-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -46,19 +46,24 @@ INSTALLED_APPS = [
 
     # Core apps
     'core',
-    'agents',
-    'conversations',
-    'rules',
+    # 'agents',  # disabled in production (requires neo4j, langgraph)
 
-    # Live API + A2A Integration
-    'live_a2a_bridge',
+    # Legacy (to be migrated) — disabled in production (requires google-genai)
+    # 'gemini',
 
-    # Legacy (to be migrated)
-    'gemini',
+    # Law search proxy + ingestion pipeline
+    'law',
+
+    # Land regulation analysis
+    'land',
+
+    # Building mass optimization (GA + Shapely)
+    'design',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

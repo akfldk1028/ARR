@@ -1,6 +1,5 @@
-import { lazy, useEffect, useState } from "react";
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { useAuthStore } from "@/store/authStore";
+import { lazy } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "@/components/Layout";
 // Lazy load page components
@@ -16,53 +15,29 @@ const SettingModels = lazy(() => import("@/pages/Setting/Models"));
 const SettingAPI = lazy(() => import("@/pages/Setting/API"));
 const SettingMCP = lazy(() => import("@/pages/Setting/MCP"));
 const MCPMarket = lazy(() => import("@/pages/Setting/MCPMarket"));
-const GoogleMapsDemo = lazy(() => import("@/google/GoogleMapsDemo"));
 const LawChat = lazy(() => import("@/law/LawChat"));
+const LandMap = lazy(() => import("@/land/LandMap"));
+const DesignPage = lazy(() => import("@/design/DesignPage"));
 
-// Route guard: Check if user is logged in
-const ProtectedRoute = () => {
-	const [loading, setLoading] = useState(false);
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const [initialized, setInitialized] = useState(false);
-
-	const authStore = useAuthStore();
-	useEffect(() => {
-		setIsAuthenticated(!!authStore.token);
-		setLoading(false);
-		setInitialized(true);
-	}, [authStore.token]);
-	
-	if (loading || !initialized) {
-		return (
-			<div className="flex items-center justify-center h-screen">
-				<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-			</div>
-		);
-	}
-	return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
-};
-
-// Main route configuration
+// Main route configuration — no auth guard, all public
 const AppRoutes = () => (
 	<Routes>
 		<Route path="/login" element={<Login />} />
 		<Route path="/signup" element={<Signup />} />
-		<Route path="/google" element={<GoogleMapsDemo />} />
 		<Route path="/law" element={<LawChat />} />
-		<Route element={<ProtectedRoute />}>
-			<Route element={<Layout />}>
-				<Route path="/" element={<Home />} />
-				<Route path="/history" element={<History />} />
-				<Route path="/setting" element={<Setting />}>
-					{/* Setting sub-routes */}
-					<Route index element={<Navigate to="general" replace />} />
-					<Route path="general" element={<SettingGeneral />} />
-					<Route path="privacy" element={<SettingPrivacy />} />
-					<Route path="models" element={<SettingModels />} />
-					<Route path="api" element={<SettingAPI />} />
-					<Route path="mcp" element={<SettingMCP />} />
-					<Route path="mcp_market" element={<MCPMarket />} />
-				</Route>
+		<Route path="/land" element={<LandMap />} />
+		<Route path="/design" element={<DesignPage />} />
+		<Route element={<Layout />}>
+			<Route path="/" element={<Navigate to="/law" replace />} />
+			<Route path="/history" element={<History />} />
+			<Route path="/setting" element={<Setting />}>
+				<Route index element={<Navigate to="general" replace />} />
+				<Route path="general" element={<SettingGeneral />} />
+				<Route path="privacy" element={<SettingPrivacy />} />
+				<Route path="models" element={<SettingModels />} />
+				<Route path="api" element={<SettingAPI />} />
+				<Route path="mcp" element={<SettingMCP />} />
+				<Route path="mcp_market" element={<MCPMarket />} />
 			</Route>
 		</Route>
 		<Route path="*" element={<NotFound />} />

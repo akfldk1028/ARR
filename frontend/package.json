@@ -15,7 +15,8 @@
   "scripts": {
     "compile-babel": "echo Skipping babel compilation for web version",
     "clean-cache": "rimraf node_modules/.vite",
-    "dev": "npm run clean-cache && vite",
+    "dev": "vite --mode web",
+    "dev:electron": "npm run clean-cache && vite",
     "build": "npm run compile-babel && tsc && vite build &&  electron-builder -- --publish always",
     "build:mac": "npm run compile-babel && tsc && vite build && electron-builder --mac",
     "build:win": "npm run compile-babel && tsc && vite build && electron-builder --win",
@@ -82,6 +83,7 @@
     "motion": "^12.23.23",
     "next-themes": "^0.4.6",
     "nuqs": "^2.7.3",
+    "ol": "^10.8.0",
     "papaparse": "^5.5.3",
     "path-browserify": "^1.0.1",
     "postprocessing": "^6.37.8",

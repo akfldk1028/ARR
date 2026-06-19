@@ -1,0 +1,120 @@
+{
+  "schema_version": "arr.maas.sequence_library.v0",
+  "sequences": [
+    {
+      "name": "grammar_sunlight_multi_step",
+      "label": "다단 일조스텝",
+      "aliases": ["north daylight step", "sunlight stepback", "일조 스텝백", "정북일조", "북측 일조", "일조 계단", "일조 후퇴"],
+      "intent_tags": ["sunlight", "stepback", "section_diversity"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "step_envelope", "params": {"bands": 4}}
+      ],
+      "notes": ["층별 법규 envelope를 직접 따라가는 다단 stepback 후보"]
+    },
+    {
+      "name": "grammar_courtyard_lift_taper",
+      "label": "중정+상부테이퍼",
+      "aliases": ["courtyard taper", "atrium taper", "중정 테이퍼"],
+      "intent_tags": ["courtyard", "void", "taper", "section_diversity"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "courtyard", "params": {"ratio": 0.28}},
+        {"verb": "lift", "params": {"upper_ratio": 0.62, "lower_floor_fraction": 0.48}},
+        {"verb": "taper", "params": {"x_ratio": 0.74, "y_ratio": 0.62}}
+      ],
+      "notes": ["courtyard void에 상부 매스를 얹고 taper로 사선/스카이라인 대응"]
+    },
+    {
+      "name": "grammar_split_lift_stepback",
+      "label": "분절+브릿지+계단",
+      "aliases": ["split bridge stepback", "분절 브릿지", "계단형 분절매스"],
+      "intent_tags": ["split", "bridge", "stepback", "section_diversity"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "split", "params": {"axis": "x", "gap_ratio": 0.22, "bridge_ratio": 0.18}},
+        {"verb": "lift", "params": {"upper_ratio": 0.66, "lower_floor_fraction": 0.42}},
+        {"verb": "grade", "params": {"side": "north", "width_ratio": 0.56, "depth_ratio": 0.26}}
+      ],
+      "notes": ["분절된 저층부와 후퇴한 상층부를 조합한 복합 매스"]
+    },
+    {
+      "name": "grammar_bar_notch_grade",
+      "label": "바+코너비움+테라스",
+      "aliases": ["bar notch terrace", "판상 코너비움", "북측 테라스"],
+      "intent_tags": ["bar", "notch", "terrace", "open_space"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "bar", "params": {"axis": "y", "factor": 0.56, "shift": -0.12}},
+        {"verb": "notch", "params": {"corner": "-x+y", "ratio": 0.24}},
+        {"verb": "grade", "params": {"side": "north", "width_ratio": 0.44, "depth_ratio": 0.24}}
+      ],
+      "notes": ["길쭉한 판상 매스에 코너 오픈과 북측 terrace를 결합"]
+    },
+    {
+      "name": "grammar_overlap_shift_terrace",
+      "label": "오버랩+시프트+테라스",
+      "aliases": ["overlap slabs", "shifted terrace", "어긋난 슬래브"],
+      "intent_tags": ["overlap", "shift", "terrace", "podium"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "overlap", "params": {"axis": "x", "slab_ratio": 0.52, "shift_ratio": 0.19}},
+        {"verb": "shift", "params": {"axis": "y", "distance_ratio": 0.06}},
+        {"verb": "lift", "params": {"upper_ratio": 0.72, "lower_floor_fraction": 0.44}}
+      ],
+      "notes": ["어긋난 slab들을 포디움/상부 구성으로 정리"]
+    },
+    {
+      "name": "grammar_branch_pinch_taper",
+      "label": "브랜치+핀치+테이퍼",
+      "aliases": ["branch pinch taper", "Y형 매스", "허리좁힘 테이퍼"],
+      "intent_tags": ["branch", "pinch", "taper", "plan_diversity"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "branch", "params": {"angle": 34.0, "trunk_ratio": 0.30, "arm_ratio": 0.20}},
+        {"verb": "pinch", "params": {"axis": "y", "waist_ratio": 0.62, "depth_ratio": 0.36}},
+        {"verb": "taper", "params": {"x_ratio": 0.78, "y_ratio": 0.66}}
+      ],
+      "notes": ["Y형 분기와 허리 좁힘을 상부 taper와 결합"]
+    },
+    {
+      "name": "grammar_podium_tower_offset",
+      "label": "포디움+타워오프셋",
+      "aliases": ["podium tower", "offset tower", "포디움 타워"],
+      "intent_tags": ["podium", "tower", "offset", "section_diversity"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "lift", "params": {"upper_ratio": 0.58, "lower_floor_fraction": 0.40}},
+        {"verb": "shift", "params": {"axis": "x", "distance_ratio": 0.10}},
+        {"verb": "taper", "params": {"x_ratio": 0.78, "y_ratio": 0.78}}
+      ],
+      "notes": ["법규 포디움 위에 오프셋된 상부 타워를 올리는 조합"]
+    },
+    {
+      "name": "grammar_cave_inset_puncture",
+      "label": "케이브+인셋+보이드",
+      "aliases": ["cave inset void", "edge cave", "내부 보이드"],
+      "intent_tags": ["cave", "inset", "void", "open_space"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "cave", "params": {"side": "south", "width_ratio": 0.46, "depth_ratio": 0.28}},
+        {"verb": "inset", "params": {"factor": 0.92}},
+        {"verb": "courtyard", "params": {"ratio": 0.18}}
+      ],
+      "notes": ["가로변/마당 방향 cave와 내부 void를 함께 만드는 조합"]
+    },
+    {
+      "name": "grammar_interlock_step_taper",
+      "label": "인터락+스텝+테이퍼",
+      "aliases": ["interlock step taper", "교차 매스", "스텝 테이퍼"],
+      "intent_tags": ["interlock", "stepback", "taper", "plan_diversity"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "interlock", "params": {"angle": 28.0, "bar_ratio": 0.34}},
+        {"verb": "lift", "params": {"upper_ratio": 0.70, "lower_floor_fraction": 0.46}},
+        {"verb": "taper", "params": {"x_ratio": 0.70, "y_ratio": 0.70}}
+      ],
+      "notes": ["교차 매스와 상부 후퇴를 결합한 복합 grammar 후보"]
+    }
+  ]
+}
