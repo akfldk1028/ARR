@@ -45,13 +45,13 @@ def check_connection(neo4j):
         result = neo4j.execute_query("RETURN 1 as test")
         if result and result[0]['test'] == 1:
             print("✅ Neo4j 연결 성공")
-            return True
+            return True, []
         else:
             print("❌ Neo4j 연결 실패: 응답 없음")
-            return False
+            return False, ["Neo4j 연결 응답이 없습니다"]
     except Exception as e:
         print(f"❌ Neo4j 연결 실패: {e}")
-        return False
+        return False, [f"Neo4j 연결 실패: {e}"]
 
 def check_nodes(neo4j):
     """노드 수 확인"""
@@ -278,13 +278,22 @@ def main():
     # Neo4j 연결
     neo4j = Neo4jService()
     try:
-        neo4j.connect()
+        connected = neo4j.connect()
     except Exception as e:
         print(f"\n❌ Neo4j 연결 실패: {e}")
         print("\n💡 문제 해결:")
         print("  - Neo4j Desktop에서 데이터베이스를 시작했는지 확인")
         print("  - .env 파일의 NEO4J_* 환경 변수 확인")
         sys.exit(1)
+    if not connected:
+        print("\n❌ Neo4j 연결 실패")
+        print("\n💡 문제 해결:")
+        print("  - Neo4j Desktop에서 데이터베이스를 시작했는지 확인")
+        print("  - WSL에서는 Windows Neo4j에 localhost 대신 Windows host IP를 사용")
+        print("  - 예: NEO4J_URI=bolt://172.27.80.1:7687")
+        print("  - .env 파일의 NEO4J_* 환경 변수 확인")
+        neo4j.disconnect()
+        return 1
 
     # 검증 실행
     checks = [
@@ -300,7 +309,12 @@ def main():
     passed_count = 0
 
     for check_name, check_func in checks:
-        success, issues = check_func(neo4j)
+        try:
+            success, issues = check_func(neo4j)
+        except Exception as e:
+            success = False
+            issues = [f"{check_name} 검증 중 예외: {e}"]
+            print(f"\n❌ {check_name} 검증 중 예외: {e}")
         if success:
             passed_count += 1
         else:

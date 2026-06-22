@@ -143,3 +143,100 @@ python manage.py runserver
 ✅ Multi-agent collaboration
 
 The implementation successfully demonstrates a fully functional A2A-compliant multi-agent system with robust worker communication capabilities.
+
+## Law Search Proxy (2026-02-21)
+
+The `law/` Django app serves as a **proxy** to `law-domain-agents` on port 8011. It does NOT implement search logic itself.
+
+### Endpoints
+| Method | Path | Proxies To | Logs |
+|--------|------|------------|------|
+| POST | `/law/search/` | `:8011/api/search` | SearchLog |
+| GET | `/law/search/stream?query=&limit=&domain_id=` | `:8011/api/search` (SSE wrapper) | SearchLog |
+| POST | `/law/domain/<id>/search/` | `:8011/api/domain/<id>/search` | SearchLog |
+| GET | `/law/domains/` | `:8011/api/domains` | No |
+| GET | `/law/health/` | `:8011/api/health` | No |
+| GET | `/law/article/?full_id=...` | Neo4j direct (JO→HANG→HO) | No |
+| GET | `/law/stats/` | Django DB direct | - |
+
+### Field Mapping
+Client sends `{"q": ..., "limit": ...}` → proxy sends `{"query": ..., "limit": ...}` to law-domain-agents.
+
+### SearchLog Model
+Tracks query, domain_id, limit, result_count, response_time_ms, source. SearchLog.objects.create failure is non-fatal (wrapped in try/except).
+
+### Prerequisites
+- `law` in INSTALLED_APPS (settings.py line 55)
+- `path('law/', include('law.urls'))` in backend/urls.py
+- `python manage.py migrate` to create SearchLog table
+- law-domain-agents running on port 8011
+
+### Law Pipeline Status (2026-02-27 — 18 LAWS LOADED, FULL PIPELINE)
+
+| Step | Status | Detail |
+|------|--------|--------|
+| Step1-alt API→JSON | DONE | 18 laws downloaded (6 법률 × 3 types) |
+| Step2 JSON→Neo4j | DONE | LAW 18, HANG 6171, HO 6026, MOK 1284, JO 2431 (total 16,081) |
+| Step3 Embeddings | DONE | ALL 6171 HANG nodes, OpenAI text-embedding-3-large 3072-dim |
+| Step4 Domains | DONE | 5 domains (land_use:2286, national:2004, building:1018, zoning:614, urban:249) |
+| Step5 RelEmbeddings | DONE | ALL 16,058 CONTAINS rel embeddings, `contains_embedding` ONLINE |
+
+**Neo4j**: `bolt://localhost:7687`, pw=`11111111` (Neo4j Desktop). **Pipeline docs**: `law/PIPELINE.md`.
+
+**Scripts** (`law/scripts/`):
+- `run_step3_standalone.py` — HANG embeddings, `LAW_NEO4J_PASSWORD=11111111`
+- `run_step5_incremental.py` — CONTAINS rel embeddings (incremental, NULL only)
+- `law_downloader.py` — `python law_downloader.py --oc hanvit4303 --force` (18개 법률)
+
+## Land Regulation Analysis (2026-02-22)
+
+The `land/` Django app analyzes land parcels for building regulations (건폐율, 용적률, 건축제한).
+
+### Purpose
+AI agent가 토지 정보를 입력받아 관련 건축법규를 자동으로 분석. 현재는 static lookup + 법조항 검색, 향후 Agent 협업으로 건축관련법 전체 분석 예정.
+
+### Endpoints
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/land/analyze/` | PNU/주소/zones → 건폐율+용적률+법조항 |
+| POST | `/land/resolve/` | 주소→PNU (Vworld) 또는 PNU 검증 |
+| GET | `/land/zones/` | 21개 용도지역 규제 목록 |
+| GET | `/land/stats/` | 쿼리 통계 |
+
+### analyze Request/Response
+```json
+// Request
+{"input": "1168011200101280003", "input_type": "pnu", "zones": ["제1종일반주거지역"], "include_law": true}
+
+// Response
+{
+  "pnu": {"pnu": "...", "sido": "11", "sigungu": "680", ...},
+  "regulation": {"bcr_limit": 60, "far_limit": 200, "zones": [...], "matched": 1, "unmatched": []},
+  "land_info": {...},
+  "law_articles": {"articles": [...], "total_count": 15, "errors": []},
+  "restrictions": ["건폐율 상한: 60%", "용적률 상한: 200%"]
+}
+```
+
+### Service Layer
+- `pnu_resolver.py`: PNU 19자리 검증/파싱 + Vworld 지오코딩 + **주소→PNU 자동 추출** (level4LC, VWORLD_API_KEY env var)
+- `zoning_mapper.py`: 21개 용도지역 → 건폐율/용적률 (`land/data/zoning_limits.json`, exact match only)
+- `law_enricher.py`: law-domain-agents(:8011) 법조항 검색 (fail-fast, LAW_BACKEND_URL env var)
+- `land_api.py`: Vworld Data API 3개 (getLandUseAttr, ladfrlList, getIndvdLandPriceAttr)
+
+### Key Design
+- **복수 용도지역**: 가장 엄격한 값 적용 (국토계획법 제76-77조)
+- **Exact match only**: 부분 매칭 제거 (ambiguity 방지)
+- **Fail-fast**: law_enricher ConnectError 즉시 중단, 3회 연속 실패시 중단
+- **Non-fatal audit log**: LandQuery.objects.create 실패해도 응답은 정상 반환
+
+### Models
+- `LandQuery`: input_type, raw_input, resolved_pnu, zoning_zones(JSON), bcr/far limits, response_time_ms, error
+- `ZoningRegulation`: zone_name(unique), bcr_default, far_default, articles (미사용, admin에서 편집 가능)
+
+### Prerequisites
+- `land` in INSTALLED_APPS
+- `path('land/', include('land.urls'))` in backend/urls.py
+- `python manage.py migrate` to create LandQuery + ZoningRegulation tables
+- law-domain-agents on port 8011 (for law_enricher, optional)
+- VWORLD_API_KEY env var (for address geocoding, optional)

@@ -1,0 +1,575 @@
+{
+  "coordinate_space": "local_meter_from_first_mass_point",
+  "legal_status_effect": "none",
+  "mesh": {
+    "indices": [
+      0,
+      1,
+      2,
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      4,
+      6,
+      7,
+      8,
+      9,
+      10,
+      8,
+      10,
+      11,
+      12,
+      13,
+      14,
+      12,
+      14,
+      15,
+      16,
+      17,
+      18,
+      16,
+      18,
+      19,
+      20,
+      21,
+      22,
+      20,
+      22,
+      23,
+      20,
+      23,
+      24,
+      25,
+      26,
+      27,
+      25,
+      27,
+      28,
+      29,
+      30,
+      31,
+      29,
+      31,
+      32,
+      33,
+      34,
+      35,
+      33,
+      35,
+      36,
+      37,
+      38,
+      39,
+      37,
+      39,
+      40,
+      41,
+      42,
+      43,
+      41,
+      43,
+      44
+    ],
+    "positions_m": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        -3.6142,
+        6.196,
+        0.0
+      ],
+      [
+        -3.6142,
+        6.196,
+        8.4
+      ],
+      [
+        0.0,
+        0.0,
+        8.4
+      ],
+      [
+        -3.6142,
+        6.196,
+        0.0
+      ],
+      [
+        -4.0142,
+        6.8818,
+        0.0
+      ],
+      [
+        -4.0142,
+        6.8818,
+        8.4
+      ],
+      [
+        -3.6142,
+        6.196,
+        8.4
+      ],
+      [
+        -4.0142,
+        6.8818,
+        0.0
+      ],
+      [
+        7.0906,
+        13.3291,
+        0.0
+      ],
+      [
+        7.0906,
+        13.3291,
+        8.4
+      ],
+      [
+        -4.0142,
+        6.8818,
+        8.4
+      ],
+      [
+        7.0906,
+        13.3291,
+        0.0
+      ],
+      [
+        11.1118,
+        6.4337,
+        0.0
+      ],
+      [
+        11.1118,
+        6.4337,
+        8.4
+      ],
+      [
+        7.0906,
+        13.3291,
+        8.4
+      ],
+      [
+        11.1118,
+        6.4337,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        8.4
+      ],
+      [
+        11.1118,
+        6.4337,
+        8.4
+      ],
+      [
+        0.0,
+        0.0,
+        8.4
+      ],
+      [
+        -3.6142,
+        6.196,
+        8.4
+      ],
+      [
+        -4.0142,
+        6.8818,
+        8.4
+      ],
+      [
+        7.0906,
+        13.3291,
+        8.4
+      ],
+      [
+        11.1118,
+        6.4337,
+        8.4
+      ],
+      [
+        0.0,
+        0.0,
+        8.4
+      ],
+      [
+        -1.3024,
+        2.2327,
+        8.4
+      ],
+      [
+        -1.3024,
+        2.2327,
+        16.8
+      ],
+      [
+        0.0,
+        0.0,
+        16.8
+      ],
+      [
+        -1.3024,
+        2.2327,
+        8.4
+      ],
+      [
+        9.802,
+        8.6797,
+        8.4
+      ],
+      [
+        9.802,
+        8.6797,
+        16.8
+      ],
+      [
+        -1.3024,
+        2.2327,
+        16.8
+      ],
+      [
+        9.802,
+        8.6797,
+        8.4
+      ],
+      [
+        11.1118,
+        6.4337,
+        8.4
+      ],
+      [
+        11.1118,
+        6.4337,
+        16.8
+      ],
+      [
+        9.802,
+        8.6797,
+        16.8
+      ],
+      [
+        11.1118,
+        6.4337,
+        8.4
+      ],
+      [
+        0.0,
+        0.0,
+        8.4
+      ],
+      [
+        0.0,
+        0.0,
+        16.8
+      ],
+      [
+        11.1118,
+        6.4337,
+        16.8
+      ],
+      [
+        0.0,
+        0.0,
+        16.8
+      ],
+      [
+        -1.3024,
+        2.2327,
+        16.8
+      ],
+      [
+        9.802,
+        8.6797,
+        16.8
+      ],
+      [
+        11.1118,
+        6.4337,
+        16.8
+      ]
+    ],
+    "surface_ranges": [
+      {
+        "index_count": 6,
+        "index_start": 0,
+        "surface_id": "facade_surface_v0_e0",
+        "view": "left",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 6,
+        "index_start": 6,
+        "surface_id": "facade_surface_v0_e1",
+        "view": "left",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 6,
+        "index_start": 12,
+        "surface_id": "facade_surface_v0_e2",
+        "view": "back",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 6,
+        "index_start": 18,
+        "surface_id": "facade_surface_v0_e3",
+        "view": "right",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 6,
+        "index_start": 24,
+        "surface_id": "facade_surface_v0_e4",
+        "view": "right",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 9,
+        "index_start": 30,
+        "surface_id": "roof_surface_v0",
+        "view": "top",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 6,
+        "index_start": 39,
+        "surface_id": "facade_surface_v1_e0",
+        "view": "left",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 6,
+        "index_start": 45,
+        "surface_id": "facade_surface_v1_e1",
+        "view": "back",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 6,
+        "index_start": 51,
+        "surface_id": "facade_surface_v1_e2",
+        "view": "right",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 6,
+        "index_start": 57,
+        "surface_id": "facade_surface_v1_e3",
+        "view": "front",
+        "volume_id": "morphology_volume"
+      },
+      {
+        "index_count": 6,
+        "index_start": 63,
+        "surface_id": "roof_surface_v1",
+        "view": "top",
+        "volume_id": "morphology_volume"
+      }
+    ],
+    "uv": [
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.15495,
+        1.0
+      ],
+      [
+        0.15495,
+        0.75
+      ],
+      [
+        0.0,
+        0.75
+      ],
+      [
+        0.15495,
+        1.0
+      ],
+      [
+        0.172101,
+        1.0
+      ],
+      [
+        0.172101,
+        0.75
+      ],
+      [
+        0.15495,
+        0.75
+      ],
+      [
+        0.666667,
+        0.5
+      ],
+      [
+        0.911385,
+        0.5
+      ],
+      [
+        0.911385,
+        0.25
+      ],
+      [
+        0.666667,
+        0.25
+      ],
+      [
+        0.494227,
+        0.5
+      ],
+      [
+        0.666666,
+        0.5
+      ],
+      [
+        0.666666,
+        0.25
+      ],
+      [
+        0.494227,
+        0.25
+      ],
+      [
+        0.333333,
+        0.5
+      ],
+      [
+        0.494227,
+        0.5
+      ],
+      [
+        0.494227,
+        0.25
+      ],
+      [
+        0.333333,
+        0.25
+      ],
+      [
+        0.755129,
+        1.0
+      ],
+      [
+        0.675483,
+        0.767575
+      ],
+      [
+        0.666667,
+        0.741848
+      ],
+      [
+        0.911385,
+        0.5
+      ],
+      [
+        1.0,
+        0.758659
+      ],
+      [
+        0.0,
+        0.75
+      ],
+      [
+        0.055836,
+        0.75
+      ],
+      [
+        0.055836,
+        0.5
+      ],
+      [
+        0.0,
+        0.5
+      ],
+      [
+        0.726429,
+        0.25
+      ],
+      [
+        0.971136,
+        0.25
+      ],
+      [
+        0.971136,
+        0.0
+      ],
+      [
+        0.726429,
+        0.0
+      ],
+      [
+        0.494227,
+        0.25
+      ],
+      [
+        0.550394,
+        0.25
+      ],
+      [
+        0.550394,
+        0.0
+      ],
+      [
+        0.494227,
+        0.0
+      ],
+      [
+        0.088462,
+        0.25
+      ],
+      [
+        0.333333,
+        0.25
+      ],
+      [
+        0.333333,
+        0.0
+      ],
+      [
+        0.088462,
+        0.0
+      ],
+      [
+        0.755129,
+        1.0
+      ],
+      [
+        0.726429,
+        0.916246
+      ],
+      [
+        0.971136,
+        0.674408
+      ],
+      [
+        1.0,
+        0.758659
+      ]
+    ]
+  },
+  "mode": "baked_texture_mesh",
+  "origin": {
+    "lat": 37.48496736670565,
+    "lng": 127.04499336728946
+  },
+  "schema_version": "arr.maas.textured_mesh.v0",
+  "source_bake_manifest": "/mnt/d/Data/25_ACE/ARR/backend/media/maas/aesthetic/generated/maas_evidence_f0c9ea71_e9f2_4886_8b5e_1ad76c9d786e_900000_maas_01.nano-banana/bake_manifest.json",
+  "source_projection_manifest": "/mnt/d/Data/25_ACE/ARR/backend/media/maas/aesthetic/references/1a7d0a71c4fe01ae/projection_manifest.json",
+  "surface_count": 11,
+  "texture_atlas_uri": "/mnt/d/Data/25_ACE/ARR/backend/media/maas/aesthetic/generated/maas_evidence_f0c9ea71_e9f2_4886_8b5e_1ad76c9d786e_900000_maas_01.nano-banana/baked_texture_atlas.png"
+}

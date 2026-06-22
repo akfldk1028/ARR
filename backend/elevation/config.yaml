@@ -1,0 +1,16 @@
+# opentopodata config — datum elevation 데이터셋.
+# REST: GET /v1/<dataset>?locations=lat,lng|...
+#
+# 데이터 추가 시 아래 datasets:에 항목 추가 (폴더 존재해야 startup 가능):
+#   - ngii_5m (전국 5m, ~4GB) — map.ngii.go.kr 다운로드 후
+#   - ngii_lidar_1m (도시 1m, RMSE 14cm) — NGII 도엽 다운로드 후
+
+max_locations_per_request: 100
+access_control_allow_origin: '*'
+
+datasets:
+  # ⭐ 자동 (AWS S3 무료) — Copernicus GLO-30, 한국 bbox 44 타일
+  # 파일명 패턴: N33E126.tif (lower-left corner)
+  - name: copernicus_glo30
+    path: data/copernicus_glo30/
+    interpolation: bilinear

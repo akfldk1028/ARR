@@ -94,7 +94,7 @@ npm run electron:build
 ### Django 백엔드 실행
 
 ```bash
-cd D:\Data\11_Backend\01_ARR\backend
+cd D:\Data\25_ACE\ARR\backend
 daphne -b 0.0.0.0 -p 8000 backend.asgi:application
 ```
 

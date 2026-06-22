@@ -137,6 +137,10 @@ export default function HistorySidebar() {
 	};
 
 	const fetchHistoryTasks = async () => {
+		if (!getAuthStore().token) {
+			setHistoryTasks([]);
+			return;
+		}
 		try {
 			const res = await proxyFetchGet(`/api/chat/histories`);
 			setHistoryTasks(res.items);

@@ -1,342 +1,628 @@
 /**
- * 법규 AI 채팅 메인 컴포넌트
- * SSE 스트리밍 진행상황 표시 기능 통합
+ * LawChat — 법규 AI 검색 페이지 (조합 컴포넌트).
+ *
+ * 3패널 레이아웃: [Chat(좌)] | [3D Map(우)] | [ArticleDetail(사이드바)]
+ *
+ * 책임 분리:
+ *   - HeroSearch: 빈 상태 검색 UI (Perplexity 스타일)
+ *   - MapPanel: 3D Vworld 지도 + 오버레이
+ *   - useMapLawSearch: 지적도 클릭 → reverse geocode → 법규 검색
+ *   - Pill: 상태 배지 컴포넌트
+ *   - useLawChat: 채팅 메시지 + 검색 API
+ *   - useLawSearchStream: SSE 실시간 검색
+ *
+ * 스타일: inline hex (Tailwind CSS 변수 충돌 회피)
  */
 
 import React, { useRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {
+  Wifi,
+  WifiOff,
+  Radio,
+  RotateCcw,
+  StopCircle,
+  Search,
+  Loader2,
+  ArrowUp,
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+/* ── Context & hooks ── */
 import { LawAPIProvider, useLawAPI } from './contexts/LawAPIContext';
 import { useLawChat } from './hooks/use-law-chat';
 import { useLawSearchStream } from './hooks/use-law-search-stream';
-import { QueryInput } from './components/QueryInput';
-import { ResultDisplay } from './components/ResultDisplay';
-import {
-  SearchProgressIndicator,
-  SearchCompleteHeader,
-  SearchErrorIndicator,
-} from './components/SearchProgress';
+import { useMapLawSearch } from './hooks/use-map-law-search';
 
-/**
- * 법규 채팅 인터페이스 내부 컴포넌트
- */
+/* ── Components ── */
+import { ResultDisplay } from './components/ResultDisplay';
+import { ArticleDetailPanel } from './components/ArticleDetailPanel';
+import { SearchProgressIndicator, SearchCompleteHeader, SearchErrorIndicator } from './components/SearchProgress';
+import { HeroSearch } from './components/HeroSearch';
+import { MapPanel } from './components/MapPanel';
+import { Pill } from './components/Pill';
+import { MapSearchBar } from '../land/components/MapSearchBar';
+import LandAnalysisPanel from '../land/components/LandAnalysisPanel';
+import AgentProgressPanel from '../land/components/AgentProgressPanel';
+
+/* ── Types ── */
+import type { LawArticle, ChatMessage } from './lib/types';
+import type { SearchProgress } from './hooks/use-law-search-stream';
+import type { AnalysisMode } from './hooks/use-map-law-search';
+import { glassInputHandlers } from './lib/glass-input';
+
+/* ── Constants ── */
+const ANALYSIS_MODES = [['quick', '빠른 분석'], ['agent', 'AI 심화 분석']] as const;
+
+/* ── Global keyframes (map + chat 공용) ── */
+const KEYFRAMES = `
+  @keyframes spin { to { transform: rotate(360deg) } }
+  @keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.5 } }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes borderBeam { 0% { left: -20%; } 100% { left: 120%; } }
+  @keyframes fillRing { from { stroke-dashoffset: 88; } to { stroke-dashoffset: 0; } }
+  @keyframes matchGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.05); }
+    50% { box-shadow: 0 0 20px 4px rgba(99,102,241,0.1); }
+  }
+`;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LawChatInner — 메인 조합 컴포넌트
+// ─────────────────────────────────────────────────────────────────────────────
+
 function LawChatInner() {
-  const navigate = useNavigate();
+  /* ── API context ── */
   const { domains, domainsLoading, selectedDomainId, setSelectedDomainId, isConnected } =
     useLawAPI();
+
+  /* ── Chat state ── */
   const { messages, isLoading, search, clearMessages, addMessage } = useLawChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // SSE 스트리밍 훅 (Django 백엔드 사용)
-  const { progress, isSearching, startSearch, stopSearch, resetProgress } = useLawSearchStream('http://127.0.0.1:8000');
+  /* ── SSE streaming ── */
+  const { progress, isSearching, startSearch, stopSearch, resetProgress } =
+    useLawSearchStream('');
 
-  // 스트리밍 모드 토글 상태
+  /* ── Local state ── */
   const [streamingMode, setStreamingMode] = useState(false);
+  const [query, setQuery] = useState('');
+  const [selectedArticle, setSelectedArticle] = useState<LawArticle | null>(null);
 
-  /**
-   * 메시지 자동 스크롤
-   */
+  /* ── Derived ── */
+  const busy = isLoading || isSearching;
+  const hasMessages = messages.length > 0;
+
+  /* ── 3D Map (다이어그램) + 지적도 클릭/검색→법규 분석 ── */
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const { mapReady, mapLoading, mapError, mapClickLoading, analysisMode, setAnalysisMode, searchByAddress, setBuildingsVisible, agent } =
+    useMapLawSearch({ target: mapContainerRef, busy, addMessage });
+  const [buildingsOn, setBuildingsOn] = useState(true);
+
+  /* ── 메시지 자동 스크롤 ── */
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  /**
-   * SSE 스트리밍 완료 시 결과를 메시지로 추가
-   */
+  /* ── SSE 완료 시 결과를 채팅에 추가 ── */
   useEffect(() => {
     if (progress?.status === 'complete' && progress.results) {
-      // 스트리밍 검색 완료 메시지 추가
       addMessage({
         role: 'assistant',
-        content: `검색 완료 (${progress.response_time}ms)`,
+        content: `검색 완료 (${progress.response_time ?? 0}ms)`,
         search_response: {
           results: progress.results,
           total_count: progress.result_count || progress.results.length,
-          query: '', // 쿼리는 이미 사용자 메시지에 있음
+          query: '',
           response_time: progress.response_time || 0,
           domain_id: progress.domain_id,
           domain_name: progress.domain_name,
         },
       });
-
-      // 진행상황 초기화 (다음 검색을 위해)
       resetProgress();
     }
   }, [progress, addMessage, resetProgress]);
 
-  /**
-   * 검색 핸들러 (스트리밍/일반 모드 분기)
-   */
-  const handleSearch = (query: string) => {
+  /* ── 검색 실행 (텍스트 입력/예제 클릭) ── */
+  const handleSearch = (q: string) => {
+    const trimmed = q.trim();
+    if (!trimmed || busy) return;
+    setQuery('');
     if (streamingMode) {
-      // SSE 스트리밍 검색
-      // 사용자 메시지 추가
-      addMessage({
-        role: 'user',
-        content: query,
-      });
-
-      // 검색 시작
-      resetProgress(); // 이전 진행상황 초기화
-      startSearch(query, 10);
+      addMessage({ role: 'user', content: trimmed });
+      resetProgress();
+      startSearch(trimmed, 10, selectedDomainId || undefined);
     } else {
-      // 기존 REST API 검색
-      search(query, 10);
+      search(trimmed, 10);
     }
   };
 
-  /**
-   * 뒤로 가기
-   */
-  const handleBack = () => {
-    navigate(-1);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSearch(query);
+    }
   };
 
+  // ───────────────────────────────────────────────────────────────────────────
+  // Render
+  // ───────────────────────────────────────────────────────────────────────────
+
   return (
-    <div className="law-chat-container flex flex-col h-screen bg-gray-50">
-      {/* 헤더 */}
-      <header className="bg-white border-b border-gray-200 flex-shrink-0 z-10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              {/* 뒤로 가기 버튼 */}
+    <div style={{
+      display: 'flex', height: '100vh',
+      background: '#0a0a12',
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Ambient gradient mesh (subtle background atmosphere) */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
+        background: 'radial-gradient(ellipse 60% 50% at 20% 50%, rgba(59,130,246,0.04) 0%, transparent 70%), radial-gradient(ellipse 50% 60% at 80% 30%, rgba(139,92,246,0.03) 0%, transparent 70%)',
+      }} />
+      <style>{KEYFRAMES}</style>
+
+      {/* ═══ Left: Chat Panel ═══ */}
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 400, position: 'relative', zIndex: 1 }}>
+
+        {/* 헤더 (메시지 있을 때만) */}
+        {hasMessages && (
+          <ChatHeader
+            isConnected={isConnected}
+            streamingMode={streamingMode}
+            onToggleStreaming={() => setStreamingMode(prev => !prev)}
+            domains={domains}
+            domainsLoading={domainsLoading}
+            selectedDomainId={selectedDomainId}
+            onDomainChange={setSelectedDomainId}
+            isSearching={isSearching}
+            onStopSearch={stopSearch}
+            onClear={clearMessages}
+          />
+        )}
+
+        {/* 콘텐츠: 히어로 or 메시지 */}
+        {hasMessages ? (
+          <MessageList
+            messages={messages}
+            streamingMode={streamingMode}
+            isSearching={isSearching}
+            progress={progress}
+            selectedArticle={selectedArticle}
+            onSelectArticle={setSelectedArticle}
+            messagesEndRef={messagesEndRef}
+          />
+        ) : (
+          <HeroSearch
+            query={query}
+            onQueryChange={setQuery}
+            onSearch={handleSearch}
+            busy={busy}
+            isConnected={isConnected}
+            streamingMode={streamingMode}
+            onToggleStreaming={() => setStreamingMode(prev => !prev)}
+            domains={domains}
+            domainsLoading={domainsLoading}
+            selectedDomainId={selectedDomainId}
+            onDomainChange={setSelectedDomainId}
+            inputRef={inputRef}
+          />
+        )}
+
+        {/* 하단 입력바 (메시지 모드) */}
+        {hasMessages && (
+          <BottomInput
+            query={query}
+            onQueryChange={setQuery}
+            onKeyDown={handleKeyDown}
+            onSearch={() => handleSearch(query)}
+            busy={busy}
+            inputRef={inputRef}
+          />
+        )}
+      </div>
+
+      {/* ═══ Right: 3D Map (다이어그램) + Search + Agent Panel ═══ */}
+      <div style={{
+        display: 'flex', flexDirection: 'column', flex: 1, minWidth: 360, position: 'relative', zIndex: 1,
+        borderLeft: '1px solid rgba(255,255,255,0.04)',
+      }}>
+        {/* 주소 검색창 (MapPanel 내부 relative 컨테이너 기준) */}
+        <MapSearchBar onSearch={searchByAddress} loading={mapClickLoading || agent.isRunning} />
+
+        {/* Mode toggle + 건물 토글 — 검색바 아래 */}
+        <div style={{
+          position: 'absolute', top: 64, left: 16, zIndex: 10,
+          display: 'flex', gap: 6, alignItems: 'center',
+        }}>
+          <div style={{
+            display: 'flex', gap: 4, padding: 3,
+            background: 'rgba(0,0,0,0.6)', borderRadius: 8,
+            backdropFilter: 'blur(8px)',
+          }}>
+            {ANALYSIS_MODES.map(([mode, label]) => (
               <button
-                onClick={handleBack}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                key={mode}
+                onClick={() => setAnalysisMode(mode)}
+                style={{
+                  padding: '5px 12px', borderRadius: 6, border: 'none',
+                  fontSize: 12, fontWeight: 500, cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  background: analysisMode === mode ? 'rgba(99,102,241,0.8)' : 'transparent',
+                  color: analysisMode === mode ? '#fff' : '#94a3b8',
+                }}
               >
-                ← 뒤로가기
+                {label}
               </button>
-
-              {/* 타이틀 */}
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">법규 검색 AI 채팅</h1>
-                <p className="text-sm text-gray-600">
-                  국토의 계획 및 이용에 관한 법률 시스템
-                </p>
-              </div>
-            </div>
-
-            {/* 연결 상태 */}
-            <div className="flex items-center gap-4">
-              {/* 백엔드 연결 상태 */}
-              <div className="flex items-center gap-2">
-                <div
-                  className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}
-                />
-                <span className="text-sm text-gray-600">
-                  {isConnected ? '백엔드 연결됨' : '백엔드 연결 끊김'}
-                </span>
-              </div>
-
-              {/* 스트리밍 모드 토글 */}
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  checked={streamingMode}
-                  onChange={(e) => setStreamingMode(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
-                />
-                <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
-                  실시간 진행상황
-                </span>
-              </label>
-
-              {/* 도메인 선택 */}
-              {!domainsLoading && domains.length > 0 && (
-                <select
-                  value={selectedDomainId || ''}
-                  onChange={(e) => setSelectedDomainId(e.target.value || null)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">전체 도메인 (자동 라우팅)</option>
-                  {domains.map((domain) => (
-                    <option key={domain.domain_id} value={domain.domain_id}>
-                      {domain.domain_name} ({domain.node_count}개 노드)
-                    </option>
-                  ))}
-                </select>
-              )}
-
-              {/* 검색 중단 버튼 (스트리밍 모드에서만) */}
-              {streamingMode && isSearching && (
-                <button
-                  onClick={stopSearch}
-                  className="px-4 py-2 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 border border-red-300 rounded-lg transition-colors font-medium"
-                >
-                  검색 중단
-                </button>
-              )}
-
-              {/* 초기화 버튼 */}
-              {messages.length > 0 && (
-                <button
-                  onClick={clearMessages}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  대화 초기화
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* 메인 콘텐츠 (스크롤 가능) */}
-      <main className="flex-1 overflow-y-auto">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          {/* 안내 메시지 (메시지가 없을 때만) */}
-          {messages.length === 0 && (
-            <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <h2 className="text-lg font-semibold text-blue-900 mb-2">
-                💡 법규 검색 AI에 오신 것을 환영합니다!
-              </h2>
-              <p className="text-sm text-blue-800 mb-3">
-                이 시스템은 Multi-Agent System과 이중 임베딩 전략을 사용하여 법률 조항을 검색합니다.
-              </p>
-              <ul className="text-sm text-blue-700 space-y-1">
-                <li>• <strong>노드 임베딩 (OpenAI 3072dim)</strong>: 법률 조항 내용 기반 의미 검색</li>
-                <li>• <strong>관계 임베딩 (OpenAI 3072dim)</strong>: 법률 구조 관계 기반 검색</li>
-                <li>• <strong>그래프 확장 (RNE)</strong>: 연관 조항 탐색</li>
-                <li>• <strong>도메인 협업 (A2A)</strong>: 여러 도메인 간 협업 검색</li>
-              </ul>
-              {streamingMode && (
-                <div className="mt-3 pt-3 border-t border-blue-200">
-                  <p className="text-sm text-blue-700 font-semibold">
-                    실시간 진행상황 모드가 활성화되었습니다. 검색 중 각 단계의 진행상황을 확인할 수 있습니다.
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* 검색 입력 */}
-          <div className="mb-6">
-            <QueryInput onSearch={handleSearch} isLoading={isLoading || isSearching} />
-          </div>
-
-          {/* 메시지 목록 */}
-          <div className="space-y-4 pb-6">
-            {messages.map((message) => (
-              <div key={message.id} className="message-container">
-                {/* 사용자 메시지 */}
-                {message.role === 'user' && (
-                  <div className="flex justify-end mb-2">
-                    <div className="bg-blue-600 text-white rounded-lg px-4 py-3 max-w-2xl">
-                      <p className="text-sm font-medium">{message.content}</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* AI 응답 */}
-                {message.role === 'assistant' && (
-                  <div className="bg-white rounded-lg border border-gray-200 p-4">
-                    {/* 로딩 중 (비스트리밍 모드) */}
-                    {!streamingMode && message.loading && (
-                      <div className="flex items-center gap-2 text-gray-600">
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
-                        <span>{message.content}</span>
-                      </div>
-                    )}
-
-                    {/* 에러 */}
-                    {message.error && !message.loading && (
-                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                        <p className="text-red-800 font-medium">❌ {message.content}</p>
-                        <p className="text-sm text-red-600 mt-1">{message.error}</p>
-                      </div>
-                    )}
-
-                    {/* 검색 결과 */}
-                    {message.search_response && !message.loading && !message.error && (
-                      <div className="space-y-4">
-                        {/* 완료 헤더 (스트리밍 모드에서는 이미 표시됨) */}
-                        {!streamingMode && (
-                          <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-4">
-                            <div className="flex items-center gap-3">
-                              <span className="text-2xl">✅</span>
-                              <div>
-                                <div className="font-semibold text-green-800">검색 완료</div>
-                                <div className="text-sm text-green-600">
-                                  {message.search_response.total_count}개 결과 발견
-                                  {message.search_response.domain_name &&
-                                    ` · ${message.search_response.domain_name}`}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="bg-green-600 text-white px-4 py-2 rounded-full font-semibold text-sm">
-                              {message.search_response.response_time}ms
-                            </div>
-                          </div>
-                        )}
-
-                        {/* 결과 표시 */}
-                        <ResultDisplay response={message.search_response} />
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
             ))}
-
-            {/* 스트리밍 진행상황 (검색 중일 때만) */}
-            {streamingMode && isSearching && progress && (
-              <div className="message-container">
-                <div className="bg-white rounded-lg border border-gray-200 p-4">
-                  {/* 진행 중 */}
-                  {progress.status !== 'complete' && progress.status !== 'error' && (
-                    <SearchProgressIndicator progress={progress} />
-                  )}
-
-                  {/* 에러 */}
-                  {progress.status === 'error' && (
-                    <SearchErrorIndicator
-                      message={progress.message || '알 수 없는 오류가 발생했습니다.'}
-                    />
-                  )}
-
-                  {/* 완료 헤더 */}
-                  {progress.status === 'complete' && (
-                    <SearchCompleteHeader
-                      resultCount={progress.result_count || 0}
-                      responseTime={progress.response_time || 0}
-                      domainName={progress.domain_name}
-                    />
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* 자동 스크롤 타겟 */}
-            <div ref={messagesEndRef} />
           </div>
-
-          {/* 백엔드 연결 안 됨 경고 */}
-          {!isConnected && messages.length === 0 && (
-            <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-yellow-900 mb-2">
-                ⚠️ 백엔드 서버에 연결할 수 없습니다
-              </h3>
-              <p className="text-sm text-yellow-800 mb-2">
-                Django 백엔드 서버가 실행 중인지 확인하세요.
-              </p>
-              <div className="text-sm text-yellow-700 bg-yellow-100 rounded p-3 mt-3">
-                <p className="font-mono">
-                  cd D:\Data\11_Backend\01_ARR\backend
-                </p>
-                <p className="font-mono mt-1">
-                  daphne -b 0.0.0.0 -p 8000 backend.asgi:application
-                </p>
-              </div>
-            </div>
-          )}
+          <button
+            onClick={() => {
+              const next = !buildingsOn;
+              setBuildingsOn(next);
+              setBuildingsVisible(next);
+            }}
+            style={{
+              padding: '5px 12px', borderRadius: 8, border: 'none',
+              fontSize: 12, fontWeight: 500, cursor: 'pointer',
+              background: buildingsOn ? 'rgba(0,0,0,0.6)' : 'rgba(239,68,68,0.3)',
+              color: buildingsOn ? '#94a3b8' : '#fca5a5',
+              backdropFilter: 'blur(8px)',
+              transition: 'all 0.2s',
+            }}
+          >
+            {buildingsOn ? '🏢 건물 ON' : '🏢 건물 OFF'}
+          </button>
         </div>
-      </main>
+
+        <MapPanel
+          mapRef={mapContainerRef}
+          ready={mapReady}
+          loading={mapLoading}
+          error={mapError}
+          clickLoading={mapClickLoading || agent.isRunning}
+        />
+
+        {/* Agent progress overlay (bottom of map) */}
+        {analysisMode === 'agent' && (agent.isRunning || agent.messages.length > 0 || agent.report) && (
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0,
+            maxHeight: '50%', overflowY: 'auto',
+            padding: '0 12px 12px',
+          }}>
+            <AgentProgressPanel
+              messages={agent.messages}
+              event={agent.event}
+              progress={agent.progress}
+              isRunning={agent.isRunning}
+              report={agent.report}
+              runSummary={agent.runSummary}
+              onStop={agent.stop}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* ═══ Sidebar: Article Detail (animated) ═══ */}
+      <AnimatePresence>
+        {selectedArticle && (
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: 420 }}
+            exit={{ width: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            style={{ flexShrink: 0, overflow: 'hidden', height: '100vh' }}
+          >
+            <div style={{ width: 420, height: '100%' }}>
+              <ArticleDetailPanel
+                article={selectedArticle}
+                onClose={() => setSelectedArticle(null)}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-/**
- * 법규 AI 채팅 메인 컴포넌트 (Provider 포함)
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// ChatHeader — 메시지 모드 상단 헤더
+// ─────────────────────────────────────────────────────────────────────────────
+
+const ChatHeader = React.memo(function ChatHeader({
+  isConnected, streamingMode, onToggleStreaming,
+  domains, domainsLoading, selectedDomainId, onDomainChange,
+  isSearching, onStopSearch, onClear,
+}: {
+  isConnected: boolean;
+  streamingMode: boolean;
+  onToggleStreaming: () => void;
+  domains: { domain_id: string; domain_name: string }[];
+  domainsLoading: boolean;
+  selectedDomainId: string | null;
+  onDomainChange: (id: string | null) => void;
+  isSearching: boolean;
+  onStopSearch: () => void;
+  onClear: () => void;
+}) {
+  return (
+    <header style={{
+      flexShrink: 0, padding: '10px 24px',
+      borderBottom: '1px solid rgba(255,255,255,0.06)',
+      background: 'rgba(10,10,18,0.8)', backdropFilter: 'blur(16px)',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    }}>
+      <span style={{ fontSize: 13, fontWeight: 600, color: '#64748b', letterSpacing: '-0.01em' }}>
+        법규 검색
+      </span>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <Pill
+          active={isConnected}
+          activeColor="#34d399" activeBg="rgba(5,150,105,0.15)"
+          inactiveColor="#f87171" inactiveBg="rgba(220,38,38,0.15)"
+        >
+          {isConnected
+            ? <Wifi style={{ width: 10, height: 10 }} />
+            : <WifiOff style={{ width: 10, height: 10 }} />
+          }
+          {isConnected ? '연결' : '끊김'}
+        </Pill>
+
+        <Pill
+          active={streamingMode}
+          activeColor="#a5b4fc" activeBg="rgba(99,102,241,0.15)"
+          inactiveColor="#64748b" inactiveBg="rgba(255,255,255,0.06)"
+          onClick={onToggleStreaming}
+          clickable
+        >
+          <Radio style={{ width: 10, height: 10, ...(streamingMode ? { animation: 'pulse 2s infinite' } : {}) }} />
+          실시간
+        </Pill>
+
+        {!domainsLoading && domains.length > 0 && (
+          <select
+            value={selectedDomainId || ''}
+            onChange={(e) => onDomainChange(e.target.value || null)}
+            aria-label="검색 도메인 선택"
+            style={{
+              padding: '4px 10px', borderRadius: 999,
+              border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.06)',
+              fontSize: 10, fontWeight: 600, color: '#94a3b8',
+              outline: 'none', cursor: 'pointer',
+            }}
+          >
+            <option value="">전체</option>
+            {domains.map((d) => (
+              <option key={d.domain_id} value={d.domain_id}>{d.domain_name}</option>
+            ))}
+          </select>
+        )}
+
+        {streamingMode && isSearching && (
+          <Pill active activeColor="#f87171" activeBg="rgba(220,38,38,0.15)" onClick={onStopSearch} clickable>
+            <StopCircle style={{ width: 10, height: 10 }} />
+            중단
+          </Pill>
+        )}
+
+        <Pill active={false} activeColor="" activeBg="" inactiveColor="#64748b" inactiveBg="rgba(255,255,255,0.06)" onClick={onClear} clickable>
+          <RotateCcw style={{ width: 10, height: 10 }} />
+          초기화
+        </Pill>
+      </div>
+    </header>
+  );
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MessageList — 채팅 메시지 목록 + SSE 진행률
+// ─────────────────────────────────────────────────────────────────────────────
+
+const MessageList = React.memo(function MessageList({
+  messages, streamingMode, isSearching, progress,
+  selectedArticle, onSelectArticle, messagesEndRef,
+}: {
+  messages: ChatMessage[];
+  streamingMode: boolean;
+  isSearching: boolean;
+  progress: SearchProgress | null;
+  selectedArticle: LawArticle | null;
+  onSelectArticle: (a: LawArticle | null) => void;
+  messagesEndRef: React.RefObject<HTMLDivElement>;
+}) {
+  return (
+    <div style={{ flex: 1, overflowY: 'auto' }}>
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: '24px 24px 32px' }}>
+        <AnimatePresence mode="popLayout">
+          {messages.map((message) => (
+            <motion.div
+              key={message.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              style={{ marginBottom: 20 }}
+            >
+              {message.role === 'user' && (
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <div style={{
+                    maxWidth: '70%', padding: '10px 16px', borderRadius: 12,
+                    background: 'rgba(99,102,241,0.12)',
+                    border: '1px solid rgba(99,102,241,0.15)',
+                    color: '#e2e8f0', fontSize: 14, fontWeight: 500,
+                  }}>
+                    {message.content}
+                  </div>
+                </div>
+              )}
+              {message.role === 'assistant' && (
+                <div style={{ width: '100%' }}>
+                  {message.loading && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: '8px 0' }}>
+                      {[0, 1, 2].map((i) => (
+                        <div key={i} style={{
+                          height: i === 0 ? 16 : 12,
+                          width: i === 2 ? '60%' : '100%',
+                          borderRadius: 4,
+                          background: 'linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 75%)',
+                          backgroundSize: '200% 100%',
+                          animation: 'shimmer 1.5s linear infinite',
+                          animationDelay: `${i * 0.1}s`,
+                        }} />
+                      ))}
+                      <span style={{ fontSize: 12, color: '#334155', marginTop: 4 }}>{message.content}</span>
+                    </div>
+                  )}
+                  {message.error && !message.loading && (
+                    <SearchErrorIndicator message={message.error} />
+                  )}
+                  {message.land_analysis && !message.loading && !message.error && (
+                    <LandAnalysisPanel
+                      analysis={message.land_analysis}
+                      address={message.content}
+                      onSelectArticle={(a) => onSelectArticle({
+                        hang_id: a.hang_id,
+                        content: a.content,
+                        similarity: a.similarity || 0,
+                        stages: a.stages || [],
+                        source: 'land',
+                        law_name: a.law_name,
+                        law_type: a.law_type,
+                        article: a.article,
+                      })}
+                    />
+                  )}
+                  {message.search_response && !message.loading && !message.error && (
+                    <div>
+                      <div style={{ marginBottom: 8 }}>
+                        <SearchCompleteHeader
+                          resultCount={message.search_response.total_count || message.search_response.results.length}
+                          responseTime={message.search_response.response_time || 0}
+                          domainName={message.search_response.domain_name}
+                        />
+                      </div>
+                      <ResultDisplay
+                        response={message.search_response}
+                        selectedArticle={selectedArticle}
+                        onSelectArticle={onSelectArticle}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
+        {/* SSE 스트리밍 진행률 */}
+        {streamingMode && isSearching && progress && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{
+              padding: 20, borderRadius: 20,
+              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+            }}
+          >
+            {progress.status !== 'complete' && progress.status !== 'error' && (
+              <SearchProgressIndicator progress={progress} />
+            )}
+            {progress.status === 'error' && (
+              <SearchErrorIndicator message={progress.message || '알 수 없는 오류'} />
+            )}
+            {progress.status === 'complete' && (
+              <SearchCompleteHeader
+                resultCount={progress.result_count || 0}
+                responseTime={progress.response_time || 0}
+                domainName={progress.domain_name}
+              />
+            )}
+          </motion.div>
+        )}
+
+        <div ref={messagesEndRef} />
+      </div>
+    </div>
+  );
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BottomInput — 메시지 모드 하단 입력바
+// ─────────────────────────────────────────────────────────────────────────────
+
+const BottomInput = React.memo(function BottomInput({
+  query, onQueryChange, onKeyDown, onSearch, busy, inputRef,
+}: {
+  query: string;
+  onQueryChange: (v: string) => void;
+  onKeyDown: (e: React.KeyboardEvent) => void;
+  onSearch: () => void;
+  busy: boolean;
+  inputRef: React.RefObject<HTMLInputElement>;
+}) {
+  return (
+    <div style={{
+      flexShrink: 0, borderTop: '1px solid rgba(255,255,255,0.06)',
+      background: 'rgba(10,10,18,0.9)', backdropFilter: 'blur(16px)',
+    }}>
+      <div style={{
+        maxWidth: 860, margin: '0 auto', padding: '12px 24px',
+        display: 'flex', alignItems: 'center', gap: 12,
+      }}>
+        <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <Search style={{ position: 'absolute', left: 14, width: 18, height: 18, color: '#475569' }} />
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={(e) => onQueryChange(e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder="법규 내용을 검색하세요..."
+            disabled={busy}
+            aria-label="법규 검색어 입력"
+            style={{
+              width: '100%', padding: '12px 48px 12px 42px',
+              borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)',
+              background: 'rgba(255,255,255,0.04)', fontSize: 15, color: '#e2e8f0',
+              outline: 'none', transition: 'all 0.2s',
+              ...(busy ? { opacity: 0.5 } : {}),
+            }}
+            onFocus={glassInputHandlers.onFocus}
+            onBlur={glassInputHandlers.onBlur}
+          />
+          <button
+            onClick={onSearch}
+            disabled={!query.trim() || busy}
+            style={{
+              position: 'absolute', right: 6, width: 34, height: 34,
+              borderRadius: 12, border: 'none',
+              cursor: query.trim() && !busy ? 'pointer' : 'default',
+              background: query.trim() && !busy ? '#fff' : 'rgba(255,255,255,0.06)',
+              color: query.trim() && !busy ? '#0a0a12' : '#475569',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'all 0.2s',
+            }}
+          >
+            {busy
+              ? <Loader2 style={{ width: 16, height: 16, animation: 'spin 1s linear infinite' }} />
+              : <ArrowUp style={{ width: 16, height: 16 }} />
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Export — LawAPIProvider 래핑
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function LawChat() {
   return (
     <LawAPIProvider>

@@ -5,6 +5,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { useLawAPI } from '../contexts/LawAPIContext';
+import { search as lawSearch, searchInDomain } from '../lib/law-api-client';
 import type { ChatMessage, LawSearchRequest } from '../lib/types';
 
 /**
@@ -51,7 +52,7 @@ export interface UseLawChatReturn {
  * ```
  */
 export function useLawChat(): UseLawChatReturn {
-  const { client, selectedDomainId } = useLawAPI();
+  const { selectedDomainId } = useLawAPI();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const messageIdCounter = useRef(0);
@@ -120,10 +121,10 @@ export function useLawChat(): UseLawChatReturn {
 
         if (selectedDomainId) {
           // 특정 도메인 검색
-          response = await client.searchInDomain(selectedDomainId, request);
+          response = await searchInDomain(selectedDomainId, request);
         } else {
           // 자동 라우팅 검색
-          response = await client.search(request);
+          response = await lawSearch(request);
         }
 
         const responseTime = Date.now() - startTime;
@@ -162,7 +163,7 @@ export function useLawChat(): UseLawChatReturn {
         setIsLoading(false);
       }
     },
-    [client, selectedDomainId, addMessage, generateMessageId]
+    [selectedDomainId, addMessage, generateMessageId]
   );
 
   /**

@@ -35,7 +35,7 @@ INPUT_FILE = "law/evaluation/test_queries.json"
 OUTPUT_FILE = "law/evaluation/ground_truth.json"
 NEO4J_URI = "bolt://localhost:7687"
 NEO4J_USER = "neo4j"
-NEO4J_PASSWORD = "Dmstn147!!"
+NEO4J_PASSWORD = os.environ.get("LAW_NEO4J_PASSWORD", "demodemo")
 
 # Relevance scoring thresholds
 EXACT_MATCH_SCORE = 3

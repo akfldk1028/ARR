@@ -33,7 +33,10 @@ env_path = Path(__file__).resolve().parents[1] / '.env'
 
 load_dotenv(env_path)
 
-if TRACEROOT_AVAILABLE and traceroot.init():
+_traceroot_init = getattr(traceroot, "init", None) if TRACEROOT_AVAILABLE else None
+_traceroot_enabled = bool(TRACEROOT_AVAILABLE and callable(_traceroot_init) and _traceroot_init())
+
+if _traceroot_enabled:
     from traceroot.logger import get_logger as _get_traceroot_logger
 
     trace = traceroot.trace

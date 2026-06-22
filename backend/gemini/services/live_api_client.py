@@ -1,151 +1,152 @@
 """
 Gemini Live API Client for Real-time Bidirectional Streaming
-Based on Context7 Cookbook pattern for continuous conversation
+
+Uses the official google-genai SDK (2026) with:
+- client.aio.live.connect() for session management
+- send_realtime_input(audio=Blob) for audio streaming
+- send_client_content() for text input
+- send_tool_response() for function calling
+- audio_stream_end signal for stream lifecycle
+- activity_start/end for user activity tracking
 """
 
 import asyncio
-import json
 import base64
 import logging
-from typing import Optional, Dict, Any, Callable
-from websockets.asyncio.client import connect
-import time
+from typing import Optional, Callable
 
 logger = logging.getLogger(__name__)
 
 
 class LiveAPIClient:
-    """Manages persistent connection for continuous voice conversation using 2025 Gemini Live API"""
+    """Manages persistent connection for continuous voice conversation
+    using the 2026 Gemini Live API (google-genai SDK)."""
 
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, model: str = "gemini-live-2.5-flash-preview"):
         self.api_key = api_key
-        self.model = 'models/gemini-live-2.5-flash-preview'  # Correct Gemini 2.5 Flash Live API model
-        self.session = None
+        self.model = model
+        self._live_session = None
         self.session_active = False
         self.audio_queue = asyncio.Queue()
         self.is_playing_audio = False
+        self._tools = []
+        self._tool_handlers = {}
 
-    async def start_session(self,
-                           audio_callback: Optional[Callable] = None,
-                           text_callback: Optional[Callable] = None,
-                           voice_name: str = "Aoede"):
-        """Start a session using proper 2025 Gemini Live API"""
+    def register_tool(self, name: str, description: str, handler: Callable,
+                      parameters: Optional[dict] = None):
+        """Register a function calling tool for the Live API session.
+
+        Args:
+            name: Tool function name.
+            description: Description for the LLM.
+            handler: Async callable that takes parameters and returns a dict result.
+            parameters: JSON Schema for parameters (optional).
+        """
+        decl = {"name": name, "description": description}
+        if parameters:
+            decl["parameters"] = parameters
+        self._tools.append(decl)
+        self._tool_handlers[name] = handler
+        logger.info("Registered Live API tool: %s", name)
+
+    async def start_session(
+        self,
+        audio_callback: Optional[Callable] = None,
+        text_callback: Optional[Callable] = None,
+        voice_name: str = "Aoede",
+        system_instruction: str = "",
+    ):
+        """Start a Live API session with audio + text + function calling."""
 
         try:
             from google import genai
             from google.genai import types
 
-            # Create Gemini client
             client = genai.Client(api_key=self.api_key)
 
-            # Live API configuration using Context7 best practices with TRANSCRIPT SUPPORT
-            config = types.LiveConnectConfig(
-                response_modalities=["AUDIO", "TEXT"],
-                system_instruction="""You are a helpful assistant having a natural conversation.
-                Please speak naturally and respond conversationally.
-                Keep your responses concise but complete.""",
-                generation_config=types.GenerationConfig(
-                    max_output_tokens=2048,
-                    temperature=0.7,
-                    top_p=0.95,
-                ),
-                speech_config=types.SpeechConfig(
-                    voice_config=types.VoiceConfig(
-                        prebuilt_voice_config=types.PrebuiltVoiceConfig(
-                            voice_name=voice_name  # Configurable voice per agent
-                        )
-                    )
-                ),
-                # CRITICAL: Enable transcript support for both input and output (SIMPLE CONFIG)
-                input_audio_transcription=types.AudioTranscriptionConfig(),  # Transcribe user speech
-                output_audio_transcription=types.AudioTranscriptionConfig()  # Transcribe AI speech
-            )
+            # Build config
+            config = {
+                "response_modalities": ["AUDIO", "TEXT"],
+                "speech_config": {
+                    "voice_config": {
+                        "prebuilt_voice_config": {"voice_name": voice_name}
+                    }
+                },
+                "input_audio_transcription": {},
+                "output_audio_transcription": {},
+            }
 
-            # Connect using proper 2025 Live API
-            self.session = client.aio.live.connect(model=self.model, config=config)
-            self.session_active = True
-            logger.info(f"Connected to 2025 Gemini Live API with model: {self.model}")
+            if system_instruction:
+                config["system_instruction"] = system_instruction
 
-            # Start the session (using context manager)
-            async with self.session as live_session:
+            # Function calling tools
+            if self._tools:
+                config["tools"] = [{"function_declarations": self._tools}]
 
-                # Task 1: Continuously send audio from queue using 2025 API
+            # Connect
+            async with client.aio.live.connect(
+                model=self.model, config=config
+            ) as live_session:
+                self._live_session = live_session
+                self.session_active = True
+                logger.info("Connected to Gemini Live API: %s", self.model)
+
                 async def send_audio_stream():
-                    """Send audio using proper 2025 Live API format"""
                     while self.session_active:
                         try:
                             audio_data = await asyncio.wait_for(
-                                self.audio_queue.get(),
-                                timeout=0.1
+                                self.audio_queue.get(), timeout=0.1
                             )
+                            if not audio_data:
+                                continue
 
-                            if audio_data and len(audio_data) > 0:
-                                # Convert base64 audio to bytes if needed
-                                if isinstance(audio_data, str):
-                                    try:
-                                        audio_bytes = base64.b64decode(audio_data)
-                                    except:
-                                        logger.error(f"Failed to decode base64 audio")
-                                        continue
-                                else:
-                                    audio_bytes = audio_data
+                            if isinstance(audio_data, str):
+                                try:
+                                    audio_bytes = base64.b64decode(audio_data)
+                                except (ValueError, base64.binascii.Error):
+                                    logger.error("Failed to decode base64 audio")
+                                    continue
+                            else:
+                                audio_bytes = audio_data
 
-                                # Use 2025 format: send_realtime_input with Blob
-                                audio_blob = types.Blob(
+                            await live_session.send_realtime_input(
+                                audio=types.Blob(
                                     data=audio_bytes,
-                                    mime_type="audio/pcm;rate=16000"  # Input at 16kHz as per docs
+                                    mime_type="audio/pcm;rate=16000",
                                 )
-
-                                await live_session.send_realtime_input(audio=audio_blob)
-                                logger.info(f"Sent audio chunk: {len(audio_bytes)} bytes to Live API")
-
+                            )
                         except asyncio.TimeoutError:
                             continue
                         except Exception as e:
-                            logger.error(f"Error sending audio: {e}")
+                            logger.error("Error sending audio: %s", e)
                             break
 
-                # Task 2: Receive responses using 2025 API
                 async def receive_responses():
-                    """Receive responses from 2025 Live API"""
-                    logger.info("Starting to listen for Live API responses...")
                     try:
                         async for response in live_session.receive():
-                            logger.info(f"Received response from Live API: {type(response)} - {response}")
+                            # -- server_content --
+                            sc = getattr(response, "server_content", None)
+                            if sc:
+                                # Transcript (input)
+                                it = getattr(sc, "input_transcription", None)
+                                if it and it.text and text_callback:
+                                    await text_callback({
+                                        "type": "transcript",
+                                        "text": f"[USER]: {it.text}",
+                                    })
 
-                            # Handle server content with model turn (most common pattern)
-                            if hasattr(response, 'server_content') and response.server_content:
-                                server_content = response.server_content
-                                logger.info(f"Processing server_content: {type(server_content)}")
+                                # Transcript (output)
+                                ot = getattr(sc, "output_transcription", None)
+                                if ot and ot.text and text_callback:
+                                    await text_callback({
+                                        "type": "transcript",
+                                        "text": ot.text,
+                                    })
 
-                                # CRITICAL: Handle transcript messages FIRST
-                                if hasattr(server_content, 'input_transcription') and server_content.input_transcription:
-                                    transcript_text = server_content.input_transcription.text
-                                    if transcript_text:  # Only process non-empty transcripts
-                                        logger.info(f"User transcript: {transcript_text}")
-                                        if text_callback:
-                                            # Send user transcript with special marker
-                                            await text_callback({
-                                                'type': 'transcript',
-                                                'text': f"[USER]: {transcript_text}"
-                                            })
-
-                                if hasattr(server_content, 'output_transcription') and server_content.output_transcription:
-                                    transcript_text = server_content.output_transcription.text
-                                    if transcript_text:  # Only process non-empty transcripts
-                                        logger.info(f"AI transcript: {transcript_text}")
-                                        if text_callback:
-                                            # Send AI transcript
-                                            await text_callback({
-                                                'type': 'transcript',
-                                                'text': transcript_text
-                                            })
-
-                                # Handle interruption first - this is critical for natural conversation
-                                if hasattr(server_content, 'interrupted') and server_content.interrupted:
-                                    logger.info("Interruption detected! Stopping current audio playback")
+                                # Interruption
+                                if getattr(sc, "interrupted", False):
+                                    logger.info("Interruption detected")
                                     self.is_playing_audio = False
-                                    # Clear audio queue when interrupted
                                     while not self.audio_queue.empty():
                                         try:
                                             self.audio_queue.get_nowait()
@@ -153,149 +154,184 @@ class LiveAPIClient:
                                             break
                                     continue
 
-                                # Handle model turn responses
-                                if hasattr(server_content, 'model_turn') and server_content.model_turn:
-                                    model_turn = server_content.model_turn
-                                    logger.info(f"Processing model_turn with {len(model_turn.parts)} parts")
-
-                                    for part in model_turn.parts:
-                                        # Audio response
-                                        if hasattr(part, 'inline_data') and part.inline_data:
-                                            audio_data = part.inline_data.data
-                                            if audio_callback and audio_data and self.session_active:
-                                                logger.info(f"Sending audio response: {len(audio_data)} bytes")
-                                                await audio_callback(audio_data)
-
-                                        # Text response
-                                        if hasattr(part, 'text') and part.text:
+                                # Model turn (audio + text parts)
+                                mt = getattr(sc, "model_turn", None)
+                                if mt:
+                                    for part in mt.parts:
+                                        if hasattr(part, "inline_data") and part.inline_data:
+                                            if audio_callback and self.session_active:
+                                                await audio_callback(part.inline_data.data)
+                                        if hasattr(part, "text") and part.text:
                                             if text_callback:
-                                                logger.info(f"Sending text response: {part.text}")
                                                 await text_callback({
-                                                    'type': 'transcript',
-                                                    'text': part.text
+                                                    "type": "transcript",
+                                                    "text": part.text,
                                                 })
 
-                                # Handle turn complete signals
-                                if hasattr(server_content, 'turn_complete') and server_content.turn_complete:
-                                    logger.info("Turn complete signal received - ready for next user input")
+                                # Turn complete
+                                if getattr(sc, "turn_complete", False):
+                                    logger.debug("Turn complete")
 
-                            # Handle direct responses (alternative API structure)
-                            elif hasattr(response, 'candidates') and response.candidates:
-                                logger.info(f"Processing candidates response: {len(response.candidates)} candidates")
-                                for candidate in response.candidates:
-                                    if hasattr(candidate, 'content') and candidate.content:
-                                        for part in candidate.content.parts:
-                                            if hasattr(part, 'inline_data') and part.inline_data:
-                                                if audio_callback:
-                                                    await audio_callback(part.inline_data.data)
-                                            if hasattr(part, 'text') and part.text:
-                                                if text_callback:
-                                                    await text_callback({
-                                                        'type': 'transcript',
-                                                        'text': part.text
-                                                    })
+                            # -- tool_call (function calling) --
+                            tc = getattr(response, "tool_call", None)
+                            if tc:
+                                function_responses = []
+                                for fc in tc.function_calls:
+                                    handler = self._tool_handlers.get(fc.name)
+                                    if handler:
+                                        args = dict(fc.args) if fc.args else {}
+                                        logger.info("Tool call: %s(%s)", fc.name, args)
+                                        try:
+                                            result = await handler(**args) if args else await handler()
+                                        except Exception as e:
+                                            logger.error("Tool %s failed: %s", fc.name, e)
+                                            result = {"error": str(e)}
+                                    else:
+                                        result = {"error": f"Unknown tool: {fc.name}"}
 
-                            # Handle setup complete or other status messages
-                            elif hasattr(response, 'setup_complete'):
+                                    function_responses.append(
+                                        types.FunctionResponse(
+                                            id=fc.id, name=fc.name, response=result
+                                        )
+                                    )
+
+                                    if text_callback:
+                                        await text_callback({
+                                            "type": "tool_call",
+                                            "name": fc.name,
+                                            "result": str(result)[:200],
+                                        })
+
+                                await live_session.send_tool_response(
+                                    function_responses=function_responses
+                                )
+
+                            # -- setup_complete --
+                            if getattr(response, "setup_complete", None):
                                 logger.info("Live API setup complete")
 
-                            else:
-                                logger.info(f"Unknown response format: {dir(response)}")
-
                     except Exception as e:
-                        logger.error(f"Error in receive_responses: {e}", exc_info=True)
+                        logger.error("Error in receive_responses: %s", e, exc_info=True)
 
-                # Start both tasks
                 tasks = [
                     asyncio.create_task(send_audio_stream()),
-                    asyncio.create_task(receive_responses())
+                    asyncio.create_task(receive_responses()),
                 ]
-
-                # Wait for tasks
                 await asyncio.gather(*tasks, return_exceptions=True)
 
         except Exception as e:
-            logger.error(f"Live API session error: {e}")
+            logger.error("Live API session error: %s", e, exc_info=True)
+        finally:
             self.session_active = False
+            self._live_session = None
 
     async def send_text(self, text: str):
-        """Send text input to the conversation"""
-        if not self.session or not self.session_active:
+        """Send text input using send_client_content (proper API)."""
+        if not self._live_session or not self.session_active:
             logger.error("No active session")
             return
-
-        # Use the 2025 Live API session to send text
         try:
-            from google.genai import types
-            # Send text input using the 2025 Live API format
-            await self.session.send_realtime_input(text=text)
-            logger.info(f"Sent text: {text}")
+            await self._live_session.send_client_content(
+                turns={"parts": [{"text": text}]},
+                turn_complete=True,
+            )
+            logger.info("Sent text: %s", text[:50])
         except Exception as e:
-            logger.error(f"Failed to send text: {e}")
+            logger.error("Failed to send text: %s", e)
 
     async def send_audio_chunk(self, audio_data: bytes):
-        """Queue audio data for streaming to 2025 Live API"""
+        """Queue audio data for streaming."""
         if self.session_active:
             await self.audio_queue.put(audio_data)
 
+    async def signal_audio_stream_end(self):
+        """Signal end of audio stream (user stopped speaking)."""
+        if not self._live_session or not self.session_active:
+            return
+        try:
+            await self._live_session.send_realtime_input(audio_stream_end=True)
+            logger.info("Audio stream end signaled")
+        except Exception as e:
+            logger.error("Failed to signal audio_stream_end: %s", e)
+
+    async def signal_activity(self, start: bool):
+        """Signal user activity start/end for VAD hints."""
+        if not self._live_session or not self.session_active:
+            return
+        try:
+            if start:
+                await self._live_session.send_realtime_input(activity_start=True)
+            else:
+                await self._live_session.send_realtime_input(activity_end=True)
+        except Exception as e:
+            logger.debug("Activity signal failed (may not be supported): %s", e)
+
     async def end_session(self):
-        """End the 2025 Live API session"""
+        """End the Live API session."""
         self.session_active = False
-        if self.session:
-            self.session = None
-            logger.info("2025 Live API session ended")
+        self._live_session = None
+        logger.info("Live API session ended")
 
 
 class ContinuousVoiceSession:
-    """Manages a continuous voice conversation session"""
+    """Manages a continuous voice conversation session."""
 
     def __init__(self, api_key: str):
         self.client = LiveAPIClient(api_key)
-        self.audio_buffer = []
         self.is_speaking = False
+        self._session_task = None
 
-    async def start(self, websocket_callback, voice_name="Aoede"):
-        """Start continuous conversation session"""
+    async def start(self, websocket_callback, voice_name="Aoede",
+                    system_instruction="", tools=None):
+        """Start continuous conversation session.
+
+        Args:
+            websocket_callback: Async callable to send events to frontend.
+            voice_name: Gemini voice preset.
+            system_instruction: System prompt for the conversation.
+            tools: List of (name, description, handler, parameters) tuples.
+        """
+        # Register tools if provided
+        if tools:
+            for name, desc, handler, params in tools:
+                self.client.register_tool(name, desc, handler, params)
 
         async def handle_audio(audio_bytes):
-            """Handle incoming audio from Live API"""
-            # Send to frontend via WebSocket
             await websocket_callback({
-                'type': 'audio_chunk',
-                'audio': base64.b64encode(audio_bytes).decode('utf-8')
+                "type": "audio_chunk",
+                "audio": base64.b64encode(audio_bytes).decode("utf-8"),
             })
 
-        async def handle_text(text):
-            """Handle incoming text from Live API"""
-            # Send transcript to frontend
-            await websocket_callback({
-                'type': 'transcript',
-                'text': text
-            })
+        async def handle_text(text_event):
+            await websocket_callback(text_event)
 
-        # Start the Live API session with callbacks
-        asyncio.create_task(
+        self._session_task = asyncio.create_task(
             self.client.start_session(
                 audio_callback=handle_audio,
                 text_callback=handle_text,
-                voice_name=voice_name
+                voice_name=voice_name,
+                system_instruction=system_instruction,
             )
         )
 
-        # Give it a moment to connect
         await asyncio.sleep(0.5)
-
         logger.info("Continuous voice session started")
 
     async def process_audio(self, audio_data: bytes):
-        """Process incoming audio from user"""
-        # Send directly to Live API queue
+        """Process incoming audio from user."""
         await self.client.send_audio_chunk(audio_data)
 
     async def process_text(self, text: str):
-        """Process text input from user"""
+        """Process text input from user."""
         await self.client.send_text(text)
 
+    async def stop_speaking(self):
+        """Signal user stopped speaking."""
+        await self.client.signal_audio_stream_end()
+
     async def stop(self):
-        """Stop the continuous session"""
+        """Stop the continuous session."""
         await self.client.end_session()
+        if self._session_task and not self._session_task.done():
+            self._session_task.cancel()
+        self._session_task = None

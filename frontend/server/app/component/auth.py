@@ -1,4 +1,4 @@
-from fastapi import Depends, Header
+from fastapi import Depends, Header, HTTPException
 from fastapi_babel import _
 from sqlmodel import Session, select
 from app.component import code
@@ -19,7 +19,7 @@ from app.exception.exception import (
 
 
 class Auth:
-    SECRET_KEY = env_not_empty("secret_key")
+    SECRET_KEY = env("secret_key", "local-dev-secret-key")
 
     def __init__(self, id: int, expired_at: datetime):
         self.id = id
@@ -38,9 +38,9 @@ class Auth:
             payload = jwt.decode(token, Auth.SECRET_KEY, algorithms=["HS256"])
             id = payload["id"]
             if payload["exp"] < int(datetime.now().timestamp()):
-                raise TokenException(code.token_expired, _("Validate credentials expired"))
+                raise HTTPException(status_code=401, detail="Validate credentials expired")
         except InvalidTokenError:
-            raise TokenException(code.token_invalid, _("Could not validate credentials"))
+            raise HTTPException(status_code=401, detail="Could not validate credentials")
         return Auth(id, payload["exp"])
 
     @classmethod
@@ -74,9 +74,11 @@ async def auth(
 
 
 async def auth_must(
-    token: str = Depends(oauth2_scheme),
+    token: str | None = Depends(oauth2_scheme),
     session: Session = Depends(session),
 ) -> Auth:
+    if token is None:
+        raise HTTPException(status_code=401, detail="Missing credentials")
     model = Auth.decode_token(token)
     user = session.get(User, model.id)
     model._user = user

@@ -1,0 +1,39 @@
+AUA/discover -> ARR/backend/design/ Port Status
+================================================
+
+ORIGIN: AUA/discover/ (Danil Nagy, GPL-3.0)
+  Generic NSGA-II optimization framework for Grasshopper/Rhino
+
+ALREADY PORTED (design/engine/):
+  objects.py -> engine/objects.py  (Design, Job classes, GH dependencies removed)
+  utils.py   -> engine/utils.py   (NSGA-II ranking, crossover, mutation)
+  server.py  -> views.py          (Flask->Django, SSE streaming)
+
+ALREADY PORTED (design/services/):
+  site_geometry.py   - Shapely/pyproj parcel geometry (NEW, not from AUA)
+  mass_evaluator.py  - Building mass BCR/FAR/daylight evaluation (NEW)
+  mass_renderer.py   - GeoJSON 3D rendering (NEW)
+  constraint_bridge.py - Land regulation -> GA constraints (NEW)
+
+FRONTEND PORTED:
+  explorer.js -> ParetoChart.tsx    (D3 scatter -> React SVG)
+  spec_ui.js  -> ControlPanel.tsx   (Job spec UI -> React form)
+  index.html  -> DesignPage.tsx     (3-panel layout)
+  kung.js     -> (server-side Pareto in engine/utils.py)
+
+NOT PORTABLE (Grasshopper/Rhino specific):
+  - GHClient class (file-ping IPC with Rhino process)
+  - Screenshot system (Rhino viewport capture)
+  - 3D geometry generation (Grasshopper visual scripting)
+  - Ladybug/Honeybee simulation plugins
+  - Floor plan generation (done in GH, not in Python)
+  - .gh sample files (TSP, bridge, branching, pill shapes)
+
+BUILDING-TYPE SUPPORT:
+  AUA has NO building type concept. It's a generic optimizer.
+  Building types (10 Korean categories) added in design/services/mass_evaluator.py
+  Floor heights per type: 2.8m~6.0m (건축법시행령 별표 1)
+
+FILES IN THIS FOLDER:
+  *_original.* = verbatim copies from AUA/discover for reference
+  kung_pareto.js = client-side Pareto front computation (could be useful)

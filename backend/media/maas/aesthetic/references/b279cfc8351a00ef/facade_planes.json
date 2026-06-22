@@ -1,0 +1,70 @@
+{
+  "coordinate_space": "local_meter_from_first_mass_point",
+  "origin": {
+    "lat": 37.48496736670565,
+    "lng": 127.04499336728946
+  },
+  "planes": [
+    {
+      "extent_m": [
+        -4.0142297390318955,
+        11.111795276636995,
+        0.0,
+        16.8
+      ],
+      "id": "facade_front",
+      "normal_m": [
+        0,
+        -1,
+        0
+      ],
+      "view": "front"
+    },
+    {
+      "extent_m": [
+        0.0,
+        13.329058731573866,
+        0.0,
+        16.8
+      ],
+      "id": "facade_right",
+      "normal_m": [
+        1,
+        0,
+        0
+      ],
+      "view": "right"
+    },
+    {
+      "extent_m": [
+        -4.0142297390318955,
+        11.111795276636995,
+        0.0,
+        16.8
+      ],
+      "id": "facade_back",
+      "normal_m": [
+        0,
+        1,
+        0
+      ],
+      "view": "back"
+    },
+    {
+      "extent_m": [
+        0.0,
+        13.329058731573866,
+        0.0,
+        16.8
+      ],
+      "id": "facade_left",
+      "normal_m": [
+        -1,
+        0,
+        0
+      ],
+      "view": "left"
+    }
+  ],
+  "schema_version": "arr.maas.facade_planes.v0"
+}

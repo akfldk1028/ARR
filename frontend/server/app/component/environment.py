@@ -9,6 +9,12 @@ from typing import Any, overload
 
 load_dotenv()
 
+DEFAULT_ENV = {
+    "url_prefix": "/api",
+    "secret_key": "local-dev-secret-key",
+    "database_url": "sqlite:///./local.db",
+}
+
 
 @overload
 def env(key: str) -> str | None: ...
@@ -23,7 +29,12 @@ def env(key: str, default: Any) -> Any: ...
 
 
 def env(key: str, default=None):
-    return os.getenv(key, default)
+    value = os.getenv(key)
+    if value is not None:
+        return value
+    if key in DEFAULT_ENV:
+        return DEFAULT_ENV[key]
+    return default
 
 
 def env_or_fail(key: str):

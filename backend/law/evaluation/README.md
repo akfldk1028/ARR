@@ -68,7 +68,7 @@ Executes comprehensive evaluation across all queries and system variants.
 ### Step 1: Generate Test Queries
 
 ```bash
-cd D:\Data\11_Backend\01_ARR\backend
+cd D:\Data\25_ACE\ARR\backend
 python manage.py shell < law/evaluation/generate_test_queries.py
 ```
 
@@ -95,7 +95,7 @@ python manage.py shell < law/evaluation/run_evaluation.py
 ### Run All Steps
 
 ```bash
-cd D:\Data\11_Backend\01_ARR\backend
+cd D:\Data\25_ACE\ARR\backend
 python manage.py shell < law/evaluation/generate_test_queries.py
 python manage.py shell < law/evaluation/generate_ground_truth.py
 python manage.py shell < law/evaluation/run_evaluation.py
@@ -111,7 +111,7 @@ Each script has a configuration section at the top:
 OUTPUT_FILE = "law/evaluation/test_queries.json"
 NEO4J_URI = "bolt://localhost:7687"
 NEO4J_USER = "neo4j"
-NEO4J_PASSWORD = "Dmstn147!!"
+NEO4J_PASSWORD = os.environ.get("LAW_NEO4J_PASSWORD", "<your-password>")
 
 CATEGORY_A_COUNT = 15  # Article numbers
 CATEGORY_B_COUNT = 15  # Keywords
@@ -329,14 +329,14 @@ Verify connection parameters in script configuration:
 ```python
 NEO4J_URI = "bolt://localhost:7687"
 NEO4J_USER = "neo4j"
-NEO4J_PASSWORD = "Dmstn147!!"
+NEO4J_PASSWORD = os.environ.get("LAW_NEO4J_PASSWORD", "<your-password>")
 ```
 
 ### Missing Dependencies
 
 Ensure Django is properly configured:
 ```bash
-cd D:\Data\11_Backend\01_ARR\backend
+cd D:\Data\25_ACE\ARR\backend
 python manage.py check
 ```
 

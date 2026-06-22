@@ -1,11 +1,16 @@
 from sqlmodel import Session, create_engine
-from app.component.environment import env, env_or_fail
+from app.component.environment import env
 
+database_url = env("database_url", "sqlite:///./local.db")
+engine_kwargs = {
+    "echo": True if env("debug") == "on" else False,
+}
+if not database_url.startswith("sqlite"):
+    engine_kwargs["pool_size"] = 36
 
 engine = create_engine(
-    env_or_fail("database_url"),
-    echo=True if env("debug") == "on" else False,
-    pool_size=36,
+    database_url,
+    **engine_kwargs,
 )
 
 

@@ -1,0 +1,87 @@
+{
+  "exp_id": "exp009",
+  "title": "Bayesian Optimization vs SSIEA (50+50 evals vs 1050)",
+  "date_utc": "2026-05-06 12:15:47 UTC",
+  "site": "gangnam_yeoksam_677",
+  "n_initial": 50,
+  "n_rounds": 10,
+  "candidates_per_round": 200,
+  "evals_per_round": 5,
+  "total_real_evals": 100,
+  "elapsed_sec": 0.71,
+  "rounds": [
+    {
+      "round": 1,
+      "n_total_evals": 55,
+      "best_floor_area": 4206.3,
+      "best_daylight": 97.24,
+      "hv": 87669.7
+    },
+    {
+      "round": 2,
+      "n_total_evals": 60,
+      "best_floor_area": 4410.2,
+      "best_daylight": 97.24,
+      "hv": 90399.0
+    },
+    {
+      "round": 3,
+      "n_total_evals": 65,
+      "best_floor_area": 4410.2,
+      "best_daylight": 97.24,
+      "hv": 90399.0
+    },
+    {
+      "round": 4,
+      "n_total_evals": 70,
+      "best_floor_area": 4410.2,
+      "best_daylight": 99.79,
+      "hv": 94367.2
+    },
+    {
+      "round": 5,
+      "n_total_evals": 75,
+      "best_floor_area": 6419.3,
+      "best_daylight": 99.79,
+      "hv": 106442.2
+    },
+    {
+      "round": 6,
+      "n_total_evals": 80,
+      "best_floor_area": 6419.3,
+      "best_daylight": 99.79,
+      "hv": 106442.2
+    },
+    {
+      "round": 7,
+      "n_total_evals": 85,
+      "best_floor_area": 6419.3,
+      "best_daylight": 99.79,
+      "hv": 125445.6
+    },
+    {
+      "round": 8,
+      "n_total_evals": 90,
+      "best_floor_area": 6419.3,
+      "best_daylight": 100.0,
+      "hv": 125535.9
+    },
+    {
+      "round": 9,
+      "n_total_evals": 95,
+      "best_floor_area": 6419.3,
+      "best_daylight": 100.0,
+      "hv": 125535.9
+    },
+    {
+      "round": 10,
+      "n_total_evals": 100,
+      "best_floor_area": 6419.3,
+      "best_daylight": 100.0,
+      "hv": 125942.2
+    }
+  ],
+  "final_best_floor_area": 6419.3,
+  "final_best_daylight": 100.0,
+  "final_hv": 125942.2
+}

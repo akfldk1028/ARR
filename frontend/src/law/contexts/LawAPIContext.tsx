@@ -4,16 +4,13 @@
  */
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { lawAPIClient, LawAPIClient } from '../lib/law-api-client';
+import { getDomains as fetchDomains, healthCheck as checkHealth } from '../lib/law-api-client';
 import type { DomainInfo } from '../lib/types';
 
 /**
  * Context 타입 정의
  */
 interface LawAPIContextType {
-  /** API 클라이언트 인스턴스 */
-  client: LawAPIClient;
-
   /** 도메인 목록 */
   domains: DomainInfo[];
 
@@ -46,8 +43,6 @@ const LawAPIContext = createContext<LawAPIContextType | undefined>(undefined);
  */
 interface LawAPIProviderProps {
   children: ReactNode;
-  /** 커스텀 API 클라이언트 (테스트용) */
-  client?: LawAPIClient;
 }
 
 /**
@@ -60,7 +55,7 @@ interface LawAPIProviderProps {
  * </LawAPIProvider>
  * ```
  */
-export function LawAPIProvider({ children, client = lawAPIClient }: LawAPIProviderProps) {
+export function LawAPIProvider({ children }: LawAPIProviderProps) {
   const [domains, setDomains] = useState<DomainInfo[]>([]);
   const [domainsLoading, setDomainsLoading] = useState<boolean>(false);
   const [domainsError, setDomainsError] = useState<string | null>(null);
@@ -75,7 +70,7 @@ export function LawAPIProvider({ children, client = lawAPIClient }: LawAPIProvid
     setDomainsError(null);
 
     try {
-      const domainList = await client.getDomains();
+      const domainList = await fetchDomains();
       setDomains(domainList);
       setDomainsError(null);
     } catch (error) {
@@ -92,7 +87,7 @@ export function LawAPIProvider({ children, client = lawAPIClient }: LawAPIProvid
    */
   const checkConnection = async () => {
     try {
-      await client.healthCheck();
+      await checkHealth();
       setIsConnected(true);
     } catch (error) {
       console.error('Backend connection failed:', error);
@@ -122,7 +117,6 @@ export function LawAPIProvider({ children, client = lawAPIClient }: LawAPIProvid
    * Context 값
    */
   const value: LawAPIContextType = {
-    client,
     domains,
     domainsLoading,
     domainsError,
@@ -143,7 +137,7 @@ export function LawAPIProvider({ children, client = lawAPIClient }: LawAPIProvid
  * @example
  * ```tsx
  * function MyComponent() {
- *   const { client, domains } = useLawAPI();
+ *   const { domains, selectedDomainId } = useLawAPI();
  *   // ...
  * }
  * ```

@@ -1,0 +1,2402 @@
+{
+  "legal_status_effect": "none",
+  "mode": "deterministic_panel_atlas_bake",
+  "schema_version": "arr.maas.texture_bake.v0",
+  "source_panel_asset_ids": {
+    "axon": "asset:maas-aesthetic-generated:maas_evidence_5afd63cd_31ad_4d85_810c_d05aeeb62ecf_900017_maas_18:openai:panel:axon",
+    "back": "asset:maas-aesthetic-generated:maas_evidence_5afd63cd_31ad_4d85_810c_d05aeeb62ecf_900017_maas_18:openai:panel:back",
+    "front": "asset:maas-aesthetic-generated:maas_evidence_5afd63cd_31ad_4d85_810c_d05aeeb62ecf_900017_maas_18:openai:panel:front",
+    "left": "asset:maas-aesthetic-generated:maas_evidence_5afd63cd_31ad_4d85_810c_d05aeeb62ecf_900017_maas_18:openai:panel:left",
+    "right": "asset:maas-aesthetic-generated:maas_evidence_5afd63cd_31ad_4d85_810c_d05aeeb62ecf_900017_maas_18:openai:panel:right",
+    "top": "asset:maas-aesthetic-generated:maas_evidence_5afd63cd_31ad_4d85_810c_d05aeeb62ecf_900017_maas_18:openai:panel:top"
+  },
+  "source_projection_manifest": "/mnt/d/Data/25_ACE/ARR/backend/media/maas/aesthetic/references/79fccff31fa1d7d3/projection_manifest.json",
+  "surface_count": 66,
+  "surfaces": [
+    {
+      "id": "facade_surface_v0_e0",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.230021,
+          1.0
+        ],
+        [
+          0.231312,
+          1.0
+        ],
+        [
+          0.231312,
+          0.875
+        ],
+        [
+          0.230021,
+          0.875
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v0_e1",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.231312,
+          1.0
+        ],
+        [
+          0.252134,
+          1.0
+        ],
+        [
+          0.252134,
+          0.875
+        ],
+        [
+          0.231312,
+          0.875
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v0_e2",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.252134,
+          1.0
+        ],
+        [
+          0.265794,
+          1.0
+        ],
+        [
+          0.265794,
+          0.875
+        ],
+        [
+          0.252134,
+          0.875
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v0_e3",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.770077,
+          0.5
+        ],
+        [
+          0.835849,
+          0.5
+        ],
+        [
+          0.835849,
+          0.375
+        ],
+        [
+          0.770077,
+          0.375
+        ]
+      ],
+      "view": "back"
+    },
+    {
+      "id": "facade_surface_v0_e4",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.835849,
+          0.5
+        ],
+        [
+          0.838802,
+          0.5
+        ],
+        [
+          0.838802,
+          0.375
+        ],
+        [
+          0.835849,
+          0.375
+        ]
+      ],
+      "view": "back"
+    },
+    {
+      "id": "facade_surface_v0_e7",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.838963,
+          0.5
+        ],
+        [
+          0.938387,
+          0.5
+        ],
+        [
+          0.938387,
+          0.375
+        ],
+        [
+          0.838963,
+          0.375
+        ]
+      ],
+      "view": "back"
+    },
+    {
+      "id": "facade_surface_v0_e8",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.662937,
+          0.5
+        ],
+        [
+          0.666666,
+          0.5
+        ],
+        [
+          0.666666,
+          0.375
+        ],
+        [
+          0.662937,
+          0.375
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v0_e9",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.658569,
+          0.5
+        ],
+        [
+          0.662937,
+          0.5
+        ],
+        [
+          0.662937,
+          0.375
+        ],
+        [
+          0.658569,
+          0.375
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v0_e10",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.648246,
+          0.5
+        ],
+        [
+          0.658569,
+          0.5
+        ],
+        [
+          0.658569,
+          0.375
+        ],
+        [
+          0.648246,
+          0.375
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v0_e11",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.496986,
+          0.5
+        ],
+        [
+          0.648246,
+          0.5
+        ],
+        [
+          0.648246,
+          0.375
+        ],
+        [
+          0.496986,
+          0.375
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v0_e12",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.436654,
+          0.5
+        ],
+        [
+          0.496986,
+          0.5
+        ],
+        [
+          0.496986,
+          0.375
+        ],
+        [
+          0.436654,
+          0.375
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v0_e13",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.435357,
+          0.5
+        ],
+        [
+          0.436654,
+          0.5
+        ],
+        [
+          0.436654,
+          0.375
+        ],
+        [
+          0.435357,
+          0.375
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v0_e14",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.229478,
+          0.5
+        ],
+        [
+          0.229748,
+          0.5
+        ],
+        [
+          0.229748,
+          0.375
+        ],
+        [
+          0.229478,
+          0.375
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v0_e15",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.229748,
+          0.5
+        ],
+        [
+          0.229926,
+          0.5
+        ],
+        [
+          0.229926,
+          0.375
+        ],
+        [
+          0.229748,
+          0.375
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v0_e16",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.160898,
+          0.5
+        ],
+        [
+          0.229926,
+          0.5
+        ],
+        [
+          0.229926,
+          0.375
+        ],
+        [
+          0.160898,
+          0.375
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v0_e17",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.061515,
+          0.5
+        ],
+        [
+          0.160898,
+          0.5
+        ],
+        [
+          0.160898,
+          0.375
+        ],
+        [
+          0.061515,
+          0.375
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v0_e18",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.160026,
+          1.0
+        ],
+        [
+          0.160026,
+          0.875
+        ],
+        [
+          0.0,
+          0.875
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v0_e19",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.160026,
+          1.0
+        ],
+        [
+          0.169371,
+          1.0
+        ],
+        [
+          0.169371,
+          0.875
+        ],
+        [
+          0.160026,
+          0.875
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v0_e20",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.169371,
+          1.0
+        ],
+        [
+          0.230021,
+          1.0
+        ],
+        [
+          0.230021,
+          0.875
+        ],
+        [
+          0.169371,
+          0.875
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v1_e0",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.230021,
+          0.875
+        ],
+        [
+          0.231312,
+          0.875
+        ],
+        [
+          0.231312,
+          0.75
+        ],
+        [
+          0.230021,
+          0.75
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v1_e1",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.231312,
+          0.875
+        ],
+        [
+          0.252134,
+          0.875
+        ],
+        [
+          0.252134,
+          0.75
+        ],
+        [
+          0.231312,
+          0.75
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v1_e2",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.252134,
+          0.875
+        ],
+        [
+          0.265794,
+          0.875
+        ],
+        [
+          0.265794,
+          0.75
+        ],
+        [
+          0.252134,
+          0.75
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v1_e3",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.770077,
+          0.375
+        ],
+        [
+          0.835849,
+          0.375
+        ],
+        [
+          0.835849,
+          0.25
+        ],
+        [
+          0.770077,
+          0.25
+        ]
+      ],
+      "view": "back"
+    },
+    {
+      "id": "facade_surface_v1_e4",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.835849,
+          0.375
+        ],
+        [
+          0.838802,
+          0.375
+        ],
+        [
+          0.838802,
+          0.25
+        ],
+        [
+          0.835849,
+          0.25
+        ]
+      ],
+      "view": "back"
+    },
+    {
+      "id": "facade_surface_v1_e7",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.838963,
+          0.375
+        ],
+        [
+          0.938387,
+          0.375
+        ],
+        [
+          0.938387,
+          0.25
+        ],
+        [
+          0.838963,
+          0.25
+        ]
+      ],
+      "view": "back"
+    },
+    {
+      "id": "facade_surface_v1_e8",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.662937,
+          0.375
+        ],
+        [
+          0.666666,
+          0.375
+        ],
+        [
+          0.666666,
+          0.25
+        ],
+        [
+          0.662937,
+          0.25
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v1_e9",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.658569,
+          0.375
+        ],
+        [
+          0.662937,
+          0.375
+        ],
+        [
+          0.662937,
+          0.25
+        ],
+        [
+          0.658569,
+          0.25
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v1_e10",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.648246,
+          0.375
+        ],
+        [
+          0.658569,
+          0.375
+        ],
+        [
+          0.658569,
+          0.25
+        ],
+        [
+          0.648246,
+          0.25
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v1_e11",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.496986,
+          0.375
+        ],
+        [
+          0.648246,
+          0.375
+        ],
+        [
+          0.648246,
+          0.25
+        ],
+        [
+          0.496986,
+          0.25
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v1_e12",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.436654,
+          0.375
+        ],
+        [
+          0.496986,
+          0.375
+        ],
+        [
+          0.496986,
+          0.25
+        ],
+        [
+          0.436654,
+          0.25
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v1_e13",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.435357,
+          0.375
+        ],
+        [
+          0.436654,
+          0.375
+        ],
+        [
+          0.436654,
+          0.25
+        ],
+        [
+          0.435357,
+          0.25
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v1_e14",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.229478,
+          0.375
+        ],
+        [
+          0.229748,
+          0.375
+        ],
+        [
+          0.229748,
+          0.25
+        ],
+        [
+          0.229478,
+          0.25
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v1_e15",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.229748,
+          0.375
+        ],
+        [
+          0.229926,
+          0.375
+        ],
+        [
+          0.229926,
+          0.25
+        ],
+        [
+          0.229748,
+          0.25
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v1_e16",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.160898,
+          0.375
+        ],
+        [
+          0.229926,
+          0.375
+        ],
+        [
+          0.229926,
+          0.25
+        ],
+        [
+          0.160898,
+          0.25
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v1_e17",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.061515,
+          0.375
+        ],
+        [
+          0.160898,
+          0.375
+        ],
+        [
+          0.160898,
+          0.25
+        ],
+        [
+          0.061515,
+          0.25
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v1_e18",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.0,
+          0.875
+        ],
+        [
+          0.160026,
+          0.875
+        ],
+        [
+          0.160026,
+          0.75
+        ],
+        [
+          0.0,
+          0.75
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v1_e19",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.160026,
+          0.875
+        ],
+        [
+          0.169371,
+          0.875
+        ],
+        [
+          0.169371,
+          0.75
+        ],
+        [
+          0.160026,
+          0.75
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v1_e20",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.169371,
+          0.875
+        ],
+        [
+          0.230021,
+          0.875
+        ],
+        [
+          0.230021,
+          0.75
+        ],
+        [
+          0.169371,
+          0.75
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v2_e0",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.230021,
+          0.75
+        ],
+        [
+          0.231312,
+          0.75
+        ],
+        [
+          0.231312,
+          0.625
+        ],
+        [
+          0.230021,
+          0.625
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v2_e1",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.231312,
+          0.75
+        ],
+        [
+          0.252134,
+          0.75
+        ],
+        [
+          0.252134,
+          0.625
+        ],
+        [
+          0.231312,
+          0.625
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v2_e2",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.252134,
+          0.75
+        ],
+        [
+          0.265794,
+          0.75
+        ],
+        [
+          0.265794,
+          0.625
+        ],
+        [
+          0.252134,
+          0.625
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v2_e3",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.770077,
+          0.25
+        ],
+        [
+          0.835849,
+          0.25
+        ],
+        [
+          0.835849,
+          0.125
+        ],
+        [
+          0.770077,
+          0.125
+        ]
+      ],
+      "view": "back"
+    },
+    {
+      "id": "facade_surface_v2_e4",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.835849,
+          0.25
+        ],
+        [
+          0.838802,
+          0.25
+        ],
+        [
+          0.838802,
+          0.125
+        ],
+        [
+          0.835849,
+          0.125
+        ]
+      ],
+      "view": "back"
+    },
+    {
+      "id": "facade_surface_v2_e7",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.838963,
+          0.25
+        ],
+        [
+          0.938387,
+          0.25
+        ],
+        [
+          0.938387,
+          0.125
+        ],
+        [
+          0.838963,
+          0.125
+        ]
+      ],
+      "view": "back"
+    },
+    {
+      "id": "facade_surface_v2_e8",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.662937,
+          0.25
+        ],
+        [
+          0.666666,
+          0.25
+        ],
+        [
+          0.666666,
+          0.125
+        ],
+        [
+          0.662937,
+          0.125
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v2_e9",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.658569,
+          0.25
+        ],
+        [
+          0.662937,
+          0.25
+        ],
+        [
+          0.662937,
+          0.125
+        ],
+        [
+          0.658569,
+          0.125
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v2_e10",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.648246,
+          0.25
+        ],
+        [
+          0.658569,
+          0.25
+        ],
+        [
+          0.658569,
+          0.125
+        ],
+        [
+          0.648246,
+          0.125
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v2_e11",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.496986,
+          0.25
+        ],
+        [
+          0.648246,
+          0.25
+        ],
+        [
+          0.648246,
+          0.125
+        ],
+        [
+          0.496986,
+          0.125
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v2_e12",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.436654,
+          0.25
+        ],
+        [
+          0.496986,
+          0.25
+        ],
+        [
+          0.496986,
+          0.125
+        ],
+        [
+          0.436654,
+          0.125
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v2_e13",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.435357,
+          0.25
+        ],
+        [
+          0.436654,
+          0.25
+        ],
+        [
+          0.436654,
+          0.125
+        ],
+        [
+          0.435357,
+          0.125
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v2_e14",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.229478,
+          0.25
+        ],
+        [
+          0.229748,
+          0.25
+        ],
+        [
+          0.229748,
+          0.125
+        ],
+        [
+          0.229478,
+          0.125
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v2_e15",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.229748,
+          0.25
+        ],
+        [
+          0.229926,
+          0.25
+        ],
+        [
+          0.229926,
+          0.125
+        ],
+        [
+          0.229748,
+          0.125
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v2_e16",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.160898,
+          0.25
+        ],
+        [
+          0.229926,
+          0.25
+        ],
+        [
+          0.229926,
+          0.125
+        ],
+        [
+          0.160898,
+          0.125
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v2_e17",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.061515,
+          0.25
+        ],
+        [
+          0.160898,
+          0.25
+        ],
+        [
+          0.160898,
+          0.125
+        ],
+        [
+          0.061515,
+          0.125
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v2_e18",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.0,
+          0.75
+        ],
+        [
+          0.160026,
+          0.75
+        ],
+        [
+          0.160026,
+          0.625
+        ],
+        [
+          0.0,
+          0.625
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v2_e19",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.160026,
+          0.75
+        ],
+        [
+          0.169371,
+          0.75
+        ],
+        [
+          0.169371,
+          0.625
+        ],
+        [
+          0.160026,
+          0.625
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v2_e20",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.169371,
+          0.75
+        ],
+        [
+          0.230021,
+          0.75
+        ],
+        [
+          0.230021,
+          0.625
+        ],
+        [
+          0.169371,
+          0.625
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v3_e0",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.497824,
+          0.125
+        ],
+        [
+          0.619543,
+          0.125
+        ],
+        [
+          0.619543,
+          0.0
+        ],
+        [
+          0.497824,
+          0.0
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v3_e1",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.454385,
+          0.125
+        ],
+        [
+          0.497824,
+          0.125
+        ],
+        [
+          0.497824,
+          0.0
+        ],
+        [
+          0.454385,
+          0.0
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v3_e2",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.453451,
+          0.125
+        ],
+        [
+          0.454385,
+          0.125
+        ],
+        [
+          0.454385,
+          0.0
+        ],
+        [
+          0.453451,
+          0.0
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v3_e3",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.43846,
+          0.125
+        ],
+        [
+          0.453451,
+          0.125
+        ],
+        [
+          0.453451,
+          0.0
+        ],
+        [
+          0.43846,
+          0.0
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v3_e4",
+      "plane_id": "facade_right",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.42859,
+          0.125
+        ],
+        [
+          0.43846,
+          0.125
+        ],
+        [
+          0.43846,
+          0.0
+        ],
+        [
+          0.42859,
+          0.0
+        ]
+      ],
+      "view": "right"
+    },
+    {
+      "id": "facade_surface_v3_e5",
+      "plane_id": "facade_front",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.162512,
+          0.125
+        ],
+        [
+          0.212212,
+          0.125
+        ],
+        [
+          0.212212,
+          0.0
+        ],
+        [
+          0.162512,
+          0.0
+        ]
+      ],
+      "view": "front"
+    },
+    {
+      "id": "facade_surface_v3_e6",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.046661,
+          0.625
+        ],
+        [
+          0.049042,
+          0.625
+        ],
+        [
+          0.049042,
+          0.5
+        ],
+        [
+          0.046661,
+          0.5
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v3_e7",
+      "plane_id": "facade_left",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.046661,
+          0.625
+        ],
+        [
+          0.120828,
+          0.625
+        ],
+        [
+          0.120828,
+          0.5
+        ],
+        [
+          0.046661,
+          0.5
+        ]
+      ],
+      "view": "left"
+    },
+    {
+      "id": "facade_surface_v3_e8",
+      "plane_id": "facade_back",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.730685,
+          0.125
+        ],
+        [
+          0.909134,
+          0.125
+        ],
+        [
+          0.909134,
+          0.0
+        ],
+        [
+          0.730685,
+          0.0
+        ]
+      ],
+      "view": "back"
+    }
+  ],
+  "texture_atlas": {
+    "media_type": "image/png",
+    "size_px": [
+      1536,
+      1536
+    ],
+    "uri": "/mnt/d/Data/25_ACE/ARR/backend/media/maas/aesthetic/generated/maas_evidence_5afd63cd_31ad_4d85_810c_d05aeeb62ecf_900017_maas_18.openai/baked_texture_atlas.png",
+    "uv_space": "0_1_top_left"
+  }
+}

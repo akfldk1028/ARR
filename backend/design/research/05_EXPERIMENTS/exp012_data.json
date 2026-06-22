@@ -1,0 +1,41 @@
+{
+  "exp_id": "exp012",
+  "title": "B4 Heterogeneous (BLX/DE) vs Homogeneous (BLX)",
+  "date_utc": "2026-05-06 12:37:37 UTC",
+  "modes": {
+    "homogeneous": [
+      {
+        "site": "gangnam_yeoksam_677",
+        "hv_mean": 270802.61646666663,
+        "hv_std": 18275.89947120698
+      },
+      {
+        "site": "bundang_test",
+        "hv_mean": 49617.60496666667,
+        "hv_std": 30069.53740949837
+      },
+      {
+        "site": "chuncheon_test",
+        "hv_mean": 161764.15253333334,
+        "hv_std": 9534.263463596026
+      }
+    ],
+    "heterogeneous": [
+      {
+        "site": "gangnam_yeoksam_677",
+        "hv_mean": 276290.34026666667,
+        "hv_std": 6432.877423382847
+      },
+      {
+        "site": "bundang_test",
+        "hv_mean": 27778.0089,
+        "hv_std": 1765.1301541760934
+      },
+      {
+        "site": "chuncheon_test",
+        "hv_mean": 164539.54073333336,
+        "hv_std": 2552.6272867355083
+      }
+    ]
+  }
+}

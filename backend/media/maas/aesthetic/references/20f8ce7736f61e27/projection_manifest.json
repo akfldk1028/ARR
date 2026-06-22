@@ -1,0 +1,327 @@
+{
+  "atlas": {
+    "layout": "multiview_3x2_normalized",
+    "views": {
+      "axon": {
+        "uv_rect": [
+          0.333333,
+          0.5,
+          0.333333,
+          0.5
+        ]
+      },
+      "back": {
+        "uv_rect": [
+          0.666667,
+          0.0,
+          0.333333,
+          0.5
+        ]
+      },
+      "front": {
+        "uv_rect": [
+          0.0,
+          0.0,
+          0.333333,
+          0.5
+        ]
+      },
+      "left": {
+        "uv_rect": [
+          0.0,
+          0.5,
+          0.333333,
+          0.5
+        ]
+      },
+      "right": {
+        "uv_rect": [
+          0.333333,
+          0.0,
+          0.333333,
+          0.5
+        ]
+      },
+      "top": {
+        "uv_rect": [
+          0.666667,
+          0.5,
+          0.333333,
+          0.5
+        ]
+      }
+    }
+  },
+  "coordinate_space": "local_meter_from_first_mass_point",
+  "notes": [
+    "Derived from locked MAAS geometry; does not change legal evidence.",
+    "UVs are first-pass per-facade atlas assignments for a later texture bake worker."
+  ],
+  "origin": {
+    "lat": 37.0,
+    "lng": 127.0
+  },
+  "schema_version": "arr.maas.projection_manifest.v0",
+  "surfaces": [
+    {
+      "id": "facade_surface_v0_e0",
+      "metrics": {
+        "area_m2": 597.4356,
+        "edge_length_m": 35.5616,
+        "height_m": 16.8
+      },
+      "plane_id": "facade_front",
+      "source_panel_role": "facade_panel_image",
+      "source_panel_view": "front",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.0,
+          0.5
+        ],
+        [
+          0.333333,
+          0.5
+        ],
+        [
+          0.333333,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "vertices_m": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          35.5616,
+          0.0,
+          0.0
+        ],
+        [
+          35.5616,
+          0.0,
+          16.8
+        ],
+        [
+          0.0,
+          0.0,
+          16.8
+        ]
+      ],
+      "view": "front",
+      "volume_id": "body"
+    },
+    {
+      "id": "facade_surface_v0_e1",
+      "metrics": {
+        "area_m2": 557.1216,
+        "edge_length_m": 33.162,
+        "height_m": 16.8
+      },
+      "plane_id": "facade_right",
+      "source_panel_role": "facade_panel_image",
+      "source_panel_view": "right",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.333333,
+          0.5
+        ],
+        [
+          0.666666,
+          0.5
+        ],
+        [
+          0.666666,
+          0.0
+        ],
+        [
+          0.333333,
+          0.0
+        ]
+      ],
+      "vertices_m": [
+        [
+          35.5616,
+          0.0,
+          0.0
+        ],
+        [
+          35.5616,
+          33.162,
+          0.0
+        ],
+        [
+          35.5616,
+          33.162,
+          16.8
+        ],
+        [
+          35.5616,
+          0.0,
+          16.8
+        ]
+      ],
+      "view": "right",
+      "volume_id": "body"
+    },
+    {
+      "id": "facade_surface_v0_e2",
+      "metrics": {
+        "area_m2": 597.4356,
+        "edge_length_m": 35.5616,
+        "height_m": 16.8
+      },
+      "plane_id": "facade_back",
+      "source_panel_role": "facade_panel_image",
+      "source_panel_view": "back",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.666667,
+          0.5
+        ],
+        [
+          1.0,
+          0.5
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.666667,
+          0.0
+        ]
+      ],
+      "vertices_m": [
+        [
+          35.5616,
+          33.162,
+          0.0
+        ],
+        [
+          0.0,
+          33.162,
+          0.0
+        ],
+        [
+          0.0,
+          33.162,
+          16.8
+        ],
+        [
+          35.5616,
+          33.162,
+          16.8
+        ]
+      ],
+      "view": "back",
+      "volume_id": "body"
+    },
+    {
+      "id": "facade_surface_v0_e3",
+      "metrics": {
+        "area_m2": 557.1216,
+        "edge_length_m": 33.162,
+        "height_m": 16.8
+      },
+      "plane_id": "facade_left",
+      "source_panel_role": "facade_panel_image",
+      "source_panel_view": "left",
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "uv": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.333333,
+          1.0
+        ],
+        [
+          0.333333,
+          0.5
+        ],
+        [
+          0.0,
+          0.5
+        ]
+      ],
+      "vertices_m": [
+        [
+          0.0,
+          33.162,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.8
+        ],
+        [
+          0.0,
+          33.162,
+          16.8
+        ]
+      ],
+      "view": "left",
+      "volume_id": "body"
+    }
+  ]
+}

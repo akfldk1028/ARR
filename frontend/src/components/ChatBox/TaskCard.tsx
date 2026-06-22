@@ -334,8 +334,10 @@ export function TaskCard({
 														// Switch to the chatStore that owns this task card (for multi-turn conversations)
 														if (chatId && projectStore.activeProjectId) {
 															const activeChatStore = projectStore.getActiveChatStore();
-															const currentChatId = activeChatStore ? Object.keys(projectStore.projects[projectStore.activeProjectId].chatStores).find(
-																id => projectStore.projects[projectStore.activeProjectId].chatStores[id] === activeChatStore
+															const activeProjectId = projectStore.activeProjectId;
+															const project = activeProjectId ? projectStore.projects[activeProjectId] : null;
+															const currentChatId = activeChatStore && project ? Object.keys(project.chatStores).find(
+																id => project.chatStores[id] === activeChatStore
 															) : null;
 															
 															// Only switch if this is a different chat

@@ -102,10 +102,14 @@ class Neo4jLawLoader:
             query = """
             MERGE (law:LAW {full_id: $full_id})
             ON CREATE SET
+                law.name = $law_name,
                 law.law_name = $law_name,
+                law.title = $full_id,
                 law.law_type = $law_type,
                 law.created_at = datetime()
             ON MATCH SET
+                law.name = $law_name,
+                law.title = $full_id,
                 law.updated_at = datetime()
             """
 

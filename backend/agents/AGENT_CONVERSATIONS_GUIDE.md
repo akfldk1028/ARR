@@ -255,7 +255,7 @@ logging.getLogger('agents.websocket_integration').setLevel(logging.INFO)
 - [A2A Protocol Specification](https://a2a-protocol.org/)
 - [Context7 Documentation](https://context7.com/)
 - [Django Channels Guide](https://channels.readthedocs.io/)
-- [WebSocket API Reference](../docs/websocket_api.md)
+- [WebSocket API Reference](../../docs/websocket_api.md)
 
 ---
 

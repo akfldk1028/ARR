@@ -1,0 +1,88 @@
+{
+  "coordinate_space": "local_meter_from_first_mass_point",
+  "origin": {
+    "lat": 37.48496736670565,
+    "lng": 127.04499336728946
+  },
+  "schema_version": "arr.maas.camera_poses.v0",
+  "views": {
+    "axon": {
+      "position_m": [
+        41.351795276637,
+        -30.240000000000002,
+        40.32
+      ],
+      "projection": "orthographic",
+      "target_m": [
+        3.5487827688025497,
+        6.664529365786933,
+        8.4
+      ]
+    },
+    "back": {
+      "position_m": [
+        3.5487827688025497,
+        46.92905873157387,
+        8.4
+      ],
+      "projection": "orthographic",
+      "target_m": [
+        3.5487827688025497,
+        6.664529365786933,
+        8.4
+      ]
+    },
+    "front": {
+      "position_m": [
+        3.5487827688025497,
+        -33.6,
+        8.4
+      ],
+      "projection": "orthographic",
+      "target_m": [
+        3.5487827688025497,
+        6.664529365786933,
+        8.4
+      ]
+    },
+    "left": {
+      "position_m": [
+        -37.6142297390319,
+        6.664529365786933,
+        8.4
+      ],
+      "projection": "orthographic",
+      "target_m": [
+        3.5487827688025497,
+        6.664529365786933,
+        8.4
+      ]
+    },
+    "right": {
+      "position_m": [
+        44.711795276637,
+        6.664529365786933,
+        8.4
+      ],
+      "projection": "orthographic",
+      "target_m": [
+        3.5487827688025497,
+        6.664529365786933,
+        8.4
+      ]
+    },
+    "top": {
+      "position_m": [
+        3.5487827688025497,
+        6.664529365786933,
+        67.2
+      ],
+      "projection": "orthographic",
+      "target_m": [
+        3.5487827688025497,
+        6.664529365786933,
+        8.4
+      ]
+    }
+  }
+}

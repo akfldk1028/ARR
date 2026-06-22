@@ -41,6 +41,7 @@ import { Tag } from "@/components/ui/tag";
 import { share } from "@/lib/share";
 import { useTranslation } from "react-i18next";
 import AlertDialog from "@/components/ui/alertDialog";
+import { getAuthStore } from "@/store/authStore";
 
 
 export default function Project() {
@@ -203,6 +204,10 @@ export default function Project() {
 
 	useEffect(() => {
 		const fetchHistoryTasks = async () => {
+			if (!getAuthStore().token) {
+				setHistoryTasks([]);
+				return;
+			}
 			try {
 				const res = await proxyFetchGet(`/api/chat/histories`);
 				setHistoryTasks(res.items);

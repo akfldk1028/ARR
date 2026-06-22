@@ -203,7 +203,7 @@ export function useLiveApi({
        };
 
 
-       for (const fc of toolCall.functionCalls) {
+       for (const fc of toolCall.functionCalls ?? []) {
          // Log the function call trigger
          const triggerMessage = `Triggering function call: **${
            fc.name
@@ -217,7 +217,7 @@ export function useLiveApi({
 
          let toolResponse: GenerateContentResponse | string = 'ok';
          try {
-           const toolImplementation = toolRegistry[fc.name];
+           const toolImplementation = fc.name ? toolRegistry[fc.name] : undefined;
            if (toolImplementation) {
              toolResponse = await toolImplementation(fc.args, toolContext);
            } else {

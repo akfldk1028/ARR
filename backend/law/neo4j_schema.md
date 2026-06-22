@@ -143,6 +143,99 @@ content: "도시ㆍ군기본계획을 수립하거나 변경하는 경우에는 
 })
 ```
 
+### 8. APPENDIX / Structured Rule Nodes (별표 계산 규칙 확장)
+
+별표 원문은 기존 조문 계층을 유지한 채 `APPENDIX` 노드로 연결하고, 계산에 필요한 표 행은 별도 structured artifact에서 읽어 확장 노드로 적재한다. 법규 내용은 loader 코드에 두지 않고 `law/data/structured/*.json`에 둔다.
+
+```cypher
+(:APPENDIX {
+  full_id: String,             // 예: "주차장법(시행령)::별표1"
+  title: String,
+  source_url: String,
+  pdf_path: String,
+  text_path: String,
+  effective_date: String,
+  source_parse_status: String, // 예: official_pdf_text_extracted_manual_review
+  content_status: String
+})
+
+(:ParkingRequirementRule {
+  rule_id: String,             // 예: parking_appendix1_row_01
+  row_no: String,
+  facility_group: String,
+  basis_metric: String,
+  spaces_per: Float,
+  formula: String,
+  formula_detail: String,
+  rounding_rule: String,
+  rounding_rule_detail: String,
+  external_reference: String,
+  requires_external_rule: Boolean,
+  source_appendix: String
+})
+
+(:AccessibleParkingFacilityRule {
+  rule_id: String,
+  category: String,
+  basis_metric: String,
+  width_m: Float,
+  length_m: Float,
+  min_route_width_m: Float,
+  max_slope_ratio: String,
+  requirement_level: String,
+  max_slope_requirement_level: String,
+  source_appendix: String
+})
+
+(:LocalOrdinance {
+  ordinance_id: String,        // 예: seoul_parking_ordinance
+  appendix_id: String,         // 예: "서울특별시 주차장 설치 및 관리 조례::별표2"
+  jurisdiction_name: String,
+  jurisdiction_level: String,  // 예: sido, sigungu
+  pnu_prefix: String,          // 예: 서울특별시 "11"
+  source_url: String,
+  text_path: String,
+  effective_date: String,
+  ordinance_no: String,
+  source_parse_status: String
+})
+
+(:LocalParkingRequirementRule {
+  rule_id: String,             // 예: seoul_parking_appendix2_row_01
+  overrides_rule_id: String,   // 예: parking_appendix1_row_01
+  row_no: String,
+  facility_group: String,
+  basis_metric: String,
+  spaces_per: Float,
+  formula: String,
+  formula_detail: String,
+  rounding_rule: String,
+  rounding_rule_detail: String,
+  external_reference: String,
+  requires_external_rule: Boolean,
+  source_ordinance: String,
+  source_appendix: String
+})
+```
+
+관계:
+
+```cypher
+(:HANG)-[:HAS_APPENDIX]->(:APPENDIX)
+(:APPENDIX)-[:HAS_REQUIREMENT_RULE]->(:ParkingRequirementRule)
+(:APPENDIX)-[:HAS_ACCESSIBILITY_RULE]->(:AccessibleParkingFacilityRule)
+(:LocalOrdinance)-[:HAS_REQUIREMENT_RULE]->(:LocalParkingRequirementRule)
+(:LocalParkingRequirementRule)-[:OVERRIDES]->(:ParkingRequirementRule)
+(:ParkingRequirementRule)-[:BELONGS_TO_DOMAIN]->(:Domain)
+(:AccessibleParkingFacilityRule)-[:BELONGS_TO_DOMAIN]->(:Domain)
+(:LocalOrdinance)-[:BELONGS_TO_DOMAIN]->(:Domain)
+(:LocalParkingRequirementRule)-[:BELONGS_TO_DOMAIN]->(:Domain)
+```
+
+주차 산정 우선순위는 `pnu_prefix`가 긴 지역 조례부터 적용하고, 없으면
+`ParkingRequirementRule` 전국 기준으로 fallback한다. 예: 서울특별시 조례는
+PNU가 `11`로 시작하는 필지에 적용된다.
+
 ---
 
 ## 🔗 관계 타입 (Relationship Types)
@@ -216,6 +309,9 @@ CREATE CONSTRAINT jo_fullid_unique FOR (n:JO) REQUIRE n.full_id IS UNIQUE;
 CREATE CONSTRAINT hang_fullid_unique FOR (n:HANG) REQUIRE n.full_id IS UNIQUE;
 CREATE CONSTRAINT ho_fullid_unique FOR (n:HO) REQUIRE n.full_id IS UNIQUE;
 CREATE CONSTRAINT mok_fullid_unique FOR (n:MOK) REQUIRE n.full_id IS UNIQUE;
+CREATE CONSTRAINT appendix_fullid_unique FOR (n:APPENDIX) REQUIRE n.full_id IS UNIQUE;
+CREATE CONSTRAINT parking_requirement_rule_id_unique FOR (n:ParkingRequirementRule) REQUIRE n.rule_id IS UNIQUE;
+CREATE CONSTRAINT accessible_parking_rule_id_unique FOR (n:AccessibleParkingFacilityRule) REQUIRE n.rule_id IS UNIQUE;
 ```
 
 ### NOT NULL 제약조건

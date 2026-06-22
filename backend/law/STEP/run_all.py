@@ -6,7 +6,7 @@ Step 1부터 Step 5까지 순차적으로 모두 실행합니다.
 ⚠️ 주의:
 - 전체 실행 시간: 약 50-60분
 - 충분한 메모리 필요 (8GB 이상 권장)
-- OpenAI API 비용 발생 (약 $2-3)
+- OpenAI API 비용 발생 (약 $3-5, step3 임베딩 포함)
 - Neo4j Desktop 실행 필요
 
 실행:
@@ -76,7 +76,7 @@ def main():
     print("\n⚠️  주의사항:")
     print("  - Neo4j Desktop이 실행 중이어야 합니다")
     print("  - 충분한 메모리 필요 (8GB 이상)")
-    print("  - OpenAI API 비용 발생 (약 $2-3)")
+    print("  - OpenAI API 비용 발생 (약 $3-5, step3 임베딩 포함)")
     print("\n계속하려면 Enter 키를 누르세요 (취소: Ctrl+C)")
 
     try:

@@ -1,0 +1,100 @@
+{
+  "layout_source": {
+    "source_id": "주차장법(시행규칙)::제11조",
+    "source_title": "주차장법 시행규칙 제11조 부설주차장의 구조ㆍ설비기준",
+    "source_url": "https://www.law.go.kr/LSW/lsLawLinkInfo.do?chrClsCd=010201&lsId=008238&lsJoLnkSeq=1000128080&print=print",
+    "effective_date": "2026-03-31",
+    "structured_by": "official_law_text_manual_review"
+  },
+  "layout_rules": [
+    {
+      "rule_id": "parking_layout_rule_attached_self_parking_under_8",
+      "source_full_id": "주차장법(시행규칙)::제11조::5",
+      "category": "small_attached_parking",
+      "condition": "total_attached_self_parking_spaces <= 8",
+      "max_total_spaces": 8,
+      "rule_type": "scope",
+      "formula_detail": "부설주차장의 총주차대수 규모가 8대 이하인 자주식주차장의 구조 및 설비기준",
+      "requirement_level": "conditional",
+      "notes": "제11조제5항 각 호의 소규모 부설주차장 구조ㆍ설비 예외 적용 범위"
+    },
+    {
+      "rule_id": "parking_layout_rule_small_attached_lane_width",
+      "source_full_id": "주차장법(시행규칙)::제11조::5::제1호",
+      "category": "small_attached_parking",
+      "condition": "total_attached_self_parking_spaces <= 8",
+      "max_total_spaces": 8,
+      "rule_type": "aisle_width",
+      "min_lane_width_m": 2.5,
+      "formula_detail": "차로의 너비는 2.5미터 이상. 다만 주차단위구획과 접한 차로는 주차형식별 기준 적용",
+      "requirement_level": "mandatory",
+      "notes": "주차형식별 접한 차로 너비 기준은 별도 표 구조화 필요"
+    },
+    {
+      "rule_id": "parking_layout_rule_road_as_aisle_undivided_under_12m",
+      "source_full_id": "주차장법(시행규칙)::제11조::5::제2호",
+      "category": "road_as_aisle",
+      "condition": "road_width_m < 12 and has_sidewalk_separation == false and total_attached_self_parking_spaces <= 8",
+      "max_total_spaces": 8,
+      "max_road_width_m_exclusive": 12.0,
+      "requires_no_sidewalk_separation": true,
+      "rule_type": "road_as_aisle",
+      "min_aisle_width_counting_road_m": 6.0,
+      "min_parallel_aisle_width_counting_road_m": 4.0,
+      "road_inclusion_scope": "to_centerline_or_opposite_boundary_if_no_centerline",
+      "formula_detail": "보도와 차도의 구분이 없는 너비 12미터 미만 도로에 접한 부설주차장은 도로를 차로로 하여 배치 가능",
+      "requirement_level": "conditional",
+      "notes": "도로 포함 범위는 중앙선까지, 중앙선이 없는 경우 도로 반대쪽 경계선까지"
+    },
+    {
+      "rule_id": "parking_layout_rule_road_as_aisle_sidewalk_12m_perpendicular_under_5",
+      "source_full_id": "주차장법(시행규칙)::제11조::5::제3호",
+      "category": "road_as_aisle",
+      "condition": "road_width_m >= 12 and has_sidewalk_separation == true and total_attached_self_parking_spaces <= 5 and no_obstruction_to_parking_use",
+      "max_total_spaces": 5,
+      "min_road_width_m": 12.0,
+      "requires_sidewalk_separation": true,
+      "rule_type": "road_as_aisle",
+      "parking_angle": "perpendicular_only",
+      "requires_no_obstruction_to_parking_use": true,
+      "formula_detail": "보도와 차도 구분이 있는 12미터 이상 도로에 접하고 주차대수 5대 이하인 부설주차장은 이용에 지장이 없는 경우만 도로를 차로로 하여 직각주차 배치 가능",
+      "requirement_level": "conditional_authority_review",
+      "notes": "주차장 이용 지장 여부는 현장/허가권자 검토 필요"
+    },
+    {
+      "rule_id": "parking_layout_rule_tandem_under_5",
+      "source_full_id": "주차장법(시행규칙)::제11조::5::제4호",
+      "category": "tandem_parking",
+      "condition": "total_spaces <= 5",
+      "max_total_spaces": 5,
+      "max_depth_from_aisle": 2,
+      "rule_type": "tandem",
+      "formula_detail": "주차대수 5대 이하의 주차단위구획은 차로를 기준으로 세로로 2대까지 접하여 배치 가능",
+      "requirement_level": "conditional",
+      "notes": "연접/종렬주차 가능 조건"
+    },
+    {
+      "rule_id": "parking_layout_rule_attached_entrance_width",
+      "source_full_id": "주차장법(시행규칙)::제11조::5::제5호",
+      "category": "entrance_width",
+      "condition": "attached_parking_entrance",
+      "rule_type": "entrance_width",
+      "min_entrance_width_m": 3.0,
+      "dead_end_road_authority_approval_min_width_m": 2.5,
+      "formula_detail": "출입구 너비는 3미터 이상. 막다른 도로 접도 부설주차장으로 차량 소통 지장이 없다고 인정하는 경우 2.5미터 이상 가능",
+      "requirement_level": "mandatory_with_authority_exception",
+      "notes": "막다른 도로 예외는 시장ㆍ군수 또는 구청장 인정 필요"
+    },
+    {
+      "rule_id": "parking_layout_rule_no_obstacle_between_road_and_stall",
+      "source_full_id": "주차장법(시행규칙)::제11조::6",
+      "category": "road_as_aisle",
+      "condition": "attached_parking_using_road_as_aisle",
+      "rule_type": "obstacle_prohibition",
+      "prohibits_obstacle_between_road_and_stall": true,
+      "formula_detail": "도로를 차로로 하여 설치한 부설주차장의 경우 도로와 주차구획선 사이에 담장 등 이용 장애물 설치 금지",
+      "requirement_level": "mandatory",
+      "notes": "도로차로 활용 배치의 현장 장애물 검토 필요"
+    }
+  ]
+}

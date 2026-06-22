@@ -1,0 +1,6557 @@
+{
+  "law_name": "주차장법",
+  "law_type": "시행령",
+  "law_category": "시행령",
+  "base_law_name": "주차장법",
+  "law_full_id": "주차장법(시행령)",
+  "agent_id": "agent_주차장법",
+  "agent_scope": [
+    "주차장법",
+    "주차장법 시행령",
+    "주차장법 시행규칙"
+  ],
+  "law_mst": "273373",
+  "source": "law.go.kr Open API",
+  "nodes": [
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1조",
+        "unit_number": "1조",
+        "title": "목적",
+        "content": "제1조(목적)",
+        "full_id": "주차장법(시행령)::제1조",
+        "unit_path": "제1조",
+        "order": 1,
+        "metadata": "{\"referenced_laws\": [\"주차장법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1조의2",
+        "unit_number": "1조의2",
+        "title": "주차전용건축물의 주차면적비율",
+        "content": "제1조의2(주차전용건축물의 주차면적비율)",
+        "full_id": "주차장법(시행령)::제1조의2",
+        "unit_path": "제1조의2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "「주차장법」(이하 \"법\"이라 한다) 제2조제11호에서 \"대통령령으로 정하는 비율 이상이 주차장으로 사용되는 건축물\"이란 건축물의 연면적 중 주차장으로 사용되는 부분의 비율이 95퍼센트 이상인 것을 말한다. 다만, 주차장 외의 용도로 사용되는 부분이 「건축법 시행령」 별표 1에 따른 단독주택(같은 표 제1호에 따른 단독주택을 말한다. 이하 \"단독주택\"이라 한다), 공동주택, 제1종 근린생활시설, 제2종 근린생활시설, 문화 및 집회시설, 종교시설, 판매시설, 운수시설, 운동시설, 업무시설, 창고시설 또는 자동차 관련 시설인 경우에는 주차장으로 사용되는 부분의 비율이 70퍼센트(법 제4조제1항에 따른 주차환경개선지구 내에 위치한 건축물의 경우에는 60퍼센트) 이상인 것을 말한다.",
+        "full_id": "주차장법(시행령)::제1조의2::1",
+        "unit_path": "제1조의2_1",
+        "order": 1,
+        "revision_dates": [
+          "2014.12.30",
+          "2016.1.19",
+          "2018.2.20",
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  삭제",
+        "full_id": "주차장법(시행령)::제1조의2::1::제1호",
+        "unit_path": "제1조의2_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  삭제",
+        "full_id": "주차장법(시행령)::제1조의2::1::제2호",
+        "unit_path": "제1조의2_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "제1항에 따른 건축물의 연면적의 산정방법은 「건축법」에 따른다. 다만, 기계식주차장의 연면적은 기계식주차장치에 의하여 자동차를 주차할 수 있는 면적과 기계실, 관리사무소 등의 면적을 합하여 계산한다.",
+        "full_id": "주차장법(시행령)::제1조의2::2",
+        "unit_path": "제1조의2_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "특별시장ㆍ광역시장ㆍ특별자치도지사 또는 시장은 법 제12조제6항 또는 제19조제10항에 따라 노외주차장 또는 부설주차장의 설치를 제한하는 지역의 주차전용건축물의 경우에는 제1항 단서에도 불구하고 해당 지방자치단체의 조례로 정하는 바에 따라 주차장 외의 용도로 사용되는 부분에 설치할 수 있는 시설의 종류를 해당 지역의 구역별로 제한할 수 있다.",
+        "full_id": "주차장법(시행령)::제1조의2::3",
+        "unit_path": "제1조의2_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2조",
+        "unit_number": "2조",
+        "title": "중요 사항의 변경",
+        "content": "제2조(중요 사항의 변경)",
+        "full_id": "주차장법(시행령)::제2조",
+        "unit_path": "제2조",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2조의2",
+        "unit_number": "2조의2",
+        "title": null,
+        "content": "제2조의2",
+        "full_id": "주차장법(시행령)::제2조의2",
+        "unit_path": "제2조의2",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3조",
+        "unit_number": "3조",
+        "title": "무료 노상주차장에서 주차방법 변경 등의 대상이 되는 자동차의 주차기간",
+        "content": "제3조(무료 노상주차장에서 주차방법 변경 등의 대상이 되는 자동차의 주차기간)",
+        "full_id": "주차장법(시행령)::제3조",
+        "unit_path": "제3조",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3조의2",
+        "unit_number": "3조의2",
+        "title": null,
+        "content": "제3조의2",
+        "full_id": "주차장법(시행령)::제3조의2",
+        "unit_path": "제3조의2",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4조",
+        "unit_number": "4조",
+        "title": "경형자동차 및 환경친화적 자동차 전용주차구획의 설치비율",
+        "content": "제4조(경형자동차 및 환경친화적 자동차 전용주차구획의 설치비율)",
+        "full_id": "주차장법(시행령)::제4조",
+        "unit_path": "제4조",
+        "order": 7
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "5조",
+        "unit_number": "5조",
+        "title": "무료 노외주차장에서 주차방법 변경 등의 대상이 되는 자동차의 주차기간",
+        "content": "제5조(무료 노외주차장에서 주차방법 변경 등의 대상이 되는 자동차의 주차기간)",
+        "full_id": "주차장법(시행령)::제5조",
+        "unit_path": "제5조",
+        "order": 8
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "5조의2",
+        "unit_number": "5조의2",
+        "title": null,
+        "content": "제5조의2",
+        "full_id": "주차장법(시행령)::제5조의2",
+        "unit_path": "제5조의2",
+        "order": 9
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "6조",
+        "unit_number": "6조",
+        "title": "부설주차장의 설치기준",
+        "content": "제6조(부설주차장의 설치기준)",
+        "full_id": "주차장법(시행령)::제6조",
+        "unit_path": "제6조",
+        "order": 10
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조제3항에 따라 부설주차장을 설치하여야 할 시설물의 종류와 부설주차장의 설치기준은 별표 1과 같다. 다만, 다음 각 호의 경우에는 특별시ㆍ광역시ㆍ특별자치도ㆍ시 또는 군(광역시의 군은 제외한다. 이하 이 조에서 같다)의 조례로 시설물의 종류를 세분하거나 부설주차장의 설치기준을 따로 정할 수 있다.",
+        "full_id": "주차장법(시행령)::제6조::1",
+        "unit_path": "제6조_1",
+        "order": 1,
+        "revision_dates": [
+          "2016.7.19"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  오지ㆍ벽지ㆍ섬 지역, 도심지의 간선도로변이나 그 밖에 해당 지역의 특수성으로 인하여 별표 1의 기준을 적용하는 것이 현저히 부적합한 경우",
+        "full_id": "주차장법(시행령)::제6조::1::제1호",
+        "unit_path": "제6조_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  「국토의 계획 및 이용에 관한 법률」 제6조제2호에 따른 관리지역으로서 주차난이 발생할 우려가 없는 경우",
+        "full_id": "주차장법(시행령)::제6조::1::제2호",
+        "unit_path": "제6조_1_제2호",
+        "order": 2,
+        "metadata": "{\"referenced_laws\": [\"국토의 계획 및 이용에 관한 법률\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  단독주택ㆍ공동주택의 부설주차장 설치기준을 세대별로 정하거나 숙박시설 또는 업무시설 중 오피스텔의 부설주차장 설치기준을 호실별로 정하려는 경우",
+        "full_id": "주차장법(시행령)::제6조::1::제3호",
+        "unit_path": "제6조_1_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "4.  기계식주차장을 설치하는 경우로서 해당 지역의 주차장 확보율, 주차장 이용 실태, 교통 여건 등을 고려하여 별표 1의 부설주차장 설치기준과 다르게 정하려는 경우",
+        "full_id": "주차장법(시행령)::제6조::1::제4호",
+        "unit_path": "제6조_1_제4호",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "5",
+        "unit_number": "5",
+        "title": null,
+        "content": "5.  대한민국 주재 외국공관 안의 외교관 또는 그 가족이 거주하는 구역 등 일반인의 출입이 통제되는 구역에 주택 등의 시설물을 건축하는 경우",
+        "full_id": "주차장법(시행령)::제6조::1::제5호",
+        "unit_path": "제6조_1_제5호",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "6",
+        "unit_number": "6",
+        "title": null,
+        "content": "6.  시설면적이 1만제곱미터 이상인 공장을 건축하는 경우",
+        "full_id": "주차장법(시행령)::제6조::1::제6호",
+        "unit_path": "제6조_1_제6호",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "7",
+        "unit_number": "7",
+        "title": null,
+        "content": "7.  판매시설, 문화 및 집회시설 등 「자동차관리법」 제3조제1항제2호에 따른 승합자동차(중형 또는 대형 승합자동차만 해당한다)의 출입이 빈번하게 발생하는 시설물을 건축하는 경우",
+        "full_id": "주차장법(시행령)::제6조::1::제7호",
+        "unit_path": "제6조_1_제7호",
+        "order": 7,
+        "metadata": "{\"referenced_laws\": [\"자동차관리법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "특별시ㆍ광역시ㆍ특별자치도ㆍ시 또는 군은 주차수요의 특성 또는 증감에 효율적으로 대처하기 위하여 필요하다고 인정하는 경우에는 별표 1의 부설주차장 설치기준의 2분의 1의 범위에서 그 설치기준을 해당 지방자치단체의 조례로 강화하거나 완화할 수 있다. 이 경우 별표 1의 시설물의 종류ㆍ규모를 세분하여 각 시설물의 종류ㆍ규모별로 강화 또는 완화의 정도를 다르게 정할 수 있다.",
+        "full_id": "주차장법(시행령)::제6조::2",
+        "unit_path": "제6조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "제1항 단서 및 제2항에 따라 부설주차장의 설치기준을 조례로 정하는 경우 해당 지방자치단체는 해당 지역의 구역별로 부설주차장 설치기준을 각각 다르게 정할 수 있다.",
+        "full_id": "주차장법(시행령)::제6조::3",
+        "unit_path": "제6조_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "건축물의 용도를 변경하는 경우에는 용도변경 시점의 주차장 설치기준에 따라 변경 후 용도의 주차대수와 변경 전 용도의 주차대수를 산정하여 그 차이에 해당하는 부설주차장을 추가로 확보하여야 한다. 다만, 다음 각 호의 어느 하나에 해당하는 경우에는 부설주차장을 추가로 확보하지 아니하고 건축물의 용도를 변경할 수 있다.",
+        "full_id": "주차장법(시행령)::제6조::4",
+        "unit_path": "제6조_4",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  사용승인 후 5년이 지난 연면적 1천제곱미터 미만의 건축물의 용도를 변경하는 경우. 다만, 문화 및 집회시설 중 공연장ㆍ집회장ㆍ관람장, 위락시설 및 주택 중 다세대주택ㆍ다가구주택의 용도로 변경하는 경우는 제외한다.",
+        "full_id": "주차장법(시행령)::제6조::4::제1호",
+        "unit_path": "제6조_4_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  해당 건축물 안에서 용도 상호간의 변경을 하는 경우. 다만, 부설주차장 설치기준이 높은 용도의 면적이 증가하는 경우는 제외한다.",
+        "full_id": "주차장법(시행령)::제6조::4::제2호",
+        "unit_path": "제6조_4_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "7조",
+        "unit_number": "7조",
+        "title": "부설주차장의 인근 설치",
+        "content": "제7조(부설주차장의 인근 설치)",
+        "full_id": "주차장법(시행령)::제7조",
+        "unit_path": "제7조",
+        "order": 11
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조제4항 전단에서 \"대통령령으로 정하는 규모\"란 주차대수 300대의 규모를 말한다. 다만, 다음 각 호의 어느 하나에 해당하는 경우에는 별표 1의 부설주차장 설치기준에 따라 산정한 주차대수에 상당하는 규모를 말한다.",
+        "full_id": "주차장법(시행령)::제7조::1",
+        "unit_path": "제7조_1",
+        "order": 1,
+        "revision_dates": [
+          "2016.1.19"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  「도로교통법」 제6조에 따라 차량통행이 금지된 장소의 시설물인 경우",
+        "full_id": "주차장법(시행령)::제7조::1::제1호",
+        "unit_path": "제7조_1_제1호",
+        "order": 1,
+        "metadata": "{\"referenced_laws\": [\"도로교통법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  시설물의 부지에 접한 대지나 시설물의 부지와 통로로 연결된 대지에 부설주차장을 설치하는 경우",
+        "full_id": "주차장법(시행령)::제7조::1::제2호",
+        "unit_path": "제7조_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  시설물의 부지가 너비 12미터 이하인 도로에 접해 있는 경우 도로의 맞은편 토지(시설물의 부지에 접한 도로의 건너편에 있는 시설물 정면의 필지와 그 좌우에 위치한 필지를 말한다)에 부설주차장을 그 도로에 접하도록 설치하는 경우",
+        "full_id": "주차장법(시행령)::제7조::1::제3호",
+        "unit_path": "제7조_1_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "4.  「산업입지 및 개발에 관한 법률」 제2조제8호에 따른 산업단지 안에 있는 공장인 경우",
+        "full_id": "주차장법(시행령)::제7조::1::제4호",
+        "unit_path": "제7조_1_제4호",
+        "order": 4,
+        "metadata": "{\"referenced_laws\": [\"산업입지 및 개발에 관한 법률\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "법 제19조제4항 후단에 따른 시설물의 부지 인근의 범위는 다음 각 호의 어느 하나의 범위에서 특별자치도ㆍ시ㆍ군 또는 자치구(이하 \"시ㆍ군 또는 구\"라 한다)의 조례로 정한다.",
+        "full_id": "주차장법(시행령)::제7조::2",
+        "unit_path": "제7조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  해당 부지의 경계선으로부터 부설주차장의 경계선까지의 직선거리 300미터 이내 또는 도보거리 600미터 이내",
+        "full_id": "주차장법(시행령)::제7조::2::제1호",
+        "unit_path": "제7조_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  해당 시설물이 있는 동ㆍ리(행정동ㆍ리를 말한다. 이하 이 호에서 같다) 및 그 시설물과의 통행 여건이 편리하다고 인정되는 인접 동ㆍ리",
+        "full_id": "주차장법(시행령)::제7조::2::제2호",
+        "unit_path": "제7조_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "8조",
+        "unit_number": "8조",
+        "title": "부설주차장 설치의무 면제 등",
+        "content": "제8조(부설주차장 설치의무 면제 등)",
+        "full_id": "주차장법(시행령)::제8조",
+        "unit_path": "제8조",
+        "order": 12
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조제5항에 따라 부설주차장의 설치의무가 면제되는 시설물의 위치ㆍ용도ㆍ규모 및 부설주차장의 규모는 다음 각 호와 같다.",
+        "full_id": "주차장법(시행령)::제8조::1",
+        "unit_path": "제8조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  시설물의 위치",
+        "full_id": "주차장법(시행령)::제8조::1::제1호",
+        "unit_path": "제8조_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "가",
+        "unit_number": "가",
+        "title": null,
+        "content": "가.  「도로교통법」 제6조에 따른 차량통행의 금지 또는 주변의 토지이용 상황으로 인하여 제6조 및 제7조에 따른 부설주차장의 설치가 곤란하다고 특별자치도지사ㆍ시장ㆍ군수 또는 자치구의 구청장(이하 \"시장ㆍ군수 또는 구청장\"이라 한다)이 인정하는 장소",
+        "full_id": "주차장법(시행령)::제8조::1::제1호::가목",
+        "unit_path": "제8조_1_제1호_가목",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "나",
+        "unit_number": "나",
+        "title": null,
+        "content": "나.  부설주차장의 출입구가 도심지 등의 간선도로변에 위치하게 되어 자동차교통의 혼잡을 가중시킬 우려가 있다고 시장ㆍ군수 또는 구청장이 인정하는 장소",
+        "full_id": "주차장법(시행령)::제8조::1::제1호::나목",
+        "unit_path": "제8조_1_제1호_나목",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  시설물의 용도 및 규모: 연면적 1만제곱미터 이상의 판매시설 및 운수시설에 해당하지 아니하거나 연면적 1만 5천제곱미터 이상의 문화 및 집회시설(공연장ㆍ집회장 및 관람장만을 말한다), 위락시설, 숙박시설 또는 업무시설에 해당하지 아니하는 시설물(「도로교통법」 제6조에 따라 차량통행이 금지된 장소의 시설물인 경우에는 「건축법」에서 정하는 용도별 건축허용 연면적의 범위에서 설치하는 시설물을 말한다)",
+        "full_id": "주차장법(시행령)::제8조::1::제2호",
+        "unit_path": "제8조_1_제2호",
+        "order": 2,
+        "metadata": "{\"referenced_laws\": [\"도로교통법\", \"건축법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  부설주차장의 규모: 주차대수 300대 이하의 규모(「도로교통법」 제6조에 따라 차량통행이 금지된 장소의 경우에는 별표 1의 부설주차장 설치기준에 따라 산정한 주차대수에 상당하는 규모를 말한다)",
+        "full_id": "주차장법(시행령)::제8조::1::제3호",
+        "unit_path": "제8조_1_제3호",
+        "order": 3,
+        "metadata": "{\"referenced_laws\": [\"도로교통법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "법 제19조제5항에 따라 부설주차장의 설치의무를 면제받으려는 자는 다음 각 호의 사항을 적은 주차장 설치의무 면제신청서를 시장ㆍ군수 또는 구청장에게 제출하여야 한다.",
+        "full_id": "주차장법(시행령)::제8조::2",
+        "unit_path": "제8조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  시설물의 위치ㆍ용도 및 규모",
+        "full_id": "주차장법(시행령)::제8조::2::제1호",
+        "unit_path": "제8조_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  설치하여야 할 부설주차장의 규모",
+        "full_id": "주차장법(시행령)::제8조::2::제2호",
+        "unit_path": "제8조_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  부설주차장의 설치에 필요한 비용 및 주차장 설치의무가 면제되는 경우의 해당 비용의 납부에 관한 사항",
+        "full_id": "주차장법(시행령)::제8조::2::제3호",
+        "unit_path": "제8조_2_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "4.  신청인의 성명(법인인 경우에는 명칭 및 대표자의 성명) 및 주소",
+        "full_id": "주차장법(시행령)::제8조::2::제4호",
+        "unit_path": "제8조_2_제4호",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "제1항제1호나목의 장소에 있는 시설물의 경우에는 화물의 하역과 그 밖에 해당 시설물의 기능 유지에 필요한 부설주차장은 설치하고 이를 제외한 규모의 부설주차장에 대해서만 설치의무 면제 신청을 할 수 있다. 이 경우 시설물의 기능 유지에 필요한 부설주차장의 규모는 시ㆍ군 또는 구의 조례로 정한다.",
+        "full_id": "주차장법(시행령)::제8조::3",
+        "unit_path": "제8조_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "9조",
+        "unit_number": "9조",
+        "title": "주차장 설치비용의 납부 등",
+        "content": "제9조(주차장 설치비용의 납부 등)",
+        "full_id": "주차장법(시행령)::제9조",
+        "unit_path": "제9조",
+        "order": 13
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "10조",
+        "unit_number": "10조",
+        "title": "주차장 설치비용 납부자의 주차장 무상사용 등",
+        "content": "제10조(주차장 설치비용 납부자의 주차장 무상사용 등)",
+        "full_id": "주차장법(시행령)::제10조",
+        "unit_path": "제10조",
+        "order": 14
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "시장ㆍ군수 또는 구청장은 제9조에 따라 시설물의 소유자로부터 부설주차장의 설치에 필요한 비용을 받은 경우에는 시설물 준공검사확인증(건축물인 경우에는 「건축법」 제22조에 따른 사용승인서 또는 임시사용승인서를 말한다. 이하 같다)을 발급할 때에 특별시장ㆍ광역시장, 시장ㆍ군수 또는 구청장이 설치한 노외주차장 중 해당 시설물의 소유자가 무상으로 사용할 수 있는 주차장을 지정하여야 한다. 다만, 제7조제2항에 따른 범위에 해당하는 시설물의 부지 인근에 사용할 수 있는 노외주차장이 없는 경우에는 그러하지 아니하다.",
+        "full_id": "주차장법(시행령)::제10조::1",
+        "unit_path": "제10조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "제1항 본문에 따라 주차장을 무상으로 사용할 수 있는 기간은 납부된 주차장 설치비용을 해당 지방자치단체의 조례로 정하는 방법에 따라 시설물 준공검사확인증을 발급할 때의 해당 주차장의 주차요금 징수기준에 따른 징수요금으로 나누어 산정한다.",
+        "full_id": "주차장법(시행령)::제10조::2",
+        "unit_path": "제10조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "시장ㆍ군수 또는 구청장은 제1항 본문에 따라 시설물의 소유자가 무상으로 사용할 수 있는 노외주차장을 지정할 때에는 해당 시설물로부터 가장 가까운 거리에 있는 주차장을 지정하여야 한다. 다만, 그 주차장의 주차난이 심하거나 그 밖에 그 주차장을 이용하게 하기 곤란한 사정이 있는 경우에는 시설물 소유자의 동의를 받아 그 주차장 외의 다른 주차장을 지정할 수 있다.",
+        "full_id": "주차장법(시행령)::제10조::3",
+        "unit_path": "제10조_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "구청장은 제1항 본문에 따라 무상사용 주차장으로 지정하려는 노외주차장이 특별시장 또는 광역시장이 설치한 노외주차장인 경우에는 미리 해당 특별시장 또는 광역시장과 협의하여야 한다.",
+        "full_id": "주차장법(시행령)::제10조::4",
+        "unit_path": "제10조_4",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "11조",
+        "unit_number": "11조",
+        "title": "기존 시설물",
+        "content": "제11조(기존 시설물)",
+        "full_id": "주차장법(시행령)::제11조",
+        "unit_path": "제11조",
+        "order": 15
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조제11항에서 \"대통령령으로 정하는 시설물\"이란 단독주택, 공동주택 또는 오피스텔로서 해당 시설물의 내부 또는 그 부지 안에 부설주차장을 추가로 설치할 수 있는 면적이 10제곱미터 이상인 시설물을 말한다.",
+        "full_id": "주차장법(시행령)::제11조::1",
+        "unit_path": "제11조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "제1항에 따른 시설물에 추가로 설치되는 부설주차장의 설치방법 등에 관하여 필요한 세부적인 사항은 지방자치단체의 조례로 정할 수 있다.",
+        "full_id": "주차장법(시행령)::제11조::2",
+        "unit_path": "제11조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "11조의2",
+        "unit_number": "11조의2",
+        "title": "개방주차장 지정 대상 시설물",
+        "content": "제11조의2(개방주차장 지정 대상 시설물)",
+        "full_id": "주차장법(시행령)::제11조의2",
+        "unit_path": "제11조의2",
+        "order": 16
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "11조의3",
+        "unit_number": "11조의3",
+        "title": "개방주차장이 아닌 부설주차장에서 주차방법 변경 등의 대상이 되는 자동차의 주차기간",
+        "content": "제11조의3(개방주차장이 아닌 부설주차장에서 주차방법 변경 등의 대상이 되는 자동차의 주차기간)",
+        "full_id": "주차장법(시행령)::제11조의3",
+        "unit_path": "제11조의3",
+        "order": 17
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조",
+        "unit_number": "12조",
+        "title": "부설주차장의 용도변경 등",
+        "content": "제12조(부설주차장의 용도변경 등)",
+        "full_id": "주차장법(시행령)::제12조",
+        "unit_path": "제12조",
+        "order": 18
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의4제1항제3호에서 \"대통령령으로 정하는 기준에 해당하는 경우\"란 다음 각 호의 어느 하나에 해당하는 경우를 말한다.",
+        "full_id": "주차장법(시행령)::제12조::1",
+        "unit_path": "제12조_1",
+        "order": 1,
+        "revision_dates": [
+          "2012.4.10",
+          "2012.10.29",
+          "2014.9.11",
+          "2016.7.19"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  「도로교통법」 제6조에 따른 차량통행의 금지 또는 주변의 토지이용 상황 등으로 인하여 시장ㆍ군수 또는 구청장이 해당 주차장의 이용이 사실상 불가능하다고 인정한 경우. 이 경우 변경 후의 용도는 주차장으로 이용할 수 없는 사유가 소멸되었을 때에 즉시 주차장으로 환원하는 데에 지장이 없는 경우로 한정하고, 변경된 용도로의 사용기간은 주차장으로 이용이 불가능한 기간으로 한정한다.",
+        "full_id": "주차장법(시행령)::제12조::1::제1호",
+        "unit_path": "제12조_1_제1호",
+        "order": 1,
+        "metadata": "{\"referenced_laws\": [\"도로교통법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  직거래 장터 개설 등 지역경제 활성화를 위하여 시장ㆍ군수 또는 구청장이 정하여 고시하는 바에 따라 주차장을 일시적으로 이용하려는 경우로서 시장ㆍ군수 또는 구청장이 해당 주차장의 이용에 지장이 없다고 인정하는 경우",
+        "full_id": "주차장법(시행령)::제12조::1::제2호",
+        "unit_path": "제12조_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  제6조 또는 법 제19조제10항에 따른 해당 시설물의 부설주차장의 설치기준 또는 설치제한기준(시설물을 설치한 후 법령ㆍ조례의 개정 등으로 설치기준 또는 설치제한기준이 변경된 경우에는 그 변경된 설치기준 또는 설치제한기준을 말한다)을 초과하는 주차장으로서 그 초과 부분에 대하여 시장ㆍ군수 또는 구청장의 확인을 받은 경우",
+        "full_id": "주차장법(시행령)::제12조::1::제3호",
+        "unit_path": "제12조_1_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "4.  「국토의 계획 및 이용에 관한 법률」 제2조제10호에 따른 도시ㆍ군계획시설사업으로 인하여 그 전부 또는 일부를 사용할 수 없게 된 주차장으로서 시장ㆍ군수 또는 구청장의 확인을 받은 경우",
+        "full_id": "주차장법(시행령)::제12조::1::제4호",
+        "unit_path": "제12조_1_제4호",
+        "order": 4,
+        "metadata": "{\"referenced_laws\": [\"국토의 계획 및 이용에 관한 법률\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "5",
+        "unit_number": "5",
+        "title": null,
+        "content": "5.  법 제19조제4항에 따라 시설물의 부지 인근에 설치한 부설주차장 또는 법 제19조의4제1항제2호 및 이 항 제6호에 따라 시설물 내부 또는 그 부지에서 인근 부지로 위치 변경된 부설주차장을 그 부지 인근의 범위에서 위치 변경하여 설치하는 경우",
+        "full_id": "주차장법(시행령)::제12조::1::제5호",
+        "unit_path": "제12조_1_제5호",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "6",
+        "unit_number": "6",
+        "title": null,
+        "content": "6.  「산업입지 및 개발에 관한 법률」 제2조제8호에 따른 산업단지 안에 있는 공장의 부설주차장을 법 제19조제4항 후단에 따른 시설물 부지 인근의 범위에서 위치 변경하여 설치하는 경우",
+        "full_id": "주차장법(시행령)::제12조::1::제6호",
+        "unit_path": "제12조_1_제6호",
+        "order": 6,
+        "metadata": "{\"referenced_laws\": [\"산업입지 및 개발에 관한 법률\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "7",
+        "unit_number": "7",
+        "title": null,
+        "content": "7.  「도시교통정비 촉진법 시행령」 제13조의2제1항 각 호에 따른 건축물(「주택건설기준 등에 관한 규정」이 적용되는 공동주택은 제외한다)의 주차장이 「도시교통정비 촉진법」 제33조제1항제4호에 따른 승용차공동이용 지원(승용차공동이용을 위한 전용주차구획을 설치하고 공동이용을 위한 승용자동차를 상시 배치하는 것을 말한다. 이하 같다)을 위하여 사용되는 경우로서 다음 각 목의 모든 요건을 충족하는지 여부에 대하여 시장ㆍ군수 또는 구청장의 확인을 받은 경우",
+        "full_id": "주차장법(시행령)::제12조::1::제7호",
+        "unit_path": "제12조_1_제7호",
+        "order": 7,
+        "metadata": "{\"referenced_laws\": [\"도시교통정비 촉진법 시행령\", \"주택건설기준 등에 관한 규정\", \"도시교통정비 촉진법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "가",
+        "unit_number": "가",
+        "title": null,
+        "content": "가.  주차장 외의 용도로 사용하는 주차장의 면적이 승용차공동이용 지원을 위하여 설치한 전용주차구획 면적의 2배를 초과하지 아니할 것",
+        "full_id": "주차장법(시행령)::제12조::1::제7호::가목",
+        "unit_path": "제12조_1_제7호_가목",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "나",
+        "unit_number": "나",
+        "title": null,
+        "content": "나.  주차장 외의 용도로 사용하는 주차장의 면적이 해당 주차장의 전체 주차구획 면적의 100분의 10을 초과하지 아니할 것",
+        "full_id": "주차장법(시행령)::제12조::1::제7호::나목",
+        "unit_path": "제12조_1_제7호_나목",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "다",
+        "unit_number": "다",
+        "title": null,
+        "content": "다.  해당 주차장이 승용차공동이용 지원에 사용되지 아니하는 경우에는 주차장 외의 용도로 사용하는 부분을 즉시 주차장으로 환원하는 데에 지장이 없을 것",
+        "full_id": "주차장법(시행령)::제12조::1::제7호::다목",
+        "unit_path": "제12조_1_제7호_다목",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "법 제19조의4제1항제1호ㆍ제2호 및 이 조 제1항제5호ㆍ제6호의 경우에 종전의 부설주차장은 새로운 부설주차장의 사용이 시작된 후에 용도변경하여야 한다. 다만, 기존 주차장 부지에 증축되는 건축물 안에 주차장을 설치하는 경우에는 그러하지 아니하다.",
+        "full_id": "주차장법(시행령)::제12조::2",
+        "unit_path": "제12조_2",
+        "order": 2,
+        "revision_dates": [
+          "2012.10.29",
+          "2014.9.11"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "법 제19조의4제2항 단서에 따라 부설주차장 본래의 기능을 유지하지 아니하여도 되는 경우는 제1항제1호ㆍ제3호 또는 제4호에 해당하는 경우와 기존 주차장을 보수 또는 증축하는 경우(보수 또는 증축하는 기간으로 한정한다)로 한다.",
+        "full_id": "주차장법(시행령)::제12조::3",
+        "unit_path": "제12조_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의2",
+        "unit_number": "12조의2",
+        "title": "기계식주차장치의 안전도인증 신청 등",
+        "content": "제12조의2(기계식주차장치의 안전도인증 신청 등)",
+        "full_id": "주차장법(시행령)::제12조의2",
+        "unit_path": "제12조의2",
+        "order": 19
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의6제1항에 따라 기계식주차장치의 안전도에 관한 인증(이하 \"안전도인증\"이라 한다)을 받거나 안전도인증을 받은 내용의 변경에 관한 인증을 받으려는 제작자등(기계식주차장치를 제작ㆍ조립 또는 수입하여 양도ㆍ대여 또는 설치하려는 자를 말한다. 이하 같다)은 국토교통부령으로 정하는 바에 따라 법 제19조의6제2항에 따른 검사기관이 발행한 안전도 심사결과를 첨부하여 국토교통부장관(법 제19조의12제1항에 따라 같은 항에 따른 지정인증기관에 안전도인증업무를 대행하게 한 경우에는 지정인증기관을 말한다)에게 안전도인증 또는 그 변경인증을 신청하여야 한다.",
+        "full_id": "주차장법(시행령)::제12조의2::1",
+        "unit_path": "제12조의2_1",
+        "order": 1,
+        "revision_dates": [
+          "2013.3.23",
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "법 제19조의6제1항 후단에서 \"대통령령으로 정하는 경미한 사항을 변경하는 경우\"란 다음 각 호의 경우를 말한다.",
+        "full_id": "주차장법(시행령)::제12조의2::2",
+        "unit_path": "제12조의2_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  기계식주차장치가 수용할 수 있는 자동차대수를 안전도인증을 받은 대수 미만으로 변경하는 경우",
+        "full_id": "주차장법(시행령)::제12조의2::2::제1호",
+        "unit_path": "제12조의2_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  기계식주차장치의 출입구, 통로, 주차구획의 크기 및 안전장치를 법 제19조의7에 따른 안전기준의 범위에서 변경하는 경우",
+        "full_id": "주차장법(시행령)::제12조의2::2::제2호",
+        "unit_path": "제12조의2_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의3",
+        "unit_number": "12조의3",
+        "title": "기계식주차장의 사용검사 등",
+        "content": "제12조의3(기계식주차장의 사용검사 등)",
+        "full_id": "주차장법(시행령)::제12조의3",
+        "unit_path": "제12조의3",
+        "order": 20
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의9제2항에 따른 사용검사의 유효기간은 3년으로 하고, 정기검사의 유효기간은 2년으로 한다.",
+        "full_id": "주차장법(시행령)::제12조의3::1",
+        "unit_path": "제12조의3_1",
+        "order": 1,
+        "revision_dates": [
+          "2016.1.19"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "제1항에도 불구하고 사용검사 또는 정기검사의 유효기간 만료 전에 법 제19조의23제1항 각 호에 따라 정밀안전검사를 받은 경우 정밀안전검사를 받은 날부터 다음 정기검사의 유효기간을 기산한다.",
+        "full_id": "주차장법(시행령)::제12조의3::2",
+        "unit_path": "제12조의3_2",
+        "order": 2,
+        "revision_dates": [
+          "2018.2.20",
+          "2018.10.23"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "제1항에 따른 정기검사의 검사기간은 사용검사 또는 정기검사의 유효기간 만료일 전후 각각 31일 이내로 한다. 이 경우 해당 검사기간 이내에 적합판정을 받은 경우에는 사용검사 또는 정기검사의 유효기간 만료일에 정기검사를 받은 것으로 본다.",
+        "full_id": "주차장법(시행령)::제12조의3::3",
+        "unit_path": "제12조의3_3",
+        "order": 3,
+        "revision_dates": [
+          "2016.1.19",
+          "2018.2.20"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "법 제19조의9제1항에 따라 기계식주차장을 설치한 자 또는 해당 기계식주차장의 관리자(이하 \"기계식주차장관리자등\"이라 한다)는 기계식주차장치의 주요구동부의 부품, 운반기 및 철골을 변경한 경우에는 해당 주차장을 사용하기 전에 같은 조 제2항제3호가목에 따른 수시검사를 요청해야 한다.",
+        "full_id": "주차장법(시행령)::제12조의3::4",
+        "unit_path": "제12조의3_4",
+        "order": 4,
+        "revision_dates": [
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "5",
+        "unit_number": "5",
+        "title": null,
+        "content": "법 제19조의9제2항 각 호 외의 부분 단서에서 \"대통령령으로 정하는 부득이한 사유\"란 다음 각 호의 경우를 말한다.",
+        "full_id": "주차장법(시행령)::제12조의3::5",
+        "unit_path": "제12조의3_5",
+        "order": 5,
+        "revision_dates": [
+          "2016.1.19",
+          "2018.2.20",
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  기계식주차장이 설치된 건축물의 흠으로 인하여 그 건축물과 기계식주차장의 사용이 불가능하게 된 경우",
+        "full_id": "주차장법(시행령)::제12조의3::5::제1호",
+        "unit_path": "제12조의3_5_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  기계식주차장(법 제19조에 따라 설치가 의무화된 부설주차장의 경우는 제외한다)의 사용을 중지한 경우",
+        "full_id": "주차장법(시행령)::제12조의3::5::제2호",
+        "unit_path": "제12조의3_5_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  천재지변이나 그 밖에 정기검사 또는 수시검사를 받지 못할 부득이한 사유가 발생한 경우",
+        "full_id": "주차장법(시행령)::제12조의3::5::제3호",
+        "unit_path": "제12조의3_5_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "6",
+        "unit_number": "6",
+        "title": null,
+        "content": "제5항 각 호에 따른 사유로 정기검사 또는 법 제19조의9제2항제3호나목에 따른 수시검사를 연기하려는 자는 국토교통부령으로 정하는 바에 따라 다음 각 호에 따른 기한 전에 연기신청을 해야 한다.",
+        "full_id": "주차장법(시행령)::제12조의3::6",
+        "unit_path": "제12조의3_6",
+        "order": 6,
+        "revision_dates": [
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  정기검사의 경우: 사용검사 또는 정기검사의 유효기간 만료일",
+        "full_id": "주차장법(시행령)::제12조의3::6::제1호",
+        "unit_path": "제12조의3_6_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  법 제19조의9제2항제3호나목에 따른 수시검사의 경우: 시장ㆍ군수 또는 구청장이 통보한 수시검사 실시 예정일",
+        "full_id": "주차장법(시행령)::제12조의3::6::제2호",
+        "unit_path": "제12조의3_6_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "7",
+        "unit_number": "7",
+        "title": null,
+        "content": "제6항에 따라 정기검사를 연기한 자는 해당 사유가 없어졌을 때에는 그때부터 2개월 이내에 정기검사를 받아야 한다. 이 경우 정기검사가 끝날 때까지 사용검사 또는 정기검사의 유효기간이 연장된 것으로 본다.",
+        "full_id": "주차장법(시행령)::제12조의3::7",
+        "unit_path": "제12조의3_7",
+        "order": 7,
+        "revision_dates": [
+          "2016.1.19",
+          "2018.2.20",
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "8",
+        "unit_number": "8",
+        "title": null,
+        "content": "제6항에 따라 법 제19조의9제2항제3호나목에 따른 수시검사를 연기한 자는 해당 사유가 없어졌을 때에는 지체 없이 수시검사를 받아야 한다.",
+        "full_id": "주차장법(시행령)::제12조의3::8",
+        "unit_path": "제12조의3_8",
+        "order": 8,
+        "revision_dates": [
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의4",
+        "unit_number": "12조의4",
+        "title": "지정인증기관 등의 지정",
+        "content": "제12조의4(지정인증기관 등의 지정)",
+        "full_id": "주차장법(시행령)::제12조의4",
+        "unit_path": "제12조의4",
+        "order": 21
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의12제1항에 따른 지정인증기관 또는 같은 조 제2항에 따른 전문검사기관으로 지정받으려는 자는 국토교통부령으로 정하는 바에 따라 국토교통부장관에게 지정을 신청해야 한다.",
+        "full_id": "주차장법(시행령)::제12조의4::1",
+        "unit_path": "제12조의4_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "법 제19조의12제1항에 따라 지정인증기관으로 지정받으려는 자가 갖추어야 할 지정요건은 별표 1의2와 같다.",
+        "full_id": "주차장법(시행령)::제12조의4::2",
+        "unit_path": "제12조의4_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "법 제19조의12제2항에 따라 전문검사기관으로 지정받으려는 자가 갖추어야 할 지정요건은 별표 2와 같다.",
+        "full_id": "주차장법(시행령)::제12조의4::3",
+        "unit_path": "제12조의4_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의5",
+        "unit_number": "12조의5",
+        "title": "기계식주차장치의 철거",
+        "content": "제12조의5(기계식주차장치의 철거)",
+        "full_id": "주차장법(시행령)::제12조의5",
+        "unit_path": "제12조의5",
+        "order": 22
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의13제1항제1호에서 \"대통령령으로 정하는 기간\"이란 5년을 말한다.",
+        "full_id": "주차장법(시행령)::제12조의5::1",
+        "unit_path": "제12조의5_1",
+        "order": 1,
+        "revision_dates": [
+          "2016.7.19"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "특별시장ㆍ광역시장ㆍ특별자치도지사ㆍ시장ㆍ군수 또는 구청장은 법 제19조의13제4항에 따라 기계식주차장의 수급 실태 및 이용 특성 등을 고려하여 기계식주차장치의 철거가 필요하다고 인정하는 경우에는 해당 지방자치단체의 조례로 정하는 바에 따라 별표 1에 따른 부설주차장 설치기준을 철거되는 기계식주차장치의 종류별로 2분의 1의 범위에서 완화할 수 있다.",
+        "full_id": "주차장법(시행령)::제12조의5::2",
+        "unit_path": "제12조의5_2",
+        "order": 2,
+        "revision_dates": [
+          "2016.7.19"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "제2항에 따라 완화된 부설주차장 설치기준에 따라 설치한 주차장의 경우 해당 시설물이 증축되거나 부설주차장 설치기준이 강화되는 용도로 변경될 때에는 그 증축 또는 용도변경하는 부분에 대해서는 제2항에도 불구하고 별표 1에 따른 부설주차장 설치기준을 적용한다.",
+        "full_id": "주차장법(시행령)::제12조의5::3",
+        "unit_path": "제12조의5_3",
+        "order": 3,
+        "revision_dates": [
+          "2016.7.19"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의6",
+        "unit_number": "12조의6",
+        "title": "보수업의 등록기준 등",
+        "content": "제12조의6(보수업의 등록기준 등)",
+        "full_id": "주차장법(시행령)::제12조의6",
+        "unit_path": "제12조의6",
+        "order": 23
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의14제1항에 따라 기계식주차장치 보수업(이하 \"보수업\"이라 한다)을 등록하려는 자가 갖추어야 할 기술인력 및 설비는 별표 3과 같다.",
+        "full_id": "주차장법(시행령)::제12조의6::1",
+        "unit_path": "제12조의6_1",
+        "order": 1,
+        "revision_dates": [
+          "2011.12.28"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "시장ㆍ군수 또는 구청장은 법 제19조의14제1항에 따른 등록 신청이 다음 각 호의 어느 하나에 해당하는 경우를 제외하고는 등록을 해 주어야 한다.",
+        "full_id": "주차장법(시행령)::제12조의6::2",
+        "unit_path": "제12조의6_2",
+        "order": 2,
+        "revision_dates": [
+          "2011.12.28"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  등록을 신청한 자가 법 제19조의15 각 호의 어느 하나에 해당하는 경우",
+        "full_id": "주차장법(시행령)::제12조의6::2::제1호",
+        "unit_path": "제12조의6_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  별표 3에 따른 보수업의 등록기준을 갖추지 못한 경우",
+        "full_id": "주차장법(시행령)::제12조의6::2::제2호",
+        "unit_path": "제12조의6_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  그 밖에 법 또는 다른 법령에 따른 제한에 위반되는 경우",
+        "full_id": "주차장법(시행령)::제12조의6::2::제3호",
+        "unit_path": "제12조의6_2_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의7",
+        "unit_number": "12조의7",
+        "title": "기계식주차장의 사고 등에 대한 배상보험",
+        "content": "제12조의7(기계식주차장의 사고 등에 대한 배상보험)",
+        "full_id": "주차장법(시행령)::제12조의7",
+        "unit_path": "제12조의7",
+        "order": 24
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의14제1항에 따라 보수업의 등록을 한 자(이하 \"보수업자\"라 한다) 및 법 제19조의16제2항에 따른 기계식주차장관리자등이 법 제19조의16제1항 및 제2항에 따라 가입해야 하는 보험은 다음 각 호의 기준을 모두 충족하는 것이어야 한다.",
+        "full_id": "주차장법(시행령)::제12조의7::1",
+        "unit_path": "제12조의7_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  보험의 종류는 기계식주차장 사고배상책임보험 또는 이와 같은 내용이 포함된 보험일 것",
+        "full_id": "주차장법(시행령)::제12조의7::1::제1호",
+        "unit_path": "제12조의7_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  보험금액은 다음 각 목의 구분에 따른 기준을 모두 충족할 것",
+        "full_id": "주차장법(시행령)::제12조의7::1::제2호",
+        "unit_path": "제12조의7_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "가",
+        "unit_number": "가",
+        "title": null,
+        "content": "가.  물적 손해의 경우: 사고당 배상한도액이 1억원 이상일 것",
+        "full_id": "주차장법(시행령)::제12조의7::1::제2호::가목",
+        "unit_path": "제12조의7_1_제2호_가목",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "나",
+        "unit_number": "나",
+        "title": null,
+        "content": "나.  인적 손해의 경우: 피해자 1명당 다음 구분에 따른 금액 이상일 것\t\t\t\t\t\t\n\n\t\t\t\t\t\t      1) 사망한 경우: 1억5천만원. 다만, 실제 손해액이 2천만원 미만인 경우에는 2천만원으로 한다.\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t      2) 부상당한 경우: 3천만원\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t      3) 부상에 대한 치료를 마친 후 더 이상의 치료효과를 기대할 수 없고 그 증상이 고정된 상태에서 그 부상으로 인해 신체의 장애(이하 이 조에서 \"후유장애\"라 한다)가 생긴 경우: 1억5천만원\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t      4) 하나의 사건으로 1)부터 3)까지의 손해 중 둘 이상에 해당하게 된 경우: 다음 구분에 따른 계산식에 따라 계산한 금액\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t        가) 부상자가 치료 중 그 부상으로 인해 사망한 경우: 1)의 금액 + 2)의 금액\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t        나) 부상자에게 그 부상으로 인해 후유장애가 생긴 경우: 2)의 금액 + 3)의 금액\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t        다) 후유장애가 생긴 후 후유장애를 유발한 부상으로 인해 사망한 경우: 1)의 금액 + 3)의 금액 - 3)의 금액 중 사망한 날 이후에 해당하는 손해액",
+        "full_id": "주차장법(시행령)::제12조의7::1::제2호::나목",
+        "unit_path": "제12조의7_1_제2호_나목",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  보험은 보수업 또는 기계식주차장치를 운영하는 기간 동안 유지될 것",
+        "full_id": "주차장법(시행령)::제12조의7::1::제3호",
+        "unit_path": "제12조의7_1_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "법 제19조의16제2항에서 \"대통령령으로 정하는 일정 규모 이상의 기계식주차장치\"란 수용할 수 있는 자동차대수가 20대 이상(하나의 주차장에 2개 이상의 기계식주차장치가 설치되어 있는 경우에는 각 기계식주차장치가 수용할 수 있는 자동차대수의 총합이 20대 이상)인 기계식주차장치를 말한다.",
+        "full_id": "주차장법(시행령)::제12조의7::2",
+        "unit_path": "제12조의7_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "보수업자 및 법 제19조의16제2항에 따른 기계식주차장관리자등(이하 이 조에서 \"보수업자등\"이라 한다)은 다음 각 호의 구분에 따른 기한 전에 제1항에 따른 보험에 가입해야 한다.",
+        "full_id": "주차장법(시행령)::제12조의7::3",
+        "unit_path": "제12조의7_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  보수업자: 보수업을 시작하여 최초로 보수계약을 체결하는 날",
+        "full_id": "주차장법(시행령)::제12조의7::3::제1호",
+        "unit_path": "제12조의7_3_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  법 제19조의16제2항에 따른 기계식주차장관리자등: 법 제19조의9제2항제1호에 따른 사용검사를 받은 날 또는 기계식주차장을 양수하여 운영을 시작하는 날",
+        "full_id": "주차장법(시행령)::제12조의7::3::제2호",
+        "unit_path": "제12조의7_3_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "보수업자등은 보험계약을 체결 또는 변경하였을 때에는 보험계약 체결 또는 변경일부터 14일 이내에 보험계약의 체결을 증명하는 서류를 관할 시장ㆍ군수 또는 구청장에게 제출해야 한다. 이 경우 법 제19조의21제1항에 따른 기계식주차장 정보망에 보험계약의 체결을 증명하는 정보를 입력하는 것으로 그 제출을 갈음할 수 있다.",
+        "full_id": "주차장법(시행령)::제12조의7::4",
+        "unit_path": "제12조의7_4",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "5",
+        "unit_number": "5",
+        "title": null,
+        "content": "법 제19조의16제4항에서 \"대통령령으로 정하는 사유\"란 다음 각 호의 사유를 말한다.",
+        "full_id": "주차장법(시행령)::제12조의7::5",
+        "unit_path": "제12조의7_5",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  보수업자가 법 제19조의19제1항에 따른 영업정지 또는 천재지변 등의 사유로 보수업을 운영할 수 없게 된 경우",
+        "full_id": "주차장법(시행령)::제12조의7::5::제1호",
+        "unit_path": "제12조의7_5_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  법 제19조의16제2항에 따른 기계식주차장관리자등이 법 제19조의24제1항에 따른 운행중지명령 또는 천재지변 등의 사유로 기계식주차장을 운영할 수 없게 된 경우",
+        "full_id": "주차장법(시행령)::제12조의7::5::제2호",
+        "unit_path": "제12조의7_5_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  보험회사가 해당 배상보험을 판매하고 있지 않은 경우",
+        "full_id": "주차장법(시행령)::제12조의7::5::제3호",
+        "unit_path": "제12조의7_5_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "4.  「상법」 제650조제1항ㆍ제2항, 제651조, 제652조제1항 또는 제654조에 따른 계약 해지의 사유가 발생한 경우",
+        "full_id": "주차장법(시행령)::제12조의7::5::제4호",
+        "unit_path": "제12조의7_5_제4호",
+        "order": 4,
+        "metadata": "{\"referenced_laws\": [\"상법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의8",
+        "unit_number": "12조의8",
+        "title": null,
+        "content": "제12조의8",
+        "full_id": "주차장법(시행령)::제12조의8",
+        "unit_path": "제12조의8",
+        "order": 25
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의9",
+        "unit_number": "12조의9",
+        "title": "등록취소 등의 기준",
+        "content": "제12조의9(등록취소 등의 기준)",
+        "full_id": "주차장법(시행령)::제12조의9",
+        "unit_path": "제12조의9",
+        "order": 26
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의19제2항에 따른 등록취소 및 영업정지의 기준은 별표 4와 같다.",
+        "full_id": "주차장법(시행령)::제12조의9::1",
+        "unit_path": "제12조의9_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "시장ㆍ군수 또는 구청장은 제1항에 따라 등록취소 및 영업정지 처분을 할 때 위반행위의 정도 및 횟수 등을 고려하여 그 처분을 가중하거나 감경할 수 있다. 이 경우 등록취소의 경우에는 영업정지 6개월로 감경할 수 있고, 영업정지의 경우에는 해당 영업정지기간의 2분의 1의 범위에서 가중하거나 감경할 수 있다.",
+        "full_id": "주차장법(시행령)::제12조의9::2",
+        "unit_path": "제12조의9_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "시장ㆍ군수 또는 구청장은 고의 또는 중과실이 없는 위반행위자가 「소상공인기본법」 제2조에 따른 소상공인에 해당하고, 별표 4에 따른 처분이 영업정지인 경우에는 다음 각 호의 사항을 고려하여 그 처분기준의 100분의 70 범위에서 감경할 수 있다. 다만, 제2항에 따른 감경과 중복하여 적용하지 않는다.",
+        "full_id": "주차장법(시행령)::제12조의9::3",
+        "unit_path": "제12조의9_3",
+        "order": 3,
+        "revision_dates": [
+          "2023.4.25"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  해당 행정처분으로 위반행위자가 더 이상 영업을 영위하기 어렵다고 객관적으로 인정되는지 여부",
+        "full_id": "주차장법(시행령)::제12조의9::3::제1호",
+        "unit_path": "제12조의9_3_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  경제위기 등으로 위반행위자가 속한 시장ㆍ산업 여건이 현저하게 변동되거나 지속적으로 악화된 상태인지 여부",
+        "full_id": "주차장법(시행령)::제12조의9::3::제2호",
+        "unit_path": "제12조의9_3_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의10",
+        "unit_number": "12조의10",
+        "title": "기계식주차장치 관리인의 배치",
+        "content": "제12조의10(기계식주차장치 관리인의 배치)",
+        "full_id": "주차장법(시행령)::제12조의10",
+        "unit_path": "제12조의10",
+        "order": 27
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의11",
+        "unit_number": "12조의11",
+        "title": "기계식주차장 정보망의 구축ㆍ운영 업무의 위탁",
+        "content": "제12조의11(기계식주차장 정보망의 구축ㆍ운영 업무의 위탁)",
+        "full_id": "주차장법(시행령)::제12조의11",
+        "unit_path": "제12조의11",
+        "order": 28,
+        "metadata": "{\"referenced_laws\": [\"한국교통안전공단법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의12",
+        "unit_number": "12조의12",
+        "title": "사고조사위원회의 구성 및 운영",
+        "content": "제12조의12(사고조사위원회의 구성 및 운영)",
+        "full_id": "주차장법(시행령)::제12조의12",
+        "unit_path": "제12조의12",
+        "order": 29
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의22제6항에 따른 사고조사위원회(이하 \"위원회\"라 한다)는 위원장 1명을 포함한 12명 이상 20명 이내의 위원으로 구성한다.",
+        "full_id": "주차장법(시행령)::제12조의12::1",
+        "unit_path": "제12조의12_1",
+        "order": 1,
+        "revision_dates": [
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "위원장은 제3항제2호에 따른 위촉위원 중에서 국토교통부장관이 지명한다.",
+        "full_id": "주차장법(시행령)::제12조의12::2",
+        "unit_path": "제12조의12_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "위원은 다음 각 호의 어느 하나에 해당하는 사람 중에서 국토교통부장관이 임명하거나 위촉한다. 이 경우 제1호에 따른 지명위원은 1명으로 한다.",
+        "full_id": "주차장법(시행령)::제12조의12::3",
+        "unit_path": "제12조의12_3",
+        "order": 3,
+        "revision_dates": [
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  지명위원: 기계식주차장 관련 업무를 담당하는 국토교통부의 4급 이상 공무원 또는 고위공무원단에 속하는 일반직공무원",
+        "full_id": "주차장법(시행령)::제12조의12::3::제1호",
+        "unit_path": "제12조의12_3_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  위촉위원: 기계식주차장에 관한 전문지식이나 경험이 풍부한 사람으로서 다음 각 목의 어느 하나에 해당하는 사람",
+        "full_id": "주차장법(시행령)::제12조의12::3::제2호",
+        "unit_path": "제12조의12_3_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "가",
+        "unit_number": "가",
+        "title": null,
+        "content": "가.  변호사의 자격을 취득한 후 5년 이상이 된 사람",
+        "full_id": "주차장법(시행령)::제12조의12::3::제2호::가목",
+        "unit_path": "제12조의12_3_제2호_가목",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "나",
+        "unit_number": "나",
+        "title": null,
+        "content": "나.  「고등교육법」에 따른 대학에서 기계ㆍ전기 또는 안전관리 분야의 과목을 가르치는 부교수 이상으로 5년 이상 재직하고 있거나 재직하였던 사람",
+        "full_id": "주차장법(시행령)::제12조의12::3::제2호::나목",
+        "unit_path": "제12조의12_3_제2호_나목",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "다",
+        "unit_number": "다",
+        "title": null,
+        "content": "다.  행정기관에서 4급 이상 공무원 또는 고위공무원단에 속하는 일반직공무원으로 2년 이상 재직하였던 사람",
+        "full_id": "주차장법(시행령)::제12조의12::3::제2호::다목",
+        "unit_path": "제12조의12_3_제2호_다목",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "라",
+        "unit_number": "라",
+        "title": null,
+        "content": "라.  한국교통안전공단 또는 법 제19조의12제2항에 따라 지정된 전문검사기관에서 10년 이상 재직하고 있거나 재직하였던 사람",
+        "full_id": "주차장법(시행령)::제12조의12::3::제2호::라목",
+        "unit_path": "제12조의12_3_제2호_라목",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "마",
+        "unit_number": "마",
+        "title": null,
+        "content": "마.  기계식주차장 관련 업체에서 설계, 제작, 시공, 유지보수 등의 업무에 10년 이상 종사하고 있거나 종사하였던 사람",
+        "full_id": "주차장법(시행령)::제12조의12::3::제2호::마목",
+        "unit_path": "제12조의12_3_제2호_마목",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "4",
+        "unit_number": "4",
+        "title": null,
+        "content": "제3항제2호에 따른 위촉위원의 임기는 3년으로 하며, 한 차례만 연임할 수 있다. 다만, 법 제19조의22제8항에 따라 위원회가 해산되는 경우에는 그 해산되는 때에 임기가 만료되는 것으로 한다.",
+        "full_id": "주차장법(시행령)::제12조의12::4",
+        "unit_path": "제12조의12_4",
+        "order": 4,
+        "revision_dates": [
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "5",
+        "unit_number": "5",
+        "title": null,
+        "content": "위원회의 회의는 위원장, 지명위원과 위촉위원 중 위원장이 회의마다 지정하는 5명의 위원으로 구성한다.",
+        "full_id": "주차장법(시행령)::제12조의12::5",
+        "unit_path": "제12조의12_5",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "6",
+        "unit_number": "6",
+        "title": null,
+        "content": "위원회는 필요하다고 인정하면 관계인 또는 관계 전문가를 위원회에 출석시켜 발언하게 하거나 서면으로 의견을 제출하게 할 수 있다.",
+        "full_id": "주차장법(시행령)::제12조의12::6",
+        "unit_path": "제12조의12_6",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "7",
+        "unit_number": "7",
+        "title": null,
+        "content": "위원회에 출석한 위원, 관계인 및 관계 전문가에게 예산의 범위에서 수당과 여비를 지급할 수 있다.",
+        "full_id": "주차장법(시행령)::제12조의12::7",
+        "unit_path": "제12조의12_7",
+        "order": 7
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "8",
+        "unit_number": "8",
+        "title": null,
+        "content": "제1항부터 제7항까지에서 규정한 사항 외에 위원회의 운영에 필요한 사항은 위원회의 의결을 거쳐 위원장이 정한다.",
+        "full_id": "주차장법(시행령)::제12조의12::8",
+        "unit_path": "제12조의12_8",
+        "order": 8
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의13",
+        "unit_number": "12조의13",
+        "title": "위원의 해촉 등",
+        "content": "제12조의13(위원의 해촉 등)",
+        "full_id": "주차장법(시행령)::제12조의13",
+        "unit_path": "제12조의13",
+        "order": 30
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의14",
+        "unit_number": "12조의14",
+        "title": "위원회의 업무",
+        "content": "제12조의14(위원회의 업무)",
+        "full_id": "주차장법(시행령)::제12조의14",
+        "unit_path": "제12조의14",
+        "order": 31
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의15",
+        "unit_number": "12조의15",
+        "title": "기계식주차장의 정밀안전검사 실시시기",
+        "content": "제12조의15(기계식주차장의 정밀안전검사 실시시기)",
+        "full_id": "주차장법(시행령)::제12조의15",
+        "unit_path": "제12조의15",
+        "order": 32
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의23제1항제3호에 따른 정밀안전검사를 최초로 받아야 하는 날은 기계식주차장이 설치된 날부터 10년이 속하는 정기검사의 유효기간 만료일(이하 이 항에서 \"만료일\"이라 한다) 전 180일부터 만료일까지이고, 해당 검사기간에 적합판정을 받은 경우에는 만료일에 정밀안전검사를 받은 것으로 본다.",
+        "full_id": "주차장법(시행령)::제12조의15::1",
+        "unit_path": "제12조의15_1",
+        "order": 1,
+        "revision_dates": [
+          "2018.10.23"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "법 제19조의23제1항제3호에 따른 정밀안전검사는 제1항에 따른 최초 정밀안전검사를 받은 날부터 4년이 되는 날(이하 이 항에서 \"만료일\"이라 한다)의 전후 각각 31일 이내에 받아야 하고, 해당 검사기간에 적합판정을 받은 경우에는 만료일에 정밀안전검사를 받은 것으로 본다.",
+        "full_id": "주차장법(시행령)::제12조의15::2",
+        "unit_path": "제12조의15_2",
+        "order": 2,
+        "revision_dates": [
+          "2018.10.23"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의16",
+        "unit_number": "12조의16",
+        "title": "기계식주차장의 정밀안전검사 기준ㆍ항목 및 방법",
+        "content": "제12조의16(기계식주차장의 정밀안전검사 기준ㆍ항목 및 방법)",
+        "full_id": "주차장법(시행령)::제12조의16",
+        "unit_path": "제12조의16",
+        "order": 33
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의17",
+        "unit_number": "12조의17",
+        "title": "기계식주차장치의 운행중지명령",
+        "content": "제12조의17(기계식주차장치의 운행중지명령)",
+        "full_id": "주차장법(시행령)::제12조의17",
+        "unit_path": "제12조의17",
+        "order": 34
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "시장ㆍ군수 또는 구청장은 법 제19조의24제5항에 따라 인근(법 제19조제4항 후단에 따른 시설물 부지 인근을 말한다. 이하 이 조에서 같다) 주차장을 확보하게 하려는 경우에는 60일의 범위에서 조례로 정하는 기간 내에 인근 주차장을 확보할 것을 해당 기계식주차장관리자등에게 통지해야 한다.",
+        "full_id": "주차장법(시행령)::제12조의17::1",
+        "unit_path": "제12조의17_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "시장ㆍ군수 또는 구청장은 제1항에 따른 기간 내에 기계식주차장관리자등이 인근 주차장을 확보하지 못한 경우에는 인근 주차장을 직접 확보하고 그 비용을 법 제19조의24제5항에 따라 해당 기계식주차장관리자등에게 납부하게 할 수 있다.",
+        "full_id": "주차장법(시행령)::제12조의17::2",
+        "unit_path": "제12조의17_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의18",
+        "unit_number": "12조의18",
+        "title": "부기등기의 절차 등",
+        "content": "제12조의18(부기등기의 절차 등)",
+        "full_id": "주차장법(시행령)::제12조의18",
+        "unit_path": "제12조의18",
+        "order": 35
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조제4항에 따라 시설물의 부지 인근에 부설주차장을 설치한 경우와 법 제19조의4제1항제2호 및 이 영 제12조제1항제6호에 따라 시설물의 내부 또는 그 부지에 설치된 주차장을 인근 부지로 위치를 변경한 경우에 시설물의 소유자는 법 제19조의25제1항에 따라 다음 각 호의 부기등기를 동시에 하여야 한다.",
+        "full_id": "주차장법(시행령)::제12조의18::1",
+        "unit_path": "제12조의18_1",
+        "order": 1,
+        "revision_dates": [
+          "2016.2.11",
+          "2016.7.19",
+          "2018.2.20",
+          "2018.10.23",
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  부설주차장이 시설물의 부지 인근에 설치되었음을 시설물의 소유권등기에 부기등기(이하 \"시설물의 부기등기\"라 한다)",
+        "full_id": "주차장법(시행령)::제12조의18::1::제1호",
+        "unit_path": "제12조의18_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  부설주차장의 용도변경이 금지됨을 부설주차장의 소유권등기에 부기등기(이하 \"부설주차장의 부기등기\"라 한다)",
+        "full_id": "주차장법(시행령)::제12조의18::1::제2호",
+        "unit_path": "제12조의18_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "제12조제1항제5호에 따라 부설주차장을 그 부지 인근의 범위에서 위치 변경하여 설치한 경우에 시설물의 소유자는 다음 각 호의 등기를 동시에 하여야 한다.",
+        "full_id": "주차장법(시행령)::제12조의18::2",
+        "unit_path": "제12조의18_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  시설물의 부기등기에 명시된 부설주차장 소재지의 변경등기",
+        "full_id": "주차장법(시행령)::제12조의18::2::제1호",
+        "unit_path": "제12조의18_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  새로 이전된 부설주차장의 부기등기",
+        "full_id": "주차장법(시행령)::제12조의18::2::제2호",
+        "unit_path": "제12조의18_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "제1항 및 제2항에도 불구하고 시설물의 소유권보존등기를 할 수 없는 시설물인 경우에는 부설주차장의 부기등기만을 하여야 한다.",
+        "full_id": "주차장법(시행령)::제12조의18::3",
+        "unit_path": "제12조의18_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의19",
+        "unit_number": "12조의19",
+        "title": "부기등기의 내용",
+        "content": "제12조의19(부기등기의 내용)",
+        "full_id": "주차장법(시행령)::제12조의19",
+        "unit_path": "제12조의19",
+        "order": 36
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "시설물의 부기등기에는 \"「주차장법」에 따른 부설주차장이 시설물의 부지 인근에 별도로 설치되어 있음\"이라는 내용과 그 부설주차장의 소재지를 명시하여야 한다.",
+        "full_id": "주차장법(시행령)::제12조의19::1",
+        "unit_path": "제12조의19_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "부설주차장의 부기등기에는 \"이 토지(또는 건물)는 「주차장법」에 따라 시설물의 부지 인근에 설치된 부설주차장으로서 같은 법 시행령 제12조제1항 각 호의 어느 하나에 해당하여 용도변경이 인정되기 전에는 주차장 외의 용도로 사용할 수 없음\"이라는 내용과 그 시설물의 소재지를 명시하여야 한다.",
+        "full_id": "주차장법(시행령)::제12조의19::2",
+        "unit_path": "제12조의19_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "12조의20",
+        "unit_number": "12조의20",
+        "title": "부기등기의 말소 신청",
+        "content": "제12조의20(부기등기의 말소 신청)",
+        "full_id": "주차장법(시행령)::제12조의20",
+        "unit_path": "제12조의20",
+        "order": 37
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제19조의25제1항에 따라 부기등기한 부설주차장으로서 제12조제1항 각 호의 어느 하나에 해당하여 용도변경이 인정된 경우에 시설물의 소유자는 다음 각 호의 구분에 따라 부기등기의 말소를 신청하여야 한다.",
+        "full_id": "주차장법(시행령)::제12조의20::1",
+        "unit_path": "제12조의20_1",
+        "order": 1,
+        "revision_dates": [
+          "2016.2.11",
+          "2016.7.19",
+          "2018.2.20",
+          "2018.10.23",
+          "2024.8.16"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  제12조제1항제1호ㆍ제3호 또는 제4호 중 어느 하나에 해당하여 해당 부설주차장 전부에 대한 용도변경이 인정된 경우: 시설물의 부기등기 및 부설주차장의 부기등기의 말소 동시 신청",
+        "full_id": "주차장법(시행령)::제12조의20::1::제1호",
+        "unit_path": "제12조의20_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  제12조제1항제5호에 해당하여 용도변경이 인정된 경우: 종전 부설주차장의 부기등기의 말소 신청",
+        "full_id": "주차장법(시행령)::제12조의20::1::제2호",
+        "unit_path": "제12조의20_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "제1항에도 불구하고 다음 각 호의 어느 하나에 해당하는 경우에는 해당 구분에 따라 시설물의 부기등기 또는 부설주차장의 부기등기의 말소를 신청하여야 한다.",
+        "full_id": "주차장법(시행령)::제12조의20::2",
+        "unit_path": "제12조의20_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  시설물의 부기등기가 되어 있지 아니한 경우: 부설주차장의 부기등기만을 말소 신청",
+        "full_id": "주차장법(시행령)::제12조의20::2::제1호",
+        "unit_path": "제12조의20_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  시설물의 소유자와 부설주차장이 설치된 토지ㆍ건물의 소유자가 다른 경우: 해당 소유자가 시설물의 부기등기 및 부설주차장의 부기등기의 말소를 각자 신청",
+        "full_id": "주차장법(시행령)::제12조의20::2::제2호",
+        "unit_path": "제12조의20_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "13조",
+        "unit_number": "13조",
+        "title": "점용료 및 사용료의 감면",
+        "content": "제13조(점용료 및 사용료의 감면)",
+        "full_id": "주차장법(시행령)::제13조",
+        "unit_path": "제13조",
+        "order": 38
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제20조제2항에서 \"대통령령으로 정하는 학교 등 공공시설\"이란 초등학교ㆍ중학교ㆍ고등학교ㆍ공용의 청사ㆍ주차장 및 운동장을 말한다.",
+        "full_id": "주차장법(시행령)::제13조::1",
+        "unit_path": "제13조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "법 제20조제2항에 따라 노외주차장을 도로ㆍ광장ㆍ공원 및 제1항의 공공시설의 지하에 설치하는 경우에는 노외주차장의 최초 사용기간 동안 그 부지에 대한 점용료와 그 시설물에 대한 사용료를 면제한다.",
+        "full_id": "주차장법(시행령)::제13조::2",
+        "unit_path": "제13조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "법 제20조제3항에서 \"대통령령으로 정하는 공공시설\"이란 공용의 청사ㆍ하천ㆍ유수지(遊水池)ㆍ주차장 및 운동장을 말한다.",
+        "full_id": "주차장법(시행령)::제13조::3",
+        "unit_path": "제13조_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "14조",
+        "unit_number": "14조",
+        "title": "보조",
+        "content": "제14조(보조)",
+        "full_id": "주차장법(시행령)::제14조",
+        "unit_path": "제14조",
+        "order": 39
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "국가나 지방자치단체는 법 제21조제1항에 따라 노외주차장을 설치하는 자에 대하여 다음 각 호의 구분에 따른 범위에서 그 설치비용을 보조할 수 있다.",
+        "full_id": "주차장법(시행령)::제14조::1",
+        "unit_path": "제14조_1",
+        "order": 1,
+        "revision_dates": [
+          "2021.4.20"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  특별시장ㆍ광역시장, 시장ㆍ군수 또는 구청장이 설치하는 노외주차장의 경우: 설치비용의 전부 또는 일부",
+        "full_id": "주차장법(시행령)::제14조::1::제1호",
+        "unit_path": "제14조_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  특별시장ㆍ광역시장, 시장ㆍ군수 또는 구청장이 아닌 자가 설치하는 노외주차장으로서 주차 용도에 제공하는 면적이 2천제곱미터 이상인 노외주차장의 경우: 설치비용(토지매입비는 제외한다. 이하 같다)의 2분의 1. 다만, 국유지ㆍ공유지의 점용허가를 받아 설치하는 경우에는 설치비용의 3분의 1을 보조할 수 있다.",
+        "full_id": "주차장법(시행령)::제14조::1::제2호",
+        "unit_path": "제14조_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "3",
+        "unit_number": "3",
+        "title": null,
+        "content": "3.  특별시장ㆍ광역시장, 시장ㆍ군수 또는 구청장이 아닌 자가 설치하는 노외주차장으로서 주차 용도에 제공하는 면적이 1천제곱미터 이상 2천제곱미터 미만인 노외주차장의 경우: 설치비용의 3분의 1. 다만, 국유지ㆍ공유지의 점용허가를 받아 설치하는 경우에는 설치비용의 5분의 1을 보조할 수 있다.",
+        "full_id": "주차장법(시행령)::제14조::1::제3호",
+        "unit_path": "제14조_1_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "국가는 법 제21조제3항에 따라 주차장 환경개선사업을 하는 자에 대하여 다음 각 호의 구분에 따른 범위에서 해당 사업의 추진에 필요한 비용을 보조할 수 있다.",
+        "full_id": "주차장법(시행령)::제14조::2",
+        "unit_path": "제14조_2",
+        "order": 2,
+        "revision_dates": [
+          "2021.4.20"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "1.  특별시장ㆍ광역시장, 시장ㆍ군수 또는 구청장이 추진하는 주차장 환경개선사업의 경우: 사업비용의 일부",
+        "full_id": "주차장법(시행령)::제14조::2::제1호",
+        "unit_path": "제14조_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "2.  제1호 외의 자가 추진하는 주차장 환경개선사업의 경우: 다음 각 목의 구분에 따른 비용",
+        "full_id": "주차장법(시행령)::제14조::2::제2호",
+        "unit_path": "제14조_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "가",
+        "unit_number": "가",
+        "title": null,
+        "content": "가.  주차 용도에 제공하는 면적이 2천제곱미터 이상인 경우: 사업비용의 2분의 1",
+        "full_id": "주차장법(시행령)::제14조::2::제2호::가목",
+        "unit_path": "제14조_2_제2호_가목",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "나",
+        "unit_number": "나",
+        "title": null,
+        "content": "나.  주차 용도에 제공하는 면적이 1천제곱미터 이상 2천제곱미터 미만인 경우: 사업비용의 3분의 1",
+        "full_id": "주차장법(시행령)::제14조::2::제2호::나목",
+        "unit_path": "제14조_2_제2호_나목",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "15조",
+        "unit_number": "15조",
+        "title": "주차장특별회계의 재원",
+        "content": "제15조(주차장특별회계의 재원)",
+        "full_id": "주차장법(시행령)::제15조",
+        "unit_path": "제15조",
+        "order": 40
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "1",
+        "unit_number": "1",
+        "title": null,
+        "content": "법 제21조의2제2항제5호에서 \"대통령령으로 정하는 일정 비율\"이란 「지방세법」 제112조(같은 조 제1항제1호는 제외한다)에 따른 재산세 징수액의 10퍼센트를 말한다.",
+        "full_id": "주차장법(시행령)::제15조::1",
+        "unit_path": "제15조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "2",
+        "unit_number": "2",
+        "title": null,
+        "content": "법 제21조의2제3항제1호에서 \"대통령령으로 정하는 납부금\"이란 법 제19조제5항에 따른 노외주차장 설치를 위한 비용의 납부금 중 구청장이 설치한 노외주차장을 무상으로 사용하게 하는 경우의 납부금을 말한다.",
+        "full_id": "주차장법(시행령)::제15조::2",
+        "unit_path": "제15조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "16조",
+        "unit_number": "16조",
+        "title": "감독",
+        "content": "제16조(감독)",
+        "full_id": "주차장법(시행령)::제16조",
+        "unit_path": "제16조",
+        "order": 41
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "16조의2",
+        "unit_number": "16조의2",
+        "title": null,
+        "content": "제16조의2",
+        "full_id": "주차장법(시행령)::제16조의2",
+        "unit_path": "제16조의2",
+        "order": 42
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "17조",
+        "unit_number": "17조",
+        "title": "과징금을 부과할 위반행위와 과징금의 금액 등",
+        "content": "제17조(과징금을 부과할 위반행위와 과징금의 금액 등)",
+        "full_id": "주차장법(시행령)::제17조",
+        "unit_path": "제17조",
+        "order": 43
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "17조의2",
+        "unit_number": "17조의2",
+        "title": "규제의 재검토",
+        "content": "제17조의2(규제의 재검토)",
+        "full_id": "주차장법(시행령)::제17조의2",
+        "unit_path": "제17조의2",
+        "order": 44
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "18조",
+        "unit_number": "18조",
+        "title": "과태료의 부과기준",
+        "content": "제18조(과태료의 부과기준)",
+        "full_id": "주차장법(시행령)::제18조",
+        "unit_path": "제18조",
+        "order": 45
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "주차장법",
+        "law_type": "시행령",
+        "law_category": "시행령",
+        "base_law_name": "주차장법",
+        "agent_id": "agent_주차장법",
+        "number": "19조",
+        "unit_number": "19조",
+        "title": null,
+        "content": "제19조",
+        "full_id": "주차장법(시행령)::제19조",
+        "unit_path": "제19조",
+        "order": 46
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제1조",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제1조의2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제1조의2",
+      "to_id": "주차장법(시행령)::제1조의2::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제1조의2::1",
+      "to_id": "주차장법(시행령)::제1조의2::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제1조의2::1",
+      "to_id": "주차장법(시행령)::제1조의2::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제1조의2",
+      "to_id": "주차장법(시행령)::제1조의2::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제1조의2",
+      "to_id": "주차장법(시행령)::제1조의2::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제2조",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제2조의2",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제3조",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제3조의2",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제4조",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제5조",
+      "properties": {
+        "order": 8
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제5조의2",
+      "properties": {
+        "order": 9
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제6조",
+      "properties": {
+        "order": 10
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조",
+      "to_id": "주차장법(시행령)::제6조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조::1",
+      "to_id": "주차장법(시행령)::제6조::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조::1",
+      "to_id": "주차장법(시행령)::제6조::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조::1",
+      "to_id": "주차장법(시행령)::제6조::1::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조::1",
+      "to_id": "주차장법(시행령)::제6조::1::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조::1",
+      "to_id": "주차장법(시행령)::제6조::1::제5호",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조::1",
+      "to_id": "주차장법(시행령)::제6조::1::제6호",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조::1",
+      "to_id": "주차장법(시행령)::제6조::1::제7호",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조",
+      "to_id": "주차장법(시행령)::제6조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조",
+      "to_id": "주차장법(시행령)::제6조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조",
+      "to_id": "주차장법(시행령)::제6조::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조::4",
+      "to_id": "주차장법(시행령)::제6조::4::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제6조::4",
+      "to_id": "주차장법(시행령)::제6조::4::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제7조",
+      "properties": {
+        "order": 11
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제7조",
+      "to_id": "주차장법(시행령)::제7조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제7조::1",
+      "to_id": "주차장법(시행령)::제7조::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제7조::1",
+      "to_id": "주차장법(시행령)::제7조::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제7조::1",
+      "to_id": "주차장법(시행령)::제7조::1::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제7조::1",
+      "to_id": "주차장법(시행령)::제7조::1::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제7조",
+      "to_id": "주차장법(시행령)::제7조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제7조::2",
+      "to_id": "주차장법(시행령)::제7조::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제7조::2",
+      "to_id": "주차장법(시행령)::제7조::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제8조",
+      "properties": {
+        "order": 12
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조",
+      "to_id": "주차장법(시행령)::제8조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조::1",
+      "to_id": "주차장법(시행령)::제8조::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조::1::제1호",
+      "to_id": "주차장법(시행령)::제8조::1::제1호::가목",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조::1::제1호",
+      "to_id": "주차장법(시행령)::제8조::1::제1호::나목",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조::1",
+      "to_id": "주차장법(시행령)::제8조::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조::1",
+      "to_id": "주차장법(시행령)::제8조::1::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조",
+      "to_id": "주차장법(시행령)::제8조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조::2",
+      "to_id": "주차장법(시행령)::제8조::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조::2",
+      "to_id": "주차장법(시행령)::제8조::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조::2",
+      "to_id": "주차장법(시행령)::제8조::2::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조::2",
+      "to_id": "주차장법(시행령)::제8조::2::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제8조",
+      "to_id": "주차장법(시행령)::제8조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제9조",
+      "properties": {
+        "order": 13
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제10조",
+      "properties": {
+        "order": 14
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제10조",
+      "to_id": "주차장법(시행령)::제10조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제10조",
+      "to_id": "주차장법(시행령)::제10조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제10조",
+      "to_id": "주차장법(시행령)::제10조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제10조",
+      "to_id": "주차장법(시행령)::제10조::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제11조",
+      "properties": {
+        "order": 15
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제11조",
+      "to_id": "주차장법(시행령)::제11조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제11조",
+      "to_id": "주차장법(시행령)::제11조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제11조의2",
+      "properties": {
+        "order": 16
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제11조의3",
+      "properties": {
+        "order": 17
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조",
+      "properties": {
+        "order": 18
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조",
+      "to_id": "주차장법(시행령)::제12조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1",
+      "to_id": "주차장법(시행령)::제12조::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1",
+      "to_id": "주차장법(시행령)::제12조::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1",
+      "to_id": "주차장법(시행령)::제12조::1::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1",
+      "to_id": "주차장법(시행령)::제12조::1::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1",
+      "to_id": "주차장법(시행령)::제12조::1::제5호",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1",
+      "to_id": "주차장법(시행령)::제12조::1::제6호",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1",
+      "to_id": "주차장법(시행령)::제12조::1::제7호",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1::제7호",
+      "to_id": "주차장법(시행령)::제12조::1::제7호::가목",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1::제7호",
+      "to_id": "주차장법(시행령)::제12조::1::제7호::나목",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조::1::제7호",
+      "to_id": "주차장법(시행령)::제12조::1::제7호::다목",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조",
+      "to_id": "주차장법(시행령)::제12조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조",
+      "to_id": "주차장법(시행령)::제12조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의2",
+      "properties": {
+        "order": 19
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의2",
+      "to_id": "주차장법(시행령)::제12조의2::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의2",
+      "to_id": "주차장법(시행령)::제12조의2::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의2::2",
+      "to_id": "주차장법(시행령)::제12조의2::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의2::2",
+      "to_id": "주차장법(시행령)::제12조의2::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의3",
+      "properties": {
+        "order": 20
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3",
+      "to_id": "주차장법(시행령)::제12조의3::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3",
+      "to_id": "주차장법(시행령)::제12조의3::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3",
+      "to_id": "주차장법(시행령)::제12조의3::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3",
+      "to_id": "주차장법(시행령)::제12조의3::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3",
+      "to_id": "주차장법(시행령)::제12조의3::5",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3::5",
+      "to_id": "주차장법(시행령)::제12조의3::5::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3::5",
+      "to_id": "주차장법(시행령)::제12조의3::5::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3::5",
+      "to_id": "주차장법(시행령)::제12조의3::5::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3",
+      "to_id": "주차장법(시행령)::제12조의3::6",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3::6",
+      "to_id": "주차장법(시행령)::제12조의3::6::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3::6",
+      "to_id": "주차장법(시행령)::제12조의3::6::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3",
+      "to_id": "주차장법(시행령)::제12조의3::7",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의3",
+      "to_id": "주차장법(시행령)::제12조의3::8",
+      "properties": {
+        "order": 8
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의4",
+      "properties": {
+        "order": 21
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의4",
+      "to_id": "주차장법(시행령)::제12조의4::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의4",
+      "to_id": "주차장법(시행령)::제12조의4::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의4",
+      "to_id": "주차장법(시행령)::제12조의4::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의5",
+      "properties": {
+        "order": 22
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의5",
+      "to_id": "주차장법(시행령)::제12조의5::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의5",
+      "to_id": "주차장법(시행령)::제12조의5::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의5",
+      "to_id": "주차장법(시행령)::제12조의5::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의6",
+      "properties": {
+        "order": 23
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의6",
+      "to_id": "주차장법(시행령)::제12조의6::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의6",
+      "to_id": "주차장법(시행령)::제12조의6::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의6::2",
+      "to_id": "주차장법(시행령)::제12조의6::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의6::2",
+      "to_id": "주차장법(시행령)::제12조의6::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의6::2",
+      "to_id": "주차장법(시행령)::제12조의6::2::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의7",
+      "properties": {
+        "order": 24
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7",
+      "to_id": "주차장법(시행령)::제12조의7::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::1",
+      "to_id": "주차장법(시행령)::제12조의7::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::1",
+      "to_id": "주차장법(시행령)::제12조의7::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::1::제2호",
+      "to_id": "주차장법(시행령)::제12조의7::1::제2호::가목",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::1::제2호",
+      "to_id": "주차장법(시행령)::제12조의7::1::제2호::나목",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::1",
+      "to_id": "주차장법(시행령)::제12조의7::1::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7",
+      "to_id": "주차장법(시행령)::제12조의7::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7",
+      "to_id": "주차장법(시행령)::제12조의7::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::3",
+      "to_id": "주차장법(시행령)::제12조의7::3::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::3",
+      "to_id": "주차장법(시행령)::제12조의7::3::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7",
+      "to_id": "주차장법(시행령)::제12조의7::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7",
+      "to_id": "주차장법(시행령)::제12조의7::5",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::5",
+      "to_id": "주차장법(시행령)::제12조의7::5::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::5",
+      "to_id": "주차장법(시행령)::제12조의7::5::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::5",
+      "to_id": "주차장법(시행령)::제12조의7::5::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의7::5",
+      "to_id": "주차장법(시행령)::제12조의7::5::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의8",
+      "properties": {
+        "order": 25
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의9",
+      "properties": {
+        "order": 26
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의9",
+      "to_id": "주차장법(시행령)::제12조의9::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의9",
+      "to_id": "주차장법(시행령)::제12조의9::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의9",
+      "to_id": "주차장법(시행령)::제12조의9::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의9::3",
+      "to_id": "주차장법(시행령)::제12조의9::3::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의9::3",
+      "to_id": "주차장법(시행령)::제12조의9::3::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의10",
+      "properties": {
+        "order": 27
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의11",
+      "properties": {
+        "order": 28
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의12",
+      "properties": {
+        "order": 29
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12",
+      "to_id": "주차장법(시행령)::제12조의12::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12",
+      "to_id": "주차장법(시행령)::제12조의12::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12",
+      "to_id": "주차장법(시행령)::제12조의12::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12::3",
+      "to_id": "주차장법(시행령)::제12조의12::3::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12::3",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12::3::제2호",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호::가목",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12::3::제2호",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호::나목",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12::3::제2호",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호::다목",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12::3::제2호",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호::라목",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12::3::제2호",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호::마목",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12",
+      "to_id": "주차장법(시행령)::제12조의12::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12",
+      "to_id": "주차장법(시행령)::제12조의12::5",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12",
+      "to_id": "주차장법(시행령)::제12조의12::6",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12",
+      "to_id": "주차장법(시행령)::제12조의12::7",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의12",
+      "to_id": "주차장법(시행령)::제12조의12::8",
+      "properties": {
+        "order": 8
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의13",
+      "properties": {
+        "order": 30
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의14",
+      "properties": {
+        "order": 31
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의15",
+      "properties": {
+        "order": 32
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의15",
+      "to_id": "주차장법(시행령)::제12조의15::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의15",
+      "to_id": "주차장법(시행령)::제12조의15::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의16",
+      "properties": {
+        "order": 33
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의17",
+      "properties": {
+        "order": 34
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의17",
+      "to_id": "주차장법(시행령)::제12조의17::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의17",
+      "to_id": "주차장법(시행령)::제12조의17::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의18",
+      "properties": {
+        "order": 35
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의18",
+      "to_id": "주차장법(시행령)::제12조의18::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의18::1",
+      "to_id": "주차장법(시행령)::제12조의18::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의18::1",
+      "to_id": "주차장법(시행령)::제12조의18::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의18",
+      "to_id": "주차장법(시행령)::제12조의18::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의18::2",
+      "to_id": "주차장법(시행령)::제12조의18::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의18::2",
+      "to_id": "주차장법(시행령)::제12조의18::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의18",
+      "to_id": "주차장법(시행령)::제12조의18::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의19",
+      "properties": {
+        "order": 36
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의19",
+      "to_id": "주차장법(시행령)::제12조의19::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의19",
+      "to_id": "주차장법(시행령)::제12조의19::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제12조의20",
+      "properties": {
+        "order": 37
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의20",
+      "to_id": "주차장법(시행령)::제12조의20::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의20::1",
+      "to_id": "주차장법(시행령)::제12조의20::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의20::1",
+      "to_id": "주차장법(시행령)::제12조의20::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의20",
+      "to_id": "주차장법(시행령)::제12조의20::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의20::2",
+      "to_id": "주차장법(시행령)::제12조의20::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제12조의20::2",
+      "to_id": "주차장법(시행령)::제12조의20::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제13조",
+      "properties": {
+        "order": 38
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제13조",
+      "to_id": "주차장법(시행령)::제13조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제13조",
+      "to_id": "주차장법(시행령)::제13조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제13조",
+      "to_id": "주차장법(시행령)::제13조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제14조",
+      "properties": {
+        "order": 39
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제14조",
+      "to_id": "주차장법(시행령)::제14조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제14조::1",
+      "to_id": "주차장법(시행령)::제14조::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제14조::1",
+      "to_id": "주차장법(시행령)::제14조::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제14조::1",
+      "to_id": "주차장법(시행령)::제14조::1::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제14조",
+      "to_id": "주차장법(시행령)::제14조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제14조::2",
+      "to_id": "주차장법(시행령)::제14조::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제14조::2",
+      "to_id": "주차장법(시행령)::제14조::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제14조::2::제2호",
+      "to_id": "주차장법(시행령)::제14조::2::제2호::가목",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제14조::2::제2호",
+      "to_id": "주차장법(시행령)::제14조::2::제2호::나목",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제15조",
+      "properties": {
+        "order": 40
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제15조",
+      "to_id": "주차장법(시행령)::제15조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)::제15조",
+      "to_id": "주차장법(시행령)::제15조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제16조",
+      "properties": {
+        "order": 41
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제16조의2",
+      "properties": {
+        "order": 42
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제17조",
+      "properties": {
+        "order": 43
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제17조의2",
+      "properties": {
+        "order": 44
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제18조",
+      "properties": {
+        "order": 45
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "주차장법(시행령)",
+      "to_id": "주차장법(시행령)::제19조",
+      "properties": {
+        "order": 46
+      }
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제1조",
+      "to_id": "주차장법(시행령)::제1조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제1조의2",
+      "to_id": "주차장법(시행령)::제2조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제2조",
+      "to_id": "주차장법(시행령)::제2조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제2조의2",
+      "to_id": "주차장법(시행령)::제3조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제3조",
+      "to_id": "주차장법(시행령)::제3조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제3조의2",
+      "to_id": "주차장법(시행령)::제4조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제4조",
+      "to_id": "주차장법(시행령)::제5조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제5조",
+      "to_id": "주차장법(시행령)::제5조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제5조의2",
+      "to_id": "주차장법(시행령)::제6조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조",
+      "to_id": "주차장법(시행령)::제7조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제7조",
+      "to_id": "주차장법(시행령)::제8조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제8조",
+      "to_id": "주차장법(시행령)::제9조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제9조",
+      "to_id": "주차장법(시행령)::제10조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제10조",
+      "to_id": "주차장법(시행령)::제11조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제11조",
+      "to_id": "주차장법(시행령)::제11조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제11조의2",
+      "to_id": "주차장법(시행령)::제11조의3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제11조의3",
+      "to_id": "주차장법(시행령)::제12조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조",
+      "to_id": "주차장법(시행령)::제12조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의2",
+      "to_id": "주차장법(시행령)::제12조의3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3",
+      "to_id": "주차장법(시행령)::제12조의4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의4",
+      "to_id": "주차장법(시행령)::제12조의5",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의5",
+      "to_id": "주차장법(시행령)::제12조의6",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의6",
+      "to_id": "주차장법(시행령)::제12조의7",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7",
+      "to_id": "주차장법(시행령)::제12조의8",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의8",
+      "to_id": "주차장법(시행령)::제12조의9",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의9",
+      "to_id": "주차장법(시행령)::제12조의10",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의10",
+      "to_id": "주차장법(시행령)::제12조의11",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의11",
+      "to_id": "주차장법(시행령)::제12조의12",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12",
+      "to_id": "주차장법(시행령)::제12조의13",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의13",
+      "to_id": "주차장법(시행령)::제12조의14",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의14",
+      "to_id": "주차장법(시행령)::제12조의15",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의15",
+      "to_id": "주차장법(시행령)::제12조의16",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의16",
+      "to_id": "주차장법(시행령)::제12조의17",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의17",
+      "to_id": "주차장법(시행령)::제12조의18",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의18",
+      "to_id": "주차장법(시행령)::제12조의19",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의19",
+      "to_id": "주차장법(시행령)::제12조의20",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의20",
+      "to_id": "주차장법(시행령)::제13조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제13조",
+      "to_id": "주차장법(시행령)::제14조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제14조",
+      "to_id": "주차장법(시행령)::제15조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제15조",
+      "to_id": "주차장법(시행령)::제16조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제16조",
+      "to_id": "주차장법(시행령)::제16조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제16조의2",
+      "to_id": "주차장법(시행령)::제17조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제17조",
+      "to_id": "주차장법(시행령)::제17조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제17조의2",
+      "to_id": "주차장법(시행령)::제18조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제18조",
+      "to_id": "주차장법(시행령)::제19조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제1조의2::1",
+      "to_id": "주차장법(시행령)::제1조의2::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제1조의2::2",
+      "to_id": "주차장법(시행령)::제1조의2::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제1조의2::1::제1호",
+      "to_id": "주차장법(시행령)::제1조의2::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::1",
+      "to_id": "주차장법(시행령)::제6조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::2",
+      "to_id": "주차장법(시행령)::제6조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::3",
+      "to_id": "주차장법(시행령)::제6조::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::1::제1호",
+      "to_id": "주차장법(시행령)::제6조::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::1::제2호",
+      "to_id": "주차장법(시행령)::제6조::1::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::1::제3호",
+      "to_id": "주차장법(시행령)::제6조::1::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::1::제4호",
+      "to_id": "주차장법(시행령)::제6조::1::제5호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::1::제5호",
+      "to_id": "주차장법(시행령)::제6조::1::제6호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::1::제6호",
+      "to_id": "주차장법(시행령)::제6조::1::제7호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제6조::4::제1호",
+      "to_id": "주차장법(시행령)::제6조::4::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제7조::1",
+      "to_id": "주차장법(시행령)::제7조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제7조::1::제1호",
+      "to_id": "주차장법(시행령)::제7조::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제7조::1::제2호",
+      "to_id": "주차장법(시행령)::제7조::1::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제7조::1::제3호",
+      "to_id": "주차장법(시행령)::제7조::1::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제7조::2::제1호",
+      "to_id": "주차장법(시행령)::제7조::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제8조::1",
+      "to_id": "주차장법(시행령)::제8조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제8조::2",
+      "to_id": "주차장법(시행령)::제8조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제8조::1::제1호",
+      "to_id": "주차장법(시행령)::제8조::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제8조::1::제2호",
+      "to_id": "주차장법(시행령)::제8조::1::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제8조::1::제1호::가목",
+      "to_id": "주차장법(시행령)::제8조::1::제1호::나목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제8조::2::제1호",
+      "to_id": "주차장법(시행령)::제8조::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제8조::2::제2호",
+      "to_id": "주차장법(시행령)::제8조::2::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제8조::2::제3호",
+      "to_id": "주차장법(시행령)::제8조::2::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제10조::1",
+      "to_id": "주차장법(시행령)::제10조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제10조::2",
+      "to_id": "주차장법(시행령)::제10조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제10조::3",
+      "to_id": "주차장법(시행령)::제10조::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제11조::1",
+      "to_id": "주차장법(시행령)::제11조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::1",
+      "to_id": "주차장법(시행령)::제12조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::2",
+      "to_id": "주차장법(시행령)::제12조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::1::제1호",
+      "to_id": "주차장법(시행령)::제12조::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::1::제2호",
+      "to_id": "주차장법(시행령)::제12조::1::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::1::제3호",
+      "to_id": "주차장법(시행령)::제12조::1::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::1::제4호",
+      "to_id": "주차장법(시행령)::제12조::1::제5호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::1::제5호",
+      "to_id": "주차장법(시행령)::제12조::1::제6호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::1::제6호",
+      "to_id": "주차장법(시행령)::제12조::1::제7호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::1::제7호::가목",
+      "to_id": "주차장법(시행령)::제12조::1::제7호::나목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조::1::제7호::나목",
+      "to_id": "주차장법(시행령)::제12조::1::제7호::다목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의2::1",
+      "to_id": "주차장법(시행령)::제12조의2::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의2::2::제1호",
+      "to_id": "주차장법(시행령)::제12조의2::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::1",
+      "to_id": "주차장법(시행령)::제12조의3::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::2",
+      "to_id": "주차장법(시행령)::제12조의3::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::3",
+      "to_id": "주차장법(시행령)::제12조의3::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::4",
+      "to_id": "주차장법(시행령)::제12조의3::5",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::5",
+      "to_id": "주차장법(시행령)::제12조의3::6",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::6",
+      "to_id": "주차장법(시행령)::제12조의3::7",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::7",
+      "to_id": "주차장법(시행령)::제12조의3::8",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::5::제1호",
+      "to_id": "주차장법(시행령)::제12조의3::5::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::5::제2호",
+      "to_id": "주차장법(시행령)::제12조의3::5::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의3::6::제1호",
+      "to_id": "주차장법(시행령)::제12조의3::6::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의4::1",
+      "to_id": "주차장법(시행령)::제12조의4::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의4::2",
+      "to_id": "주차장법(시행령)::제12조의4::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의5::1",
+      "to_id": "주차장법(시행령)::제12조의5::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의5::2",
+      "to_id": "주차장법(시행령)::제12조의5::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의6::1",
+      "to_id": "주차장법(시행령)::제12조의6::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의6::2::제1호",
+      "to_id": "주차장법(시행령)::제12조의6::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의6::2::제2호",
+      "to_id": "주차장법(시행령)::제12조의6::2::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::1",
+      "to_id": "주차장법(시행령)::제12조의7::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::2",
+      "to_id": "주차장법(시행령)::제12조의7::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::3",
+      "to_id": "주차장법(시행령)::제12조의7::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::4",
+      "to_id": "주차장법(시행령)::제12조의7::5",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::1::제1호",
+      "to_id": "주차장법(시행령)::제12조의7::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::1::제2호",
+      "to_id": "주차장법(시행령)::제12조의7::1::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::1::제2호::가목",
+      "to_id": "주차장법(시행령)::제12조의7::1::제2호::나목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::3::제1호",
+      "to_id": "주차장법(시행령)::제12조의7::3::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::5::제1호",
+      "to_id": "주차장법(시행령)::제12조의7::5::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::5::제2호",
+      "to_id": "주차장법(시행령)::제12조의7::5::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의7::5::제3호",
+      "to_id": "주차장법(시행령)::제12조의7::5::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의9::1",
+      "to_id": "주차장법(시행령)::제12조의9::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의9::2",
+      "to_id": "주차장법(시행령)::제12조의9::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의9::3::제1호",
+      "to_id": "주차장법(시행령)::제12조의9::3::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::1",
+      "to_id": "주차장법(시행령)::제12조의12::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::2",
+      "to_id": "주차장법(시행령)::제12조의12::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::3",
+      "to_id": "주차장법(시행령)::제12조의12::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::4",
+      "to_id": "주차장법(시행령)::제12조의12::5",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::5",
+      "to_id": "주차장법(시행령)::제12조의12::6",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::6",
+      "to_id": "주차장법(시행령)::제12조의12::7",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::7",
+      "to_id": "주차장법(시행령)::제12조의12::8",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::3::제1호",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::3::제2호::가목",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호::나목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::3::제2호::나목",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호::다목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::3::제2호::다목",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호::라목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의12::3::제2호::라목",
+      "to_id": "주차장법(시행령)::제12조의12::3::제2호::마목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의15::1",
+      "to_id": "주차장법(시행령)::제12조의15::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의17::1",
+      "to_id": "주차장법(시행령)::제12조의17::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의18::1",
+      "to_id": "주차장법(시행령)::제12조의18::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의18::2",
+      "to_id": "주차장법(시행령)::제12조의18::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의18::1::제1호",
+      "to_id": "주차장법(시행령)::제12조의18::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의18::2::제1호",
+      "to_id": "주차장법(시행령)::제12조의18::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의19::1",
+      "to_id": "주차장법(시행령)::제12조의19::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의20::1",
+      "to_id": "주차장법(시행령)::제12조의20::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의20::1::제1호",
+      "to_id": "주차장법(시행령)::제12조의20::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제12조의20::2::제1호",
+      "to_id": "주차장법(시행령)::제12조의20::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제13조::1",
+      "to_id": "주차장법(시행령)::제13조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제13조::2",
+      "to_id": "주차장법(시행령)::제13조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제14조::1",
+      "to_id": "주차장법(시행령)::제14조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제14조::1::제1호",
+      "to_id": "주차장법(시행령)::제14조::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제14조::1::제2호",
+      "to_id": "주차장법(시행령)::제14조::1::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제14조::2::제1호",
+      "to_id": "주차장법(시행령)::제14조::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제14조::2::제2호::가목",
+      "to_id": "주차장법(시행령)::제14조::2::제2호::나목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "주차장법(시행령)::제15조::1",
+      "to_id": "주차장법(시행령)::제15조::2",
+      "properties": {}
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제1조",
+      "to_id": "주차장법",
+      "properties": {
+        "citation_text": "주차장법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제6조::1::제2호",
+      "to_id": "국토의 계획 및 이용에 관한 법률",
+      "properties": {
+        "citation_text": "국토의 계획 및 이용에 관한 법률"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제6조::1::제7호",
+      "to_id": "자동차관리법",
+      "properties": {
+        "citation_text": "자동차관리법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제7조::1::제1호",
+      "to_id": "도로교통법",
+      "properties": {
+        "citation_text": "도로교통법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제7조::1::제4호",
+      "to_id": "산업입지 및 개발에 관한 법률",
+      "properties": {
+        "citation_text": "산업입지 및 개발에 관한 법률"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제8조::1::제2호",
+      "to_id": "도로교통법",
+      "properties": {
+        "citation_text": "도로교통법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제8조::1::제2호",
+      "to_id": "건축법",
+      "properties": {
+        "citation_text": "건축법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제8조::1::제3호",
+      "to_id": "도로교통법",
+      "properties": {
+        "citation_text": "도로교통법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제12조::1::제1호",
+      "to_id": "도로교통법",
+      "properties": {
+        "citation_text": "도로교통법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제12조::1::제4호",
+      "to_id": "국토의 계획 및 이용에 관한 법률",
+      "properties": {
+        "citation_text": "국토의 계획 및 이용에 관한 법률"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제12조::1::제6호",
+      "to_id": "산업입지 및 개발에 관한 법률",
+      "properties": {
+        "citation_text": "산업입지 및 개발에 관한 법률"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제12조::1::제7호",
+      "to_id": "도시교통정비 촉진법 시행령",
+      "properties": {
+        "citation_text": "도시교통정비 촉진법 시행령"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제12조::1::제7호",
+      "to_id": "주택건설기준 등에 관한 규정",
+      "properties": {
+        "citation_text": "주택건설기준 등에 관한 규정"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제12조::1::제7호",
+      "to_id": "도시교통정비 촉진법",
+      "properties": {
+        "citation_text": "도시교통정비 촉진법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제12조의7::5::제4호",
+      "to_id": "상법",
+      "properties": {
+        "citation_text": "상법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "주차장법(시행령)::제12조의11",
+      "to_id": "한국교통안전공단법",
+      "properties": {
+        "citation_text": "한국교통안전공단법"
+      }
+    }
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "exp_id": "exp010",
+  "title": "Typology Benchmark — 10 typology × 3 fixture × reps",
+  "date_utc": "2026-05-06 12:26:42 UTC",
+  "reps_per_cell": 2,
+  "elapsed_sec": 57.6,
+  "matrix": {
+    "gangnam_yeoksam_677": {
+      "additive": {
+        "typology": "additive",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 272688.7,
+        "hv_std": 338.0,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 1.47
+      },
+      "subtractive": {
+        "typology": "subtractive",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 552714.4,
+        "hv_std": 249644.4,
+        "feasible_pct_mean": 99.9,
+        "runtime_mean_sec": 1.28
+      },
+      "grid": {
+        "typology": "grid",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 503519.4,
+        "hv_std": 262512.6,
+        "feasible_pct_mean": 99.95,
+        "runtime_mean_sec": 1.14
+      },
+      "lshape": {
+        "typology": "lshape",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 90960.6,
+        "hv_std": 2454.6,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.72
+      },
+      "ushape": {
+        "typology": "ushape",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 111714.8,
+        "hv_std": 1633.3,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.85
+      },
+      "cross": {
+        "typology": "cross",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 99736.6,
+        "hv_std": 8897.0,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.75
+      },
+      "courtyard": {
+        "typology": "courtyard",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 220306.5,
+        "hv_std": 2002.7,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.78
+      },
+      "tower_podium": {
+        "typology": "tower_podium",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 184404.4,
+        "hv_std": 4437.5,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.82
+      },
+      "hshape": {
+        "typology": "hshape",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 152088.3,
+        "hv_std": 10797.0,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.82
+      },
+      "radial": {
+        "typology": "radial",
+        "site": "gangnam_yeoksam_677",
+        "reps": 2,
+        "hv_mean": 535807.5,
+        "hv_std": 5345.0,
+        "feasible_pct_mean": 99.86,
+        "runtime_mean_sec": 1.09
+      }
+    },
+    "bundang_test": {
+      "additive": {
+        "typology": "additive",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 28808.8,
+        "hv_std": 654.9,
+        "feasible_pct_mean": 99.9,
+        "runtime_mean_sec": 1.4
+      },
+      "subtractive": {
+        "typology": "subtractive",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 95282.7,
+        "hv_std": 916.2,
+        "feasible_pct_mean": 99.76,
+        "runtime_mean_sec": 1.27
+      },
+      "grid": {
+        "typology": "grid",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 59020.2,
+        "hv_std": 31411.9,
+        "feasible_pct_mean": 99.95,
+        "runtime_mean_sec": 1.08
+      },
+      "lshape": {
+        "typology": "lshape",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 16332.4,
+        "hv_std": 507.8,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.74
+      },
+      "ushape": {
+        "typology": "ushape",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 18535.5,
+        "hv_std": 365.7,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.86
+      },
+      "cross": {
+        "typology": "cross",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 16868.7,
+        "hv_std": 353.9,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.76
+      },
+      "courtyard": {
+        "typology": "courtyard",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 23181.5,
+        "hv_std": 1647.2,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.79
+      },
+      "tower_podium": {
+        "typology": "tower_podium",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 18995.1,
+        "hv_std": 108.2,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.79
+      },
+      "hshape": {
+        "typology": "hshape",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 19723.2,
+        "hv_std": 95.6,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.84
+      },
+      "radial": {
+        "typology": "radial",
+        "site": "bundang_test",
+        "reps": 2,
+        "hv_mean": 88149.2,
+        "hv_std": 241.5,
+        "feasible_pct_mean": 99.76,
+        "runtime_mean_sec": 1.13
+      }
+    },
+    "chuncheon_test": {
+      "additive": {
+        "typology": "additive",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 161559.2,
+        "hv_std": 8796.2,
+        "feasible_pct_mean": 99.95,
+        "runtime_mean_sec": 1.43
+      },
+      "subtractive": {
+        "typology": "subtractive",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 170725.7,
+        "hv_std": 2115.6,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 1.34
+      },
+      "grid": {
+        "typology": "grid",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 154002.3,
+        "hv_std": 1996.8,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.99
+      },
+      "lshape": {
+        "typology": "lshape",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 106699.5,
+        "hv_std": 557.5,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.72
+      },
+      "ushape": {
+        "typology": "ushape",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 110110.9,
+        "hv_std": 6798.4,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.85
+      },
+      "cross": {
+        "typology": "cross",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 104513.0,
+        "hv_std": 3051.9,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.77
+      },
+      "courtyard": {
+        "typology": "courtyard",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 156324.5,
+        "hv_std": 1580.6,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.75
+      },
+      "tower_podium": {
+        "typology": "tower_podium",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 142119.2,
+        "hv_std": 783.6,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.75
+      },
+      "hshape": {
+        "typology": "hshape",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 115914.5,
+        "hv_std": 778.8,
+        "feasible_pct_mean": 100.0,
+        "runtime_mean_sec": 0.83
+      },
+      "radial": {
+        "typology": "radial",
+        "site": "chuncheon_test",
+        "reps": 2,
+        "hv_mean": 270470.2,
+        "hv_std": 173390.0,
+        "feasible_pct_mean": 99.95,
+        "runtime_mean_sec": 0.99
+      }
+    }
+  },
+  "ranking": {
+    "fixture_features": [
+      [
+        0.8831982905151976,
+        0.8,
+        1.3,
+        1.0,
+        0.8041920800128939
+      ],
+      [
+        0.3932933767519704,
+        0.6,
+        0.25,
+        0.5,
+        0.8054749185191131
+      ],
+      [
+        2.439947125278842,
+        0.6,
+        0.2,
+        0.4,
+        0.797608770725921
+      ]
+    ],
+    "fixture_names": [
+      "강남구 역삼동 677",
+      "분당 테스트 부지",
+      "춘천 테스트 부지"
+    ],
+    "typology_hv": [
+      {
+        "additive": 272688.7,
+        "subtractive": 552714.4,
+        "grid": 503519.4,
+        "lshape": 90960.6,
+        "ushape": 111714.8,
+        "cross": 99736.6,
+        "courtyard": 220306.5,
+        "tower_podium": 184404.4,
+        "hshape": 152088.3,
+        "radial": 535807.5
+      },
+      {
+        "additive": 28808.8,
+        "subtractive": 95282.7,
+        "grid": 59020.2,
+        "lshape": 16332.4,
+        "ushape": 18535.5,
+        "cross": 16868.7,
+        "courtyard": 23181.5,
+        "tower_podium": 18995.1,
+        "hshape": 19723.2,
+        "radial": 88149.2
+      },
+      {
+        "additive": 161559.2,
+        "subtractive": 170725.7,
+        "grid": 154002.3,
+        "lshape": 106699.5,
+        "ushape": 110110.9,
+        "cross": 104513.0,
+        "courtyard": 156324.5,
+        "tower_podium": 142119.2,
+        "hshape": 115914.5,
+        "radial": 270470.2
+      }
+    ]
+  },
+  "winners": {
+    "gangnam_yeoksam_677": "subtractive",
+    "bundang_test": "subtractive",
+    "chuncheon_test": "radial"
+  }
+}

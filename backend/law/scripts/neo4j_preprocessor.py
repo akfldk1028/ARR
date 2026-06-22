@@ -94,8 +94,8 @@ class EnhancedKoreanLawParser:
             # 항: ①, ②, ③... (원문자) 또는 제1항, 제2항
             'hang': re.compile(r'([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳])|^제(\d+)항'),
 
-            # 호: 1., 2., 3... (숫자 + 온점)
-            'ho': re.compile(r'^(\d+)\.\s*(.*)'),
+            # 호: 1., 2., 1의2., 1의3... (숫자[의N] + 온점)
+            'ho': re.compile(r'^(\d+(?:의\d+)?)\.\s*(.*)'),
 
             # 목: 가., 나., 다... (한글 + 온점)
             'mok': re.compile(r'^([가나다라마바사아자차카타파하])\.\s*(.*)'),
@@ -132,6 +132,14 @@ class EnhancedKoreanLawParser:
                 i += 1
                 continue
 
+            # PDF 페이지 헤더/푸터 노이즈 제거
+            if re.match(r'^법제처\s+\d+\s+국가법령정보센터$', line):
+                i += 1
+                continue
+            if self.law_name and line == self.law_name:
+                i += 1
+                continue
+
             # 편 처리
             if self._try_parse_pyeon(line, i):
                 i += 1
@@ -152,6 +160,35 @@ class EnhancedKoreanLawParser:
                 i += 1
                 continue
 
+            # 항 처리 — 줄 시작이 ①②③ 등이면 JO보다 먼저 처리
+            # (본문에서 "② 제37조에 따라..." 같은 줄을 JO로 잘못 파싱하는 것 방지)
+            hang_match = self.patterns['hang'].match(line)
+            if hang_match and self.current_jo:
+                hang_content = line[hang_match.end():].strip()
+                self._parse_hang(line, hang_match, hang_content, i)
+                i += 1
+                continue
+
+            # 호 처리 — JO보다 먼저 ("1. 제37조제1항..." 같은 줄을 JO로 잘못 파싱하는 것 방지)
+            ho_match = self.patterns['ho'].match(line)
+            if ho_match and self.current_hang:
+                # 날짜 조각 오탐 방지 (예: "8. 11., 2017. 4. 18.>" from <개정...> 태그)
+                remaining = ho_match.group(2).strip()
+                if not re.match(r'^\d+[.,]', remaining):
+                    self._parse_ho(line, ho_match, i)
+                    i += 1
+                    continue
+
+            # 목 처리 — JO보다 먼저
+            mok_match = self.patterns['mok'].match(line)
+            if mok_match and self.current_ho:
+                # 줄바꿈 오탐 방지 (예: "...정한\n다." → "다." 이 목으로 파싱되는 것)
+                mok_content = mok_match.group(2).strip()
+                if len(mok_content) > 1:
+                    self._parse_mok(line, mok_match, i)
+                    i += 1
+                    continue
+
             # 조 처리
             jo_match = self.patterns['jo'].search(line)
             if jo_match:
@@ -164,28 +201,6 @@ class EnhancedKoreanLawParser:
                     if hang_match:
                         self._parse_hang_inline(remaining_text, hang_match, i)
 
-                i += 1
-                continue
-
-            # 항 처리 (독립된 줄)
-            hang_match = self.patterns['hang'].match(line)
-            if hang_match and self.current_jo:
-                hang_content = line[hang_match.end():].strip()
-                self._parse_hang(line, hang_match, hang_content, i)
-                i += 1
-                continue
-
-            # 호 처리
-            ho_match = self.patterns['ho'].match(line)
-            if ho_match and self.current_hang:
-                self._parse_ho(line, ho_match, i)
-                i += 1
-                continue
-
-            # 목 처리
-            mok_match = self.patterns['mok'].match(line)
-            if mok_match and self.current_ho:
-                self._parse_mok(line, mok_match, i)
                 i += 1
                 continue
 
@@ -209,8 +224,16 @@ class EnhancedKoreanLawParser:
         unit_path = f"제{number}편"
         full_id = f"{self.law_name}::제{number}편" if self.law_name else f"제{number}편"
 
-        # 중복 체크
+        # 중복 체크 — 목차에서 먼저 파싱된 경우 컨텍스트 복원
         if full_id in self.seen_ids:
+            for existing in self.units:
+                if existing.full_id == full_id and existing.unit_type == UnitType.PYEON:
+                    self.current_pyeon = existing
+                    self.current_jang = None
+                    self.current_jeol = None
+                    self.current_gwan = None
+                    self.current_jo = None
+                    break
             return True
 
         self.order_counters[UnitType.PYEON] += 1
@@ -257,8 +280,15 @@ class EnhancedKoreanLawParser:
         unit_path = f"{parent_path}_제{number}장" if parent_path else f"제{number}장"
         full_id = f"{parent_id}::제{number}장" if parent_id else f"제{number}장"
 
-        # 중복 체크
+        # 중복 체크 — 목차에서 먼저 파싱된 경우 컨텍스트 복원
         if full_id in self.seen_ids:
+            for existing in self.units:
+                if existing.full_id == full_id and existing.unit_type == UnitType.JANG:
+                    self.current_jang = existing
+                    self.current_jeol = None
+                    self.current_gwan = None
+                    self.current_jo = None
+                    break
             return True
 
         self.order_counters[UnitType.JANG] += 1
@@ -307,8 +337,14 @@ class EnhancedKoreanLawParser:
         unit_path = f"{parent_path}_제{number}절"
         full_id = f"{parent_id}::제{number}절"
 
-        # 중복 체크
+        # 중복 체크 — 목차에서 먼저 파싱된 경우 컨텍스트 복원
         if full_id in self.seen_ids:
+            for existing in self.units:
+                if existing.full_id == full_id and existing.unit_type == UnitType.JEOL:
+                    self.current_jeol = existing
+                    self.current_gwan = None
+                    self.current_jo = None
+                    break
             return True
 
         self.order_counters[UnitType.JEOL] += 1
@@ -354,8 +390,13 @@ class EnhancedKoreanLawParser:
         unit_path = f"{parent_path}_제{number}관"
         full_id = f"{parent_id}::제{number}관"
 
-        # 중복 체크
+        # 중복 체크 — 목차에서 먼저 파싱된 경우 컨텍스트 복원
         if full_id in self.seen_ids:
+            for existing in self.units:
+                if existing.full_id == full_id and existing.unit_type == UnitType.GWAN:
+                    self.current_gwan = existing
+                    self.current_jo = None
+                    break
             return True
 
         self.order_counters[UnitType.GWAN] += 1
@@ -397,8 +438,19 @@ class EnhancedKoreanLawParser:
         unit_path = f"{parent_path}_제{jo_number}" if parent_path else f"제{jo_number}"
         full_id = f"{parent_id}::제{jo_number}" if parent_id else f"제{jo_number}"
 
-        # 중복 체크: 이미 파싱한 조는 건너뛰기
+        # 중복 체크 — 목차에서 먼저 파싱된 경우 컨텍스트 복원
+        # 본문의 조를 만나면 기존 JO를 current_jo로 설정하여 항 파싱 가능하게 함
         if full_id in self.seen_ids:
+            for existing in self.units:
+                if existing.full_id == full_id and existing.unit_type == UnitType.JO:
+                    existing.content = jo_content
+                    if jo_title:
+                        existing.title = jo_title
+                    self.current_jo = existing
+                    self.current_hang = None
+                    self.current_ho = None
+                    self.order_counters[UnitType.HANG] = 0
+                    break
             return
 
         self.order_counters[UnitType.JO] += 1

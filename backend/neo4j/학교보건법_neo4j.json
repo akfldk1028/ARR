@@ -1,0 +1,5196 @@
+{
+  "law_name": "학교보건법",
+  "law_type": "시행령",
+  "nodes": [
+    {
+      "labels": [
+        "JANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": "총칙",
+        "content": "제1장 총칙",
+        "full_id": "학교보건법(시행령)::제1장",
+        "unit_path": "제1장",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1조",
+        "title": "목적",
+        "content": "제1조(목적)",
+        "full_id": "학교보건법(시행령)::제1장::제1조",
+        "unit_path": "제1장_제1조",
+        "order": 1,
+        "metadata": "{\"referenced_laws\": [\"학교보건법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1조의2",
+        "title": "학생건강증진 기본계획의 수립 등",
+        "content": "제1조의2(학생건강증진 기본계획의 수립 등)",
+        "full_id": "학교보건법(시행령)::제1장::제1조의2",
+        "unit_path": "제1장_제1조의2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "교육부장관은 「학교보건법」(이하 \"법\"이라 한다) 제2조의3제1항에 따라 학생의 신체 및 정신건강 증진을 위한 기본계획(이하 \"학생건강증진기본계획\"이라 한다)을 그 계획을 시행하는 해의 전년도 10월 31일까지 수립해야 한다.",
+        "full_id": "학교보건법(시행령)::제1장::제1조의2::1",
+        "unit_path": "제1장_제1조의2_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "교육부장관은 학생건강증진 정책의 변화나 관련 법령의 개정 등 학생건강증진기본계획을 변경할 필요가 있는 경우에는 학생건강증진기본계획을 변경할 수 있다.",
+        "full_id": "학교보건법(시행령)::제1장::제1조의2::2",
+        "unit_path": "제1장_제1조의2_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "교육부장관은 학생건강증진기본계획을 수립 또는 변경하려는 경우에는 미리 관계 행정기관의 장 및 특별시ㆍ광역시ㆍ특별자치시ㆍ도ㆍ특별자치도(이하 \"시ㆍ도\"라 한다) 교육감(이하 \"교육감\"이라 한다)의 의견을 들어야 한다.",
+        "full_id": "학교보건법(시행령)::제1장::제1조의2::3",
+        "unit_path": "제1장_제1조의2_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "교육부장관은 학생건강증진기본계획을 수립 또는 변경한 경우에는 지체 없이 관계 행정기관의 장 및 교육감에게 통보해야 한다.",
+        "full_id": "학교보건법(시행령)::제1장::제1조의2::4",
+        "unit_path": "제1장_제1조의2_4",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2조",
+        "title": "보건실의 설치기준 등",
+        "content": "제2조(보건실의 설치기준 등)",
+        "full_id": "학교보건법(시행령)::제1장::제2조",
+        "unit_path": "제1장_제2조",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "법 제3조에 따른 보건실의 설치기준은 다음 각 호와 같다.",
+        "full_id": "학교보건법(시행령)::제1장::제2조::1",
+        "unit_path": "제1장_제2조_1",
+        "order": 1,
+        "revision_dates": [
+          "2012.8.13",
+          "2013.3.23",
+          "2023.2.14"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  위치: 학생과 교직원의 응급처치 등이 신속히 이루어질 수 있도록 이용하기 쉽고 통풍과 채광이 잘 되는 장소일 것",
+        "full_id": "학교보건법(시행령)::제1장::제2조::1::제1호",
+        "unit_path": "제1장_제2조_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  면적: 66제곱미터 이상. 다만, 교육부장관(「대학설립ㆍ운영 규정」 제1조에 따른 대학만 해당된다) 또는 교육감(「고등학교 이하 각급 학교 설립ㆍ운영 규정」 제2조에 따른 각급 학교만 해당된다)은 학생수 등을 고려하여 학생과 교직원의 건강관리에 지장이 없는 범위에서 그 면적을 완화할 수 있다.",
+        "full_id": "학교보건법(시행령)::제1장::제2조::1::제2호",
+        "unit_path": "제1장_제2조_1_제2호",
+        "order": 2,
+        "metadata": "{\"referenced_laws\": [\"대학설립ㆍ운영 규정\", \"고등학교 이하 각급 학교 설립ㆍ운영 규정\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "제1항에 따른 보건실에는 학교보건에 필요한 다음 각 호의 시설과 기구(器具) 및 용품을 갖추어야 한다.",
+        "full_id": "학교보건법(시행령)::제1장::제2조::2",
+        "unit_path": "제1장_제2조_2",
+        "order": 2,
+        "revision_dates": [
+          "2019.6.18"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  학생과 교직원의 건강관리와 응급처치 등에 필요한 시설과 기구 및 용품",
+        "full_id": "학교보건법(시행령)::제1장::제2조::2::제1호",
+        "unit_path": "제1장_제2조_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  학교환경위생 및 식품위생검사에 필요한 기구",
+        "full_id": "학교보건법(시행령)::제1장::제2조::2::제2호",
+        "unit_path": "제1장_제2조_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "제2항에 따라 보건실에 갖추어야 하는 시설과 기구 및 용품의 구체적인 기준은 「초ㆍ중등교육법」 제3조에 따른 국립학교와 「고등교육법」 제2조 각 호에 따른 학교의 경우에는 교육부령으로 정하고, 「초ㆍ중등교육법」 제3조에 따른 공립학교 및 사립학교의 경우에는 시ㆍ도 교육규칙으로 정한다.",
+        "full_id": "학교보건법(시행령)::제1장::제2조::3",
+        "unit_path": "제1장_제2조_3",
+        "order": 3,
+        "revision_dates": [
+          "2012.8.13",
+          "2013.3.23",
+          "2019.6.18"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "JANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": "대기오염 대응",
+        "content": "제2장 대기오염 대응",
+        "full_id": "학교보건법(시행령)::제2장",
+        "unit_path": "제2장",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3조",
+        "title": "대기오염대응매뉴얼의 작성 등",
+        "content": "제3조(대기오염대응매뉴얼의 작성 등)",
+        "full_id": "학교보건법(시행령)::제2장::제3조",
+        "unit_path": "제2장_제3조",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "법 제5조제2항에서 \"대통령령으로 정하는 내용\"이란 다음 각 호의 내용을 말한다.",
+        "full_id": "학교보건법(시행령)::제2장::제3조::1",
+        "unit_path": "제2장_제3조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  대기오염 대응 업무 수행체계 및 관련 기관별 역할에 관한 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::1::제1호",
+        "unit_path": "제2장_제3조_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  대응 단계별 전파요령에 관한 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::1::제2호",
+        "unit_path": "제2장_제3조_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  대응 단계별 실외수업에 대한 점검 및 조치에 관한 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::1::제3호",
+        "unit_path": "제2장_제3조_1_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "4.  대응 단계별 실내 공기질 관리를 위한 조치에 관한 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::1::제4호",
+        "unit_path": "제2장_제3조_1_제4호",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "5",
+        "title": null,
+        "content": "5.  그 밖에 교육부장관이 대기오염 대응에 필요하다고 인정하는 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::1::제5호",
+        "unit_path": "제2장_제3조_1_제5호",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "교육부장관은 법 제5조제1항에 따라 작성한 대기오염대응매뉴얼을 전자적 파일이나 인쇄물의 형태로 배포할 수 있다.",
+        "full_id": "학교보건법(시행령)::제2장::제3조::2",
+        "unit_path": "제2장_제3조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "법 제5조제3항에 따른 학생 및 교직원의 세부 행동요령(이하 이 조에서 \"세부 행동요령\"이라 한다)에는 다음 각 호의 내용이 포함되어야 한다.",
+        "full_id": "학교보건법(시행령)::제2장::제3조::3",
+        "unit_path": "제2장_제3조_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  대기오염 대응 업무를 관리하는 교직원의 지정에 관한 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::3::제1호",
+        "unit_path": "제2장_제3조_3_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  등교ㆍ하교 시간 조정, 수업시간 단축, 질환자 관리 등 대응 단계별 안전조치 이행에 관한 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::3::제2호",
+        "unit_path": "제2장_제3조_3_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  교직원 비상연락망 유지, 학생ㆍ학부모에 대한 연락체계 구축 등 대응 단계별 전파요령에 관한 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::3::제3호",
+        "unit_path": "제2장_제3조_3_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "4.  체육활동, 현장학습, 운동회 등 실외수업의 실내수업 대체 등 대응 단계별 실외수업에 대한 점검 및 조치에 관한 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::3::제4호",
+        "unit_path": "제2장_제3조_3_제4호",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "5",
+        "title": null,
+        "content": "5.  공기 정화 설비의 가동, 환기요령, 청소 등 대응 단계별 실내 공기질 관리를 위한 조치에 관한 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::3::제5호",
+        "unit_path": "제2장_제3조_3_제5호",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "6",
+        "title": null,
+        "content": "6.  그 밖에 학교의 장이 학교의 사정 등을 고려하여 대기오염 대응에 필요하다고 인정하는 사항",
+        "full_id": "학교보건법(시행령)::제2장::제3조::3::제6호",
+        "unit_path": "제2장_제3조_3_제6호",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "학교의 장은 세부 행동요령을 「학교안전사고 예방 및 보상에 관한 법률」 제4조제6항에 따른 학교안전사고 예방에 관한 학교계획에 포함하여 수립할 수 있다.",
+        "full_id": "학교보건법(시행령)::제2장::제3조::4",
+        "unit_path": "제2장_제3조_4",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4조",
+        "title": null,
+        "content": "제4조",
+        "full_id": "학교보건법(시행령)::제2장::제4조",
+        "unit_path": "제2장_제4조",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "5조",
+        "title": null,
+        "content": "제5조",
+        "full_id": "학교보건법(시행령)::제2장::제5조",
+        "unit_path": "제2장_제5조",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "6조",
+        "title": null,
+        "content": "제6조",
+        "full_id": "학교보건법(시행령)::제2장::제6조",
+        "unit_path": "제2장_제6조",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "7조",
+        "title": null,
+        "content": "제7조",
+        "full_id": "학교보건법(시행령)::제2장::제7조",
+        "unit_path": "제2장_제7조",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "7조의2",
+        "title": null,
+        "content": "제7조의2",
+        "full_id": "학교보건법(시행령)::제2장::제7조의2",
+        "unit_path": "제2장_제7조의2",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "7조의3",
+        "title": null,
+        "content": "제7조의3",
+        "full_id": "학교보건법(시행령)::제2장::제7조의3",
+        "unit_path": "제2장_제7조의3",
+        "order": 7
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "7조의4",
+        "title": null,
+        "content": "제7조의4",
+        "full_id": "학교보건법(시행령)::제2장::제7조의4",
+        "unit_path": "제2장_제7조의4",
+        "order": 8
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "8조",
+        "title": null,
+        "content": "제8조",
+        "full_id": "학교보건법(시행령)::제2장::제8조",
+        "unit_path": "제2장_제8조",
+        "order": 9
+      }
+    },
+    {
+      "labels": [
+        "JANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": "삭제",
+        "content": "제3장 삭제",
+        "full_id": "학교보건법(시행령)::제3장",
+        "unit_path": "제3장",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "9조",
+        "title": null,
+        "content": "제9조",
+        "full_id": "학교보건법(시행령)::제3장::제9조",
+        "unit_path": "제3장_제9조",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "10조",
+        "title": null,
+        "content": "제10조",
+        "full_id": "학교보건법(시행령)::제3장::제10조",
+        "unit_path": "제3장_제10조",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "11조",
+        "title": null,
+        "content": "제11조",
+        "full_id": "학교보건법(시행령)::제3장::제11조",
+        "unit_path": "제3장_제11조",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "12조",
+        "title": null,
+        "content": "제12조",
+        "full_id": "학교보건법(시행령)::제3장::제12조",
+        "unit_path": "제3장_제12조",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": "삭제",
+        "content": "제4장 삭제",
+        "full_id": "학교보건법(시행령)::제4장",
+        "unit_path": "제4장",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "13조",
+        "title": null,
+        "content": "제13조",
+        "full_id": "학교보건법(시행령)::제4장::제13조",
+        "unit_path": "제4장_제13조",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "14조",
+        "title": null,
+        "content": "제14조",
+        "full_id": "학교보건법(시행령)::제4장::제14조",
+        "unit_path": "제4장_제14조",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "15조",
+        "title": null,
+        "content": "제15조",
+        "full_id": "학교보건법(시행령)::제4장::제15조",
+        "unit_path": "제4장_제15조",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "16조",
+        "title": null,
+        "content": "제16조",
+        "full_id": "학교보건법(시행령)::제4장::제16조",
+        "unit_path": "제4장_제16조",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "17조",
+        "title": null,
+        "content": "제17조",
+        "full_id": "학교보건법(시행령)::제4장::제17조",
+        "unit_path": "제4장_제17조",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "18조",
+        "title": null,
+        "content": "제18조",
+        "full_id": "학교보건법(시행령)::제4장::제18조",
+        "unit_path": "제4장_제18조",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "19조",
+        "title": null,
+        "content": "제19조",
+        "full_id": "학교보건법(시행령)::제4장::제19조",
+        "unit_path": "제4장_제19조",
+        "order": 7
+      }
+    },
+    {
+      "labels": [
+        "JANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "5",
+        "title": "삭제",
+        "content": "제5장 삭제",
+        "full_id": "학교보건법(시행령)::제5장",
+        "unit_path": "제5장",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "20조",
+        "title": null,
+        "content": "제20조",
+        "full_id": "학교보건법(시행령)::제5장::제20조",
+        "unit_path": "제5장_제20조",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "21조",
+        "title": null,
+        "content": "제21조",
+        "full_id": "학교보건법(시행령)::제5장::제21조",
+        "unit_path": "제5장_제21조",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "6",
+        "title": "보건교사의 배치 등 및 학교보건위원회",
+        "content": "제6장 보건교사의 배치 등 및 학교보건위원회",
+        "full_id": "학교보건법(시행령)::제6장",
+        "unit_path": "제6장",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "22조",
+        "title": "등교 등의 중지",
+        "content": "제22조(등교 등의 중지)",
+        "full_id": "학교보건법(시행령)::제6장::제22조",
+        "unit_path": "제6장_제22조",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "학교의 장은 법 제8조에 따라 학생과 교직원 중 다음 각 호의 어느 하나에 해당하는 사람에 대하여 등교중지를 명할 수 있다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조::1",
+        "unit_path": "제6장_제22조_1",
+        "order": 1,
+        "revision_dates": [
+          "2010.12.29",
+          "2016.8.29"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  「감염병의 예방 및 관리에 관한 법률」 제2조에 따른 감염병환자, 감염병의사환자 및 병원체보유자(이하 \"감염병환자등\"이라 한다). 다만, 의사가 다른 사람에게 감염될 우려가 없다고 진단한 사람은 제외한다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조::1::제1호",
+        "unit_path": "제6장_제22조_1_제1호",
+        "order": 1,
+        "metadata": "{\"referenced_laws\": [\"감염병의 예방 및 관리에 관한 법률\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  제1호 외의 환자로서 의사가 감염성이 강한 질환에 감염되었다고 진단한 사람",
+        "full_id": "학교보건법(시행령)::제6장::제22조::1::제2호",
+        "unit_path": "제6장_제22조_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "학교의 장이 제1항에 따라 등교중지를 명할 때에는 그 사유와 기간을 구체적으로 밝혀야 한다. 다만, 질환증세 또는 질병유행의 양상에 따라 필요한 경우에는 그 기간을 단축하거나 연장할 수 있다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조::2",
+        "unit_path": "제6장_제22조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "22조의2",
+        "title": "마약류 중독ㆍ오남용 예방교육 추진계획의 수립 등",
+        "content": "제22조의2(마약류 중독ㆍ오남용 예방교육 추진계획의 수립 등)",
+        "full_id": "학교보건법(시행령)::제6장::제22조의2",
+        "unit_path": "제6장_제22조의2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "교육부장관은 법 제9조의3제1항에 따라 마약류에 대한 중독ㆍ오남용 예방교육 추진계획(이하 \"마약중독예방교육 추진계획\"이라 한다)을 그 계획을 시행하는 해의 전년도 12월 31일까지 수립해야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조의2::1",
+        "unit_path": "제6장_제22조의2_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "마약중독예방교육 추진계획에는 다음 각 호의 사항이 포함되어야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조의2::2",
+        "unit_path": "제6장_제22조의2_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  학교급별 마약류에 대한 중독ㆍ오남용 예방교육(이하 \"마약중독예방교육\"이라 한다)의 주요내용에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의2::2::제1호",
+        "unit_path": "제6장_제22조의2_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  마약중독예방교육의 자료 개발 및 보급에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의2::2::제2호",
+        "unit_path": "제6장_제22조의2_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  마약중독예방교육에 관한 관계 기관 협력 및 지원에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의2::2::제3호",
+        "unit_path": "제6장_제22조의2_2_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "4.  교원의 마약중독예방교육 이해 제고를 위한 연수에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의2::2::제4호",
+        "unit_path": "제6장_제22조의2_2_제4호",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "5",
+        "title": null,
+        "content": "5.  그 밖에 교육부장관이 마약중독예방교육 실시에 필요하다고 인정하는 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의2::2::제5호",
+        "unit_path": "제6장_제22조의2_2_제5호",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "교육부장관은 마약중독예방교육 추진계획을 수립하기 위하여 필요한 경우 관계 중앙행정기관의 장, 교육감, 관련 기관ㆍ단체의 장 또는 전문가 등에 대하여 자료의 제출이나 의견의 진술을 요청할 수 있다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조의2::3",
+        "unit_path": "제6장_제22조의2_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "22조의3",
+        "title": "감염병예방대책의 마련 등",
+        "content": "제22조의3(감염병예방대책의 마련 등)",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3",
+        "unit_path": "제6장_제22조의3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "법 제14조의3제1항제4호에서 \"대통령령으로 정하는 사항\"이란 다음 각 호의 사항을 말한다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::1",
+        "unit_path": "제6장_제22조의3_1",
+        "order": 1,
+        "revision_dates": [
+          "2019.7.2"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  감염병 예방ㆍ관리에 필요한 교육에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::1::제1호",
+        "unit_path": "제6장_제22조의3_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  감염병 대응 능력 강화를 위한 가상연습 등 실제 상황 대비 훈련에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::1::제2호",
+        "unit_path": "제6장_제22조의3_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  감염병 방역에 필요한 물품의 비축 및 시설의 구비에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::1::제3호",
+        "unit_path": "제6장_제22조의3_1_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "4.  그 밖에 감염병의 예방ㆍ관리를 위하여 교육부장관이 필요하다고 인정하는 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::1::제4호",
+        "unit_path": "제6장_제22조의3_1_제4호",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "법 제14조의3제4항에서 \"감염병 발생 현황에 관한 정보 등 대통령령으로 정하는 정보\"란 「감염병의 예방 및 관리에 관한 법률」에 따른 제1급감염병이 국내에서 새롭게 발생하였거나 국내에 유입된 경우 또는 같은 법 제41조제1항에 따라 질병관리청장이 고시한 감염병에 대하여 「재난 및 안전관리 기본법」 제38조제2항에 따른 주의 이상의 위기경보가 발령된 경우 해당 감염병에 관한 다음 각 호의 정보를 말한다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::2",
+        "unit_path": "제6장_제22조의3_2",
+        "order": 2,
+        "revision_dates": [
+          "2020.9.11",
+          "2023.2.14"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  감염병명",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::2::제1호",
+        "unit_path": "제6장_제22조의3_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  감염병의 발생 현황 또는 유입 경로",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::2::제2호",
+        "unit_path": "제6장_제22조의3_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  감염병환자등(학생 및 교직원에 한정한다)의 발병일ㆍ진단일ㆍ이동경로ㆍ이동수단 및 접촉자 현황",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::2::제3호",
+        "unit_path": "제6장_제22조의3_2_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "4.  그 밖에 교육부장관 또는 질병관리청장이 감염병의 예방 및 확산을 방지하기 위하여 필요하다고 인정하는 정보",
+        "full_id": "학교보건법(시행령)::제6장::제22조의3::2::제4호",
+        "unit_path": "제6장_제22조의3_2_제4호",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "22조의4",
+        "title": "감염병대응매뉴얼의 작성 및 배포 등",
+        "content": "제22조의4(감염병대응매뉴얼의 작성 및 배포 등)",
+        "full_id": "학교보건법(시행령)::제6장::제22조의4",
+        "unit_path": "제6장_제22조의4",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "법 제14조의4제1항에 따라 작성ㆍ배포하여야 하는 감염병 유형에 따른 대응 매뉴얼(이하 \"감염병대응매뉴얼\"이라 한다)에는 다음 각 호의 사항이 포함되어야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조의4::1",
+        "unit_path": "제6장_제22조의4_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  감염병 유형에 따른 학생 및 교직원의 행동 요령에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의4::1::제1호",
+        "unit_path": "제6장_제22조의4_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  감염병 유형에 따른 예방ㆍ대비ㆍ대응 및 복구 단계별 조치에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제22조의4::1::제2호",
+        "unit_path": "제6장_제22조의4_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "교육부장관은 감염병대응매뉴얼을 배포하는 경우에는 전자적 파일이나 인쇄물의 형태로 배포할 수 있다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조의4::2",
+        "unit_path": "제6장_제22조의4_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "교육감 및 학교의 장은 감염병의 예방ㆍ대비ㆍ대응 및 복구 조치에 관한 업무를 추진할 때 감염병대응매뉴얼을 활용하여야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조의4::3",
+        "unit_path": "제6장_제22조의4_3",
+        "order": 3,
+        "revision_dates": [
+          "2017.2.3",
+          "2023.2.14"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "교육감 및 학교의 장은 각 지역 또는 학교의 특성을 반영한 내용을 감염병대응매뉴얼에 추가ㆍ보완할 수 있다.",
+        "full_id": "학교보건법(시행령)::제6장::제22조의4::4",
+        "unit_path": "제6장_제22조의4_4",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "23조",
+        "title": "학교에 두는 의료인ㆍ약사 및 보건교사",
+        "content": "제23조(학교에 두는 의료인ㆍ약사 및 보건교사)",
+        "full_id": "학교보건법(시행령)::제6장::제23조",
+        "unit_path": "제6장_제23조",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "삭제",
+        "full_id": "학교보건법(시행령)::제6장::제23조::1",
+        "unit_path": "제6장_제23조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "법 제15조제1항에 따라 학교에 두는 의료인ㆍ약사는 학교장이 위촉하거나 채용한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조::2",
+        "unit_path": "제6장_제23조_2",
+        "order": 2,
+        "revision_dates": [
+          "2021.12.9"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "법 제15조제3항에서 \"대통령령으로 정하는 일정 규모 이상의 학교\"란 36학급 이상의 학교를 말한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조::3",
+        "unit_path": "제6장_제23조_3",
+        "order": 3,
+        "revision_dates": [
+          "2021.12.9"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "법 제15조제1항에 따라 학교에 두는 의사(치과의사 및 한의사를 포함하며, 이하 \"학교의사\"라 한다) 및 학교에 두는 약사(이하 \"학교약사\"라 한다)와 같은 조 제2항ㆍ제3항에 따른 보건교사의 직무는 다음 각 호와 같다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4",
+        "unit_path": "제6장_제23조_4",
+        "order": 4,
+        "revision_dates": [
+          "2021.12.9"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  학교의사의 직무",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제1호",
+        "unit_path": "제6장_제23조_4_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "가",
+        "title": null,
+        "content": "가.  학교보건계획의 수립에 관한 자문",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제1호::가목",
+        "unit_path": "제6장_제23조_4_제1호_가목",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "나",
+        "title": null,
+        "content": "나.  학교 환경위생의 유지ㆍ관리 및 개선에 관한 자문",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제1호::나목",
+        "unit_path": "제6장_제23조_4_제1호_나목",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "다",
+        "title": null,
+        "content": "다.  학생과 교직원의 건강진단과 건강평가",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제1호::다목",
+        "unit_path": "제6장_제23조_4_제1호_다목",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "라",
+        "title": null,
+        "content": "라.  각종 질병의 예방처치 및 보건지도",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제1호::라목",
+        "unit_path": "제6장_제23조_4_제1호_라목",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "마",
+        "title": null,
+        "content": "마.  학생과 교직원의 건강상담",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제1호::마목",
+        "unit_path": "제6장_제23조_4_제1호_마목",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "바",
+        "title": null,
+        "content": "바.  그 밖에 학교보건관리에 관한 지도",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제1호::바목",
+        "unit_path": "제6장_제23조_4_제1호_바목",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  학교약사의 직무",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제2호",
+        "unit_path": "제6장_제23조_4_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "가",
+        "title": null,
+        "content": "가.  학교보건계획의 수립에 관한 자문",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제2호::가목",
+        "unit_path": "제6장_제23조_4_제2호_가목",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "나",
+        "title": null,
+        "content": "나.  학교환경위생의 유지관리 및 개선에 관한 자문",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제2호::나목",
+        "unit_path": "제6장_제23조_4_제2호_나목",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "다",
+        "title": null,
+        "content": "다.  학교에서 사용하는 의약품과 독극물의 관리에 관한 자문",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제2호::다목",
+        "unit_path": "제6장_제23조_4_제2호_다목",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "라",
+        "title": null,
+        "content": "라.  학교에서 사용하는 의약품 및 독극물의 실험ㆍ검사",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제2호::라목",
+        "unit_path": "제6장_제23조_4_제2호_라목",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "마",
+        "title": null,
+        "content": "마.  그 밖에 학교보건관리에 관한 지도",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제2호::마목",
+        "unit_path": "제6장_제23조_4_제2호_마목",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  보건교사의 직무",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+        "unit_path": "제6장_제23조_4_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "가",
+        "title": null,
+        "content": "가.  학교보건계획의 수립",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::가목",
+        "unit_path": "제6장_제23조_4_제3호_가목",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "나",
+        "title": null,
+        "content": "나.  학교 환경위생의 유지ㆍ관리 및 개선에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::나목",
+        "unit_path": "제6장_제23조_4_제3호_나목",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "다",
+        "title": null,
+        "content": "다.  학생과 교직원에 대한 건강진단의 준비와 실시에 관한 협조",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::다목",
+        "unit_path": "제6장_제23조_4_제3호_다목",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "라",
+        "title": null,
+        "content": "라.  각종 질병의 예방처치 및 보건지도",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::라목",
+        "unit_path": "제6장_제23조_4_제3호_라목",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "마",
+        "title": null,
+        "content": "마.  학생과 교직원의 건강관찰과 학교의사의 건강상담, 건강평가 등의 실시에 관한 협조",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::마목",
+        "unit_path": "제6장_제23조_4_제3호_마목",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "바",
+        "title": null,
+        "content": "바.  신체가 허약한 학생에 대한 보건지도",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::바목",
+        "unit_path": "제6장_제23조_4_제3호_바목",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "사",
+        "title": null,
+        "content": "사.  보건지도를 위한 학생가정 방문",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::사목",
+        "unit_path": "제6장_제23조_4_제3호_사목",
+        "order": 7
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "아",
+        "title": null,
+        "content": "아.  교사의 보건교육 협조와 필요시의 보건교육",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::아목",
+        "unit_path": "제6장_제23조_4_제3호_아목",
+        "order": 8
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "자",
+        "title": null,
+        "content": "자.  보건실의 시설ㆍ설비 및 약품 등의 관리",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::자목",
+        "unit_path": "제6장_제23조_4_제3호_자목",
+        "order": 9
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "차",
+        "title": null,
+        "content": "차.  보건교육자료의 수집ㆍ관리",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::차목",
+        "unit_path": "제6장_제23조_4_제3호_차목",
+        "order": 10
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "카",
+        "title": null,
+        "content": "카.  학생건강기록부의 관리",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::카목",
+        "unit_path": "제6장_제23조_4_제3호_카목",
+        "order": 11
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "타",
+        "title": null,
+        "content": "타.  다음의 의료행위(간호사 면허를 가진 사람만 해당한다)\t\t\t\t\t\t\n\n\t\t\t\t\t\t      1) 외상 등 흔히 볼 수 있는 환자의 치료\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t      2) 응급을 요하는 자에 대한 응급처치\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t      3) 부상과 질병의 악화를 방지하기 위한 처치\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t      4) 건강진단결과 발견된 질병자의 요양지도 및 관리\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t      5) 1)부터 4)까지의 의료행위에 따르는 의약품 투여",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::타목",
+        "unit_path": "제6장_제23조_4_제3호_타목",
+        "order": 12
+      }
+    },
+    {
+      "labels": [
+        "MOK"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "파",
+        "title": null,
+        "content": "파.  그 밖에 학교의 보건관리",
+        "full_id": "학교보건법(시행령)::제6장::제23조::4::제3호::파목",
+        "unit_path": "제6장_제23조_4_제3호_파목",
+        "order": 13
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "23조의2",
+        "title": "학생건강증진 전문기관의 설립 등",
+        "content": "제23조의2(학생건강증진 전문기관의 설립 등)",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2",
+        "unit_path": "제6장_제23조의2",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "교육부장관은 법 제16조의2제1항에 따라 학생건강증진 전문기관(이하 \"학생건강증진전문기관\"이라 한다)을 설립하거나 다음 각 호의 기관 또는 법인 중에서 학생건강증진전문기관을 지정할 수 있다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::1",
+        "unit_path": "제6장_제23조의2_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  「고등교육법」 제2조제1호에 따른 대학 또는 그 부속병원",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::1::제1호",
+        "unit_path": "제6장_제23조의2_1_제1호",
+        "order": 1,
+        "metadata": "{\"referenced_laws\": [\"고등교육법\"]}"
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  특별법에 따라 설립된 법인",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::1::제2호",
+        "unit_path": "제6장_제23조의2_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "제1항에 따라 학생건강증진전문기관으로 지정받으려는 기관 또는 법인은 다음 각 호의 기준을 모두 갖추어야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::2",
+        "unit_path": "제6장_제23조의2_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  학생건강증진전문기관으로서 업무수행에 필요한 조직과 인력을 보유할 것",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::2::제1호",
+        "unit_path": "제6장_제23조의2_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  학생건강증진전문기관으로서 업무수행에 필요한 사무실, 장비ㆍ시설을 갖출 것",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::2::제2호",
+        "unit_path": "제6장_제23조의2_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  학생건강증진전문기관으로서 업무수행에 필요한 사업계획 및 운영규정을 갖출 것",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::2::제3호",
+        "unit_path": "제6장_제23조의2_2_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "제2항에 따라 학생건강증진전문기관이 갖추어야 하는 기준의 세부 내용은 교육부장관이 정하여 고시한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::3",
+        "unit_path": "제6장_제23조의2_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "교육부장관은 학생건강증진전문기관을 지정하려는 경우에는 제2항에 따른 기준이 포함된 지정계획을 10일 이상 관보 또는 교육부 인터넷 홈페이지에 공고해야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::4",
+        "unit_path": "제6장_제23조의2_4",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "5",
+        "title": null,
+        "content": "학생건강증진전문기관으로 지정받으려는 기관 또는 법인은 지정신청서에 다음 각 호의 서류를 첨부하여 교육부장관에게 제출해야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::5",
+        "unit_path": "제6장_제23조의2_5",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  업무수행에 필요한 조직ㆍ인력의 보유 현황이나 확보 계획",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::5::제1호",
+        "unit_path": "제6장_제23조의2_5_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  업무수행에 필요한 사무실, 장비ㆍ시설의 보유 현황이나 확보 계획",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::5::제2호",
+        "unit_path": "제6장_제23조의2_5_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  업무수행에 필요한 사업계획 및 운영규정",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::5::제3호",
+        "unit_path": "제6장_제23조의2_5_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "6",
+        "title": null,
+        "content": "교육부장관은 학생건강증진전문기관을 지정한 경우에는 관보 또는 교육부 인터넷 홈페이지에 그 사실을 게시해야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::6",
+        "unit_path": "제6장_제23조의2_6",
+        "order": 6
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "7",
+        "title": null,
+        "content": "제1항부터 제6항까지에서 규정한 사항 외에 학생건강증진전문기관의 지정ㆍ운영에 필요한 사항은 교육부장관이 정하여 고시한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의2::7",
+        "unit_path": "제6장_제23조의2_7",
+        "order": 7
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "23조의3",
+        "title": "학생건강증진센터의 설치 등",
+        "content": "제23조의3(학생건강증진센터의 설치 등)",
+        "full_id": "학교보건법(시행령)::제6장::제23조의3",
+        "unit_path": "제6장_제23조의3",
+        "order": 7
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "법 제16조의2제2항에 따라 교육감이 설치ㆍ운영하는 학생건강증진센터(이하 \"학생건강증진센터\"라 한다)는 다음 각 호의 기준을 모두 갖추어야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의3::1",
+        "unit_path": "제6장_제23조의3_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  학생건강증진센터로서 업무수행에 필요한 조직과 인력을 보유할 것",
+        "full_id": "학교보건법(시행령)::제6장::제23조의3::1::제1호",
+        "unit_path": "제6장_제23조의3_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  학생건강증진센터로서 업무수행에 필요한 사무실, 장비ㆍ시설을 갖출 것",
+        "full_id": "학교보건법(시행령)::제6장::제23조의3::1::제2호",
+        "unit_path": "제6장_제23조의3_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "제1항에 따라 학생건강증진센터가 갖추어야 하는 기준의 세부 내용은 시ㆍ도의 교육규칙으로 정한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의3::2",
+        "unit_path": "제6장_제23조의3_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "제1항 및 제2항에서 규정한 사항 외에 학생건강증진센터의 설치ㆍ운영에 필요한 사항은 시ㆍ도의 교육규칙으로 정한다.",
+        "full_id": "학교보건법(시행령)::제6장::제23조의3::3",
+        "unit_path": "제6장_제23조의3_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "24조",
+        "title": "보건위원회의 기능",
+        "content": "제24조(보건위원회의 기능)",
+        "full_id": "학교보건법(시행령)::제6장::제24조",
+        "unit_path": "제6장_제24조",
+        "order": 8
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "삭제",
+        "full_id": "학교보건법(시행령)::제6장::제24조::1",
+        "unit_path": "제6장_제24조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "법 제17조제1항에 따른 시ㆍ도학교보건위원회(이하 \"보건위원회\"라 한다)는 다음 각 호의 사항을 심의한다.",
+        "full_id": "학교보건법(시행령)::제6장::제24조::2",
+        "unit_path": "제6장_제24조_2",
+        "order": 2,
+        "revision_dates": [
+          "2012.8.13"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  학생과 교직원의 건강증진에 관한 시ㆍ도의 중ㆍ장기 기본계획",
+        "full_id": "학교보건법(시행령)::제6장::제24조::2::제1호",
+        "unit_path": "제6장_제24조_2_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  학교보건과 관련되는 시ㆍ도의 조례 또는 교육규칙의 제정ㆍ개정안",
+        "full_id": "학교보건법(시행령)::제6장::제24조::2::제2호",
+        "unit_path": "제6장_제24조_2_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  교육감이 회의에 부치는 학교보건정책 등에 관한 사항",
+        "full_id": "학교보건법(시행령)::제6장::제24조::2::제3호",
+        "unit_path": "제6장_제24조_2_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "4.  삭제",
+        "full_id": "학교보건법(시행령)::제6장::제24조::2::제4호",
+        "unit_path": "제6장_제24조_2_제4호",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "25조",
+        "title": "보건위원회의 구성",
+        "content": "제25조(보건위원회의 구성)",
+        "full_id": "학교보건법(시행령)::제6장::제25조",
+        "unit_path": "제6장_제25조",
+        "order": 9
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "보건위원회에는 위원장과 부위원장 각 1명을 두되, 위원장과 부위원장은 위원 중에서 호선한다.",
+        "full_id": "학교보건법(시행령)::제6장::제25조::1",
+        "unit_path": "제6장_제25조_1",
+        "order": 1,
+        "revision_dates": [
+          "2012.8.13"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "삭제",
+        "full_id": "학교보건법(시행령)::제6장::제25조::2",
+        "unit_path": "제6장_제25조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "보건위원회 위원은 해당 교육청의 국장급 공무원 및 학교보건에 관하여 학식이 있거나 경험이 있는 사람 중에서 교육감이 임명하거나 위촉한다.",
+        "full_id": "학교보건법(시행령)::제6장::제25조::3",
+        "unit_path": "제6장_제25조_3",
+        "order": 3,
+        "revision_dates": [
+          "2012.8.13"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "제3항에 따라 위촉한 위원의 임기는 2년으로 하되, 연임할 수 있다. 다만, 보궐위원의 임기는 전임자 임기의 남은 기간으로 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제25조::4",
+        "unit_path": "제6장_제25조_4",
+        "order": 4,
+        "revision_dates": [
+          "2012.8.13"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "26조",
+        "title": "위원장 등의 직무",
+        "content": "제26조(위원장 등의 직무)",
+        "full_id": "학교보건법(시행령)::제6장::제26조",
+        "unit_path": "제6장_제26조",
+        "order": 10
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "보건위원회의 위원장은 보건위원회를 대표하고, 회의에 관한 사무를 총괄한다.",
+        "full_id": "학교보건법(시행령)::제6장::제26조::1",
+        "unit_path": "제6장_제26조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "보건위원회의 위원장이 부득이한 사유로 직무를 수행할 수 없을 때에는 부위원장이 그 직무를 대행한다.",
+        "full_id": "학교보건법(시행령)::제6장::제26조::2",
+        "unit_path": "제6장_제26조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "27조",
+        "title": "회의",
+        "content": "제27조(회의)",
+        "full_id": "학교보건법(시행령)::제6장::제27조",
+        "unit_path": "제6장_제27조",
+        "order": 11
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "보건위원회의 위원장은 다음 각 호의 어느 하나에 해당하는 경우에 회의를 소집하고, 그 의장이 된다.",
+        "full_id": "학교보건법(시행령)::제6장::제27조::1",
+        "unit_path": "제6장_제27조_1",
+        "order": 1,
+        "revision_dates": [
+          "2012.8.13"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  교육감이 요청하는 경우",
+        "full_id": "학교보건법(시행령)::제6장::제27조::1::제1호",
+        "unit_path": "제6장_제27조_1_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  재적위원 3분의 1 이상이 요구하는 경우",
+        "full_id": "학교보건법(시행령)::제6장::제27조::1::제2호",
+        "unit_path": "제6장_제27조_1_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  그 밖에 학생과 교직원의 건강을 보호ㆍ증진하기 위한 사항을 심의하기 위하여 위원장이 필요하다고 인정하는 경우",
+        "full_id": "학교보건법(시행령)::제6장::제27조::1::제3호",
+        "unit_path": "제6장_제27조_1_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "회의는 재적위원 과반수의 출석으로 개의하고, 출석위원 과반수의 찬성으로 의결한다.",
+        "full_id": "학교보건법(시행령)::제6장::제27조::2",
+        "unit_path": "제6장_제27조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "28조",
+        "title": "분과위원회",
+        "content": "제28조(분과위원회)",
+        "full_id": "학교보건법(시행령)::제6장::제28조",
+        "unit_path": "제6장_제28조",
+        "order": 12
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "보건위원회에 전문분야별로 분과위원회를 둘 수 있다.",
+        "full_id": "학교보건법(시행령)::제6장::제28조::1",
+        "unit_path": "제6장_제28조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "분과위원회는 보건위원회의 심의사항 중 보건위원회에서 위임한 사항을 심의한다.",
+        "full_id": "학교보건법(시행령)::제6장::제28조::2",
+        "unit_path": "제6장_제28조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "보건위원회 위원의 분과위원회 배속은 교육감이 정한다.",
+        "full_id": "학교보건법(시행령)::제6장::제28조::3",
+        "unit_path": "제6장_제28조_3",
+        "order": 3,
+        "revision_dates": [
+          "2012.8.13"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "분과위원회에 분과위원장 1명을 두되, 분과위원장은 분과위원회 위원 중에서 호선한다.",
+        "full_id": "학교보건법(시행령)::제6장::제28조::4",
+        "unit_path": "제6장_제28조_4",
+        "order": 4
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "5",
+        "title": null,
+        "content": "분과위원회의 회의에 관하여는 제27조를 준용한다.",
+        "full_id": "학교보건법(시행령)::제6장::제28조::5",
+        "unit_path": "제6장_제28조_5",
+        "order": 5
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "29조",
+        "title": "간사와 서기",
+        "content": "제29조(간사와 서기)",
+        "full_id": "학교보건법(시행령)::제6장::제29조",
+        "unit_path": "제6장_제29조",
+        "order": 13
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "보건위원회에 간사 1명과 서기 약간 명을 둔다.",
+        "full_id": "학교보건법(시행령)::제6장::제29조::1",
+        "unit_path": "제6장_제29조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "보건위원회의 간사와 서기는 교육감이 소속 공무원 중에서 임명한다.",
+        "full_id": "학교보건법(시행령)::제6장::제29조::2",
+        "unit_path": "제6장_제29조_2",
+        "order": 2,
+        "revision_dates": [
+          "2012.8.13"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "간사는 위원장의 명을 받아 위원회의 사무를 처리하고, 서기는 간사를 보조한다.",
+        "full_id": "학교보건법(시행령)::제6장::제29조::3",
+        "unit_path": "제6장_제29조_3",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "30조",
+        "title": "협조 요청",
+        "content": "제30조(협조 요청)",
+        "full_id": "학교보건법(시행령)::제6장::제30조",
+        "unit_path": "제6장_제30조",
+        "order": 14
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "31조",
+        "title": "전문가 등의 의견청취 등",
+        "content": "제31조(전문가 등의 의견청취 등)",
+        "full_id": "학교보건법(시행령)::제6장::제31조",
+        "unit_path": "제6장_제31조",
+        "order": 15
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "보건위원회와 분과위원회는 필요하면 관계 전문가의 의견을 들을 수 있다.",
+        "full_id": "학교보건법(시행령)::제6장::제31조::1",
+        "unit_path": "제6장_제31조_1",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "보건위원회와 분과위원회는 필요하면 관계 공무원에게 관련 자료를 제출하거나 출석하여 답변할 것을 요청할 수 있으며, 그 관계 공무원은 특별한 사유가 없으면 보호위원회 또는 분과위원회의 요청에 따라야 한다.",
+        "full_id": "학교보건법(시행령)::제6장::제31조::2",
+        "unit_path": "제6장_제31조_2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "31조의2",
+        "title": "수당과 여비",
+        "content": "제31조의2(수당과 여비)",
+        "full_id": "학교보건법(시행령)::제6장::제31조의2",
+        "unit_path": "제6장_제31조의2",
+        "order": 16
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "31조의3",
+        "title": "운영세칙",
+        "content": "제31조의3(운영세칙)",
+        "full_id": "학교보건법(시행령)::제6장::제31조의3",
+        "unit_path": "제6장_제31조의3",
+        "order": 17
+      }
+    },
+    {
+      "labels": [
+        "JANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "7",
+        "title": "보칙",
+        "content": "제7장 보칙",
+        "full_id": "학교보건법(시행령)::제7장",
+        "unit_path": "제7장",
+        "order": 7
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "32조",
+        "title": null,
+        "content": "제32조",
+        "full_id": "학교보건법(시행령)::제7장::제32조",
+        "unit_path": "제7장_제32조",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "32조의2",
+        "title": "민감정보 및 고유식별정보의 처리",
+        "content": "제32조의2(민감정보 및 고유식별정보의 처리)",
+        "full_id": "학교보건법(시행령)::제7장::제32조의2",
+        "unit_path": "제7장_제32조의2",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "학교의 장은 법 제7조에 따른 건강검사에 관한 사무를 수행하기 위하여 불가피한 경우 「개인정보 보호법」 제23조에 따른 건강에 관한 정보, 같은 법 시행령 제19조제1호 또는 제4호에 따른 주민등록번호 또는 외국인등록번호가 포함된 자료를 처리할 수 있다.",
+        "full_id": "학교보건법(시행령)::제7장::제32조의2::1",
+        "unit_path": "제7장_제32조의2_1",
+        "order": 1,
+        "revision_dates": [
+          "2016.8.29"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "초등학교와 중학교의 장은 법 제10조에 따른 예방접종 완료 여부의 검사에 관한 사무를 수행하기 위하여 불가피한 경우 「개인정보 보호법」 제23조에 따른 건강에 관한 정보, 같은 법 시행령 제19조제1호 또는 제4호에 따른 주민등록번호 또는 외국인등록번호가 포함된 자료를 처리할 수 있다.",
+        "full_id": "학교보건법(시행령)::제7장::제32조의2::2",
+        "unit_path": "제7장_제32조의2_2",
+        "order": 2,
+        "revision_dates": [
+          "2016.8.29"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "시장ㆍ군수 또는 구청장(자치구의 구청장을 말하며, 시장ㆍ군수 또는 구청장의 해당 권한이 위임ㆍ위탁된 경우에는 그 권한을 위임ㆍ위탁받은 자를 포함한다)은 법 제14조의2에 따른 감염병 예방접종의 시행에 관한 사무를 수행하기 위하여 불가피한 경우 「개인정보 보호법」 제23조에 따른 건강에 관한 정보, 같은 법 시행령 제19조제1호 또는 제4호에 따른 주민등록번호 또는 외국인등록번호가 포함된 자료를 처리할 수 있다.",
+        "full_id": "학교보건법(시행령)::제7장::제32조의2::3",
+        "unit_path": "제7장_제32조의2_3",
+        "order": 3,
+        "revision_dates": [
+          "2016.8.29",
+          "2017.2.3"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HANG"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "4",
+        "title": null,
+        "content": "교육부장관, 질병관리청장, 교육감 또는 학교의 장은 다음 각 호의 사무를 수행하기 위하여 불가피한 경우 「개인정보 보호법」 제23조에 따른 건강에 관한 정보, 같은 법 시행령 제19조제1호 또는 제4호에 따른 주민등록번호 또는 외국인등록번호가 포함된 자료를 처리할 수 있다.",
+        "full_id": "학교보건법(시행령)::제7장::제32조의2::4",
+        "unit_path": "제7장_제32조의2_4",
+        "order": 4,
+        "revision_dates": [
+          "2016.8.29",
+          "2020.9.11"
+        ]
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "1",
+        "title": null,
+        "content": "1.  법 제14조의3제4항에 따른 감염병정보의 공유에 관한 사무",
+        "full_id": "학교보건법(시행령)::제7장::제32조의2::4::제1호",
+        "unit_path": "제7장_제32조의2_4_제1호",
+        "order": 1
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "2",
+        "title": null,
+        "content": "2.  법 제14조의3제5항에 따른 감염병정보의 보고에 관한 사무",
+        "full_id": "학교보건법(시행령)::제7장::제32조의2::4::제2호",
+        "unit_path": "제7장_제32조의2_4_제2호",
+        "order": 2
+      }
+    },
+    {
+      "labels": [
+        "HO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "3",
+        "title": null,
+        "content": "3.  법 제14조의3제6항에 따른 감염병정보의 공개에 관한 사무",
+        "full_id": "학교보건법(시행령)::제7장::제32조의2::4::제3호",
+        "unit_path": "제7장_제32조의2_4_제3호",
+        "order": 3
+      }
+    },
+    {
+      "labels": [
+        "JO"
+      ],
+      "properties": {
+        "law_name": "학교보건법",
+        "number": "33조",
+        "title": "규제의 재검토",
+        "content": "제33조(규제의 재검토)",
+        "full_id": "학교보건법(시행령)::제7장::제33조",
+        "unit_path": "제7장_제33조",
+        "order": 3
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)",
+      "to_id": "학교보건법(시행령)::제1장",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장",
+      "to_id": "학교보건법(시행령)::제1장::제1조",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장",
+      "to_id": "학교보건법(시행령)::제1장::제1조의2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제1조의2",
+      "to_id": "학교보건법(시행령)::제1장::제1조의2::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제1조의2",
+      "to_id": "학교보건법(시행령)::제1장::제1조의2::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제1조의2",
+      "to_id": "학교보건법(시행령)::제1장::제1조의2::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제1조의2",
+      "to_id": "학교보건법(시행령)::제1장::제1조의2::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장",
+      "to_id": "학교보건법(시행령)::제1장::제2조",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제2조",
+      "to_id": "학교보건법(시행령)::제1장::제2조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제2조::1",
+      "to_id": "학교보건법(시행령)::제1장::제2조::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제2조::1",
+      "to_id": "학교보건법(시행령)::제1장::제2조::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제2조",
+      "to_id": "학교보건법(시행령)::제1장::제2조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제2조::2",
+      "to_id": "학교보건법(시행령)::제1장::제2조::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제2조::2",
+      "to_id": "학교보건법(시행령)::제1장::제2조::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제1장::제2조",
+      "to_id": "학교보건법(시행령)::제1장::제2조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)",
+      "to_id": "학교보건법(시행령)::제2장",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제2장::제3조",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1::제5호",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조",
+      "to_id": "학교보건법(시행령)::제2장::제3조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제5호",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제6호",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장::제3조",
+      "to_id": "학교보건법(시행령)::제2장::제3조::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제2장::제4조",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제2장::제5조",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제2장::제6조",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제2장::제7조",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제2장::제7조의2",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제2장::제7조의3",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제2장::제7조의4",
+      "properties": {
+        "order": 8
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제2장::제8조",
+      "properties": {
+        "order": 9
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)",
+      "to_id": "학교보건법(시행령)::제3장",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제3장",
+      "to_id": "학교보건법(시행령)::제3장::제9조",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제3장",
+      "to_id": "학교보건법(시행령)::제3장::제10조",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제3장",
+      "to_id": "학교보건법(시행령)::제3장::제11조",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제3장",
+      "to_id": "학교보건법(시행령)::제3장::제12조",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)",
+      "to_id": "학교보건법(시행령)::제4장",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제4장",
+      "to_id": "학교보건법(시행령)::제4장::제13조",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제4장",
+      "to_id": "학교보건법(시행령)::제4장::제14조",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제4장",
+      "to_id": "학교보건법(시행령)::제4장::제15조",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제4장",
+      "to_id": "학교보건법(시행령)::제4장::제16조",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제4장",
+      "to_id": "학교보건법(시행령)::제4장::제17조",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제4장",
+      "to_id": "학교보건법(시행령)::제4장::제18조",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제4장",
+      "to_id": "학교보건법(시행령)::제4장::제19조",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)",
+      "to_id": "학교보건법(시행령)::제5장",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제5장",
+      "to_id": "학교보건법(시행령)::제5장::제20조",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제5장",
+      "to_id": "학교보건법(시행령)::제5장::제21조",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)",
+      "to_id": "학교보건법(시행령)::제6장",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제22조",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조",
+      "to_id": "학교보건법(시행령)::제6장::제22조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조",
+      "to_id": "학교보건법(시행령)::제6장::제22조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2::제5호",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::1::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::1::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::2::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::2::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제23조",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조",
+      "to_id": "학교보건법(시행령)::제6장::제23조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조",
+      "to_id": "학교보건법(시행령)::제6장::제23조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조",
+      "to_id": "학교보건법(시행령)::제6장::제23조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::가목",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::나목",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::다목",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::라목",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::마목",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::바목",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호::가목",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호::나목",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호::다목",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호::라목",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호::마목",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::가목",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::나목",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::다목",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::라목",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::마목",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::바목",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::사목",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::아목",
+      "properties": {
+        "order": 8
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::자목",
+      "properties": {
+        "order": 9
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::차목",
+      "properties": {
+        "order": 10
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::카목",
+      "properties": {
+        "order": 11
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::타목",
+      "properties": {
+        "order": 12
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::파목",
+      "properties": {
+        "order": 13
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::1",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::1",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::2::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::5",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::5",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::5::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::5",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::5::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::5",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::5::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::6",
+      "properties": {
+        "order": 6
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::7",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의3",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의3::1",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의3::1",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의3",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제23조의3",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제24조",
+      "properties": {
+        "order": 8
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제24조",
+      "to_id": "학교보건법(시행령)::제6장::제24조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제24조",
+      "to_id": "학교보건법(시행령)::제6장::제24조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제24조::2",
+      "to_id": "학교보건법(시행령)::제6장::제24조::2::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제24조::2",
+      "to_id": "학교보건법(시행령)::제6장::제24조::2::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제24조::2",
+      "to_id": "학교보건법(시행령)::제6장::제24조::2::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제24조::2",
+      "to_id": "학교보건법(시행령)::제6장::제24조::2::제4호",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제25조",
+      "properties": {
+        "order": 9
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제25조",
+      "to_id": "학교보건법(시행령)::제6장::제25조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제25조",
+      "to_id": "학교보건법(시행령)::제6장::제25조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제25조",
+      "to_id": "학교보건법(시행령)::제6장::제25조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제25조",
+      "to_id": "학교보건법(시행령)::제6장::제25조::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제26조",
+      "properties": {
+        "order": 10
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제26조",
+      "to_id": "학교보건법(시행령)::제6장::제26조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제26조",
+      "to_id": "학교보건법(시행령)::제6장::제26조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제27조",
+      "properties": {
+        "order": 11
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제27조",
+      "to_id": "학교보건법(시행령)::제6장::제27조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제27조::1",
+      "to_id": "학교보건법(시행령)::제6장::제27조::1::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제27조::1",
+      "to_id": "학교보건법(시행령)::제6장::제27조::1::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제27조::1",
+      "to_id": "학교보건법(시행령)::제6장::제27조::1::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제27조",
+      "to_id": "학교보건법(시행령)::제6장::제27조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제28조",
+      "properties": {
+        "order": 12
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제28조",
+      "to_id": "학교보건법(시행령)::제6장::제28조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제28조",
+      "to_id": "학교보건법(시행령)::제6장::제28조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제28조",
+      "to_id": "학교보건법(시행령)::제6장::제28조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제28조",
+      "to_id": "학교보건법(시행령)::제6장::제28조::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제28조",
+      "to_id": "학교보건법(시행령)::제6장::제28조::5",
+      "properties": {
+        "order": 5
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제29조",
+      "properties": {
+        "order": 13
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제29조",
+      "to_id": "학교보건법(시행령)::제6장::제29조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제29조",
+      "to_id": "학교보건법(시행령)::제6장::제29조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제29조",
+      "to_id": "학교보건법(시행령)::제6장::제29조::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제30조",
+      "properties": {
+        "order": 14
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제31조",
+      "properties": {
+        "order": 15
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제31조",
+      "to_id": "학교보건법(시행령)::제6장::제31조::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장::제31조",
+      "to_id": "학교보건법(시행령)::제6장::제31조::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제31조의2",
+      "properties": {
+        "order": 16
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제6장::제31조의3",
+      "properties": {
+        "order": 17
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)",
+      "to_id": "학교보건법(시행령)::제7장",
+      "properties": {
+        "order": 7
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장",
+      "to_id": "학교보건법(시행령)::제7장::제32조",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::1",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::2",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::3",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::4",
+      "properties": {
+        "order": 4
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2::4",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::4::제1호",
+      "properties": {
+        "order": 1
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2::4",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::4::제2호",
+      "properties": {
+        "order": 2
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2::4",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::4::제3호",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "CONTAINS",
+      "from_id": "학교보건법(시행령)::제7장",
+      "to_id": "학교보건법(시행령)::제7장::제33조",
+      "properties": {
+        "order": 3
+      }
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장",
+      "to_id": "학교보건법(시행령)::제2장",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장",
+      "to_id": "학교보건법(시행령)::제3장",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제3장",
+      "to_id": "학교보건법(시행령)::제4장",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제4장",
+      "to_id": "학교보건법(시행령)::제5장",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제5장",
+      "to_id": "학교보건법(시행령)::제6장",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장",
+      "to_id": "학교보건법(시행령)::제7장",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장::제1조",
+      "to_id": "학교보건법(시행령)::제1장::제1조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장::제1조의2",
+      "to_id": "학교보건법(시행령)::제1장::제2조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장::제1조의2::1",
+      "to_id": "학교보건법(시행령)::제1장::제1조의2::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장::제1조의2::2",
+      "to_id": "학교보건법(시행령)::제1장::제1조의2::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장::제1조의2::3",
+      "to_id": "학교보건법(시행령)::제1장::제1조의2::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장::제2조::1",
+      "to_id": "학교보건법(시행령)::제1장::제2조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장::제2조::2",
+      "to_id": "학교보건법(시행령)::제1장::제2조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장::제2조::1::제1호",
+      "to_id": "학교보건법(시행령)::제1장::제2조::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제1장::제2조::2::제1호",
+      "to_id": "학교보건법(시행령)::제1장::제2조::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조",
+      "to_id": "학교보건법(시행령)::제2장::제4조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제4조",
+      "to_id": "학교보건법(시행령)::제2장::제5조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제5조",
+      "to_id": "학교보건법(시행령)::제2장::제6조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제6조",
+      "to_id": "학교보건법(시행령)::제2장::제7조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제7조",
+      "to_id": "학교보건법(시행령)::제2장::제7조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제7조의2",
+      "to_id": "학교보건법(시행령)::제2장::제7조의3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제7조의3",
+      "to_id": "학교보건법(시행령)::제2장::제7조의4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제7조의4",
+      "to_id": "학교보건법(시행령)::제2장::제8조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1",
+      "to_id": "학교보건법(시행령)::제2장::제3조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::2",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3",
+      "to_id": "학교보건법(시행령)::제2장::제3조::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1::제1호",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1::제2호",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1::제3호",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::1::제4호",
+      "to_id": "학교보건법(시행령)::제2장::제3조::1::제5호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3::제1호",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3::제2호",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3::제3호",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3::제4호",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제5호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제2장::제3조::3::제5호",
+      "to_id": "학교보건법(시행령)::제2장::제3조::3::제6호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제3장::제9조",
+      "to_id": "학교보건법(시행령)::제3장::제10조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제3장::제10조",
+      "to_id": "학교보건법(시행령)::제3장::제11조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제3장::제11조",
+      "to_id": "학교보건법(시행령)::제3장::제12조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제4장::제13조",
+      "to_id": "학교보건법(시행령)::제4장::제14조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제4장::제14조",
+      "to_id": "학교보건법(시행령)::제4장::제15조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제4장::제15조",
+      "to_id": "학교보건법(시행령)::제4장::제16조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제4장::제16조",
+      "to_id": "학교보건법(시행령)::제4장::제17조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제4장::제17조",
+      "to_id": "학교보건법(시행령)::제4장::제18조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제4장::제18조",
+      "to_id": "학교보건법(시행령)::제4장::제19조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제5장::제20조",
+      "to_id": "학교보건법(시행령)::제5장::제21조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4",
+      "to_id": "학교보건법(시행령)::제6장::제23조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의3",
+      "to_id": "학교보건법(시행령)::제6장::제24조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제24조",
+      "to_id": "학교보건법(시행령)::제6장::제25조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제25조",
+      "to_id": "학교보건법(시행령)::제6장::제26조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제26조",
+      "to_id": "학교보건법(시행령)::제6장::제27조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제27조",
+      "to_id": "학교보건법(시행령)::제6장::제28조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제28조",
+      "to_id": "학교보건법(시행령)::제6장::제29조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제29조",
+      "to_id": "학교보건법(시행령)::제6장::제30조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제30조",
+      "to_id": "학교보건법(시행령)::제6장::제31조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제31조",
+      "to_id": "학교보건법(시행령)::제6장::제31조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제31조의2",
+      "to_id": "학교보건법(시행령)::제6장::제31조의3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조::1::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제22조::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의2::2::제4호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의2::2::제5호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::1::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::1::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::1::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::1::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::1::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::2::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::2::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::2::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의3::2::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의3::2::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4::1",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4::2",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4::3",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제22조의4::1::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제22조의4::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::1",
+      "to_id": "학교보건법(시행령)::제6장::제23조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::2",
+      "to_id": "학교보건법(시행령)::제6장::제23조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::3",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호::가목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::나목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호::나목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::다목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호::다목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::라목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호::라목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::마목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제1호::마목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제1호::바목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호::가목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호::나목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호::나목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호::다목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호::다목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호::라목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제2호::라목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제2호::마목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::가목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::나목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::나목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::다목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::다목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::라목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::라목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::마목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::마목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::바목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::바목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::사목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::사목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::아목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::아목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::자목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::자목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::차목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::차목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::카목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::카목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::타목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조::4::제3호::타목",
+      "to_id": "학교보건법(시행령)::제6장::제23조::4::제3호::파목",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::1",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::3",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::4",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::5",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::5",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::6",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::6",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::7",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::1::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::2::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::2::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::2::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::5::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::5::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::5::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제23조의2::5::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의3::1",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의3::2",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제23조의3::1::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제23조의3::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제24조::1",
+      "to_id": "학교보건법(시행령)::제6장::제24조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제24조::2::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제24조::2::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제24조::2::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제24조::2::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제24조::2::제3호",
+      "to_id": "학교보건법(시행령)::제6장::제24조::2::제4호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제25조::1",
+      "to_id": "학교보건법(시행령)::제6장::제25조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제25조::2",
+      "to_id": "학교보건법(시행령)::제6장::제25조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제25조::3",
+      "to_id": "학교보건법(시행령)::제6장::제25조::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제26조::1",
+      "to_id": "학교보건법(시행령)::제6장::제26조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제27조::1",
+      "to_id": "학교보건법(시행령)::제6장::제27조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제27조::1::제1호",
+      "to_id": "학교보건법(시행령)::제6장::제27조::1::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제27조::1::제2호",
+      "to_id": "학교보건법(시행령)::제6장::제27조::1::제3호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제28조::1",
+      "to_id": "학교보건법(시행령)::제6장::제28조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제28조::2",
+      "to_id": "학교보건법(시행령)::제6장::제28조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제28조::3",
+      "to_id": "학교보건법(시행령)::제6장::제28조::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제28조::4",
+      "to_id": "학교보건법(시행령)::제6장::제28조::5",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제29조::1",
+      "to_id": "학교보건법(시행령)::제6장::제29조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제29조::2",
+      "to_id": "학교보건법(시행령)::제6장::제29조::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제6장::제31조::1",
+      "to_id": "학교보건법(시행령)::제6장::제31조::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제7장::제32조",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2",
+      "to_id": "학교보건법(시행령)::제7장::제33조",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2::1",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::2",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2::2",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::3",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2::3",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::4",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2::4::제1호",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::4::제2호",
+      "properties": {}
+    },
+    {
+      "type": "NEXT",
+      "from_id": "학교보건법(시행령)::제7장::제32조의2::4::제2호",
+      "to_id": "학교보건법(시행령)::제7장::제32조의2::4::제3호",
+      "properties": {}
+    },
+    {
+      "type": "CITES",
+      "from_id": "학교보건법(시행령)::제1장::제1조",
+      "to_id": "학교보건법",
+      "properties": {
+        "citation_text": "학교보건법"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "학교보건법(시행령)::제1장::제2조::1::제2호",
+      "to_id": "대학설립ㆍ운영 규정",
+      "properties": {
+        "citation_text": "대학설립ㆍ운영 규정"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "학교보건법(시행령)::제1장::제2조::1::제2호",
+      "to_id": "고등학교 이하 각급 학교 설립ㆍ운영 규정",
+      "properties": {
+        "citation_text": "고등학교 이하 각급 학교 설립ㆍ운영 규정"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "학교보건법(시행령)::제6장::제22조::1::제1호",
+      "to_id": "감염병의 예방 및 관리에 관한 법률",
+      "properties": {
+        "citation_text": "감염병의 예방 및 관리에 관한 법률"
+      }
+    },
+    {
+      "type": "CITES",
+      "from_id": "학교보건법(시행령)::제6장::제23조의2::1::제1호",
+      "to_id": "고등교육법",
+      "properties": {
+        "citation_text": "고등교육법"
+      }
+    }
+  ]
+}

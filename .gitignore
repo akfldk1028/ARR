@@ -275,3 +275,8 @@ frontend/nul
 # Add any custom directories specific to your project
 # /custom_data/
 # /experiments/
+
+# Local/generated artifacts
+backend/.wrangler/
+backend/NUL
+backend/law/relationship_embedding/data/relationship_contexts_with_embeddings.json

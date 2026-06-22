@@ -1,23 +1,32 @@
 # law/ - 법규 검색 AI 채팅 UI
 
+> **Note (2026-02-27)**: ARR Legacy Frontend. 주력 프론트엔드는 `AG-frontend/`.
+> Vite proxy로 Django(:8000)에 연결 — CORS 없이 상대 URL 사용.
+
 ## 개요
 
-Django 백엔드의 Multi-Agent 법규 검색 시스템과 연동되는 React 프론트엔드.
+Django 백엔드의 법규 검색 시스템과 연동되는 React 채팅 UI.
+검색 결과 카드 클릭 시 오른쪽 사이드바에 조문 원문(전체 항/호) 표시.
 
 ---
 
-## 백엔드 연동
+## 아키텍처
 
 ```
-[Frontend]                              [Backend]
-LawChat.tsx                             Django (port 8000)
-    ↓                                       ↓
-useLawSearchStream() ──SSE──→ /agents/law/api/search/stream
-useLawChat()        ──REST──→ /agents/law/api/search
-LawAPIContext       ──REST──→ /agents/law/api/domains
+[Frontend :5173]                          [Backend :8000]         [Neo4j :7687]
+LawChat.tsx                                Django law proxy
+    ↓                                          ↓
+useLawChat()        ──REST──→ /law/search/  ──→ :8011/api/search
+useLawSearchStream() ──SSE──→ /law/search/stream (via :8011)
+LawAPIContext       ──REST──→ /law/domains/ ──→ :8011/api/domains
+ArticleDetailPanel  ──REST──→ /law/article/?full_id=... ──→ Neo4j (direct)
+                                                              ↑
+                                                    JO → 전체 HANG/HO 조회
 ```
 
-**백엔드 URL**: `http://127.0.0.1:8000`
+**Vite proxy** (`vite.config.ts`):
+- `/law/*` → `http://127.0.0.1:8000`
+- `/land/*` → `http://127.0.0.1:8000`
 
 ---
 
@@ -25,238 +34,143 @@ LawAPIContext       ──REST──→ /agents/law/api/domains
 
 ```
 law/
-├── LawChat.tsx              # 메인 채팅 컴포넌트
+├── LawChat.tsx                  # 메인 채팅 UI (master-detail layout)
 ├── contexts/
-│   └── LawAPIContext.tsx    # API 클라이언트 & 도메인 관리
+│   └── LawAPIContext.tsx        # API 클라이언트 & 도메인 관리
 ├── hooks/
-│   ├── use-law-chat.ts      # REST API 검색 훅
-│   └── use-law-search-stream.ts  # SSE 스트리밍 훅
-└── components/
-    ├── QueryInput.tsx       # 검색 입력 폼
-    ├── ResultDisplay.tsx    # 검색 결과 표시
-    ├── LawArticleCard.tsx   # 법률 조항 카드
-    ├── SearchProgress.tsx   # 진행상황 표시
-    └── StatsPanel.tsx       # 통계 패널
+│   ├── use-law-chat.ts          # REST API 검색 훅
+│   └── use-law-search-stream.ts # SSE 스트리밍 훅
+├── lib/
+│   ├── types.ts                 # 타입 정의 (LawArticle, ArticleDetail 등)
+│   └── law-api-client.ts        # API 클라이언트 (LawAPIClient)
+├── components/
+│   ├── ResultDisplay.tsx        # 검색 결과 목록
+│   ├── LawArticleCard.tsx       # 법률 조항 카드 (클릭→사이드바)
+│   ├── ArticleDetailPanel.tsx   # 조문 원문 사이드바 (전체 항/호)
+│   ├── HeroSearch.tsx           # 빈 상태 히어로 검색 화면
+│   ├── MapPanel.tsx             # 3D Vworld 지도 패널
+│   ├── Pill.tsx                 # 상태 배지 컴포넌트
+│   ├── SearchProgress.tsx       # 진행상황 표시
+│   └── StatsPanel.tsx           # 통계 패널
+└── README.md
 ```
 
 ---
 
-## 핵심 컴포넌트
+## 핵심 기능
 
-### LawChat.tsx
-
-메인 채팅 인터페이스.
-
-```tsx
-export default function LawChat() {
-  return (
-    <LawAPIProvider>
-      <LawChatInner />
-    </LawAPIProvider>
-  );
-}
-```
-
-**주요 기능:**
-- 도메인 선택 (전체 자동 라우팅 / 특정 도메인)
-- 스트리밍 모드 토글
-- 메시지 히스토리
-- 검색 중단
-
----
-
-## Hooks
-
-### useLawSearchStream (SSE 스트리밍)
-
-```typescript
-const { progress, isSearching, startSearch, stopSearch } = useLawSearchStream('http://127.0.0.1:8000');
-
-// 검색 시작
-startSearch("17조 검색", 10);
-
-// 진행상황 확인
-console.log(progress?.stage);      // 'exact_match' | 'vector_search' | 'rne_expansion' 등
-console.log(progress?.progress);   // 0.0 ~ 1.0
-console.log(progress?.status);     // 'started' | 'searching' | 'complete' | 'error'
-```
-
-**SearchProgress 타입:**
-
-```typescript
-interface SearchProgress {
-  status: 'started' | 'searching' | 'processing' | 'complete' | 'error';
-  stage?: 'exact_match' | 'vector_search' | 'relationship_search' | 'rne_expansion' | 'enrichment';
-  stage_name?: string;      // 한글 단계 이름
-  progress?: number;        // 0 ~ 1
-  agent?: string;           // 활성 에이전트 이름
-  domain_id?: string;
-  domain_name?: string;
-  results?: any[];          // 완료 시 결과
-  result_count?: number;
-  response_time?: number;   // ms
-  message?: string;         // 에러 메시지
-}
-```
-
-### useLawChat (REST API)
-
-```typescript
-const { messages, isLoading, search, clearMessages } = useLawChat();
-
-// 검색
-search("17조 검색", 10);
-
-// 메시지 히스토리
-messages.forEach(msg => {
-  console.log(msg.role);              // 'user' | 'assistant'
-  console.log(msg.content);
-  console.log(msg.search_response);   // 검색 결과
-});
-```
-
----
-
-## Context
-
-### LawAPIContext
-
-전역 상태 관리.
-
-```tsx
-function MyComponent() {
-  const {
-    client,           // API 클라이언트
-    domains,          // 도메인 목록
-    domainsLoading,   // 로딩 상태
-    selectedDomainId, // 선택된 도메인
-    setSelectedDomainId,
-    isConnected,      // 백엔드 연결 상태
-    refreshDomains,   // 도메인 새로고침
-  } = useLawAPI();
-  
-  // ...
-}
-```
-
----
-
-## 컴포넌트
-
-### QueryInput
-
-```tsx
-<QueryInput 
-  onSearch={(query) => startSearch(query, 10)} 
-  isLoading={isSearching} 
-/>
-```
-
-### ResultDisplay
-
-```tsx
-<ResultDisplay 
-  response={{
-    results: [...],
-    total_count: 10,
-    response_time: 342,
-    domain_name: '도시계획'
-  }} 
-/>
-```
-
-### SearchProgress
-
-```tsx
-// 진행 중
-<SearchProgressIndicator progress={progress} />
-
-// 완료
-<SearchCompleteHeader 
-  resultCount={10} 
-  responseTime={342} 
-  domainName="도시계획" 
-/>
-
-// 에러
-<SearchErrorIndicator message="서버 연결 실패" />
-```
-
-### LawArticleCard
-
-```tsx
-<LawArticleCard 
-  article={{
-    hang_id: '국토의_계획_및_이용에_관한_법률_법률_제17조_제1항',
-    content: '도시·군관리계획은...',
-    law_name: '국토의 계획 및 이용에 관한 법률',
-    jo_number: '제17조',
-    hang_number: '제1항',
-    similarity: 0.95
-  }} 
-/>
-```
-
----
-
-## 검색 모드
+### 1. 법규 검색 (REST / SSE)
 
 | 모드 | 프로토콜 | 특징 |
 |------|----------|------|
-| **REST** | HTTP POST | 결과만 반환 |
-| **SSE 스트리밍** | EventSource | 실시간 진행상황 표시 |
+| REST | HTTP POST `/law/search/` | 결과만 반환 (기본) |
+| SSE 스트리밍 | GET `/law/search/stream?query=...&limit=...&domain_id=...` | 6단계 실시간 진행 + 결과 |
 
-### SSE 이벤트 흐름
-
+**SSE 이벤트 흐름**:
 ```
-1. started       → 검색 시작
-2. searching     → exact_match 단계
-3. searching     → vector_search 단계
-4. searching     → relationship_search 단계
-5. processing    → rne_expansion 단계
-6. processing    → enrichment 단계
-7. complete      → 결과 반환
+1. started        → { status: "started", stage: "exact_match", progress: 0.0 }
+2. searching      → { status: "searching", stage: "vector_search", progress: 0.2 }
+3. searching      → { status: "searching", stage: "relationship_search", progress: 0.4 }
+4. processing     → { status: "processing", stage: "rne_expansion", progress: 0.7 }
+5. processing     → { status: "processing", stage: "enrichment", progress: 0.9 }
+6. complete       → { status: "complete", results: [...], result_count, response_time }
 ```
 
----
+### 2. 조문 원문 사이드바 (ArticleDetailPanel)
 
-## 라우팅
+검색 결과 카드 클릭 → 오른쪽 420px 사이드바에 전체 조문 표시.
 
-```tsx
-// frontend/src/routers/index.tsx
+**동작**:
+1. `LawArticleCard` 클릭 → `selectedArticle` 설정
+2. `ArticleDetailPanel`이 `GET /law/article/?full_id=...` 호출
+3. Django가 Neo4j에서 JO(조) → 전체 HANG(항) + HO(호) 조회
+4. 매칭된 항 하이라이트 (`검색 결과` 배지)
+5. 전체 복사 버튼
+
+**API**: `GET /law/article/?full_id=국토의 계획 및 이용에 관한 법률(시행령)::제6장::제84조::①`
+
+**응답**:
+```json
 {
-  path: '/law',
-  element: <LawChat />
+  "jo_prefix": "국토의 계획 및 이용에 관한 법률(시행령)::제6장::제84조",
+  "law_name": "국토의 계획 및 이용에 관한 법률",
+  "law_type": "시행령",
+  "jo": { "full_id": "...", "number": "제84조", "title": "용적률" },
+  "hangs": [
+    {
+      "full_id": "...::①", "number": "①", "content": "...",
+      "hos": [
+        { "hang_number": "①", "number": "1", "content": "...", "full_id": "..." }
+      ]
+    }
+  ],
+  "hang_count": 16,
+  "ho_count": 73
 }
 ```
 
-**접속**: `http://localhost:5173/law` (개발 모드)
+### 3. Master-Detail 레이아웃
 
----
-
-## 백엔드 실행
-
-프론트엔드 사용 전 백엔드 필수 실행:
-
-```bash
-cd D:\Data\11_Backend\01_ARR\backend
-daphne -b 0.0.0.0 -p 8000 backend.asgi:application
+```
+┌─────────────────────────────────┬──────────────┐
+│  채팅 영역 (flex: 1)           │ 사이드바     │
+│  ┌───────────────────────────┐  │ (420px)      │
+│  │ user: "건폐율 제한"       │  │              │
+│  │ assistant: 10개 결과      │  │ 조문 원문    │
+│  │   [카드1] [카드2*] [카드3]│  │ 제84조       │
+│  │                           │  │ ① ...        │
+│  └───────────────────────────┘  │ ② ...        │
+│  [검색창]                       │ ③ ...        │
+└─────────────────────────────────┴──────────────┘
+                                   * 클릭한 카드
 ```
 
 ---
 
-## 의존성
+## 스타일링
 
-- `react`: UI 프레임워크
-- `react-router-dom`: 라우팅
-- `tailwindcss`: 스타일링
+**Inline styles with hex colors** — Tailwind theme CSS 변수 충돌 방지.
+
+```tsx
+// ✅ 사용 방식 (inline hex)
+style={{ color: '#4f46e5', background: '#eef2ff' }}
+
+// ❌ 사용하지 않음 (Tailwind 클래스 — 색상 변수 미해결)
+className="text-indigo-600 bg-indigo-50"
+```
+
+**법률 유형별 색상**:
+- 법률: 파랑 (#3b82f6)
+- 시행령: 보라 (#7c3aed)
+- 시행규칙: 주황 (#d97706)
 
 ---
 
-## 관련 백엔드 파일
+## 실행
 
-| 백엔드 | 역할 |
-|--------|------|
-| `agents/law/api/search.py` | 검색 API |
-| `agents/law/domain_agent.py` | 도메인 에이전트 |
-| `agents/law/agent_manager.py` | 에이전트 관리 |
+```bash
+# 1. 백엔드 (Django + Neo4j)
+cd D:\Data\25_ACE\ARR\backend
+python manage.py runserver 8000      # Neo4j bolt://localhost:7687 필요
+
+# 2. 프론트엔드 (Vite + Electron)
+cd D:\Data\25_ACE\ARR\frontend
+npm run dev                           # localhost:5173 (proxy → :8000)
+
+# 3. 접속
+# Electron: 자동으로 열림
+# 브라우저: http://localhost:5173/#/law
+```
+
+---
+
+## 백엔드 엔드포인트
+
+| Method | Path | Description | Backend |
+|--------|------|-------------|---------|
+| POST | `/law/search/` | 검색 (proxy → :8011) | `law/views.py:search` |
+| POST | `/law/domain/<id>/search/` | 도메인 검색 | `law/views.py:search_domain` |
+| GET | `/law/domains/` | 도메인 목록 | proxy → :8011 |
+| GET | `/law/health/` | 헬스체크 | proxy → :8011 |
+| GET | `/law/article/?full_id=...` | 조문 원문 (Neo4j direct) | `law/views.py:article` |
+| GET | `/law/stats/` | 검색 통계 | Django DB |

@@ -1,0 +1,6 @@
+# Phase 2 자가 생성 데이터셋 — git 추적 X (대용량)
+*.json
+*.parquet
+*.csv
+!.gitignore
+!_README.md

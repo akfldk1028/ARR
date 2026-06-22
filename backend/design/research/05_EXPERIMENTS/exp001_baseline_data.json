@@ -1,0 +1,176 @@
+{
+  "exp_id": "exp001",
+  "title": "exp001: Baseline (SSIEAJob + 박스 적층)",
+  "date_utc": "2026-05-06 11:48:32 UTC",
+  "config": {
+    "engine": "ssiea",
+    "max_gen": 120,
+    "algorithm": "additive",
+    "enable_repair": false,
+    "reps": 3
+  },
+  "sites": [
+    {
+      "site": "gangnam_yeoksam_677",
+      "site_name": "강남구 역삼동 677",
+      "algorithm": "additive",
+      "enable_repair": false,
+      "engine": "ssiea",
+      "penalty_mode": "normalized",
+      "reps": 3,
+      "runtime_mean_sec": 1.06,
+      "hypervolume_mean": 62398.6628,
+      "feasible_pct_mean": 13.3,
+      "pareto_front_size_mean": 15.0,
+      "rep_details": [
+        {
+          "rep": 1,
+          "runtime_sec": 1.08,
+          "n_total": 1050,
+          "n_feasible": 115,
+          "feasible_pct": 10.95,
+          "hypervolume": 43670.3955,
+          "pareto_front_size": 10,
+          "avg_objectives": [
+            3385.11,
+            87.57
+          ]
+        },
+        {
+          "rep": 2,
+          "runtime_sec": 1.07,
+          "n_total": 1050,
+          "n_feasible": 163,
+          "feasible_pct": 15.52,
+          "hypervolume": 84574.5005,
+          "pareto_front_size": 14,
+          "avg_objectives": [
+            4021.17,
+            76.21
+          ]
+        },
+        {
+          "rep": 3,
+          "runtime_sec": 1.02,
+          "n_total": 1050,
+          "n_feasible": 141,
+          "feasible_pct": 13.43,
+          "hypervolume": 58951.0923,
+          "pareto_front_size": 21,
+          "avg_objectives": [
+            3427.17,
+            73.78
+          ]
+        }
+      ]
+    },
+    {
+      "site": "bundang_test",
+      "site_name": "분당 테스트 부지",
+      "algorithm": "additive",
+      "enable_repair": false,
+      "engine": "ssiea",
+      "penalty_mode": "normalized",
+      "reps": 3,
+      "runtime_mean_sec": 1.05,
+      "hypervolume_mean": 6977.5483,
+      "feasible_pct_mean": 9.08,
+      "pareto_front_size_mean": 9.0,
+      "rep_details": [
+        {
+          "rep": 1,
+          "runtime_sec": 1.06,
+          "n_total": 1050,
+          "n_feasible": 134,
+          "feasible_pct": 12.76,
+          "hypervolume": 8982.6989,
+          "pareto_front_size": 8,
+          "avg_objectives": [
+            419.06,
+            88.27
+          ]
+        },
+        {
+          "rep": 2,
+          "runtime_sec": 1.02,
+          "n_total": 1050,
+          "n_feasible": 122,
+          "feasible_pct": 11.62,
+          "hypervolume": 10608.561,
+          "pareto_front_size": 13,
+          "avg_objectives": [
+            503.61,
+            78.91
+          ]
+        },
+        {
+          "rep": 3,
+          "runtime_sec": 1.07,
+          "n_total": 1050,
+          "n_feasible": 30,
+          "feasible_pct": 2.86,
+          "hypervolume": 1341.385,
+          "pareto_front_size": 6,
+          "avg_objectives": [
+            324.15,
+            90.07
+          ]
+        }
+      ]
+    },
+    {
+      "site": "chuncheon_test",
+      "site_name": "춘천 테스트 부지",
+      "algorithm": "additive",
+      "enable_repair": false,
+      "engine": "ssiea",
+      "penalty_mode": "normalized",
+      "reps": 3,
+      "runtime_mean_sec": 1.05,
+      "hypervolume_mean": 64975.157,
+      "feasible_pct_mean": 19.27,
+      "pareto_front_size_mean": 11.7,
+      "rep_details": [
+        {
+          "rep": 1,
+          "runtime_sec": 1.08,
+          "n_total": 1050,
+          "n_feasible": 211,
+          "feasible_pct": 20.1,
+          "hypervolume": 69371.3664,
+          "pareto_front_size": 11,
+          "avg_objectives": [
+            3531.79,
+            83.93
+          ]
+        },
+        {
+          "rep": 2,
+          "runtime_sec": 1.02,
+          "n_total": 1050,
+          "n_feasible": 193,
+          "feasible_pct": 18.38,
+          "hypervolume": 60858.4603,
+          "pareto_front_size": 14,
+          "avg_objectives": [
+            3513.49,
+            78.84
+          ]
+        },
+        {
+          "rep": 3,
+          "runtime_sec": 1.06,
+          "n_total": 1050,
+          "n_feasible": 203,
+          "feasible_pct": 19.33,
+          "hypervolume": 64695.6442,
+          "pareto_front_size": 10,
+          "avg_objectives": [
+            2976.3,
+            78.34
+          ]
+        }
+      ]
+    }
+  ]
+}

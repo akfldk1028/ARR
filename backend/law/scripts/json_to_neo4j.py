@@ -12,6 +12,18 @@ import sys
 from neo4j_loader import Neo4jLawLoader
 
 
+def _agent_id(base_law_name: str) -> str:
+    return f"agent_{base_law_name}"
+
+
+def _agent_scope(base_law_name: str) -> List[str]:
+    return [
+        base_law_name,
+        f"{base_law_name} 시행령",
+        f"{base_law_name} 시행규칙",
+    ]
+
+
 def standard_json_to_neo4j_format(data: Dict) -> Dict:
     """
     표준 JSON을 Neo4j 로더가 읽을 수 있는 형식으로 변환
@@ -49,7 +61,10 @@ def standard_json_to_neo4j_format(data: Dict) -> Dict:
     #     "국토의 계획 및 이용에 관한 법률" -> "국토의 계획 및 이용에 관한 법률(시행규칙)"
     law_name = law_info['law_name']
     law_type = law_info['law_type']
+    law_category = law_info.get('law_category') or law_type
+    base_law_name = law_info.get('base_law_name') or law_name
     law_with_type = f"{law_name}({law_type})"
+    agent_id = law_info.get('agent_id') or _agent_id(base_law_name)
 
     # 노드 생성
     nodes = []
@@ -70,7 +85,12 @@ def standard_json_to_neo4j_format(data: Dict) -> Dict:
             'labels': [unit_type_english],  # JO, HANG, HO, MOK 등
             'properties': {
                 'law_name': law_info['law_name'],  # 제약조건 만족
+                'law_type': law_type,
+                'law_category': law_category,
+                'base_law_name': base_law_name,
+                'agent_id': agent_id,
                 'number': unit['unit_number'],
+                'unit_number': unit['unit_number'],
                 'title': unit['title'],
                 'content': unit['content'],
                 'full_id': new_full_id,  # 법률 타입이 포함된 full_id
@@ -178,6 +198,13 @@ def standard_json_to_neo4j_format(data: Dict) -> Dict:
     return {
         'law_name': law_info['law_name'],
         'law_type': law_info['law_type'],
+        'law_category': law_category,
+        'base_law_name': base_law_name,
+        'law_full_id': law_with_type,
+        'agent_id': agent_id,
+        'agent_scope': law_info.get('agent_scope') or _agent_scope(base_law_name),
+        'law_mst': law_info.get('law_mst'),
+        'source': law_info.get('source'),
         'nodes': nodes,
         'relationships': relationships
     }
@@ -237,7 +264,15 @@ def json_to_neo4j(json_path: str, neo4j_uri: str, neo4j_user: str, neo4j_passwor
             # 법률 노드 생성
             loader.create_law_node(
                 law_name=neo4j_data['law_name'],
-                law_type=neo4j_data['law_type']
+                law_type=neo4j_data['law_type'],
+                metadata={
+                    'law_category': neo4j_data.get('law_category'),
+                    'base_law_name': neo4j_data.get('base_law_name'),
+                    'agent_id': neo4j_data.get('agent_id'),
+                    'agent_scope': json.dumps(neo4j_data.get('agent_scope', []), ensure_ascii=False),
+                    'law_mst': neo4j_data.get('law_mst'),
+                    'source': neo4j_data.get('source'),
+                }
             )
 
             # 노드 및 관계 생성
@@ -260,7 +295,8 @@ def json_to_neo4j(json_path: str, neo4j_uri: str, neo4j_user: str, neo4j_passwor
     print(f"\n[4/4] 백업 JSON 저장 중...")
 
     safe_law_name = law_info['law_name'].replace(" ", "_")
-    backup_filename = f"{safe_law_name}_neo4j.json"
+    safe_law_type = law_info['law_type'].replace(" ", "_")
+    backup_filename = f"{safe_law_name}_{safe_law_type}_neo4j.json"
     backup_path = output_dir / backup_filename
 
     with open(backup_path, 'w', encoding='utf-8') as f:

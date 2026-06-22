@@ -1,0 +1,17 @@
+__pycache__
+*.pyc
+.env
+db.sqlite3
+venv/
+.git/
+node_modules/
+law/data/
+law/relationship_embedding/
+law/STEP/
+law/scripts/
+law/evaluation/
+neo4j/
+cookbook/
+_inactive/
+docs/
+*.sqlite3

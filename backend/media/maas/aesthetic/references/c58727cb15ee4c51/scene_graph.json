@@ -1,0 +1,99 @@
+{
+  "edges": [
+    {
+      "relation": "sits_on",
+      "source": "mass",
+      "target": "site"
+    },
+    {
+      "relation": "constrained_by",
+      "source": "mass",
+      "target": "legal_envelope"
+    },
+    {
+      "relation": "part_of",
+      "source": "volume_1",
+      "target": "mass"
+    },
+    {
+      "relation": "part_of",
+      "source": "volume_2",
+      "target": "mass"
+    },
+    {
+      "relation": "stacked_after",
+      "source": "volume_2",
+      "target": "volume_1"
+    },
+    {
+      "relation": "bounds",
+      "source": "facade_front",
+      "target": "mass"
+    },
+    {
+      "relation": "bounds",
+      "source": "facade_right",
+      "target": "mass"
+    },
+    {
+      "relation": "bounds",
+      "source": "facade_back",
+      "target": "mass"
+    },
+    {
+      "relation": "bounds",
+      "source": "facade_left",
+      "target": "mass"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "site",
+      "type": "Site"
+    },
+    {
+      "id": "legal_envelope",
+      "type": "LegalEnvelope"
+    },
+    {
+      "candidate_id": "maas_01",
+      "id": "mass",
+      "type": "BuildingMass"
+    },
+    {
+      "bottom_height": 0.0,
+      "id": "volume_1",
+      "role": "morphology_volume",
+      "top_height": 8.4,
+      "type": "MassVolume"
+    },
+    {
+      "bottom_height": 8.4,
+      "id": "volume_2",
+      "role": "morphology_volume",
+      "top_height": 16.8,
+      "type": "MassVolume"
+    },
+    {
+      "id": "facade_front",
+      "type": "Facade",
+      "view": "front"
+    },
+    {
+      "id": "facade_right",
+      "type": "Facade",
+      "view": "right"
+    },
+    {
+      "id": "facade_back",
+      "type": "Facade",
+      "view": "back"
+    },
+    {
+      "id": "facade_left",
+      "type": "Facade",
+      "view": "left"
+    }
+  ],
+  "schema_version": "arr.maas.scene_graph.v0"
+}

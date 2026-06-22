@@ -346,7 +346,7 @@ export default function StreamingConsole() {
                       }
                       return null;
                     })
-                    .filter((s): s is { uri: string; title: string } => s !== null);
+                    .filter((s: { uri: string; title: string } | null): s is { uri: string; title: string } => s !== null);
                   sources.push(...reviewSources);
                 }
               }

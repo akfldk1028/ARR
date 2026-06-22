@@ -1,0 +1,87 @@
+{
+  "exp_id": "exp008",
+  "title": "Surrogate Training (RandomForest / MLP / GP)",
+  "date_utc": "2026-05-06 12:12:29 UTC",
+  "dataset": "ds01_self_generated_ga.json",
+  "n_total": 3000,
+  "n_train": 2400,
+  "n_test": 600,
+  "input_dim": 32,
+  "output_dim": 4,
+  "target_names": [
+    "floor_area",
+    "daylight_score",
+    "bcr",
+    "far"
+  ],
+  "best_model": "mlp",
+  "models": {
+    "random_forest": {
+      "train_sec": 0.51,
+      "metrics": {
+        "floor_area": {
+          "r2": 0.9365,
+          "mae": 416.704
+        },
+        "daylight_score": {
+          "r2": 0.7587,
+          "mae": 3.107
+        },
+        "bcr": {
+          "r2": 0.6451,
+          "mae": 5.688
+        },
+        "far": {
+          "r2": 0.9368,
+          "mae": 43.949
+        },
+        "mean_r2": 0.8193
+      }
+    },
+    "mlp": {
+      "train_sec": 0.49,
+      "metrics": {
+        "floor_area": {
+          "r2": 0.9213,
+          "mae": 507.765
+        },
+        "daylight_score": {
+          "r2": 0.7828,
+          "mae": 2.934
+        },
+        "bcr": {
+          "r2": 0.6615,
+          "mae": 5.631
+        },
+        "far": {
+          "r2": 0.92,
+          "mae": 57.108
+        },
+        "mean_r2": 0.8214
+      }
+    },
+    "gp": {
+      "train_sec": 1.5,
+      "subsample": 1000,
+      "metrics": {
+        "floor_area": {
+          "r2": 0.8436,
+          "mae": 753.64
+        },
+        "daylight_score": {
+          "r2": 0.5163,
+          "mae": 4.043
+        },
+        "bcr": {
+          "r2": 0.5013,
+          "mae": 6.554
+        },
+        "far": {
+          "r2": 0.8163,
+          "mae": 88.377
+        },
+        "mean_r2": 0.6694
+      }
+    }
+  }
+}

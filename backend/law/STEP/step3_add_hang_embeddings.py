@@ -1,7 +1,9 @@
 """
 Step 3: HANG 노드 임베딩 추가
 
-KR-SBERT 모델을 사용하여 HANG 노드에 768차원 임베딩을 추가합니다.
+OpenAI text-embedding-3-large 모델을 사용하여 HANG 노드에 3072차원 임베딩을 추가합니다.
+
+⚠️ 요구사항: OPENAI_API_KEY 환경변수 필요 (API 비용 발생)
 
 실행:
     python step3_add_hang_embeddings.py
@@ -32,7 +34,8 @@ if not script_path.exists():
 
 print(f"\n📄 실행 중: {script_path}")
 print("⏱️  예상 소요 시간: 약 10분")
-print("🔄 KR-SBERT 모델 (jhgan/ko-sbert-sts, 768-dim)")
+print("🔄 OpenAI text-embedding-3-large (3072-dim)")
+print("⚠️  OPENAI_API_KEY 환경변수 필요")
 print("-" * 80)
 
 # 원본 스크립트 실행

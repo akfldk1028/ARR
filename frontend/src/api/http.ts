@@ -158,7 +158,7 @@ async function getProxyBaseURL() {
   if (isDev) {
     const proxyUrl = import.meta.env.VITE_PROXY_URL
     if (!proxyUrl) {
-      return 'http://localhost:3001'
+      return ''
     }
     return proxyUrl
   } else {

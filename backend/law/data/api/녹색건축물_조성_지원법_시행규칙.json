@@ -1,0 +1,1950 @@
+{
+  "law_info": {
+    "law_name": "녹색건축물 조성 지원법",
+    "law_type": "시행규칙",
+    "law_mst": "267443",
+    "source": "law.go.kr Open API",
+    "total_units": 152
+  },
+  "units": [
+    {
+      "unit_type": "조",
+      "unit_number": "1조",
+      "title": "목적",
+      "content": "제1조(목적)",
+      "unit_path": "제1조",
+      "full_id": "녹색건축물 조성 지원법::제1조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "녹색건축물 조성 지원법"
+        ]
+      }
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "1조의2",
+      "title": "녹색건축물 기본계획 수립에 필요한 기초자료 제출 기관",
+      "content": "제1조의2(녹색건축물 기본계획 수립에 필요한 기초자료 제출 기관)",
+      "unit_path": "제1조의2",
+      "full_id": "녹색건축물 조성 지원법::제1조의2",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "녹색건축물 조성 지원법"
+        ]
+      }
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "2조",
+      "title": "경미한 사항의 변경",
+      "content": "제2조(경미한 사항의 변경)",
+      "unit_path": "제2조",
+      "full_id": "녹색건축물 조성 지원법::제2조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "녹색건축물 조성 지원법 시행령"
+        ]
+      }
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "3조",
+      "title": "실태조사의 주기ㆍ방법 및 대상 등",
+      "content": "제3조(실태조사의 주기ㆍ방법 및 대상 등)",
+      "unit_path": "제3조",
+      "full_id": "녹색건축물 조성 지원법::제3조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "법 제9조제1항에 따른 녹색건축물 조성에 관한 실태조사(이하 \"실태조사\"라 한다) 사항은 다음과 같다.",
+      "unit_path": "제3조_1",
+      "full_id": "녹색건축물 조성 지원법::제3조::1",
+      "parent_id": "녹색건축물 조성 지원법::제3조",
+      "order": 1,
+      "revision_dates": [
+        "2015.5.29"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  지역별 에너지 소비 총량 관리 현황",
+      "unit_path": "제3조_1_제1호",
+      "full_id": "녹색건축물 조성 지원법::제3조::1::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제3조::1",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  에너지 절약 계획서 및 건축물 에너지소비 증명 현황",
+      "unit_path": "제3조_1_제2호",
+      "full_id": "녹색건축물 조성 지원법::제3조::1::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제3조::1",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  녹색건축물 전문인력 교육 및 양성 현황",
+      "unit_path": "제3조_1_제3호",
+      "full_id": "녹색건축물 조성 지원법::제3조::1::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제3조::1",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "4",
+      "title": null,
+      "content": "4.  녹색건축물 조성을 위한 녹색기술의 연구개발 및 사업화 현황",
+      "unit_path": "제3조_1_제4호",
+      "full_id": "녹색건축물 조성 지원법::제3조::1::제4호",
+      "parent_id": "녹색건축물 조성 지원법::제3조::1",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "5",
+      "title": null,
+      "content": "5.  녹색건축물 조성 시범사업 현황",
+      "unit_path": "제3조_1_제5호",
+      "full_id": "녹색건축물 조성 지원법::제3조::1::제5호",
+      "parent_id": "녹색건축물 조성 지원법::제3조::1",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "6",
+      "title": null,
+      "content": "6.  녹색건축물에 대한 자금 지원 집행 현황",
+      "unit_path": "제3조_1_제6호",
+      "full_id": "녹색건축물 조성 지원법::제3조::1::제6호",
+      "parent_id": "녹색건축물 조성 지원법::제3조::1",
+      "order": 6,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "7",
+      "title": null,
+      "content": "7.  법 제13조의2제1항에 따른 공공건축물(이하 \"공공건축물\"이라 한다) 현황 및 에너지 소비 현황",
+      "unit_path": "제3조_1_제7호",
+      "full_id": "녹색건축물 조성 지원법::제3조::1::제7호",
+      "parent_id": "녹색건축물 조성 지원법::제3조::1",
+      "order": 7,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "실태조사는 다음 각 호의 구분에 따라 실시한다.",
+      "unit_path": "제3조_2",
+      "full_id": "녹색건축물 조성 지원법::제3조::2",
+      "parent_id": "녹색건축물 조성 지원법::제3조",
+      "order": 2,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  정기조사: 녹색건축물 조성을 위한 정책수립 등에 활용하기 위하여 매년 실시하는 조사",
+      "unit_path": "제3조_2_제1호",
+      "full_id": "녹색건축물 조성 지원법::제3조::2::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제3조::2",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  수시조사: 국토교통부장관이 기본계획 및 조성계획 등을 효율적으로 수립ㆍ집행하기 위하여 필요하다고 인정하는 경우 실시하는 조사",
+      "unit_path": "제3조_2_제2호",
+      "full_id": "녹색건축물 조성 지원법::제3조::2::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제3조::2",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "국토교통부장관은 실태조사를 할 때에는 조사 대상을 정하고, 조사의 일시, 취지 및 내용 등을 포함한 조사계획을 법 제9조제2항에 따른 단체 및 기관의 장 등 조사 대상자에게 미리 알려야 한다.",
+      "unit_path": "제3조_3",
+      "full_id": "녹색건축물 조성 지원법::제3조::3",
+      "parent_id": "녹색건축물 조성 지원법::제3조",
+      "order": 3,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "4",
+      "title": null,
+      "content": "국토교통부장관은 실태조사를 효율적으로 하기 위하여 정보통신망 및 전자우편 등 전자적 방식을 사용할 수 있다.",
+      "unit_path": "제3조_4",
+      "full_id": "녹색건축물 조성 지원법::제3조::4",
+      "parent_id": "녹색건축물 조성 지원법::제3조",
+      "order": 4,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "4조",
+      "title": "건축물 에너지ㆍ온실가스 정보 제출방법 및 공개 방법과 절차 등",
+      "content": "제4조(건축물 에너지ㆍ온실가스 정보 제출방법 및 공개 방법과 절차 등)",
+      "unit_path": "제4조",
+      "full_id": "녹색건축물 조성 지원법::제4조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "법 제10조제3항 및 영 제6조제1항에 따른 에너지공급기관 또는 관리기관(이하 이 조에서 \"에너지공급기관등\"이라 한다)은 건축물의 온실가스 배출량 및 에너지 사용량과 관련된 정보 및 통계(이하 \"건축물 에너지ㆍ온실가스 정보\"라 한다)를 국토교통부장관이 정하는 바에 따라 매월 말일을 기준으로 다음 달 15일까지 국토교통부장관에게 제출하여야 한다.",
+      "unit_path": "제4조_1",
+      "full_id": "녹색건축물 조성 지원법::제4조::1",
+      "parent_id": "녹색건축물 조성 지원법::제4조",
+      "order": 1,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "에너지공급기관등이 하나의 건축물에 대하여 여러 세대ㆍ호ㆍ가구 등으로 구분하여 건축물 에너지ㆍ온실가스 정보를 관리하고 있는 경우 그 구분된 각각의 세대ㆍ호ㆍ가구 등의 건축물 에너지ㆍ온실가스 정보를 포함하여 국토교통부장관에게 제출하여야 한다.",
+      "unit_path": "제4조_2",
+      "full_id": "녹색건축물 조성 지원법::제4조::2",
+      "parent_id": "녹색건축물 조성 지원법::제4조",
+      "order": 2,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "국토교통부장관은 제1항 및 제2항에 따라 제출된 건축물 에너지ㆍ온실가스 정보의 내용을 검토하고, 온실가스 배출량 및 에너지 사용량 등을 지역ㆍ용도ㆍ규모 등으로 구분하여 공개할 수 있다.",
+      "unit_path": "제4조_3",
+      "full_id": "녹색건축물 조성 지원법::제4조::3",
+      "parent_id": "녹색건축물 조성 지원법::제4조",
+      "order": 3,
+      "revision_dates": [
+        "2013.3.23",
+        "2015.5.29"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "4",
+      "title": null,
+      "content": "제1항부터 제3항까지에서 규정한 사항 외에 건축물 에너지ㆍ온실가스 정보의 제출 및 그 공개 방법과 절차 등에 관하여 필요한 사항은 국토교통부장관이 정하여 고시한다.",
+      "unit_path": "제4조_4",
+      "full_id": "녹색건축물 조성 지원법::제4조::4",
+      "parent_id": "녹색건축물 조성 지원법::제4조",
+      "order": 4,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "5조",
+      "title": "지역별 건축물의 에너지 소비총량 관리 협약의 체결 및 이행",
+      "content": "제5조(지역별 건축물의 에너지 소비총량 관리 협약의 체결 및 이행)",
+      "unit_path": "제5조",
+      "full_id": "녹색건축물 조성 지원법::제5조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 6,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "법 제11조제3항에 따라 체결하는 협약(이하 \"협약\"이라 한다)에는 다음 각 호의 사항이 포함되어야 한다.",
+      "unit_path": "제5조_1",
+      "full_id": "녹색건축물 조성 지원법::제5조::1",
+      "parent_id": "녹색건축물 조성 지원법::제5조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  협약을 체결하는 특별시장ㆍ광역시장ㆍ특별자치시장ㆍ도지사 또는 특별자치도지사(이하 \"시ㆍ도지사\"라 한다)가 설정하는 관할 지역의 건축물(「건축법」 제3조제1항에 따른 건축물은 제외한다. 이하 같다) 에너지 소비총량 목표 및 이를 달성하기 위한 계획(이하 이 조에서 \"목표달성계획\"이라 한다)에 관한 사항",
+      "unit_path": "제5조_1_제1호",
+      "full_id": "녹색건축물 조성 지원법::제5조::1::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::1",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "건축법"
+        ]
+      }
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  협약 이행의 보고 및 평가에 관한 사항",
+      "unit_path": "제5조_1_제2호",
+      "full_id": "녹색건축물 조성 지원법::제5조::1::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::1",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  협약을 이행하는 데 필요한 행정적ㆍ재정적 지원 및 집행에 관한 사항",
+      "unit_path": "제5조_1_제3호",
+      "full_id": "녹색건축물 조성 지원법::제5조::1::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::1",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "4",
+      "title": null,
+      "content": "4.  협약의 유효기간에 관한 사항",
+      "unit_path": "제5조_1_제4호",
+      "full_id": "녹색건축물 조성 지원법::제5조::1::제4호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::1",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "5",
+      "title": null,
+      "content": "5.  협약의 변경 및 해약에 관한 사항",
+      "unit_path": "제5조_1_제5호",
+      "full_id": "녹색건축물 조성 지원법::제5조::1::제5호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::1",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "6",
+      "title": null,
+      "content": "6.  협약을 위반하였을 때의 조치사항",
+      "unit_path": "제5조_1_제6호",
+      "full_id": "녹색건축물 조성 지원법::제5조::1::제6호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::1",
+      "order": 6,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "7",
+      "title": null,
+      "content": "7.  그 밖에 협약 당사자 간에 지역별 건축물의 에너지 소비총량을 달성하기 위하여 필요하다고 인정하는 사항",
+      "unit_path": "제5조_1_제7호",
+      "full_id": "녹색건축물 조성 지원법::제5조::1::제7호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::1",
+      "order": 7,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "시ㆍ도지사는 제1항에 따른 협약 체결 시 지체 없이 그 내용을 주민에게 공고하여야 한다.",
+      "unit_path": "제5조_2",
+      "full_id": "녹색건축물 조성 지원법::제5조::2",
+      "parent_id": "녹색건축물 조성 지원법::제5조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "시ㆍ도지사는 제1항제4호에 따른 협약의 유효기간 동안 다음 각 호의 사항을 포함한 협약의 이행 결과를 매년 3월 31일까지 국토교통부장관에게 보고하여야 한다.",
+      "unit_path": "제5조_3",
+      "full_id": "녹색건축물 조성 지원법::제5조::3",
+      "parent_id": "녹색건축물 조성 지원법::제5조",
+      "order": 3,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  목표달성계획에 따른 전년도의 지역별 건축물 에너지 소비총량의 목표달성 여부",
+      "unit_path": "제5조_3_제1호",
+      "full_id": "녹색건축물 조성 지원법::제5조::3::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::3",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  목표달성계획의 이행이 지연되는 경우 그 사유, 조치 및 개선방안",
+      "unit_path": "제5조_3_제2호",
+      "full_id": "녹색건축물 조성 지원법::제5조::3::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::3",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  협약의 목표 이행을 위한 예산집행 실적",
+      "unit_path": "제5조_3_제3호",
+      "full_id": "녹색건축물 조성 지원법::제5조::3::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제5조::3",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "6조",
+      "title": "기존 건축물의 종류 및 공사의 범위",
+      "content": "제6조(기존 건축물의 종류 및 공사의 범위)",
+      "unit_path": "제6조",
+      "full_id": "녹색건축물 조성 지원법::제6조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 7,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "법 제13조제1항에 따른 기존 건축물은 「건축법」 제22조에 따른 사용승인을 받은 후 10년이 지난 건축물로 한다.",
+      "unit_path": "제6조_1",
+      "full_id": "녹색건축물 조성 지원법::제6조::1",
+      "parent_id": "녹색건축물 조성 지원법::제6조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "법 제13조제2항에 따른 공사의 범위는 기존 건축물의 리모델링ㆍ증축ㆍ개축ㆍ대수선 및 수선으로 한다. 다만, 수선은 창ㆍ문, 설비ㆍ기기, 단열재 등을 통하여 에너지성능을 개선하는 공사로 한정한다.",
+      "unit_path": "제6조_2",
+      "full_id": "녹색건축물 조성 지원법::제6조::2",
+      "parent_id": "녹색건축물 조성 지원법::제6조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "6조의2",
+      "title": "공공건축물의 에너지 소비량 보고 및 공개",
+      "content": "제6조의2(공공건축물의 에너지 소비량 보고 및 공개)",
+      "unit_path": "제6조의2",
+      "full_id": "녹색건축물 조성 지원법::제6조의2",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 8,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "공공건축물의 사용자 또는 관리자(이하 \"공공건축물 사용자 등\"이라 한다)는 법 제13조의2제1항에 따라 해당 공공건축물의 에너지 소비량 보고서를 매 분기 말일을 기준으로 다음 달 말일까지 국토교통부장관에게 제출하여야 한다.",
+      "unit_path": "제6조의2_1",
+      "full_id": "녹색건축물 조성 지원법::제6조의2::1",
+      "parent_id": "녹색건축물 조성 지원법::제6조의2",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "제1항에 따른 에너지 소비량 보고서는 별지 제2호서식과 같다.",
+      "unit_path": "제6조의2_2",
+      "full_id": "녹색건축물 조성 지원법::제6조의2::2",
+      "parent_id": "녹색건축물 조성 지원법::제6조의2",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "국토교통부장관은 제1항에 따라 보고받은 에너지 소비량의 에너지소비 특성 및 이용 상황 등에 대한 적정성 검토를 위하여 현장조사를 실시할 수 있으며, 에너지 소비량 분석결과를 공공건축물 사용자 등에게 미리 통보하고 의견을 들을 수 있다.",
+      "unit_path": "제6조의2_3",
+      "full_id": "녹색건축물 조성 지원법::제6조의2::3",
+      "parent_id": "녹색건축물 조성 지원법::제6조의2",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "4",
+      "title": null,
+      "content": "공공건축물 사용자 등은 법 제13조의2제2항에 따라 공개된 에너지 소비량을 별지 제2호의2서식을 참고하여 해당 공공건축물의 주출입구에 게시할 수 있다.",
+      "unit_path": "제6조의2_4",
+      "full_id": "녹색건축물 조성 지원법::제6조의2::4",
+      "parent_id": "녹색건축물 조성 지원법::제6조의2",
+      "order": 4,
+      "revision_dates": [
+        "2017.1.20"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "5",
+      "title": null,
+      "content": "제1항부터 제4항까지에서 규정한 사항 외에 공공건축물의 에너지효율 및 성능개선 요구 기준 등 에너지 소비량 공개에 관한 세부사항은 국토교통부장관이 정하여 고시한다.",
+      "unit_path": "제6조의2_5",
+      "full_id": "녹색건축물 조성 지원법::제6조의2::5",
+      "parent_id": "녹색건축물 조성 지원법::제6조의2",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "7조",
+      "title": "에너지 절약계획서 등",
+      "content": "제7조(에너지 절약계획서 등)",
+      "unit_path": "제7조",
+      "full_id": "녹색건축물 조성 지원법::제7조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 9,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "영 제10조제2항에서 \"국토교통부령으로 정하는 에너지 절약계획서\"란 다음 각 호의 서류를 첨부한 별지 제1호서식의 에너지 절약계획서를 말한다.",
+      "unit_path": "제7조_1",
+      "full_id": "녹색건축물 조성 지원법::제7조::1",
+      "parent_id": "녹색건축물 조성 지원법::제7조",
+      "order": 1,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  국토교통부장관이 고시하는 건축물의 에너지 절약 설계기준에 따른 에너지 절약 설계 검토서",
+      "unit_path": "제7조_1_제1호",
+      "full_id": "녹색건축물 조성 지원법::제7조::1::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::1",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  설계도면, 설계설명서 및 계산서 등 건축물의 에너지 절약계획서의 내용을 증명할 수 있는 서류(건축, 기계설비, 전기설비 및 신ㆍ재생에너지 설비 부문과 관련된 것으로 한정한다)",
+      "unit_path": "제7조_1_제2호",
+      "full_id": "녹색건축물 조성 지원법::제7조::1::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::1",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "법 제14조제2항 후단에서 \"국토교통부령으로 정하는 에너지 관련 전문기관\"이란 다음 각 호의 기관(이하 \"에너지 절약계획서 검토기관\"이라 한다)을 말한다.",
+      "unit_path": "제7조_2",
+      "full_id": "녹색건축물 조성 지원법::제7조::2",
+      "parent_id": "녹색건축물 조성 지원법::제7조",
+      "order": 2,
+      "revision_dates": [
+        "2013.3.23",
+        "2015.5.29",
+        "2017.1.20",
+        "2018.1.18",
+        "2020.12.11"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  「에너지이용 합리화법」 제45조에 따른 한국에너지공단(이하 \"한국에너지공단\"이라 한다)",
+      "unit_path": "제7조_2_제1호",
+      "full_id": "녹색건축물 조성 지원법::제7조::2::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::2",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "에너지이용 합리화법"
+        ]
+      }
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  「국토안전관리원법」에 따른 국토안전관리원",
+      "unit_path": "제7조_2_제2호",
+      "full_id": "녹색건축물 조성 지원법::제7조::2::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::2",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "국토안전관리원법"
+        ]
+      }
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  「한국부동산원법」에 따른 한국부동산원(이하 \"한국부동산원\"이라 한다)",
+      "unit_path": "제7조_2_제3호",
+      "full_id": "녹색건축물 조성 지원법::제7조::2::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::2",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "한국부동산원법"
+        ]
+      }
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "4",
+      "title": null,
+      "content": "4.  그 밖에 국토교통부장관이 에너지 절약계획서의 검토업무를 수행할 인력, 조직, 예산 및 시설 등을 갖추었다고 인정하여 고시하는 기관 또는 단체",
+      "unit_path": "제7조_2_제4호",
+      "full_id": "녹색건축물 조성 지원법::제7조::2::제4호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::2",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "에너지 절약계획서 검토기관은 법 제14조제2항 후단에 따라 허가권자(「건축법」제5조제1항에 따른 건축허가권자를 말하며, 「건축법」 외의 다른 법령에 따라 허가ㆍ신고 권한이 다른 행정기관의 장에게 속하는 경우에는 해당 행정기관의 장을 말한다. 이하 같다)로부터 에너지 절약계획서의 검토 요청을 받은 경우에는 제7항에 따른 수수료가 납부된 날부터 10일 이내에 검토를 완료하고 그 결과를 지체 없이 허가권자에게 제출하여야 한다. 이 경우 건축주가 보완하는 기간 및 공휴일ㆍ토요일은 검토기간에서 제외한다.",
+      "unit_path": "제7조_3",
+      "full_id": "녹색건축물 조성 지원법::제7조::3",
+      "parent_id": "녹색건축물 조성 지원법::제7조",
+      "order": 3,
+      "revision_dates": [
+        "2017.1.20"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "4",
+      "title": null,
+      "content": "법 제14조제4항에서 \"국토교통부령으로 정하는 에너지 관련 전문기관\"이란 법 제23조에 따른 녹색건축센터인 에너지 절약계획서 검토기관을 말한다.",
+      "unit_path": "제7조_4",
+      "full_id": "녹색건축물 조성 지원법::제7조::4",
+      "parent_id": "녹색건축물 조성 지원법::제7조",
+      "order": 4,
+      "revision_dates": [
+        "2017.1.20"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "5",
+      "title": null,
+      "content": "국토교통부장관은 법 제14조제4항에 따라 에너지 절약계획서 검토업무 운영기관(이하 \"에너지 절약계획서 검토업무 운영기관\"이라 한다)을 지정하거나 그 지정을 취소한 경우에는 그 사실을 관보에 고시하여야 한다.",
+      "unit_path": "제7조_5",
+      "full_id": "녹색건축물 조성 지원법::제7조::5",
+      "parent_id": "녹색건축물 조성 지원법::제7조",
+      "order": 5,
+      "revision_dates": [
+        "2017.1.20"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "6",
+      "title": null,
+      "content": "에너지 절약계획서 검토업무 운영기관은 다음 각 호의 업무를 수행한다.",
+      "unit_path": "제7조_6",
+      "full_id": "녹색건축물 조성 지원법::제7조::6",
+      "parent_id": "녹색건축물 조성 지원법::제7조",
+      "order": 6,
+      "revision_dates": [
+        "2017.1.20"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  법 제15조제1항에 따른 건축물의 에너지절약 설계기준 관련 조사ㆍ연구 및 개발에 관한 업무",
+      "unit_path": "제7조_6_제1호",
+      "full_id": "녹색건축물 조성 지원법::제7조::6::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::6",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  법 제15조제1항에 따른 건축물의 에너지절약 설계기준 관련 홍보ㆍ교육 및 컨설팅에 관한 업무",
+      "unit_path": "제7조_6_제2호",
+      "full_id": "녹색건축물 조성 지원법::제7조::6::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::6",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  에너지 절약계획서 작성ㆍ검토ㆍ이행 등 제도 운영 및 개선에 관한 업무",
+      "unit_path": "제7조_6_제3호",
+      "full_id": "녹색건축물 조성 지원법::제7조::6::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::6",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "4",
+      "title": null,
+      "content": "4.  에너지 절약계획서 검토 관련 프로그램 개발 및 관리에 관한 업무",
+      "unit_path": "제7조_6_제4호",
+      "full_id": "녹색건축물 조성 지원법::제7조::6::제4호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::6",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "5",
+      "title": null,
+      "content": "5.  에너지 절약계획서 검토 관련 통계자료 활용 및 분석에 관한 업무",
+      "unit_path": "제7조_6_제5호",
+      "full_id": "녹색건축물 조성 지원법::제7조::6::제5호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::6",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "6",
+      "title": null,
+      "content": "6.  에너지 절약계획서 검토기관별 검토현황 관리 및 보고에 관한 업무",
+      "unit_path": "제7조_6_제6호",
+      "full_id": "녹색건축물 조성 지원법::제7조::6::제6호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::6",
+      "order": 6,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "7",
+      "title": null,
+      "content": "7.  에너지 절약계획서 검토기관 점검 등 제1호부터 제6호까지에서 규정한 사항 외에 국토교통부장관이 요청하는 업무",
+      "unit_path": "제7조_6_제7호",
+      "full_id": "녹색건축물 조성 지원법::제7조::6::제7호",
+      "parent_id": "녹색건축물 조성 지원법::제7조::6",
+      "order": 7,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "7",
+      "title": null,
+      "content": "법 제14조제6항에 따른 에너지 절약계획서 검토 수수료는 별표 1과 같다.",
+      "unit_path": "제7조_7",
+      "full_id": "녹색건축물 조성 지원법::제7조::7",
+      "parent_id": "녹색건축물 조성 지원법::제7조",
+      "order": 7,
+      "revision_dates": [
+        "2015.3.5",
+        "2015.5.29",
+        "2017.1.20"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "8",
+      "title": null,
+      "content": "제3항 및 제7항에 따른 에너지 절약계획서의 검토 및 보완 기간과 검토 수수료에 관한 세부적인 사항은 국토교통부장관이 정하여 고시한다.",
+      "unit_path": "제7조_8",
+      "full_id": "녹색건축물 조성 지원법::제7조::8",
+      "parent_id": "녹색건축물 조성 지원법::제7조",
+      "order": 8,
+      "revision_dates": [
+        "2015.3.5",
+        "2017.1.20"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "7조의2",
+      "title": "차양 등의 설치가 필요한 외벽 등의 재료",
+      "content": "제7조의2(차양 등의 설치가 필요한 외벽 등의 재료)",
+      "unit_path": "제7조의2",
+      "full_id": "녹색건축물 조성 지원법::제7조의2",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 10,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "8조",
+      "title": "건축물 에너지 평가서의 내용 및 공개기준 등",
+      "content": "제8조(건축물 에너지 평가서의 내용 및 공개기준 등)",
+      "unit_path": "제8조",
+      "full_id": "녹색건축물 조성 지원법::제8조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 11,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "법 제18조제1항에 따른 건축물 에너지 평가서는 별지 제3호서식과 같다.",
+      "unit_path": "제8조_1",
+      "full_id": "녹색건축물 조성 지원법::제8조::1",
+      "parent_id": "녹색건축물 조성 지원법::제8조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "하나의 건축물이 여러 세대ㆍ호ㆍ가구 등으로 구분되어 건축물 에너지ㆍ온실가스 정보가 관리되는 경우 국토교통부장관은 세대ㆍ호ㆍ가구 등을 구분하여 제1항에 따른 건축물 에너지 평가서를 공개할 수 있다.",
+      "unit_path": "제8조_2",
+      "full_id": "녹색건축물 조성 지원법::제8조::2",
+      "parent_id": "녹색건축물 조성 지원법::제8조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "법 제18조제3항에 따른 에너지성능정보 공개ㆍ활용 운영기관은 다음 각 호의 어느 하나에 해당하는 기관 또는 단체 중에서 국토교통부장관이 정하여 고시한다.",
+      "unit_path": "제8조_3",
+      "full_id": "녹색건축물 조성 지원법::제8조::3",
+      "parent_id": "녹색건축물 조성 지원법::제8조",
+      "order": 3,
+      "revision_dates": [
+        "2017.1.20",
+        "2020.12.11"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  한국부동산원",
+      "unit_path": "제8조_3_제1호",
+      "full_id": "녹색건축물 조성 지원법::제8조::3::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제8조::3",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  한국에너지공단",
+      "unit_path": "제8조_3_제2호",
+      "full_id": "녹색건축물 조성 지원법::제8조::3::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제8조::3",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  그 밖에 국토교통부장관이 에너지성능정보의 공개 및 활용 업무를 수행할 인력, 조직, 예산 및 시설 등을 갖추었다고 인정하여 고시하는 기관 또는 단체",
+      "unit_path": "제8조_3_제3호",
+      "full_id": "녹색건축물 조성 지원법::제8조::3::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제8조::3",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "4",
+      "title": null,
+      "content": "제1항부터 제3항까지에서 규정한 사항 외에 건축물 에너지 평가서의 관리 등에 필요한 사항은 국토교통부장관이 정하여 고시한다.",
+      "unit_path": "제8조_4",
+      "full_id": "녹색건축물 조성 지원법::제8조::4",
+      "parent_id": "녹색건축물 조성 지원법::제8조",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "9조",
+      "title": null,
+      "content": "제9조",
+      "unit_path": "제9조",
+      "full_id": "녹색건축물 조성 지원법::제9조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 12,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "10조",
+      "title": "녹색건축센터의 지정",
+      "content": "제10조(녹색건축센터의 지정)",
+      "unit_path": "제10조",
+      "full_id": "녹색건축물 조성 지원법::제10조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 13,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "영 제15조제4항에 따른 녹색건축센터 지정신청서는 별지 제6호서식에 따르고, 같은 조 제5항에 따른 녹색건축센터 지정서는 별지 제7호서식에 따른다.",
+      "unit_path": "제10조_1",
+      "full_id": "녹색건축물 조성 지원법::제10조::1",
+      "parent_id": "녹색건축물 조성 지원법::제10조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "제1항의 녹색건축센터 지정신청서를 제출받은 국토교통부장관은 「전자정부법」 제36조제1항에 따른 행정정보의 공동이용을 통하여 신청인의 법인 등기사항증명서 또는 사업자등록증명을 확인하여야 한다. 다만, 사업자등록증명의 확인에 신청인이 동의하지 아니하는 경우에는 그 서류의 사본을 제출하도록 하여야 한다.",
+      "unit_path": "제10조_2",
+      "full_id": "녹색건축물 조성 지원법::제10조::2",
+      "parent_id": "녹색건축물 조성 지원법::제10조",
+      "order": 2,
+      "revision_dates": [
+        "2013.3.23",
+        "2024.12.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "11조",
+      "title": "녹색건축물 조성 시범사업의 지정절차 등",
+      "content": "제11조(녹색건축물 조성 시범사업의 지정절차 등)",
+      "unit_path": "제11조",
+      "full_id": "녹색건축물 조성 지원법::제11조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 14,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "법 제24조제1항에 따른 녹색건축물 조성 시범사업(이하 \"시범사업\"이라 한다)으로 지정을 받으려는 자는 다음 각 호의 사항에 대한 근거 자료를 첨부하여 중앙행정기관의 장 및 지방자치단체의 장에게 신청하여야 한다.",
+      "unit_path": "제11조_1",
+      "full_id": "녹색건축물 조성 지원법::제11조::1",
+      "parent_id": "녹색건축물 조성 지원법::제11조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  시범사업 추진계획(시범사업의 위치ㆍ범위ㆍ면적 등 사업규모를 포함한다)",
+      "unit_path": "제11조_1_제1호",
+      "full_id": "녹색건축물 조성 지원법::제11조::1::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::1",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  시범사업의 지정 목적 및 필요성",
+      "unit_path": "제11조_1_제2호",
+      "full_id": "녹색건축물 조성 지원법::제11조::1::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::1",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  녹색건축물 조성 기준의 구체적인 적용 방법",
+      "unit_path": "제11조_1_제3호",
+      "full_id": "녹색건축물 조성 지원법::제11조::1::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::1",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "4",
+      "title": null,
+      "content": "4.  시범사업의 적용기술 및 효과",
+      "unit_path": "제11조_1_제4호",
+      "full_id": "녹색건축물 조성 지원법::제11조::1::제4호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::1",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "5",
+      "title": null,
+      "content": "5.  시범사업의 모니터링 및 유지ㆍ관리 등 사후관리 방법",
+      "unit_path": "제11조_1_제5호",
+      "full_id": "녹색건축물 조성 지원법::제11조::1::제5호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::1",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "중앙행정기관의 장 및 지방자치단체의 장은 제1항에 따른 녹색건축물 조성 시범사업을 지정하거나 지정을 취소하는 경우에는 다음 각 호의 사항을 관보에 고시하여야 한다.",
+      "unit_path": "제11조_2",
+      "full_id": "녹색건축물 조성 지원법::제11조::2",
+      "parent_id": "녹색건축물 조성 지원법::제11조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  시범사업의 지정 또는 지정 취소 사유",
+      "unit_path": "제11조_2_제1호",
+      "full_id": "녹색건축물 조성 지원법::제11조::2::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::2",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  시범사업의 위치ㆍ범위ㆍ면적 등 사업규모",
+      "unit_path": "제11조_2_제2호",
+      "full_id": "녹색건축물 조성 지원법::제11조::2::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::2",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "시범사업은 법 제13조제1항, 제15조제1항, 제16조제6항 및 제17조제5항에 따른 녹색건축물 조성 기준에 적합해야 한다.",
+      "unit_path": "제11조_3",
+      "full_id": "녹색건축물 조성 지원법::제11조::3",
+      "parent_id": "녹색건축물 조성 지원법::제11조",
+      "order": 3,
+      "revision_dates": [
+        "2017.1.20",
+        "2019.12.31",
+        "2024.12.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "4",
+      "title": null,
+      "content": "중앙행정기관의 장 및 지방자치단체의 장은 녹색건축물 조성 시범사업이 원활하게 추진될 수 있도록 다음 각 호의 어느 하나에 해당하는 전문가에게 자문할 수 있다.",
+      "unit_path": "제11조_4",
+      "full_id": "녹색건축물 조성 지원법::제11조::4",
+      "parent_id": "녹색건축물 조성 지원법::제11조",
+      "order": 4,
+      "revision_dates": [
+        "2015.5.29"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  법 제23조제1항에 따른 녹색건축센터의 장",
+      "unit_path": "제11조_4_제1호",
+      "full_id": "녹색건축물 조성 지원법::제11조::4::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::4",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  「건축사법」 제2조제1호에 따른 건축사",
+      "unit_path": "제11조_4_제2호",
+      "full_id": "녹색건축물 조성 지원법::제11조::4::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::4",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "건축사법"
+        ]
+      }
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  「기술사법」 제2조에 따른 기술사(건축, 에너지 또는 설비 분야로 한정한다)",
+      "unit_path": "제11조_4_제3호",
+      "full_id": "녹색건축물 조성 지원법::제11조::4::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::4",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "기술사법"
+        ]
+      }
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "4",
+      "title": null,
+      "content": "4.  대학에서 건축, 에너지 또는 설비 관련 학문을 전공한 사람으로서 「고등교육법」 제2조에 따른 학교 또는 공인된 연구기관에서 부교수 이상의 직 또는 이에 상당하는 직에 있거나 있었던 사람",
+      "unit_path": "제11조_4_제4호",
+      "full_id": "녹색건축물 조성 지원법::제11조::4::제4호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::4",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "고등교육법"
+        ]
+      }
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "5",
+      "title": null,
+      "content": "5.  건축물에너지평가사",
+      "unit_path": "제11조_4_제5호",
+      "full_id": "녹색건축물 조성 지원법::제11조::4::제5호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::4",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "5",
+      "title": null,
+      "content": "중앙행정기관의 장 및 지방자치단체의 장은 시범사업의 실시와 관련하여 필요한 경우 국토교통부장관에게 시범사업의 실시에 필요한 지원을 요청할 수 있다.",
+      "unit_path": "제11조_5",
+      "full_id": "녹색건축물 조성 지원법::제11조::5",
+      "parent_id": "녹색건축물 조성 지원법::제11조",
+      "order": 5,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "6",
+      "title": null,
+      "content": "제5항에 따른 지원 요청을 받은 국토교통부장관은 다음 각 호의 사항을 고려하여 시범사업의 실시에 필요한 지원을 결정하여야 한다.",
+      "unit_path": "제11조_6",
+      "full_id": "녹색건축물 조성 지원법::제11조::6",
+      "parent_id": "녹색건축물 조성 지원법::제11조",
+      "order": 6,
+      "revision_dates": [
+        "2013.3.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  국가 및 지방자치단체의 녹색건축물 조성 목표 설정 기여도",
+      "unit_path": "제11조_6_제1호",
+      "full_id": "녹색건축물 조성 지원법::제11조::6::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::6",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  건축물의 온실가스 배출량 감소 정도",
+      "unit_path": "제11조_6_제2호",
+      "full_id": "녹색건축물 조성 지원법::제11조::6::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::6",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  실효적인 녹색건축물 조성 기준 개발 가능성",
+      "unit_path": "제11조_6_제3호",
+      "full_id": "녹색건축물 조성 지원법::제11조::6::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제11조::6",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "12조",
+      "title": "건축물에너지평가사 자격시험의 시행 및 응시자격",
+      "content": "제12조(건축물에너지평가사 자격시험의 시행 및 응시자격)",
+      "unit_path": "제12조",
+      "full_id": "녹색건축물 조성 지원법::제12조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 15,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "법 제31조제1항에 따른 건축물에너지평가사 자격시험(이하 \"자격시험\"이라 한다)은 매년 1회 이상 시행한다. 다만, 부득이한 사정이 있는 경우에는 법 제34조에 따른 건축물에너지평가사 자격심의위원회(이하 \"자격심의위원회\"라 한다)의 심의를 거쳐 해당 연도의 시험을 시행하지 아니할 수 있다.",
+      "unit_path": "제12조_1",
+      "full_id": "녹색건축물 조성 지원법::제12조::1",
+      "parent_id": "녹색건축물 조성 지원법::제12조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "법 제31조제5항에 따른 자격시험의 응시자격은 별표 2와 같다.",
+      "unit_path": "제12조_2",
+      "full_id": "녹색건축물 조성 지원법::제12조::2",
+      "parent_id": "녹색건축물 조성 지원법::제12조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "13조",
+      "title": "검정수수료",
+      "content": "제13조(검정수수료)",
+      "unit_path": "제13조",
+      "full_id": "녹색건축물 조성 지원법::제13조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 16,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "자격시험에 응시하려는 사람은 법 제31조제6항에 따른 전문기관(이하 \"전문기관\"이라 한다)의 장이 정하는 검정 수수료를 납부하여야 한다.",
+      "unit_path": "제13조_1",
+      "full_id": "녹색건축물 조성 지원법::제13조::1",
+      "parent_id": "녹색건축물 조성 지원법::제13조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "전문기관의 장은 제1항에 따라 검정 수수료를 납부한 사람에 대하여 다음 각 호의 구분에 따라 검정 수수료의 전부 또는 일부를 반환하여야 한다.",
+      "unit_path": "제13조_2",
+      "full_id": "녹색건축물 조성 지원법::제13조::2",
+      "parent_id": "녹색건축물 조성 지원법::제13조",
+      "order": 2,
+      "revision_dates": [
+        "2024.9.26"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  수수료를 과오납(過誤納)한 경우: 과오납한 금액의 전부",
+      "unit_path": "제13조_2_제1호",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  전문기관의 책임 있는 사유로 응시하지 못한 경우: 납부한 수수료 전부",
+      "unit_path": "제13조_2_제2호",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "3",
+      "title": null,
+      "content": "3.  응시원서 접수기간에 접수를 취소하는 경우: 납부한 수수료 전부",
+      "unit_path": "제13조_2_제3호",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제3호",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "4",
+      "title": null,
+      "content": "4.  응시원서 접수 마감일의 다음 날부터 시험 시행 5일 전까지 접수를 취소하는 경우: 납부한 수수료의 100분의 50",
+      "unit_path": "제13조_2_제4호",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제4호",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "5",
+      "title": null,
+      "content": "5.  사고 또는 질병으로 입원(시험일이 입원기간에 포함되는 경우로 한정한다)하여 시험에 응시하지 못한 경우: 납부한 수수료 전부",
+      "unit_path": "제13조_2_제5호",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제5호",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "6",
+      "title": null,
+      "content": "6.  「감염병의 예방 및 관리에 관한 법률」에 따른 치료ㆍ입원 또는 격리(시험일이 치료ㆍ입원 또는 격리 기간에 포함되는 경우로 한정한다) 처분을 받아 시험에 응시하지 못한 경우: 납부한 수수료 전부",
+      "unit_path": "제13조_2_제6호",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제6호",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2",
+      "order": 6,
+      "revision_dates": [],
+      "metadata": {
+        "referenced_laws": [
+          "감염병의 예방 및 관리에 관한 법률"
+        ]
+      }
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "7",
+      "title": null,
+      "content": "7.  본인이 사망하거나 다음 각 목의 사람이 시험일 7일 전부터 시험일까지의 기간에 사망하여 시험에 응시하지 못한 경우: 납부한 수수료 전부",
+      "unit_path": "제13조_2_제7호",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제7호",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2",
+      "order": 7,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "목",
+      "unit_number": "가",
+      "title": null,
+      "content": "가.  응시수수료를 낸 사람의 배우자",
+      "unit_path": "제13조_2_제7호_가목",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제7호::가목",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2::제7호",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "목",
+      "unit_number": "나",
+      "title": null,
+      "content": "나.  응시수수료를 낸 사람 본인 및 배우자의 자녀",
+      "unit_path": "제13조_2_제7호_나목",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제7호::나목",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2::제7호",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "목",
+      "unit_number": "다",
+      "title": null,
+      "content": "다.  응시수수료를 낸 사람 본인 및 배우자의 부모",
+      "unit_path": "제13조_2_제7호_다목",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제7호::다목",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2::제7호",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "목",
+      "unit_number": "라",
+      "title": null,
+      "content": "라.  응시수수료를 낸 사람 본인 및 배우자의 조부모ㆍ외조부모",
+      "unit_path": "제13조_2_제7호_라목",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제7호::라목",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2::제7호",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "목",
+      "unit_number": "마",
+      "title": null,
+      "content": "마.  응시수수료를 낸 사람 본인 및 배우자의 형제자매",
+      "unit_path": "제13조_2_제7호_마목",
+      "full_id": "녹색건축물 조성 지원법::제13조::2::제7호::마목",
+      "parent_id": "녹색건축물 조성 지원법::제13조::2::제7호",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "14조",
+      "title": "시험방법 및 절차",
+      "content": "제14조(시험방법 및 절차)",
+      "unit_path": "제14조",
+      "full_id": "녹색건축물 조성 지원법::제14조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 17,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "자격시험은 제1차 시험과 제2차 시험으로 구분하여 다음 각 호의 방법으로 시행한다.",
+      "unit_path": "제14조_1",
+      "full_id": "녹색건축물 조성 지원법::제14조::1",
+      "parent_id": "녹색건축물 조성 지원법::제14조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "1",
+      "title": null,
+      "content": "1.  제1차 시험: 선택형으로 하되, 기입형 또는 논문형을 포함할 수 있다.",
+      "unit_path": "제14조_1_제1호",
+      "full_id": "녹색건축물 조성 지원법::제14조::1::제1호",
+      "parent_id": "녹색건축물 조성 지원법::제14조::1",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "호",
+      "unit_number": "2",
+      "title": null,
+      "content": "2.  제2차 시험: 기입형, 서술형, 계산형 또는 논문형 등으로 한다.",
+      "unit_path": "제14조_1_제2호",
+      "full_id": "녹색건축물 조성 지원법::제14조::1::제2호",
+      "parent_id": "녹색건축물 조성 지원법::제14조::1",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "제1차 시험에 합격하지 아니하면 제2차 시험에 응시할 수 없다.",
+      "unit_path": "제14조_2",
+      "full_id": "녹색건축물 조성 지원법::제14조::2",
+      "parent_id": "녹색건축물 조성 지원법::제14조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "제1차 시험 및 제2차 시험의 과목 및 시험과목의 면제범위는 별표 3과 같다.",
+      "unit_path": "제14조_3",
+      "full_id": "녹색건축물 조성 지원법::제14조::3",
+      "parent_id": "녹색건축물 조성 지원법::제14조",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "15조",
+      "title": "합격자의 결정 및 제1차 시험의 면제",
+      "content": "제15조(합격자의 결정 및 제1차 시험의 면제)",
+      "unit_path": "제15조",
+      "full_id": "녹색건축물 조성 지원법::제15조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 18,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "제1차 시험과 제2차 시험의 합격자는 과목당 100점을 만점으로 하여 매 과목 40점 이상, 전 과목 평균 60점 이상을 득점한 사람으로 한다.",
+      "unit_path": "제15조_1",
+      "full_id": "녹색건축물 조성 지원법::제15조::1",
+      "parent_id": "녹색건축물 조성 지원법::제15조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "제1차 시험에 합격한 사람에 대해서는 다음 회의 시험에 한정하여 제1차 시험을 면제한다.",
+      "unit_path": "제15조_2",
+      "full_id": "녹색건축물 조성 지원법::제15조::2",
+      "parent_id": "녹색건축물 조성 지원법::제15조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "제1차 시험의 합격자는 제2차 시험에 응시하려면 응시자격 확인에 필요한 증명서류를 전문기관의 장에게 제출하여야 한다.",
+      "unit_path": "제15조_3",
+      "full_id": "녹색건축물 조성 지원법::제15조::3",
+      "parent_id": "녹색건축물 조성 지원법::제15조",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "4",
+      "title": null,
+      "content": "전문기관의 장은 제3항에 따른 응시자격 확인을 위하여 필요한 경우에는 관계 기관 또는 단체에 관련 자료를 요청할 수 있다. 이 경우 관련 자료 제출을 요청받은 기관 또는 단체는 특별한 사유가 없으면 요청에 따라야 한다.",
+      "unit_path": "제15조_4",
+      "full_id": "녹색건축물 조성 지원법::제15조::4",
+      "parent_id": "녹색건축물 조성 지원법::제15조",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "16조",
+      "title": "자격ㆍ경력관리 및 교육훈련 등",
+      "content": "제16조(자격ㆍ경력관리 및 교육훈련 등)",
+      "unit_path": "제16조",
+      "full_id": "녹색건축물 조성 지원법::제16조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 19,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "법 제31조제1항에 따른 자격증은 별지 제8호서식과 같다.",
+      "unit_path": "제16조_1",
+      "full_id": "녹색건축물 조성 지원법::제16조::1",
+      "parent_id": "녹색건축물 조성 지원법::제16조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "법 제31조제1항에 따라 자격증을 발급받은 사람은 근무처ㆍ경력ㆍ학력 등(이하 \"근무처 등\"이라 한다)의 관리에 필요한 사항을 전문기관의 장에게 통보할 수 있다. 근무처 등에 관한 사항이 변경된 경우에도 또한 같다.",
+      "unit_path": "제16조_2",
+      "full_id": "녹색건축물 조성 지원법::제16조::2",
+      "parent_id": "녹색건축물 조성 지원법::제16조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "전문기관의 장은 제2항에 따라 통보받은 근무처 등에 관한 사항을 기록ㆍ관리하여야 하며, 건축물에너지평가사가 근무처 등에 관한 증명서를 신청하면 이를 발급하여야 한다.",
+      "unit_path": "제16조_3",
+      "full_id": "녹색건축물 조성 지원법::제16조::3",
+      "parent_id": "녹색건축물 조성 지원법::제16조",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "4",
+      "title": null,
+      "content": "국토교통부장관은 관계 기관 또는 단체에 제2항에 따라 통보받은 근무처 등의 확인을 요청할 수 있다. 이 경우 확인 요청을 받은 기관 또는 단체는 특별한 사유가 없으면 요청에 따라야 한다.",
+      "unit_path": "제16조_4",
+      "full_id": "녹색건축물 조성 지원법::제16조::4",
+      "parent_id": "녹색건축물 조성 지원법::제16조",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "5",
+      "title": null,
+      "content": "법 제31조제3항에 따라 건축물에너지평가사 자격시험에 합격한 사람이 제로에너지건축물 인증 평가 업무를 하려면 전문기관의 장이 실시하는 실무교육을 3개월 이상 받아야 한다.",
+      "unit_path": "제16조_5",
+      "full_id": "녹색건축물 조성 지원법::제16조::5",
+      "parent_id": "녹색건축물 조성 지원법::제16조",
+      "order": 5,
+      "revision_dates": [
+        "2015.11.18",
+        "2024.12.23"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "6",
+      "title": null,
+      "content": "건축물에너지평가사는 법 제31조제3항에 따라 전문기관의 장이 실시하는 교육훈련을 3년마다 20시간 이상 받아야 한다.",
+      "unit_path": "제16조_6",
+      "full_id": "녹색건축물 조성 지원법::제16조::6",
+      "parent_id": "녹색건축물 조성 지원법::제16조",
+      "order": 6,
+      "revision_dates": [
+        "2015.11.18"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "7",
+      "title": null,
+      "content": "전문기관의 장은 자격ㆍ경력관리, 교육훈련 등 필요한 사항에 대하여 신청인으로부터 일정한 수수료를 받을 수 있다.",
+      "unit_path": "제16조_7",
+      "full_id": "녹색건축물 조성 지원법::제16조::7",
+      "parent_id": "녹색건축물 조성 지원법::제16조",
+      "order": 7,
+      "revision_dates": [
+        "2015.11.18"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "17조",
+      "title": "전문기관의 지정 및 업무 위탁",
+      "content": "제17조(전문기관의 지정 및 업무 위탁)",
+      "unit_path": "제17조",
+      "full_id": "녹색건축물 조성 지원법::제17조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 20,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "법 제31조제6항에 따른 전문기관은 한국에너지공단으로 한다.",
+      "unit_path": "제17조_1",
+      "full_id": "녹색건축물 조성 지원법::제17조::1",
+      "parent_id": "녹색건축물 조성 지원법::제17조",
+      "order": 1,
+      "revision_dates": [
+        "2017.1.20"
+      ],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "국토교통부장관은 제1항에 따른 전문기관에 법 제31조제6항 각 호의 업무를 위탁한다.",
+      "unit_path": "제17조_2",
+      "full_id": "녹색건축물 조성 지원법::제17조::2",
+      "parent_id": "녹색건축물 조성 지원법::제17조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "18조",
+      "title": null,
+      "content": "제18조",
+      "unit_path": "제18조",
+      "full_id": "녹색건축물 조성 지원법::제18조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 21,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "19조",
+      "title": "자격심의위원회 구성 및 운영",
+      "content": "제19조(자격심의위원회 구성 및 운영)",
+      "unit_path": "제19조",
+      "full_id": "녹색건축물 조성 지원법::제19조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 22,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "1",
+      "title": null,
+      "content": "자격심의위원회는 위원장 1명을 포함하여 15명 이내의 위원으로 구성한다.",
+      "unit_path": "제19조_1",
+      "full_id": "녹색건축물 조성 지원법::제19조::1",
+      "parent_id": "녹색건축물 조성 지원법::제19조",
+      "order": 1,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "2",
+      "title": null,
+      "content": "심의위원회의 위원은 전문기관의 장이 추천하는 건축물 에너지평가 관련 분야 전문가 중에서 국토교통부장관이 위촉하되, 성별을 고려하여야 한다.",
+      "unit_path": "제19조_2",
+      "full_id": "녹색건축물 조성 지원법::제19조::2",
+      "parent_id": "녹색건축물 조성 지원법::제19조",
+      "order": 2,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "3",
+      "title": null,
+      "content": "위원장은 위원 중에서 호선(互選)한다.",
+      "unit_path": "제19조_3",
+      "full_id": "녹색건축물 조성 지원법::제19조::3",
+      "parent_id": "녹색건축물 조성 지원법::제19조",
+      "order": 3,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "4",
+      "title": null,
+      "content": "위원장 및 다른 위원의 임기는 3년으로 한다.",
+      "unit_path": "제19조_4",
+      "full_id": "녹색건축물 조성 지원법::제19조::4",
+      "parent_id": "녹색건축물 조성 지원법::제19조",
+      "order": 4,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "5",
+      "title": null,
+      "content": "심의위원회의 회의는 재적위원 과반수의 출석으로 개의하고, 출석위원 과반수의 찬성으로 의결한다.",
+      "unit_path": "제19조_5",
+      "full_id": "녹색건축물 조성 지원법::제19조::5",
+      "parent_id": "녹색건축물 조성 지원법::제19조",
+      "order": 5,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "6",
+      "title": null,
+      "content": "심의위원회에 출석한 위원에게는 예산의 범위 안에서 수당 및 여비를 지급할 수 있다.",
+      "unit_path": "제19조_6",
+      "full_id": "녹색건축물 조성 지원법::제19조::6",
+      "parent_id": "녹색건축물 조성 지원법::제19조",
+      "order": 6,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "항",
+      "unit_number": "7",
+      "title": null,
+      "content": "제1항부터 제6항까지 규정한 사항 외에 심의위원회 운영에 필요한 사항은 국토교통부장관이 정한다.",
+      "unit_path": "제19조_7",
+      "full_id": "녹색건축물 조성 지원법::제19조::7",
+      "parent_id": "녹색건축물 조성 지원법::제19조",
+      "order": 7,
+      "revision_dates": [],
+      "metadata": {}
+    },
+    {
+      "unit_type": "조",
+      "unit_number": "20조",
+      "title": "규제의 재검토",
+      "content": "제20조(규제의 재검토)",
+      "unit_path": "제20조",
+      "full_id": "녹색건축물 조성 지원법::제20조",
+      "parent_id": "녹색건축물 조성 지원법",
+      "order": 23,
+      "revision_dates": [],
+      "metadata": {}
+    }
+  ]
+}

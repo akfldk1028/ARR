@@ -27,12 +27,12 @@ export function GroundingWidget({
 
     async function initializeElement() {
       if (currentElement && placesLibrary) {
-        const element = new placesLibrary.PlaceContextualElement();
+        const element = new (placesLibrary as any).PlaceContextualElement();
         element.id="widget";
         element.contextToken = contextToken;
 
         // Create and append the list config element
-        const listConfig = new placesLibrary.PlaceContextualListConfigElement();
+        const listConfig = new (placesLibrary as any).PlaceContextualListConfigElement();
         if (mapHidden) {
           listConfig.mapHidden = true;
         }

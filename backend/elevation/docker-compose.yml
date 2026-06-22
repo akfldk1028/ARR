@@ -1,0 +1,60 @@
+version: '3.8'
+
+# Self-host elevation API (opentopodata Docker).
+# 데이터 우선순위: NGII 1m LiDAR > NGII 5m > Copernicus GLO-30 > Open-Meteo (외부 fallback).
+#
+# 호스팅 위치 옵션:
+#   (a) Oracle ARR-gateway VM (158.180.66.165) — 추천, 추가 비용 0원
+#   (b) Railway sidecar — ~$5/월
+#   (c) 로컬 dev — Docker Desktop on localhost:5000
+#
+# 사용법:
+#   1. (선택) Copernicus GLO-30 자동 다운로드:
+#         pip install boto3
+#         python scripts/download_glo30.py
+#      → ./data/copernicus_glo30/*.tif (~1-2GB, AWS S3 무료)
+#   2. (선택) NGII LiDAR 1m 도엽 받아 ./data/ngii_lidar_1m/ 에 배치 (수동, 정밀도 14cm)
+#   3. docker compose up -d
+#   4. ARR backend .env: ELEVATION_PROVIDER=copernicus_glo30 (or ngii_lidar_1m)
+#   5. 검증: curl 'http://localhost:5000/v1/copernicus_glo30?locations=37.4979,127.0276'
+
+services:
+  # 사전 init: GLO-30 자동 다운로드 (data/copernicus_glo30/ 비어 있으면)
+  glo30-download:
+    image: python:3.11-slim
+    container_name: ngii-elevation-glo30-init
+    working_dir: /work
+    volumes:
+      - ./scripts:/work/scripts:ro
+      - ./data:/work/data
+    command: >
+      bash -c "
+      if [ -z \"$$(ls -A /work/data/copernicus_glo30 2>/dev/null)\" ]; then
+        pip install --quiet boto3 &&
+        python /work/scripts/download_glo30.py;
+      else
+        echo 'GLO-30 data already exists, skipping download';
+      fi
+      "
+    restart: "no"
+
+  elevation:
+    # ghcr.io anonymous pull 거부 → 소스에서 직접 빌드 (opentopodata-src/는 git clone)
+    build:
+      context: ./opentopodata-src
+      dockerfile: docker/Dockerfile
+    container_name: ngii-elevation
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data:ro
+      - ./config.yaml:/app/config.yaml:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      glo30-download:
+        condition: service_completed_successfully

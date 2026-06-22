@@ -31,6 +31,7 @@ import { generateUniqueId } from "@/lib";
 import { useTranslation } from "react-i18next";
 import useChatStoreAdapter from "@/hooks/useChatStoreAdapter";
 import { replayProject } from "@/lib";
+import { getAuthStore } from "@/store/authStore";
 
 export function SearchHistoryDialog() {
 	const {t} = useTranslation()
@@ -65,6 +66,10 @@ export function SearchHistoryDialog() {
 
 	useEffect(() => {
 		const fetchHistoryTasks = async () => {
+			if (!getAuthStore().token) {
+				setHistoryTasks([]);
+				return;
+			}
 			try {
 				const res = await proxyFetchGet(`/api/chat/histories`);
 				setHistoryTasks(res.items);

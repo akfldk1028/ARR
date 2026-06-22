@@ -1,0 +1,371 @@
+{
+  "exp_id": "exp006",
+  "title": "NSGA3 vs SSIEA — 4 objective (floor_area+daylight+compactness+stepback)",
+  "date_utc": "2026-05-06 11:59:55 UTC",
+  "engines": {
+    "ssiea": [
+      {
+        "site": "gangnam_yeoksam_677",
+        "site_name": "강남구 역삼동 677",
+        "algorithm": "additive",
+        "enable_repair": true,
+        "engine": "ssiea",
+        "penalty_mode": "normalized",
+        "reps": 3,
+        "runtime_mean_sec": 1.62,
+        "hypervolume_mean": 15132515.5582,
+        "feasible_pct_mean": 99.97,
+        "pareto_front_size_mean": 496.7,
+        "rep_details": [
+          {
+            "rep": 1,
+            "runtime_sec": 1.64,
+            "n_total": 1050,
+            "n_feasible": 1050,
+            "feasible_pct": 100.0,
+            "hypervolume": 16010033.1959,
+            "pareto_front_size": 397,
+            "avg_objectives": [
+              5109.62,
+              73.11,
+              26.3,
+              0.12
+            ]
+          },
+          {
+            "rep": 2,
+            "runtime_sec": 1.64,
+            "n_total": 1050,
+            "n_feasible": 1049,
+            "feasible_pct": 99.9,
+            "hypervolume": 14858371.1555,
+            "pareto_front_size": 630,
+            "avg_objectives": [
+              5495.34,
+              70.18,
+              25.35,
+              0.08
+            ]
+          },
+          {
+            "rep": 3,
+            "runtime_sec": 1.58,
+            "n_total": 1050,
+            "n_feasible": 1050,
+            "feasible_pct": 100.0,
+            "hypervolume": 14529142.3233,
+            "pareto_front_size": 463,
+            "avg_objectives": [
+              5803.39,
+              69.74,
+              25.52,
+              0.09
+            ]
+          }
+        ]
+      },
+      {
+        "site": "bundang_test",
+        "site_name": "분당 테스트 부지",
+        "algorithm": "additive",
+        "enable_repair": true,
+        "engine": "ssiea",
+        "penalty_mode": "normalized",
+        "reps": 3,
+        "runtime_mean_sec": 1.61,
+        "hypervolume_mean": 1642111.6562,
+        "feasible_pct_mean": 99.87,
+        "pareto_front_size_mean": 233.3,
+        "rep_details": [
+          {
+            "rep": 1,
+            "runtime_sec": 1.77,
+            "n_total": 1050,
+            "n_feasible": 1049,
+            "feasible_pct": 99.9,
+            "hypervolume": 1589903.6076,
+            "pareto_front_size": 222,
+            "avg_objectives": [
+              721.49,
+              76.46,
+              25.56,
+              0.08
+            ]
+          },
+          {
+            "rep": 2,
+            "runtime_sec": 1.57,
+            "n_total": 1050,
+            "n_feasible": 1050,
+            "feasible_pct": 100.0,
+            "hypervolume": 1823120.0497,
+            "pareto_front_size": 223,
+            "avg_objectives": [
+              702.79,
+              77.08,
+              26.19,
+              0.08
+            ]
+          },
+          {
+            "rep": 3,
+            "runtime_sec": 1.49,
+            "n_total": 1050,
+            "n_feasible": 1047,
+            "feasible_pct": 99.71,
+            "hypervolume": 1513311.3113,
+            "pareto_front_size": 255,
+            "avg_objectives": [
+              693.95,
+              78.55,
+              28.6,
+              0.08
+            ]
+          }
+        ]
+      },
+      {
+        "site": "chuncheon_test",
+        "site_name": "춘천 테스트 부지",
+        "algorithm": "additive",
+        "enable_repair": true,
+        "engine": "ssiea",
+        "penalty_mode": "normalized",
+        "reps": 3,
+        "runtime_mean_sec": 1.54,
+        "hypervolume_mean": 9365791.737,
+        "feasible_pct_mean": 100.0,
+        "pareto_front_size_mean": 149.0,
+        "rep_details": [
+          {
+            "rep": 1,
+            "runtime_sec": 1.49,
+            "n_total": 1050,
+            "n_feasible": 1050,
+            "feasible_pct": 100.0,
+            "hypervolume": 9375764.4271,
+            "pareto_front_size": 130,
+            "avg_objectives": [
+              3626.86,
+              75.63,
+              27.34,
+              0.07
+            ]
+          },
+          {
+            "rep": 2,
+            "runtime_sec": 1.5,
+            "n_total": 1050,
+            "n_feasible": 1050,
+            "feasible_pct": 100.0,
+            "hypervolume": 7662127.0956,
+            "pareto_front_size": 150,
+            "avg_objectives": [
+              3604.69,
+              76.71,
+              26.91,
+              0.09
+            ]
+          },
+          {
+            "rep": 3,
+            "runtime_sec": 1.64,
+            "n_total": 1050,
+            "n_feasible": 1050,
+            "feasible_pct": 100.0,
+            "hypervolume": 11059483.6883,
+            "pareto_front_size": 167,
+            "avg_objectives": [
+              3569.73,
+              77.16,
+              28.19,
+              0.08
+            ]
+          }
+        ]
+      }
+    ],
+    "nsga3": [
+      {
+        "site": "gangnam_yeoksam_677",
+        "site_name": "강남구 역삼동 677",
+        "algorithm": "additive",
+        "enable_repair": true,
+        "engine": "nsga3",
+        "penalty_mode": "normalized",
+        "reps": 3,
+        "runtime_mean_sec": 14.07,
+        "hypervolume_mean": 71893703.4303,
+        "feasible_pct_mean": 99.85,
+        "pareto_front_size_mean": 963.3,
+        "rep_details": [
+          {
+            "rep": 1,
+            "runtime_sec": 14.59,
+            "n_total": 9075,
+            "n_feasible": 9072,
+            "feasible_pct": 99.97,
+            "hypervolume": 129040344.1715,
+            "pareto_front_size": 1053,
+            "avg_objectives": [
+              4411.47,
+              82.52,
+              28.69,
+              0.33
+            ]
+          },
+          {
+            "rep": 2,
+            "runtime_sec": 14.16,
+            "n_total": 9075,
+            "n_feasible": 9070,
+            "feasible_pct": 99.94,
+            "hypervolume": 35785643.6984,
+            "pareto_front_size": 888,
+            "avg_objectives": [
+              3941.31,
+              82.41,
+              28.79,
+              0.31
+            ]
+          },
+          {
+            "rep": 3,
+            "runtime_sec": 13.46,
+            "n_total": 9075,
+            "n_feasible": 9043,
+            "feasible_pct": 99.65,
+            "hypervolume": 50855122.4211,
+            "pareto_front_size": 949,
+            "avg_objectives": [
+              4410.96,
+              80.66,
+              28.47,
+              0.29
+            ]
+          }
+        ]
+      },
+      {
+        "site": "bundang_test",
+        "site_name": "분당 테스트 부지",
+        "algorithm": "additive",
+        "enable_repair": true,
+        "engine": "nsga3",
+        "penalty_mode": "normalized",
+        "reps": 3,
+        "runtime_mean_sec": 13.23,
+        "hypervolume_mean": 4736738.1148,
+        "feasible_pct_mean": 99.92,
+        "pareto_front_size_mean": 832.0,
+        "rep_details": [
+          {
+            "rep": 1,
+            "runtime_sec": 13.3,
+            "n_total": 9075,
+            "n_feasible": 9064,
+            "feasible_pct": 99.88,
+            "hypervolume": 3250283.7742,
+            "pareto_front_size": 753,
+            "avg_objectives": [
+              638.28,
+              83.8,
+              26.69,
+              0.29
+            ]
+          },
+          {
+            "rep": 2,
+            "runtime_sec": 12.92,
+            "n_total": 9075,
+            "n_feasible": 9071,
+            "feasible_pct": 99.96,
+            "hypervolume": 2720689.8836,
+            "pareto_front_size": 873,
+            "avg_objectives": [
+              644.98,
+              84.54,
+              26.9,
+              0.29
+            ]
+          },
+          {
+            "rep": 3,
+            "runtime_sec": 13.47,
+            "n_total": 9075,
+            "n_feasible": 9069,
+            "feasible_pct": 99.93,
+            "hypervolume": 8239240.6865,
+            "pareto_front_size": 870,
+            "avg_objectives": [
+              632.19,
+              84.86,
+              28.36,
+              0.27
+            ]
+          }
+        ]
+      },
+      {
+        "site": "chuncheon_test",
+        "site_name": "춘천 테스트 부지",
+        "algorithm": "additive",
+        "enable_repair": true,
+        "engine": "nsga3",
+        "penalty_mode": "normalized",
+        "reps": 3,
+        "runtime_mean_sec": 13.12,
+        "hypervolume_mean": 28579540.5216,
+        "feasible_pct_mean": 99.92,
+        "pareto_front_size_mean": 648.0,
+        "rep_details": [
+          {
+            "rep": 1,
+            "runtime_sec": 13.15,
+            "n_total": 9075,
+            "n_feasible": 9075,
+            "feasible_pct": 100.0,
+            "hypervolume": 31448787.8342,
+            "pareto_front_size": 753,
+            "avg_objectives": [
+              3245.55,
+              85.2,
+              30.76,
+              0.26
+            ]
+          },
+          {
+            "rep": 2,
+            "runtime_sec": 13.58,
+            "n_total": 9075,
+            "n_feasible": 9073,
+            "feasible_pct": 99.98,
+            "hypervolume": 19275285.2392,
+            "pareto_front_size": 618,
+            "avg_objectives": [
+              3164.2,
+              86.44,
+              28.62,
+              0.3
+            ]
+          },
+          {
+            "rep": 3,
+            "runtime_sec": 12.63,
+            "n_total": 9075,
+            "n_feasible": 9054,
+            "feasible_pct": 99.77,
+            "hypervolume": 35014548.4915,
+            "pareto_front_size": 573,
+            "avg_objectives": [
+              3070.01,
+              85.25,
+              28.77,
+              0.28
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

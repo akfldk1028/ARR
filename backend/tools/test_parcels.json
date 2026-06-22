@@ -1,0 +1,96 @@
+{
+  "_description": "용도지역별 대표 PNU 픽스처 — /design/auto-constraints/ 검증용. 각 PNU는 Vworld Data API로 zone 자동조회됨.",
+  "_source": "Collected 2026-04-20 via /land/resolve/ + /design/auto-constraints/ sampling",
+  "parcels": [
+    {
+      "pnu": "1168010100106770000",
+      "address": "서울 강남구 역삼동 677",
+      "zone": "일반상업지역",
+      "expected": {"bcr_pct": 80, "far_pct": 1300, "sunlight_applies": false},
+      "expected_lines_drawn": ["buildable_area", "adjacent_setback", "road_setback", "corner_cutoff", "daylight_diagonal_envelope"],
+      "expected_na": ["north_setback", "sunlight_envelope", "building_designation_line"],
+      "area_m2": 497.19,
+      "notes": "테헤란로 근처 일반상업. 정북일조 법상 미적용."
+    },
+    {
+      "pnu": "1114012700100310001",
+      "address": "서울 중구 명동2가 31-1",
+      "zone": "중심상업지역",
+      "expected": {"bcr_pct": 90, "far_pct": 1500, "sunlight_applies": false},
+      "expected_lines_drawn": ["buildable_area", "adjacent_setback", "road_setback", "corner_cutoff", "daylight_diagonal_envelope"],
+      "expected_na": ["north_setback", "sunlight_envelope", "building_designation_line"],
+      "area_m2": 2801.68,
+      "notes": "명동. BCR/FAR 최대치. 대지면적 큼."
+    },
+    {
+      "pnu": "1171010100100400001",
+      "address": "서울 송파구 잠실동 40-1",
+      "zone": "일반상업지역",
+      "expected": {"bcr_pct": 80, "far_pct": 1300, "sunlight_applies": false},
+      "expected_lines_drawn": ["buildable_area", "adjacent_setback", "road_setback", "corner_cutoff", "daylight_diagonal_envelope"],
+      "expected_na": ["north_setback", "sunlight_envelope", "building_designation_line"],
+      "area_m2": 128230.21,
+      "notes": "잠실 — 대형 상업지. 실제로 제3종일반주거일 가능성 있음 (Vworld overlay 확인 필요)."
+    },
+    {
+      "pnu": "1168011800104670003",
+      "address": "서울 강남구 도곡동 467-3",
+      "zone": "제3종일반주거지역",
+      "expected": {"bcr_pct": 50, "far_pct": 300, "sunlight_applies": true},
+      "expected_lines_drawn": ["buildable_area", "north_setback", "adjacent_setback", "road_setback", "corner_cutoff", "sunlight_envelope", "daylight_diagonal_envelope"],
+      "expected_na": ["building_designation_line"],
+      "area_m2": 437.85,
+      "notes": "도곡동 3종 — 정북일조 적용됨. 핵심 주거 검증용."
+    },
+    {
+      "pnu": "1129010100103300000",
+      "address": "서울 성북구 성북동 330",
+      "zone": "제1종전용주거지역",
+      "expected": {"bcr_pct": 20, "far_pct": 100, "sunlight_applies": true},
+      "expected_lines_drawn": ["buildable_area", "north_setback", "adjacent_setback", "road_setback", "sunlight_envelope", "daylight_diagonal_envelope"],
+      "expected_na": ["corner_cutoff", "building_designation_line"],
+      "area_m2": 1962.62,
+      "notes": "성북동 — 가장 엄격한 주거. 정북일조 필수. BCR/FAR 최저."
+    },
+    {
+      "pnu": "1150010300111250000",
+      "address": "서울 강서구 화곡동 1125",
+      "zone": "제3종일반주거지역",
+      "expected": {"bcr_pct": 50, "far_pct": 300, "sunlight_applies": true},
+      "expected_lines_drawn": ["buildable_area", "north_setback", "adjacent_setback", "road_setback", "corner_cutoff", "sunlight_envelope", "daylight_diagonal_envelope"],
+      "expected_na": ["building_designation_line"],
+      "area_m2": 1791.21,
+      "notes": "화곡 3종 — 아파트 단지."
+    },
+    {
+      "pnu": "1165010800113170029",
+      "address": "서울 서초구 서초동 1317-29",
+      "zone": "일반상업지역",
+      "expected": {"bcr_pct": 80, "far_pct": 1300, "sunlight_applies": false},
+      "expected_lines_drawn": ["buildable_area", "adjacent_setback", "road_setback", "corner_cutoff", "daylight_diagonal_envelope"],
+      "expected_na": ["north_setback", "sunlight_envelope", "building_designation_line"],
+      "area_m2": 513.94,
+      "notes": "서초 — 중소 상업 필지."
+    },
+    {
+      "pnu": "1168010500101590000",
+      "address": "서울 강남구 삼성동 159",
+      "zone": "일반상업지역",
+      "expected": {"bcr_pct": 80, "far_pct": 1300, "sunlight_applies": false},
+      "expected_lines_drawn": ["buildable_area", "adjacent_setback", "road_setback", "corner_cutoff", "daylight_diagonal_envelope"],
+      "expected_na": ["north_setback", "sunlight_envelope", "building_designation_line"],
+      "area_m2": 87526.12,
+      "notes": "삼성동 — 매우 큰 대지 (실제론 코엑스 근처)."
+    },
+    {
+      "pnu": "1111011500100010001",
+      "address": "서울 종로구 사직동 1",
+      "zone": "제2종일반주거지역",
+      "expected": {"bcr_pct": 20, "far_pct": 100, "sunlight_applies": true},
+      "expected_lines_drawn": ["buildable_area", "north_setback", "adjacent_setback", "road_setback", "corner_cutoff", "sunlight_envelope", "daylight_diagonal_envelope"],
+      "expected_na": ["building_designation_line"],
+      "area_m2": 3665.95,
+      "notes": "사직동 — 경복궁 인접. Vworld Data API가 19개 overlay zone 반환 (역사문화환경보존지역 등). auto-constraints가 가장 엄격한 zone 선택 → BCR 20%/FAR 100% (제2종일반주거 기본 60/250에서 감소). 법규상 정확."
+    }
+  ]
+}
