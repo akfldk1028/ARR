@@ -95,9 +95,14 @@ export default function AGLightNode({ data, isConnectable }: Props) {
           </>
         ) : (
           <>
+            {data.agentType && (
+              <div className="text-[10px] leading-tight truncate" style={{ color: '#60a5fa' }}>
+                {data.agentType}
+              </div>
+            )}
             {typeof data.lastMessage === 'string' && data.lastMessage ? (
               <div
-                className={`text-xs leading-snug ${compact ? 'max-w-[112px] line-clamp-2' : 'max-w-[200px] line-clamp-3'}`}
+                className={`text-xs leading-snug ${compact ? 'mt-0.5 max-w-[112px] line-clamp-2' : 'mt-1 max-w-[200px] line-clamp-3'}`}
                 style={{ color: '#cbd5e1' }}
                 title={data.lastMessage}
               >
@@ -105,11 +110,6 @@ export default function AGLightNode({ data, isConnectable }: Props) {
               </div>
             ) : (
               <>
-                {data.agentType && (
-                  <div className={`${compact ? 'text-xs' : 'text-sm'} truncate`} style={{ color: '#cbd5e1' }}>
-                    {data.agentType}
-                  </div>
-                )}
                 {data.description && (
                   <div className={`text-xs mt-1 truncate ${compact ? 'max-w-[112px]' : 'max-w-[200px]'}`} style={{ color: '#94a3b8' }}>
                     {data.description}

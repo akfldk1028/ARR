@@ -1,4 +1,9 @@
 import type { AGLightFlowSettings } from './AGLightFlowToolbar';
+import { DESIGN_FLOW_AGENTS } from './agents';
+import {
+  createJsonAgentNode,
+  getMessagesForAgent,
+} from './agents/shared/review-adapter';
 import {
   createEdge,
   createEndNode,
@@ -6,7 +11,6 @@ import {
   type AGLightEdge,
   type AGLightMessage,
   type AGLightNode,
-  type AGLightNodeData,
   type AGLightReview,
   type AGLightRunStatus,
 } from './types';
@@ -23,27 +27,6 @@ interface LayoutInput {
 }
 
 const HUB_ID = 'design_orchestrator';
-
-const getStatusTone = (agent: string): AGLightNodeData['tone'] => {
-  if (agent.includes('law')) return 'law';
-  if (agent.includes('parking')) return 'parking';
-  if (agent.includes('sunlight')) return 'sunlight';
-  if (agent.includes('datum')) return 'datum';
-  if (agent.includes('critic')) return 'critic';
-  return 'hub';
-};
-
-const getLastAgentMessage = (messages: AGLightMessage[] | undefined, agent: string) => {
-  const message = messages
-    ?.slice()
-    .reverse()
-    .find((item) => item.from_agent === agent || item.to_agent === agent);
-  if (!message?.message) return undefined;
-  return message.message.length > 96 ? `${message.message.slice(0, 93)}...` : message.message;
-};
-
-const messagesForAgent = (messages: AGLightMessage[] | undefined, agent: string) =>
-  messages?.filter((msg) => msg.from_agent === agent || msg.to_agent === agent) || [];
 
 const createHubNode = (
   position: { x: number; y: number },
@@ -68,77 +51,27 @@ const createHubNode = (
   },
 });
 
-const createReviewNode = (
-  review: AGLightReview,
-  position: { x: number; y: number },
-  isProcessing: boolean,
-  compact: boolean,
-  messages?: AGLightMessage[]
-): AGLightNode => ({
-  id: review.agent,
-  type: 'agLightNode',
-  position,
-  data: {
-    type: 'agent',
-    label: review.label,
-    agentType: review.agent,
-    description: review.summary,
-    isActive: review.status === 'pass' || review.status === 'check',
-    status: null,
-    reason: review.detail,
-    draggable: !isProcessing,
-    tone: getStatusTone(review.agent),
-    lastMessage: getLastAgentMessage(messages, review.agent),
-    review,
-    compact,
-  },
-});
-
-const createDesignCriticNode = (
-  position: { x: number; y: number },
-  isProcessing: boolean,
-  compact: boolean,
-  messages?: AGLightMessage[]
-): AGLightNode => ({
-  id: 'design_critic',
-  type: 'agLightNode',
-  position,
-  data: {
-    type: 'agent',
-    label: 'design critic',
-    agentType: 'design_critic',
-    description: 'Checks final shape',
-    isActive: true,
-    status: null,
-    reason: null,
-    draggable: !isProcessing,
-    tone: 'critic',
-    lastMessage: getLastAgentMessage(messages, 'design_critic'),
-    compact,
-  },
-});
-
 const getReviewPositions = (
-  reviews: AGLightReview[],
+  agentCount: number,
   direction: AGLightFlowSettings['direction'],
   compact: boolean
 ): Array<{ x: number; y: number }> => {
   if (!compact) {
     if (direction === 'TB') {
-      const startX = 360 - ((reviews.length - 1) * 220) / 2;
-      return reviews.map((_, index) => ({ x: startX + index * 220, y: 520 }));
+      const startX = 360 - ((agentCount - 1) * 220) / 2;
+      return Array.from({ length: agentCount }, (_, index) => ({ x: startX + index * 220, y: 520 }));
     }
-    const startY = 160 - ((reviews.length - 1) * 132) / 2;
-    return reviews.map((_, index) => ({ x: 720, y: startY + index * 132 }));
+    const startY = 160 - ((agentCount - 1) * 132) / 2;
+    return Array.from({ length: agentCount }, (_, index) => ({ x: 720, y: startY + index * 132 }));
   }
 
   if (direction === 'TB') {
-    const startX = 8 - ((reviews.length - 1) * 144) / 2;
-    return reviews.map((_, index) => ({ x: startX + index * 144, y: 268 }));
+    const startX = 8 - ((agentCount - 1) * 144) / 2;
+    return Array.from({ length: agentCount }, (_, index) => ({ x: startX + index * 144, y: 268 }));
   }
 
-  const startY = 12 - ((reviews.length - 1) * 74) / 2;
-  return reviews.map((_, index) => ({ x: 300, y: startY + index * 74 }));
+  const startY = 12 - ((agentCount - 1) * 74) / 2;
+  return Array.from({ length: agentCount }, (_, index) => ({ x: 300, y: startY + index * 74 }));
 };
 
 const getFixedPositions = (
@@ -178,10 +111,9 @@ export function generateAGLightLayout({
   const nodes: AGLightNode[] = [];
   const edges: AGLightEdge[] = [];
   const isProcessing = status === 'active' || status === 'awaiting_input';
-  const hasCriticReview = reviews.some((review) => review.agent === 'design_critic');
   const compact = !isFullscreen;
-  const positions = getFixedPositions(reviews.length, settings.direction, compact);
-  const agentPositions = getReviewPositions(reviews, settings.direction, compact);
+  const positions = getFixedPositions(DESIGN_FLOW_AGENTS.length, settings.direction, compact);
+  const agentPositions = getReviewPositions(DESIGN_FLOW_AGENTS.length, settings.direction, compact);
 
   const userNode = createUserNode(positions.user, true, isProcessing);
   userNode.data.compact = compact;
@@ -197,23 +129,37 @@ export function generateAGLightLayout({
     strokeWidth: 2,
   }));
 
-  reviews.forEach((review, index) => {
-    const active = review.status === 'pass' || review.status === 'check';
-    nodes.push(createReviewNode(review, agentPositions[index], isProcessing, compact, messages));
+  DESIGN_FLOW_AGENTS.forEach((agent, index) => {
+    const active = reviews.some((review) =>
+      agent.mapping.reviewAgentIds.includes(review.agent) &&
+      (review.status === 'pass' || review.status === 'check')
+    );
+    const target = agent.participant.config.name;
 
-    edges.push(createEdge(`orch-${review.agent}`, HUB_ID, review.agent, {
+    nodes.push(createJsonAgentNode({
+      participant: agent.participant,
+      mapping: agent.mapping,
+      reviews,
+      messages,
+      settings,
+      position: agentPositions[index],
+      isProcessing,
+      compact,
+    }));
+
+    edges.push(createEdge(`orch-${target}`, HUB_ID, target, {
       animated: active,
-      label: settings.showLabels && active ? review.label : '',
-      messages: messagesForAgent(messages, review.agent),
+      label: settings.showLabels && active ? (agent.mapping.fallbackLabel || agent.participant.label) : '',
+      messages: getMessagesForAgent(messages, agent.mapping.reviewAgentIds),
       routingType: 'primary',
       stroke: active ? '#22c55e' : '#6b7280',
       strokeWidth: active ? 2 : 1,
       opacity: active ? 1 : 0.45,
     }));
 
-    edges.push(createEdge(`${review.agent}-return`, review.agent, HUB_ID, {
+    edges.push(createEdge(`${target}-return`, target, HUB_ID, {
       label: settings.showLabels && active ? 'report' : '',
-      messages: messagesForAgent(messages, review.agent),
+      messages: getMessagesForAgent(messages, agent.mapping.reviewAgentIds),
       routingType: 'secondary',
       stroke: active ? '#f59e0b' : '#6b7280',
       strokeWidth: 1,
@@ -221,25 +167,13 @@ export function generateAGLightLayout({
     }));
   });
 
-  if (!hasCriticReview) {
-    nodes.push(createDesignCriticNode(positions.critic, isProcessing, compact, messages));
-    edges.push(createEdge('orch-critic', HUB_ID, 'design_critic', {
-      animated: true,
-      label: settings.showLabels ? 'review' : '',
-      messages,
-      routingType: 'primary',
-      stroke: '#a78bfa',
-      strokeWidth: 2,
-    }));
-  }
-
   if (viewMode === 'execution' && messages?.length) {
     const lastMessage = messages[messages.length - 1];
     const endNode = createEndNode(positions.end, status);
     endNode.data.compact = compact;
     nodes.push(endNode);
     nodes[nodes.length - 1].data.reason = lastMessage?.message || '';
-    edges.push(createEdge('critic-end', 'design_critic', 'end', {
+    edges.push(createEdge('review-end', 'review_agent', 'end', {
       label: settings.showLabels ? 'done' : '',
       messages,
       routingType: 'primary',
