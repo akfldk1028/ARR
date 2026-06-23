@@ -117,8 +117,15 @@ const makeAgentReviews = (
   const openIssues = asArray(evidence?.open_issues);
   const datum = asRecord(getNested(setbackGeometries, ['datum_result']));
   const sunlightEnvelope = asRecord(getNested(setbackGeometries, ['sunlight_envelope']));
-  const sunlightApplies = Boolean(sunlightEnvelope.applies ?? sunlightEnvelope.enabled ?? sunlightEnvelope.features);
-  const datumElevation = asNumber(datum.datum_elevation_m) ?? asNumber(datum.sunlight_datum_m) ?? asNumber(datum.average_level_m);
+  const sunlightApplies = Object.keys(sunlightEnvelope).length > 0
+    && sunlightEnvelope.applies !== false
+    && sunlightEnvelope.enabled !== false;
+  const datumElevation = asNumber(datum.datum_elevation_m)
+    ?? asNumber(datum.sunlight_datum_m)
+    ?? asNumber(datum.average_level_m)
+    ?? asNumber(datum.elevation_m)
+    ?? asNumber(datum.parcel_datum_m);
+  const datumSource = typeof datum.elevation_source === 'string' ? datum.elevation_source : 'datum_result';
   const far = asNumber(props.far);
   const bcr = asNumber(props.bcr);
   const height = asNumber(props.height);
@@ -158,7 +165,7 @@ const makeAgentReviews = (
       agent: 'datum_agent',
       label: '대지레벨',
       status: datumElevation !== undefined ? 'pass' : 'check',
-      summary: datumElevation !== undefined ? `NGII 변환 레벨 ${datumElevation.toFixed(2)}m` : 'datum_result 없음',
+      summary: datumElevation !== undefined ? `${datumSource} 기준면 ${datumElevation.toFixed(2)}m` : 'datum_result 없음',
       detail: '§119 가중평균 및 §86 인접대지 평균 기준 분리 검토',
     },
     {

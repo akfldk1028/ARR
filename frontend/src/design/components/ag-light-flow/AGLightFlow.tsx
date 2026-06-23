@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import {
   Background,
-  MiniMap,
   ReactFlow,
   ReactFlowProvider,
   type Edge,
@@ -78,6 +77,7 @@ const createLayout = (
   const nodes: AGLightNodeType[] = [];
   const edges: AGLightEdgeType[] = [];
   const isProcessing = status === 'active' || status === 'awaiting_input';
+  const hasCriticReview = reviews.some((review) => review.agent === 'design_critic');
 
   nodes.push({
     id: 'user',
@@ -176,39 +176,41 @@ const createLayout = (
     },
   });
 
-  nodes.push({
-    id: 'design_critic',
-    type: 'agLightNode',
-    position: { x: 700, y: 124 },
-    data: {
-      type: 'agent',
-      label: 'design critic',
-      agentType: 'design_critic',
-      description: 'Checks final shape',
-      isActive: true,
-      status: null,
-      reason: null,
-      draggable: !isProcessing,
-      tone: 'critic',
-    },
-  });
+  if (!hasCriticReview) {
+    nodes.push({
+      id: 'design_critic',
+      type: 'agLightNode',
+      position: { x: 700, y: 124 },
+      data: {
+        type: 'agent',
+        label: 'design critic',
+        agentType: 'design_critic',
+        description: 'Checks final shape',
+        isActive: true,
+        status: null,
+        reason: null,
+        draggable: !isProcessing,
+        tone: 'critic',
+      },
+    });
 
-  edges.push({
-    id: 'orch-critic',
-    source: 'design_orchestrator',
-    target: 'design_critic',
-    type: 'agLightEdge',
-    animated: true,
-    data: {
-      label: 'review',
-      messages: messages || [],
-      routingType: 'primary',
-    },
-    style: {
-      stroke: '#a78bfa',
-      strokeWidth: 2,
-    },
-  });
+    edges.push({
+      id: 'orch-critic',
+      source: 'design_orchestrator',
+      target: 'design_critic',
+      type: 'agLightEdge',
+      animated: true,
+      data: {
+        label: 'review',
+        messages: messages || [],
+        routingType: 'primary',
+      },
+      style: {
+        stroke: '#a78bfa',
+        strokeWidth: 2,
+      },
+    });
+  }
 
   if (viewMode === 'execution' && messages?.length) {
     const lastMessage = messages[messages.length - 1];
@@ -298,7 +300,6 @@ function AGLightFlowInner({ reviews, messages, status = 'idle', viewMode = 'patt
         proOptions={{ hideAttribution: true }}
       >
         <Background color="rgba(148,163,184,0.16)" gap={18} />
-        <MiniMap zoomable pannable maskColor="rgba(2,6,23,0.65)" />
       </ReactFlow>
     </div>
   );
