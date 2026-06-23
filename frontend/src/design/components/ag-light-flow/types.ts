@@ -47,6 +47,7 @@ export type AGLightEdge = Edge<AGLightEdgeData>;
 export type AGLightNode = Node<AGLightNodeData>;
 
 export const NODE_DIMENSIONS = {
+  compact: { width: 128, height: 86 },
   default: { width: 176, height: 102 },
   end: { width: 176, height: 82 },
 };
@@ -69,6 +70,10 @@ export const createNode = (
   id,
   type: 'agLightNode',
   position,
+  style: {
+    width: type === 'end' ? NODE_DIMENSIONS.end.width : NODE_DIMENSIONS.default.width,
+    height: type === 'end' ? NODE_DIMENSIONS.end.height : NODE_DIMENSIONS.default.height,
+  },
   data: {
     type,
     label,
@@ -124,6 +129,8 @@ export const createEdge = (
   source,
   target,
   type: 'agLightEdge',
+  sourceHandle: 'source',
+  targetHandle: 'target',
   animated: options.animated || false,
   data: {
     label: options.label || '',

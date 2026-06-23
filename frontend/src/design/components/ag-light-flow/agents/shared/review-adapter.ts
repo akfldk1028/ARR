@@ -5,6 +5,7 @@ import type {
   AGLightNodeData,
   AGLightReview,
 } from '../../types';
+import { NODE_DIMENSIONS } from '../../types';
 import type { JsonModuleParticipant } from './team-config';
 
 export interface AgentEvidenceMapping {
@@ -73,6 +74,10 @@ export const createJsonAgentNode = ({
     id: participant.config.name,
     type: 'agLightNode',
     position,
+    style: {
+      width: compact ? NODE_DIMENSIONS.compact.width : NODE_DIMENSIONS.default.width,
+      height: compact ? NODE_DIMENSIONS.compact.height : NODE_DIMENSIONS.default.height,
+    },
     data: {
       type: 'agent',
       label: mapping.fallbackLabel || primaryReview?.label || participant.label,

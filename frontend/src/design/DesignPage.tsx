@@ -1019,7 +1019,7 @@ const DesignPage: React.FC = () => {
 
       {/* Right: AI collaboration */}
       <div style={{
-        width: 400,
+        width: 520,
         height: '100vh',
         flexShrink: 0,
         borderLeft: '1px solid #1e293b',

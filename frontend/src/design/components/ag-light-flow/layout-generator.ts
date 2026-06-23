@@ -13,6 +13,7 @@ import {
   type AGLightNode,
   type AGLightReview,
   type AGLightRunStatus,
+  NODE_DIMENSIONS,
 } from './types';
 
 export type AGLightViewMode = 'pattern' | 'execution';
@@ -37,6 +38,10 @@ const createHubNode = (
   id: HUB_ID,
   type: 'agLightNode',
   position,
+  style: {
+    width: compact ? NODE_DIMENSIONS.compact.width : NODE_DIMENSIONS.default.width,
+    height: compact ? NODE_DIMENSIONS.compact.height : NODE_DIMENSIONS.default.height,
+  },
   data: {
     type: 'agent',
     label: HUB_ID,

@@ -542,10 +542,10 @@ const InteractiveDesignPanel: React.FC<Props> = ({
         }}>
           <div>
             <div style={{ color: '#d1fae5', fontSize: 11, fontWeight: 800 }}>
-              AG-light 협업모드
+              AG-light React Flow
             </div>
             <div style={{ color: '#6b7280', fontSize: 9, marginTop: 2 }}>
-              법규 · 주차 · 정북일조 · 대지레벨 · 디자인 비평
+              JSON_MODULES 법규 · 주차 · 매스 · 최종검토 협업 그래프
             </div>
           </div>
           <span style={{

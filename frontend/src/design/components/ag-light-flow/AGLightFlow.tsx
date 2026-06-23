@@ -86,7 +86,7 @@ function AGLightFlowInner({ reviews, messages, status = 'idle', viewMode = 'patt
         position: isFullscreen ? 'fixed' : 'relative',
         inset: isFullscreen ? 16 : undefined,
         zIndex: isFullscreen ? 80 : undefined,
-        height: isFullscreen ? 'calc(100vh - 32px)' : 280,
+        height: isFullscreen ? 'calc(100vh - 32px)' : 420,
         borderRadius: 8,
         border: '1px solid rgba(94,234,212,0.16)',
         background: '#020617',
