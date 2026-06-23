@@ -14,6 +14,9 @@ export interface AgentEvidenceMapping {
   fallbackLabel?: string;
 }
 
+export const getAgentMessageIds = (participant: JsonModuleParticipant, mapping: AgentEvidenceMapping) =>
+  Array.from(new Set([participant.config.name, ...mapping.reviewAgentIds]));
+
 export const getLastAgentMessage = (messages: AGLightMessage[] | undefined, agentIds: string[]) => {
   const message = messages
     ?.slice()
@@ -73,6 +76,7 @@ export const createJsonAgentNode = ({
 }): AGLightNode => {
   const mappedReviews = getMappedReviews(reviews, mapping.reviewAgentIds);
   const primaryReview = mappedReviews[0];
+  const messageAgentIds = getAgentMessageIds(participant, mapping);
 
   return {
     id: participant.config.name,
@@ -96,7 +100,7 @@ export const createJsonAgentNode = ({
       reason: getDetail(participant, mappedReviews),
       draggable: !isProcessing,
       tone: mapping.tone,
-      lastMessage: getLastAgentMessage(messages, mapping.reviewAgentIds),
+      lastMessage: getLastAgentMessage(messages, messageAgentIds),
       review: primaryReview,
       compact,
       jsonModuleAgent: participant.config.name,

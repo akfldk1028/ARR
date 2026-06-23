@@ -2,6 +2,7 @@ import type { AGLightFlowSettings } from './AGLightFlowToolbar';
 import { DESIGN_FLOW_AGENTS } from './agents';
 import {
   createJsonAgentNode,
+  getAgentMessageIds,
   getMessagesForAgent,
 } from './agents/shared/review-adapter';
 import {
@@ -170,7 +171,7 @@ export function generateAGLightLayout({
     edges.push(createEdge(`flow-${source}-${target}`, source, target, {
       animated: active,
       label: settings.showLabels && active ? (agent.mapping.fallbackLabel || agent.participant.label) : '',
-      messages: getMessagesForAgent(messages, agent.mapping.reviewAgentIds),
+      messages: getMessagesForAgent(messages, getAgentMessageIds(agent.participant, agent.mapping)),
       routingType: 'primary',
       stroke: active ? '#22c55e' : '#6b7280',
       strokeWidth: active ? 2 : 1,

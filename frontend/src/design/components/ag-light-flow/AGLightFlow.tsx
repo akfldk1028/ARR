@@ -12,7 +12,6 @@ import {
   type NodeTypes,
 } from '@xyflow/react';
 import AGLightNode from './agentnode';
-import AGLightEdge from './edge';
 import EdgeOverlay from './EdgeOverlay';
 import AGLightFlowToolbar, {
   DEFAULT_AG_LIGHT_SETTINGS,
@@ -39,10 +38,6 @@ const nodeTypes: NodeTypes = {
   agLightNode: AGLightNode,
 };
 
-const edgeTypes = {
-  agLightEdge: AGLightEdge,
-};
-
 function AGLightFlowInner({
   reviews,
   messages,
@@ -57,6 +52,7 @@ function AGLightFlowInner({
   const [edges, setEdges] = useState<AGLightEdgeModel[]>([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [settings, setSettings] = useState<AGLightFlowSettings>(DEFAULT_AG_LIGHT_SETTINGS);
+  const flowRevision = `${nodes.length}-${edges.length}-${messages?.length || 0}-${selectedAgentId || 'none'}`;
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     setNodes((current) => applyNodeChanges(changes as NodeChange[], current as Node[]) as Node[]);
@@ -136,50 +132,52 @@ function AGLightFlowInner({
           }}
         />
       )}
-      <ReactFlow
-        key={`${isFullscreen ? 'fullscreen' : 'panel'}-${nodes.length}-${edges.length}`}
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        onNodesChange={onNodesChange}
-        onNodeClick={(_, node) => {
-          const agentId = node.data?.jsonModuleAgent;
-          if (typeof agentId === 'string') onSelectAgent?.(agentId);
-        }}
-        defaultViewport={isFullscreen ? { x: 80, y: 190, zoom: 1.05 } : { x: 0, y: 0, zoom: 1 }}
-        minZoom={0.3}
-        maxZoom={2}
-        nodesDraggable
-        nodesConnectable={false}
-        elementsSelectable
-        zoomOnScroll
-        zoomOnPinch
-        panOnDrag
-        proOptions={{ hideAttribution: true }}
-        fitView={!isFullscreen}
-        fitViewOptions={{ padding: isFullscreen ? 0.08 : 0.2 }}
-      >
-        {settings.showGrid && <Background color="rgba(148,163,184,0.16)" gap={18} />}
-        <Controls
-          position="bottom-left"
-          showInteractive={false}
-          style={{
-            background: 'rgba(15,23,42,0.88)',
-            border: '1px solid rgba(148,163,184,0.18)',
-            borderRadius: 8,
-            overflow: 'hidden',
-          }}
-        />
-        <AGLightFlowToolbar
-          isFullscreen={isFullscreen}
-          onToggleFullscreen={() => setIsFullscreen((value) => !value)}
-          onResetView={() => fitView({ padding: 0.2, duration: 200 })}
-          settings={settings}
-          onSettingsChange={setSettings}
-        />
-      </ReactFlow>
       <EdgeOverlay nodes={nodes} edges={edges} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
+        <ReactFlow
+          key={`${isFullscreen ? 'fullscreen' : 'panel'}-${flowRevision}`}
+          nodes={nodes}
+          edges={[]}
+          nodeTypes={nodeTypes}
+          onNodesChange={onNodesChange}
+          onNodeClick={(_, node) => {
+            const agentId = node.data?.jsonModuleAgent;
+            if (typeof agentId === 'string') onSelectAgent?.(agentId);
+          }}
+          defaultViewport={isFullscreen ? { x: 80, y: 190, zoom: 1.05 } : { x: 0, y: 0, zoom: 1 }}
+          minZoom={0.3}
+          maxZoom={2}
+          nodesDraggable
+          nodesConnectable={false}
+          elementsSelectable
+          zoomOnScroll
+          zoomOnPinch
+          panOnDrag
+          proOptions={{ hideAttribution: true }}
+          fitView={!isFullscreen}
+          fitViewOptions={{ padding: isFullscreen ? 0.08 : 0.2 }}
+          style={{ background: 'transparent' }}
+        >
+          {settings.showGrid && <Background color="rgba(148,163,184,0.16)" gap={18} />}
+          <Controls
+            position="bottom-left"
+            showInteractive={false}
+            style={{
+              background: 'rgba(15,23,42,0.88)',
+              border: '1px solid rgba(148,163,184,0.18)',
+              borderRadius: 8,
+              overflow: 'hidden',
+            }}
+          />
+          <AGLightFlowToolbar
+            isFullscreen={isFullscreen}
+            onToggleFullscreen={() => setIsFullscreen((value) => !value)}
+            onResetView={() => fitView({ padding: 0.2, duration: 200 })}
+            settings={settings}
+            onSettingsChange={setSettings}
+          />
+        </ReactFlow>
+      </div>
     </div>
   );
 }
