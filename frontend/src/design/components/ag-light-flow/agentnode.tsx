@@ -29,6 +29,7 @@ function statusIcon(status?: string | null) {
 }
 
 export default function AGLightNode({ data, isConnectable }: Props) {
+  const compact = data.compact === true;
   const handleClick = useCallback(() => {
     if (data.type !== 'end') {
       console.log(`${data.type} ${data.label} clicked`);
@@ -64,24 +65,25 @@ export default function AGLightNode({ data, isConnectable }: Props) {
       className={`relative shadow rounded-lg overflow-hidden ${data.isActive ? 'ring-2 ring-accent/50' : ''}`}
       onClick={handleClick}
       style={{
-        minWidth: data.type === 'end' ? 170 : 176,
+        minWidth: compact ? 128 : (data.type === 'end' ? 170 : 176),
+        width: compact ? 128 : undefined,
         border: `1px solid ${borderColor}`,
         background: data.type === 'end' ? 'rgba(2,6,23,0.88)' : 'rgba(2,6,23,0.84)',
       }}
     >
       <Handle type="target" position={Position.Top} style={{ background: '#555' }} isConnectable={isConnectable} id="target" />
 
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-border" style={{ background: 'rgba(15,23,42,0.95)' }}>
+      <div className={`flex items-center gap-2 border-b border-border ${compact ? 'px-2 py-1.5' : 'px-3 py-2'}`} style={{ background: 'rgba(15,23,42,0.95)' }}>
         {headerIcon}
-        <span className="text-sm font-medium text-primary truncate">{data.label}</span>
+        <span className={`${compact ? 'text-xs' : 'text-sm'} font-medium truncate`} style={{ color: '#e2e8f0' }}>{data.label}</span>
       </div>
 
-      <div className="px-3 py-2" style={{ background: 'rgba(2,6,23,0.52)' }}>
+      <div className={compact ? 'px-2 py-1.5' : 'px-3 py-2'} style={{ background: 'rgba(2,6,23,0.52)' }}>
         {data.type === 'end' ? (
           <>
             <div className="flex items-center justify-center gap-2">
               {statusIcon(data.status)}
-              <span className="text-primary text-sm font-medium">
+              <span className="text-sm font-medium" style={{ color: '#e2e8f0' }}>
                 {data.status ? data.status.charAt(0).toUpperCase() + data.status.slice(1) : 'Idle'}
               </span>
             </div>
@@ -93,8 +95,28 @@ export default function AGLightNode({ data, isConnectable }: Props) {
           </>
         ) : (
           <>
-            {data.agentType && <div className="text-sm text-secondary">{data.agentType}</div>}
-            {data.description && <div className="text-xs text-secondary mt-1 truncate max-w-[200px]">{data.description}</div>}
+            {typeof data.lastMessage === 'string' && data.lastMessage ? (
+              <div
+                className={`text-xs leading-snug ${compact ? 'max-w-[112px] line-clamp-2' : 'max-w-[200px] line-clamp-3'}`}
+                style={{ color: '#cbd5e1' }}
+                title={data.lastMessage}
+              >
+                {data.lastMessage}
+              </div>
+            ) : (
+              <>
+                {data.agentType && (
+                  <div className={`${compact ? 'text-xs' : 'text-sm'} truncate`} style={{ color: '#cbd5e1' }}>
+                    {data.agentType}
+                  </div>
+                )}
+                {data.description && (
+                  <div className={`text-xs mt-1 truncate ${compact ? 'max-w-[112px]' : 'max-w-[200px]'}`} style={{ color: '#94a3b8' }}>
+                    {data.description}
+                  </div>
+                )}
+              </>
+            )}
           </>
         )}
       </div>

@@ -12,21 +12,22 @@ import {
 } from '@xyflow/react';
 import AGLightNode from './agentnode';
 import AGLightEdge from './edge';
+import AGLightFlowToolbar, {
+  DEFAULT_AG_LIGHT_SETTINGS,
+  type AGLightFlowSettings,
+} from './AGLightFlowToolbar';
+import { generateAGLightLayout, type AGLightViewMode } from './layout-generator';
 import type {
-  AGLightEdge as AGLightEdgeType,
   AGLightMessage,
-  AGLightNode as AGLightNodeType,
   AGLightReview,
   AGLightRunStatus,
 } from './types';
-
-type ViewMode = 'pattern' | 'execution';
 
 interface Props {
   reviews: AGLightReview[];
   messages?: AGLightMessage[];
   status?: AGLightRunStatus;
-  viewMode?: ViewMode;
+  viewMode?: AGLightViewMode;
 }
 
 const nodeTypes: NodeTypes = {
@@ -37,269 +38,103 @@ const edgeTypes = {
   agLightEdge: AGLightEdge,
 };
 
-const getStatusTone = (agent: string): AGLightNodeType['data']['tone'] => {
-  if (agent.includes('law')) return 'law';
-  if (agent.includes('parking')) return 'parking';
-  if (agent.includes('sunlight')) return 'sunlight';
-  if (agent.includes('datum')) return 'datum';
-  if (agent.includes('critic')) return 'critic';
-  return 'hub';
-};
-
-const createReviewNode = (
-  review: AGLightReview,
-  position: { x: number; y: number },
-  isProcessing: boolean
-): AGLightNodeType => ({
-  id: review.agent,
-  type: 'agLightNode',
-  position,
-  data: {
-    type: 'agent',
-    label: review.label,
-    agentType: review.agent,
-    description: review.summary,
-    isActive: review.status === 'pass' || review.status === 'check',
-    status: null,
-    reason: review.detail,
-    draggable: !isProcessing,
-    tone: getStatusTone(review.agent),
-    review,
-  },
-});
-
-const createLayout = (
-  reviews: AGLightReview[],
-  messages: AGLightMessage[] | undefined,
-  status: AGLightRunStatus,
-  viewMode: ViewMode
-) => {
-  const nodes: AGLightNodeType[] = [];
-  const edges: AGLightEdgeType[] = [];
-  const isProcessing = status === 'active' || status === 'awaiting_input';
-  const hasCriticReview = reviews.some((review) => review.agent === 'design_critic');
-
-  nodes.push({
-    id: 'user',
-    type: 'agLightNode',
-    position: { x: 24, y: 124 },
-    data: {
-      type: 'user',
-      label: 'User',
-      agentType: 'user',
-      description: 'Human user',
-      isActive: true,
-      status: null,
-      reason: null,
-      draggable: !isProcessing,
-      tone: 'hub',
-    },
-  });
-
-  const hubX = 182;
-  const hubY = 124;
-  nodes.push({
-    id: 'design_orchestrator',
-    type: 'agLightNode',
-    position: { x: hubX, y: hubY },
-    data: {
-      type: 'agent',
-      label: 'orchestrator',
-      agentType: 'orchestrator',
-      description: 'Routes review outcomes',
-      isActive: true,
-      status: status,
-      reason: null,
-      draggable: !isProcessing,
-      tone: 'hub',
-    },
-  });
-
-  const spread = Math.max(reviews.length - 1, 1);
-  reviews.forEach((review, index) => {
-    const angle = reviews.length === 1 ? 0 : (-Math.PI / 3) + (index * (Math.PI * 2 / 3)) / spread;
-    const radius = 188;
-    const x = hubX + 190 + radius * Math.cos(angle);
-    const y = hubY + 28 + radius * Math.sin(angle);
-    nodes.push(createReviewNode(review, { x, y }, isProcessing));
-
-    const active = review.status === 'pass' || review.status === 'check';
-    edges.push({
-      id: `orch-${review.agent}`,
-      source: 'design_orchestrator',
-      target: review.agent,
-      type: 'agLightEdge',
-      animated: active,
-      data: {
-        label: active ? review.label : '',
-        messages: messages?.filter(msg => msg.from_agent === review.agent || msg.to_agent === review.agent) || [],
-        routingType: 'primary',
-      },
-      style: {
-        stroke: active ? '#22c55e' : '#6b7280',
-        strokeWidth: active ? 2 : 1,
-        opacity: active ? 1 : 0.45,
-      },
-    });
-    edges.push({
-      id: `${review.agent}-return`,
-      source: review.agent,
-      target: 'design_orchestrator',
-      type: 'agLightEdge',
-      data: {
-        label: '',
-        messages: messages?.filter(msg => msg.from_agent === review.agent || msg.to_agent === review.agent) || [],
-        routingType: 'secondary',
-      },
-      style: {
-        stroke: active ? '#f59e0b' : '#6b7280',
-        strokeWidth: 1,
-        opacity: active ? 0.75 : 0.2,
-      },
-    });
-  });
-
-  edges.push({
-    id: 'user-orch',
-    source: 'user',
-    target: 'design_orchestrator',
-    type: 'agLightEdge',
-    animated: true,
-    data: {
-      label: 'start',
-      messages: messages || [],
-      routingType: 'primary',
-    },
-    style: {
-      stroke: '#2563eb',
-      strokeWidth: 2,
-    },
-  });
-
-  if (!hasCriticReview) {
-    nodes.push({
-      id: 'design_critic',
-      type: 'agLightNode',
-      position: { x: 700, y: 124 },
-      data: {
-        type: 'agent',
-        label: 'design critic',
-        agentType: 'design_critic',
-        description: 'Checks final shape',
-        isActive: true,
-        status: null,
-        reason: null,
-        draggable: !isProcessing,
-        tone: 'critic',
-      },
-    });
-
-    edges.push({
-      id: 'orch-critic',
-      source: 'design_orchestrator',
-      target: 'design_critic',
-      type: 'agLightEdge',
-      animated: true,
-      data: {
-        label: 'review',
-        messages: messages || [],
-        routingType: 'primary',
-      },
-      style: {
-        stroke: '#a78bfa',
-        strokeWidth: 2,
-      },
-    });
-  }
-
-  if (viewMode === 'execution' && messages?.length) {
-    const lastMessage = messages[messages.length - 1];
-    nodes.push({
-      id: 'end',
-      type: 'agLightNode',
-      position: { x: 852, y: 124 },
-      data: {
-        type: 'end',
-        label: 'End',
-        agentType: '',
-        description: '',
-        isActive: false,
-        status,
-        reason: lastMessage?.message || '',
-        draggable: false,
-        tone: 'hub',
-      },
-    });
-    edges.push({
-      id: 'critic-end',
-      source: 'design_critic',
-      target: 'end',
-      type: 'agLightEdge',
-      animated: false,
-      data: {
-        label: 'done',
-        messages: messages || [],
-        routingType: 'primary',
-      },
-      style: {
-        stroke: status === 'complete' ? '#22c55e' : '#ef4444',
-        strokeWidth: 2,
-      },
-    });
-  }
-
-  return { nodes, edges };
-};
-
 function AGLightFlowInner({ reviews, messages, status = 'idle', viewMode = 'pattern' }: Props) {
-  const { fitView } = useReactFlow();
+  const { fitView, setViewport } = useReactFlow();
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [settings, setSettings] = useState<AGLightFlowSettings>(DEFAULT_AG_LIGHT_SETTINGS);
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     setNodes((current) => applyNodeChanges(changes as NodeChange[], current as Node[]) as Node[]);
   }, []);
 
   useEffect(() => {
-    const layout = createLayout(reviews, messages, status, viewMode);
+    const layout = generateAGLightLayout({ reviews, messages, status, viewMode, settings, isFullscreen });
     setNodes(layout.nodes);
     setEdges(layout.edges);
     const timeout = window.setTimeout(() => {
-      fitView({ padding: 0.2, duration: 200 });
+      fitView({ padding: isFullscreen ? 0.08 : 0.2, duration: 200 });
     }, 50);
     return () => window.clearTimeout(timeout);
-  }, [reviews, messages, status, viewMode, fitView]);
+  }, [reviews, messages, status, viewMode, settings, isFullscreen, fitView]);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsFullscreen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isFullscreen]);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      if (isFullscreen) {
+        setViewport({ x: 80, y: 190, zoom: 1.05 }, { duration: 200 });
+      } else {
+        fitView({ padding: 0.2, duration: 200 });
+      }
+    }, 120);
+    return () => window.clearTimeout(timeout);
+  }, [isFullscreen, fitView, setViewport]);
 
   return (
     <div
       data-testid="ag-light-react-flow"
       style={{
-        height: 176,
+        position: isFullscreen ? 'fixed' : 'relative',
+        inset: isFullscreen ? 16 : undefined,
+        zIndex: isFullscreen ? 80 : undefined,
+        height: isFullscreen ? 'calc(100vh - 32px)' : 280,
         borderRadius: 8,
         border: '1px solid rgba(94,234,212,0.16)',
         background: '#020617',
         overflow: 'hidden',
         marginTop: 8,
+        boxShadow: isFullscreen ? '0 28px 80px rgba(0,0,0,0.45)' : undefined,
       }}
     >
+      {isFullscreen && (
+        <div
+          aria-hidden="true"
+          onClick={() => setIsFullscreen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: -1,
+            background: 'rgba(0,0,0,0.52)',
+          }}
+        />
+      )}
       <ReactFlow
+        key={isFullscreen ? 'fullscreen' : 'panel'}
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         onNodesChange={onNodesChange}
-        defaultViewport={{ x: 0, y: 0, zoom: 1 }}
-        minZoom={0.5}
-        maxZoom={1.5}
+        defaultViewport={isFullscreen ? { x: 80, y: 190, zoom: 1.05 } : { x: 0, y: 0, zoom: 1 }}
+        minZoom={0.3}
+        maxZoom={2}
         nodesDraggable={false}
         nodesConnectable={false}
-        elementsSelectable={false}
+        elementsSelectable
         zoomOnScroll={false}
         zoomOnPinch={false}
         panOnDrag={false}
         proOptions={{ hideAttribution: true }}
+        fitView={!isFullscreen}
+        fitViewOptions={{ padding: isFullscreen ? 0.08 : 0.2 }}
       >
-        <Background color="rgba(148,163,184,0.16)" gap={18} />
+        {settings.showGrid && <Background color="rgba(148,163,184,0.16)" gap={18} />}
+        <AGLightFlowToolbar
+          isFullscreen={isFullscreen}
+          onToggleFullscreen={() => setIsFullscreen((value) => !value)}
+          onResetView={() => fitView({ padding: 0.2, duration: 200 })}
+          settings={settings}
+          onSettingsChange={setSettings}
+        />
       </ReactFlow>
     </div>
   );
