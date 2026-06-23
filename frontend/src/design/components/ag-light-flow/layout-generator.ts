@@ -25,6 +25,8 @@ interface LayoutInput {
   viewMode: AGLightViewMode;
   settings: AGLightFlowSettings;
   isFullscreen?: boolean;
+  selectedAgentId?: string;
+  onSelectAgent?: (agentId: string) => void;
 }
 
 const HUB_ID = 'design_orchestrator';
@@ -38,6 +40,10 @@ const createHubNode = (
   id: HUB_ID,
   type: 'agLightNode',
   position,
+  width: compact ? NODE_DIMENSIONS.compact.width : NODE_DIMENSIONS.default.width,
+  height: compact ? NODE_DIMENSIONS.compact.height : NODE_DIMENSIONS.default.height,
+  initialWidth: compact ? NODE_DIMENSIONS.compact.width : NODE_DIMENSIONS.default.width,
+  initialHeight: compact ? NODE_DIMENSIONS.compact.height : NODE_DIMENSIONS.default.height,
   style: {
     width: compact ? NODE_DIMENSIONS.compact.width : NODE_DIMENSIONS.default.width,
     height: compact ? NODE_DIMENSIONS.compact.height : NODE_DIMENSIONS.default.height,
@@ -76,7 +82,7 @@ const getReviewPositions = (
   }
 
   const startY = 12 - ((agentCount - 1) * 74) / 2;
-  return Array.from({ length: agentCount }, (_, index) => ({ x: 300, y: startY + index * 74 }));
+  return Array.from({ length: agentCount }, (_, index) => ({ x: 300, y: Math.max(24, startY) + index * 82 }));
 };
 
 const getFixedPositions = (
@@ -96,12 +102,12 @@ const getFixedPositions = (
   }
 
   return {
-    user: direction === 'TB' ? { x: 8, y: 8 } : { x: 8, y: 12 },
-    hub: direction === 'TB' ? { x: 8, y: 136 } : { x: 154, y: 12 },
+    user: direction === 'TB' ? { x: 8, y: 8 } : { x: 8, y: 154 },
+    hub: direction === 'TB' ? { x: 8, y: 136 } : { x: 154, y: 154 },
     critic: direction === 'TB'
       ? { x: 8 + reviewCount * 144, y: 268 }
       : { x: 300, y: 12 + Math.max(reviewCount, 1) * 74 },
-    end: direction === 'TB' ? { x: 8, y: 392 } : { x: 446, y: 12 },
+    end: direction === 'TB' ? { x: 8, y: 392 } : { x: 446, y: 154 },
   };
 };
 
@@ -112,6 +118,8 @@ export function generateAGLightLayout({
   viewMode,
   settings,
   isFullscreen = false,
+  selectedAgentId,
+  onSelectAgent,
 }: LayoutInput): { nodes: AGLightNode[]; edges: AGLightEdge[] } {
   const nodes: AGLightNode[] = [];
   const edges: AGLightEdge[] = [];
@@ -134,13 +142,9 @@ export function generateAGLightLayout({
     strokeWidth: 2,
   }));
 
-  DESIGN_FLOW_AGENTS.forEach((agent, index) => {
-    const active = reviews.some((review) =>
-      agent.mapping.reviewAgentIds.includes(review.agent) &&
-      (review.status === 'pass' || review.status === 'check')
-    );
-    const target = agent.participant.config.name;
+  const flowTargets = [HUB_ID, ...DESIGN_FLOW_AGENTS.map((agent) => agent.participant.config.name)];
 
+  DESIGN_FLOW_AGENTS.forEach((agent, index) => {
     nodes.push(createJsonAgentNode({
       participant: agent.participant,
       mapping: agent.mapping,
@@ -150,25 +154,27 @@ export function generateAGLightLayout({
       position: agentPositions[index],
       isProcessing,
       compact,
+      selectedAgentId,
+      onSelectAgent,
     }));
+  });
 
-    edges.push(createEdge(`orch-${target}`, HUB_ID, target, {
+  DESIGN_FLOW_AGENTS.forEach((agent, index) => {
+    const source = flowTargets[index];
+    const target = flowTargets[index + 1];
+    const active = reviews.some((review) =>
+      agent.mapping.reviewAgentIds.includes(review.agent) &&
+      (review.status === 'pass' || review.status === 'check')
+    );
+
+    edges.push(createEdge(`flow-${source}-${target}`, source, target, {
       animated: active,
       label: settings.showLabels && active ? (agent.mapping.fallbackLabel || agent.participant.label) : '',
       messages: getMessagesForAgent(messages, agent.mapping.reviewAgentIds),
       routingType: 'primary',
       stroke: active ? '#22c55e' : '#6b7280',
       strokeWidth: active ? 2 : 1,
-      opacity: active ? 1 : 0.45,
-    }));
-
-    edges.push(createEdge(`${target}-return`, target, HUB_ID, {
-      label: settings.showLabels && active ? 'report' : '',
-      messages: getMessagesForAgent(messages, agent.mapping.reviewAgentIds),
-      routingType: 'secondary',
-      stroke: active ? '#f59e0b' : '#6b7280',
-      strokeWidth: 1,
-      opacity: active ? 0.75 : 0.2,
+      opacity: active ? 1 : 0.38,
     }));
   });
 

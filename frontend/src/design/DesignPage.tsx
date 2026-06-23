@@ -16,6 +16,7 @@ import DesignList from './components/DesignList';
 import SiteMapPanel from './components/SiteMapPanel';
 import FloorPlanViewer from './components/FloorPlanViewer';
 import InteractiveDesignPanel from './components/InteractiveDesignPanel';
+import DefaultAgentFlowPanel from './components/DefaultAgentFlowPanel';
 
 const OBJECTIVE_LABELS: Record<string, string> = {
   floor_area: 'Floor Area (m\u00B2)',
@@ -419,6 +420,7 @@ const DesignPage: React.FC = () => {
   } | null>(null);
   const [aestheticFacadeStyle, setAestheticFacadeStyle] = useState<string | null>(null);
   const [showAllPareto, setShowAllPareto] = useState(false);
+  const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false);
   const isE2E = import.meta.env.DEV && new URLSearchParams(window.location.search).get('e2e') === '1';
   const textureProbe = import.meta.env.DEV && new URLSearchParams(window.location.search).get('textureProbe') === 'reference';
   const lastAutoDesignKey = useRef<string | null>(null);
@@ -1019,24 +1021,67 @@ const DesignPage: React.FC = () => {
 
       {/* Right: AI collaboration */}
       <div style={{
-        width: 520,
+        width: rightPanelCollapsed ? 52 : 520,
         height: '100vh',
         flexShrink: 0,
         borderLeft: '1px solid #1e293b',
         background: '#0f172a',
         overflowY: 'auto',
-        padding: 12,
+        padding: rightPanelCollapsed ? 8 : 12,
         boxSizing: 'border-box',
+        transition: 'width 180ms ease',
       }}>
-        <div style={{ padding: '4px 2px 10px' }}>
-          <div style={{ color: '#e2e8f0', fontSize: 14, fontWeight: 700 }}>
-            AI 설계 협업
-          </div>
-          <div style={{ color: '#64748b', fontSize: 10, marginTop: 3, letterSpacing: '0.03em' }}>
-            MAAS Agent Workspace
-          </div>
+        <div style={{
+          display: 'flex',
+          justifyContent: rightPanelCollapsed ? 'center' : 'space-between',
+          alignItems: 'center',
+          gap: 8,
+          padding: '4px 2px 10px',
+        }}>
+          {!rightPanelCollapsed && (
+            <div>
+              <div style={{ color: '#e2e8f0', fontSize: 14, fontWeight: 700 }}>
+                AI 설계 협업
+              </div>
+              <div style={{ color: '#64748b', fontSize: 10, marginTop: 3, letterSpacing: '0.03em' }}>
+                MAAS Agent Workspace
+              </div>
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={() => setRightPanelCollapsed((collapsed) => !collapsed)}
+            title={rightPanelCollapsed ? 'AI 협업 패널 펼치기' : 'AI 협업 패널 접기'}
+            aria-label={rightPanelCollapsed ? 'AI 협업 패널 펼치기' : 'AI 협업 패널 접기'}
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 7,
+              border: '1px solid rgba(148,163,184,0.18)',
+              background: 'rgba(2,6,23,0.72)',
+              color: '#cbd5e1',
+              cursor: 'pointer',
+              fontSize: 13,
+              fontWeight: 800,
+            }}
+          >
+            {rightPanelCollapsed ? '<' : '>'}
+          </button>
         </div>
-        {activePanelDesign ? (
+        {rightPanelCollapsed ? (
+          <div style={{
+            writingMode: 'vertical-rl',
+            transform: 'rotate(180deg)',
+            color: '#93c5fd',
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: '0.08em',
+            margin: '12px auto 0',
+            whiteSpace: 'nowrap',
+          }}>
+            AI 협업
+          </div>
+        ) : activePanelDesign ? (
           <InteractiveDesignPanel
             jobId={jobState.job?.id ?? null}
             design={activePanelDesign}
@@ -1052,17 +1097,7 @@ const DesignPage: React.FC = () => {
             onAestheticGenerated={handleAestheticGenerated}
           />
         ) : (
-          <div style={{
-            border: '1px dashed rgba(96,200,255,0.18)',
-            borderRadius: 8,
-            padding: 14,
-            color: '#64748b',
-            fontSize: 12,
-            lineHeight: 1.6,
-            background: 'rgba(15,23,42,0.72)',
-          }}>
-            후보를 선택하면 대화형 수정이 열립니다.
-          </div>
+          <DefaultAgentFlowPanel />
         )}
       </div>
     </div>

@@ -31,10 +31,10 @@ function statusIcon(status?: string | null) {
 export default function AGLightNode({ data, isConnectable }: Props) {
   const compact = data.compact === true;
   const handleClick = useCallback(() => {
-    if (data.type !== 'end') {
-      console.log(`${data.type} ${data.label} clicked`);
+    if (data.type !== 'end' && typeof data.jsonModuleAgent === 'string') {
+      data.onSelectAgent?.(data.jsonModuleAgent);
     }
-  }, [data.type, data.label]);
+  }, [data]);
 
   const headerIcon = (() => {
     switch (data.type) {
@@ -62,13 +62,14 @@ export default function AGLightNode({ data, isConnectable }: Props) {
 
   return (
     <div
-      className={`relative shadow rounded-lg overflow-hidden ${data.isActive ? 'ring-2 ring-accent/50' : ''}`}
+      className={`relative shadow rounded-lg overflow-hidden ${data.isActive || data.selected ? 'ring-2 ring-accent/50' : ''}`}
       onClick={handleClick}
       style={{
         minWidth: compact ? 128 : (data.type === 'end' ? 170 : 176),
         width: compact ? 128 : undefined,
-        border: `1px solid ${borderColor}`,
+        border: `1px solid ${data.selected ? 'rgba(94,234,212,0.95)' : borderColor}`,
         background: data.type === 'end' ? 'rgba(2,6,23,0.88)' : 'rgba(2,6,23,0.84)',
+        cursor: data.jsonModuleAgent ? 'pointer' : 'default',
       }}
     >
       <Handle type="target" position={Position.Top} style={{ background: '#555' }} isConnectable={isConnectable} id="target" />

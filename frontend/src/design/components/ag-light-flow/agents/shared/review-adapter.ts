@@ -57,6 +57,8 @@ export const createJsonAgentNode = ({
   position,
   isProcessing,
   compact,
+  selectedAgentId,
+  onSelectAgent,
 }: {
   participant: JsonModuleParticipant;
   mapping: AgentEvidenceMapping;
@@ -66,6 +68,8 @@ export const createJsonAgentNode = ({
   position: { x: number; y: number };
   isProcessing: boolean;
   compact: boolean;
+  selectedAgentId?: string;
+  onSelectAgent?: (agentId: string) => void;
 }): AGLightNode => {
   const mappedReviews = getMappedReviews(reviews, mapping.reviewAgentIds);
   const primaryReview = mappedReviews[0];
@@ -74,6 +78,10 @@ export const createJsonAgentNode = ({
     id: participant.config.name,
     type: 'agLightNode',
     position,
+    width: compact ? NODE_DIMENSIONS.compact.width : NODE_DIMENSIONS.default.width,
+    height: compact ? NODE_DIMENSIONS.compact.height : NODE_DIMENSIONS.default.height,
+    initialWidth: compact ? NODE_DIMENSIONS.compact.width : NODE_DIMENSIONS.default.width,
+    initialHeight: compact ? NODE_DIMENSIONS.compact.height : NODE_DIMENSIONS.default.height,
     style: {
       width: compact ? NODE_DIMENSIONS.compact.width : NODE_DIMENSIONS.default.width,
       height: compact ? NODE_DIMENSIONS.compact.height : NODE_DIMENSIONS.default.height,
@@ -92,6 +100,8 @@ export const createJsonAgentNode = ({
       review: primaryReview,
       compact,
       jsonModuleAgent: participant.config.name,
+      selected: selectedAgentId === participant.config.name,
+      onSelectAgent,
     },
   };
 };

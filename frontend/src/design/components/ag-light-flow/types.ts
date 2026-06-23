@@ -33,6 +33,9 @@ export interface AGLightNodeData {
   draggable: boolean;
   tone?: 'law' | 'parking' | 'sunlight' | 'datum' | 'critic' | 'hub';
   review?: AGLightReview;
+  jsonModuleAgent?: string;
+  selected?: boolean;
+  onSelectAgent?: (agentId: string) => void;
 }
 
 export interface AGLightEdgeData extends Record<string, unknown> {
@@ -66,27 +69,34 @@ export const createNode = (
     tone?: AGLightNodeData['tone'];
     review?: AGLightReview;
   }
-): AGLightNode => ({
-  id,
-  type: 'agLightNode',
-  position,
-  style: {
-    width: type === 'end' ? NODE_DIMENSIONS.end.width : NODE_DIMENSIONS.default.width,
-    height: type === 'end' ? NODE_DIMENSIONS.end.height : NODE_DIMENSIONS.default.height,
-  },
-  data: {
-    type,
-    label,
-    agentType: type === 'user' ? 'user' : label,
-    description,
-    isActive: options.isActive,
-    status: options.status ?? null,
-    reason: options.reason ?? null,
-    draggable: !options.isProcessing,
-    tone: options.tone,
-    review: options.review,
-  },
-});
+): AGLightNode => {
+  const dimensions = type === 'end' ? NODE_DIMENSIONS.end : NODE_DIMENSIONS.default;
+  return {
+    id,
+    type: 'agLightNode',
+    position,
+    width: dimensions.width,
+    height: dimensions.height,
+    initialWidth: dimensions.width,
+    initialHeight: dimensions.height,
+    style: {
+      width: dimensions.width,
+      height: dimensions.height,
+    },
+    data: {
+      type,
+      label,
+      agentType: type === 'user' ? 'user' : label,
+      description,
+      isActive: options.isActive,
+      status: options.status ?? null,
+      reason: options.reason ?? null,
+      draggable: !options.isProcessing,
+      tone: options.tone,
+      review: options.review,
+    },
+  };
+};
 
 export const createUserNode = (
   position: { x: number; y: number },
@@ -128,10 +138,9 @@ export const createEdge = (
   id,
   source,
   target,
-  type: 'agLightEdge',
-  sourceHandle: 'source',
-  targetHandle: 'target',
+  type: 'smoothstep',
   animated: options.animated || false,
+  label: options.label || undefined,
   data: {
     label: options.label || '',
     messages: options.messages || [],

@@ -1,17 +1,19 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import {
   Background,
+  Controls,
   ReactFlow,
   ReactFlowProvider,
-  type Edge,
   type Node,
   type NodeChange,
   applyNodeChanges,
+  useNodesInitialized,
   useReactFlow,
   type NodeTypes,
 } from '@xyflow/react';
 import AGLightNode from './agentnode';
 import AGLightEdge from './edge';
+import EdgeOverlay from './EdgeOverlay';
 import AGLightFlowToolbar, {
   DEFAULT_AG_LIGHT_SETTINGS,
   type AGLightFlowSettings,
@@ -19,6 +21,7 @@ import AGLightFlowToolbar, {
 import { generateAGLightLayout, type AGLightViewMode } from './layout-generator';
 import type {
   AGLightMessage,
+  AGLightEdge as AGLightEdgeModel,
   AGLightReview,
   AGLightRunStatus,
 } from './types';
@@ -28,6 +31,8 @@ interface Props {
   messages?: AGLightMessage[];
   status?: AGLightRunStatus;
   viewMode?: AGLightViewMode;
+  selectedAgentId?: string;
+  onSelectAgent?: (agentId: string) => void;
 }
 
 const nodeTypes: NodeTypes = {
@@ -38,10 +43,18 @@ const edgeTypes = {
   agLightEdge: AGLightEdge,
 };
 
-function AGLightFlowInner({ reviews, messages, status = 'idle', viewMode = 'pattern' }: Props) {
+function AGLightFlowInner({
+  reviews,
+  messages,
+  status = 'idle',
+  viewMode = 'pattern',
+  selectedAgentId,
+  onSelectAgent,
+}: Props) {
   const { fitView, setViewport } = useReactFlow();
+  const nodesInitialized = useNodesInitialized();
   const [nodes, setNodes] = useState<Node[]>([]);
-  const [edges, setEdges] = useState<Edge[]>([]);
+  const [edges, setEdges] = useState<AGLightEdgeModel[]>([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [settings, setSettings] = useState<AGLightFlowSettings>(DEFAULT_AG_LIGHT_SETTINGS);
 
@@ -50,14 +63,27 @@ function AGLightFlowInner({ reviews, messages, status = 'idle', viewMode = 'patt
   }, []);
 
   useEffect(() => {
-    const layout = generateAGLightLayout({ reviews, messages, status, viewMode, settings, isFullscreen });
+    const layout = generateAGLightLayout({
+      reviews,
+      messages,
+      status,
+      viewMode,
+      settings,
+      isFullscreen,
+      selectedAgentId,
+      onSelectAgent,
+    });
     setNodes(layout.nodes);
     setEdges(layout.edges);
+  }, [reviews, messages, status, viewMode, settings, isFullscreen, selectedAgentId, onSelectAgent]);
+
+  useEffect(() => {
+    if (!nodesInitialized || nodes.length === 0) return;
     const timeout = window.setTimeout(() => {
       fitView({ padding: isFullscreen ? 0.08 : 0.2, duration: 200 });
-    }, 50);
+    }, 80);
     return () => window.clearTimeout(timeout);
-  }, [reviews, messages, status, viewMode, settings, isFullscreen, fitView]);
+  }, [nodesInitialized, nodes.length, isFullscreen, fitView]);
 
   useEffect(() => {
     if (!isFullscreen) return;
@@ -69,6 +95,7 @@ function AGLightFlowInner({ reviews, messages, status = 'idle', viewMode = 'patt
   }, [isFullscreen]);
 
   useEffect(() => {
+    if (!nodesInitialized) return;
     const timeout = window.setTimeout(() => {
       if (isFullscreen) {
         setViewport({ x: 80, y: 190, zoom: 1.05 }, { duration: 200 });
@@ -77,11 +104,13 @@ function AGLightFlowInner({ reviews, messages, status = 'idle', viewMode = 'patt
       }
     }, 120);
     return () => window.clearTimeout(timeout);
-  }, [isFullscreen, fitView, setViewport]);
+  }, [isFullscreen, nodesInitialized, fitView, setViewport]);
 
   return (
     <div
       data-testid="ag-light-react-flow"
+      data-node-count={nodes.length}
+      data-edge-count={edges.length}
       style={{
         position: isFullscreen ? 'fixed' : 'relative',
         inset: isFullscreen ? 16 : undefined,
@@ -108,26 +137,40 @@ function AGLightFlowInner({ reviews, messages, status = 'idle', viewMode = 'patt
         />
       )}
       <ReactFlow
-        key={isFullscreen ? 'fullscreen' : 'panel'}
+        key={`${isFullscreen ? 'fullscreen' : 'panel'}-${nodes.length}-${edges.length}`}
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         onNodesChange={onNodesChange}
+        onNodeClick={(_, node) => {
+          const agentId = node.data?.jsonModuleAgent;
+          if (typeof agentId === 'string') onSelectAgent?.(agentId);
+        }}
         defaultViewport={isFullscreen ? { x: 80, y: 190, zoom: 1.05 } : { x: 0, y: 0, zoom: 1 }}
         minZoom={0.3}
         maxZoom={2}
-        nodesDraggable={false}
+        nodesDraggable
         nodesConnectable={false}
         elementsSelectable
-        zoomOnScroll={false}
-        zoomOnPinch={false}
-        panOnDrag={false}
+        zoomOnScroll
+        zoomOnPinch
+        panOnDrag
         proOptions={{ hideAttribution: true }}
         fitView={!isFullscreen}
         fitViewOptions={{ padding: isFullscreen ? 0.08 : 0.2 }}
       >
         {settings.showGrid && <Background color="rgba(148,163,184,0.16)" gap={18} />}
+        <Controls
+          position="bottom-left"
+          showInteractive={false}
+          style={{
+            background: 'rgba(15,23,42,0.88)',
+            border: '1px solid rgba(148,163,184,0.18)',
+            borderRadius: 8,
+            overflow: 'hidden',
+          }}
+        />
         <AGLightFlowToolbar
           isFullscreen={isFullscreen}
           onToggleFullscreen={() => setIsFullscreen((value) => !value)}
@@ -136,6 +179,7 @@ function AGLightFlowInner({ reviews, messages, status = 'idle', viewMode = 'patt
           onSettingsChange={setSettings}
         />
       </ReactFlow>
+      <EdgeOverlay nodes={nodes} edges={edges} />
     </div>
   );
 }

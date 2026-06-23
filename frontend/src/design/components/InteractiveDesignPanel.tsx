@@ -23,6 +23,7 @@ import {
 import type { AgLightBusEvent, AgLightHealth, DesignEvidence } from '../lib/api-client';
 import A2UISurfaceRenderer from './A2UISurfaceRenderer';
 import AGLightFlow from './ag-light-flow/AGLightFlow';
+import DirectAgentChatPanel from './DirectAgentChatPanel';
 
 interface Props {
   jobId?: string | null;
@@ -210,6 +211,7 @@ const InteractiveDesignPanel: React.FC<Props> = ({
   const [agReviews, setAgReviews] = useState<AgentReview[]>([]);
   const [agLoading, setAgLoading] = useState(false);
   const [agError, setAgError] = useState('');
+  const [selectedAgentId, setSelectedAgentId] = useState('law_graph_agent');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -287,6 +289,29 @@ const InteractiveDesignPanel: React.FC<Props> = ({
     } finally {
       setAgLoading(false);
     }
+  };
+
+  const sendDirectAgentMessage = async (targetAgent: string, directMessage: string) => {
+    const rawDesignId = massGeojson?.properties?.design_id;
+    const evidenceDesignId = typeof rawDesignId === 'number' ? rawDesignId : design.id;
+    await sendAgLightBusMessage({
+      from_agent: 'user',
+      to_agent: targetAgent,
+      message: directMessage,
+      metadata: {
+        source: 'arr_design_ui_direct_agent_command',
+        job_id: jobId,
+        design_id: evidenceDesignId,
+        building_type: buildingType,
+        algorithm,
+      },
+    });
+    const [health, log] = await Promise.all([
+      getAgLightHealth(),
+      getAgLightBusLog(40),
+    ]);
+    setAgHealth(health);
+    setAgBusLog(log);
   };
 
   const submit = async () => {
@@ -577,7 +602,19 @@ const InteractiveDesignPanel: React.FC<Props> = ({
         >
           {agLoading ? '협업 검토 중...' : '현재 안 AG-light 검토 시작'}
         </button>
-        <AGLightFlow reviews={agReviews} messages={agBusLog} status={agHealth?.status ? 'complete' : 'idle'} />
+        <AGLightFlow
+          reviews={agReviews}
+          messages={agBusLog}
+          status={agHealth?.status ? 'complete' : 'idle'}
+          selectedAgentId={selectedAgentId}
+          onSelectAgent={setSelectedAgentId}
+        />
+        <DirectAgentChatPanel
+          selectedAgentId={selectedAgentId}
+          onSelectedAgentChange={setSelectedAgentId}
+          onSend={sendDirectAgentMessage}
+          helperText="선택한 agent에게 직접 명령을 보내고 최근 bus에 반영합니다."
+        />
         {agError && (
           <div style={{ marginTop: 6, color: '#fbbf24', fontSize: 10, lineHeight: 1.4 }}>
             {agError}

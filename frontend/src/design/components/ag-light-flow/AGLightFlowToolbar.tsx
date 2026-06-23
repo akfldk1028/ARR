@@ -19,7 +19,7 @@ export interface AGLightFlowSettings {
 
 export const DEFAULT_AG_LIGHT_SETTINGS: AGLightFlowSettings = {
   direction: 'LR',
-  showLabels: true,
+  showLabels: false,
   showGrid: true,
 };
 
