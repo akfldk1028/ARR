@@ -20,7 +20,16 @@ import {
   getDesignEvidence,
   sendAgLightBusMessage,
 } from '../lib/api-client';
-import type { AgLightBusEvent, AgLightHealth, DesignEvidence } from '../lib/api-client';
+import type { AgLightBusEvent, AgLightHealth } from '../lib/api-client';
+import {
+  buildAgentTrace,
+  COLLABORATION_STEPS,
+  getMassLegalStatus,
+  makeAgentReviews,
+  statusColor,
+  type AgentTrace,
+} from '../lib/ag-light-collaboration';
+import type { AGLightReview } from './ag-light-flow/types';
 import A2UISurfaceRenderer from './A2UISurfaceRenderer';
 import AGLightFlow from './ag-light-flow/AGLightFlow';
 import DirectAgentChatPanel from './DirectAgentChatPanel';
@@ -50,135 +59,6 @@ const EXAMPLES = [
 const formatMetric = (value: number | undefined): string => (
   typeof value === 'number' && Number.isFinite(value) ? value.toFixed(1) : '-'
 );
-
-type AgentReview = {
-  agent: string;
-  label: string;
-  status: 'pass' | 'check' | 'fail' | 'info';
-  summary: string;
-  detail: string;
-};
-
-const asRecord = (value: unknown): Record<string, unknown> => (
-  value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {}
-);
-
-const asArray = (value: unknown): unknown[] => (Array.isArray(value) ? value : []);
-
-const asNumber = (value: unknown): number | undefined => (
-  typeof value === 'number' && Number.isFinite(value) ? value : undefined
-);
-
-const getNested = (source: unknown, path: string[]): unknown => (
-  path.reduce<unknown>((current, key) => asRecord(current)[key], source)
-);
-
-const statusColor = (status: AgentReview['status']): string => {
-  if (status === 'pass') return '#5eead4';
-  if (status === 'fail') return '#fca5a5';
-  if (status === 'check') return '#fbbf24';
-  return '#93c5fd';
-};
-
-const makeAgentReviews = (
-  evidence: DesignEvidence | null,
-  massGeojson: GeoJSONFeature | null,
-  setbackGeometries?: SetbackGeometriesMap | null
-): AgentReview[] => {
-  const props = asRecord(massGeojson?.properties);
-  const evidenceCandidate = asRecord(evidence?.candidate);
-  const parking = asRecord(props.parking_precheck);
-  const evidenceParking = asRecord(evidenceCandidate.parking_precheck);
-  const layoutCandidate = asRecord(parking.layout_candidate);
-  const evidenceLayoutCandidate = asRecord(evidenceParking.layout_candidate);
-  const requiredCount = asRecord(parking.required_count);
-  const evidenceRequiredCount = asRecord(evidenceParking.required_count);
-  const sourceParking = Object.keys(parking).length > 0 ? parking : evidenceParking;
-  const requiredParking = asNumber(sourceParking.required)
-    ?? asNumber(sourceParking.required_spaces)
-    ?? asNumber(requiredCount.required_spaces)
-    ?? asNumber(evidenceRequiredCount.required_spaces)
-    ?? asNumber(layoutCandidate.required_spaces)
-    ?? asNumber(evidenceLayoutCandidate.required_spaces);
-  const providedParking = asNumber(sourceParking.provided)
-    ?? asNumber(sourceParking.provided_spaces)
-    ?? asNumber(layoutCandidate.provided_spaces)
-    ?? asNumber(evidenceLayoutCandidate.provided_spaces);
-  const parkingStrategy = String(
-    sourceParking.selected_strategy
-    || sourceParking.strategy
-    || layoutCandidate.strategy
-    || evidenceLayoutCandidate.strategy
-    || evidenceCandidate.parking_strategy
-    || props.parking_strategy
-    || 'unknown',
-  );
-  const finalStatus = String(evidence?.final_status || props.legal_status || 'evidence_loaded');
-  const hardFailures = asArray(evidence?.hard_failures);
-  const missingEvidence = asArray(evidence?.missing_evidence);
-  const openIssues = asArray(evidence?.open_issues);
-  const datum = asRecord(getNested(setbackGeometries, ['datum_result']));
-  const sunlightEnvelope = asRecord(getNested(setbackGeometries, ['sunlight_envelope']));
-  const sunlightApplies = Object.keys(sunlightEnvelope).length > 0
-    && sunlightEnvelope.applies !== false
-    && sunlightEnvelope.enabled !== false;
-  const datumElevation = asNumber(datum.datum_elevation_m)
-    ?? asNumber(datum.sunlight_datum_m)
-    ?? asNumber(datum.average_level_m)
-    ?? asNumber(datum.elevation_m)
-    ?? asNumber(datum.parcel_datum_m);
-  const datumSource = typeof datum.elevation_source === 'string' ? datum.elevation_source : 'datum_result';
-  const far = asNumber(props.far);
-  const bcr = asNumber(props.bcr);
-  const height = asNumber(props.height);
-
-  const parkingStatus: AgentReview['status'] = requiredParking && providedParking !== undefined
-    ? (providedParking >= requiredParking ? 'pass' : 'fail')
-    : 'check';
-  const lawStatus: AgentReview['status'] = hardFailures.length > 0 || finalStatus.toLowerCase().includes('fail')
-    ? 'fail'
-    : (missingEvidence.length > 0 || openIssues.length > 0 ? 'check' : 'pass');
-
-  return [
-    {
-      agent: 'law_agent',
-      label: '법규',
-      status: lawStatus,
-      summary: `최종 ${finalStatus}`,
-      detail: `hard ${hardFailures.length} · missing ${missingEvidence.length} · issue ${openIssues.length}`,
-    },
-    {
-      agent: 'parking_agent',
-      label: '주차',
-      status: parkingStatus,
-      summary: requiredParking !== undefined && providedParking !== undefined
-        ? `${providedParking}/${requiredParking}대 · ${parkingStrategy}`
-        : '주차 산정 근거 확인 필요',
-      detail: '소규모 배치는 전면도로 이용 가능성을 별도 connector 없이 선형 주차면으로 검토',
-    },
-    {
-      agent: 'sunlight_agent',
-      label: '정북일조',
-      status: sunlightApplies ? 'pass' : 'info',
-      summary: sunlightApplies ? '§86 envelope 적용' : '적용 외 또는 envelope 없음',
-      detail: datumElevation !== undefined ? `기준면 ${datumElevation.toFixed(2)}m 기반` : '기준면 수치 확인 필요',
-    },
-    {
-      agent: 'datum_agent',
-      label: '대지레벨',
-      status: datumElevation !== undefined ? 'pass' : 'check',
-      summary: datumElevation !== undefined ? `${datumSource} 기준면 ${datumElevation.toFixed(2)}m` : 'datum_result 없음',
-      detail: '§119 가중평균 및 §86 인접대지 평균 기준 분리 검토',
-    },
-    {
-      agent: 'design_critic',
-      label: '디자인',
-      status: 'info',
-      summary: `FAR ${formatMetric(far)} · BCR ${formatMetric(bcr)} · H ${formatMetric(height)}m`,
-      detail: '법규 매스 고정 후 형태, 주차 가독성, 외관 생성만 후속 검토',
-    },
-  ];
-};
 
 const InteractiveDesignPanel: React.FC<Props> = ({
   jobId,
@@ -210,7 +90,8 @@ const InteractiveDesignPanel: React.FC<Props> = ({
   const [aesthetic, setAesthetic] = useState<MaasAestheticResult | null>(null);
   const [agHealth, setAgHealth] = useState<AgLightHealth | null>(null);
   const [agBusLog, setAgBusLog] = useState<AgLightBusEvent[]>([]);
-  const [agReviews, setAgReviews] = useState<AgentReview[]>([]);
+  const [agReviews, setAgReviews] = useState<AGLightReview[]>([]);
+  const [agTrace, setAgTrace] = useState<AgentTrace[]>([]);
   const [agLoading, setAgLoading] = useState(false);
   const [agError, setAgError] = useState('');
   const [selectedAgentId, setSelectedAgentId] = useState('law_graph_agent');
@@ -222,6 +103,7 @@ const InteractiveDesignPanel: React.FC<Props> = ({
     setActivePreviewId(null);
     setAesthetic(null);
     setAgReviews([]);
+    setAgTrace([]);
     setAgError('');
     onAestheticGenerated?.(null);
     setError('');
@@ -263,21 +145,31 @@ const InteractiveDesignPanel: React.FC<Props> = ({
     try {
       const evidence = await getDesignEvidence(jobId, evidenceDesignId);
       const reviews = makeAgentReviews(evidence, massGeojson, setbackGeometries);
+      const trace = buildAgentTrace(reviews, evidence, massGeojson, setbackGeometries);
       const metadata = {
         job_id: jobId,
         design_id: evidenceDesignId,
         source: 'arr_design_ui',
-        final_status: evidence.final_status || asRecord(massGeojson?.properties).legal_status || 'unknown',
+        final_status: getMassLegalStatus(evidence, massGeojson),
       };
       for (const review of reviews) {
+        const agentTrace = trace.find((item) => item.agent === review.agent);
         await sendAgLightBusMessage({
           from_agent: review.agent,
           to_agent: 'design_orchestrator',
-          message: `${review.label}: ${review.summary} (${review.detail})`,
-          metadata: { ...metadata, status: review.status, label: review.label },
+          message: `${review.label}: ${review.summary} · 근거 ${agentTrace?.refs.join(', ') || 'none'} · 판단 ${agentTrace?.decision || review.detail}`,
+          metadata: {
+            ...metadata,
+            status: review.status,
+            label: review.label,
+            refs: agentTrace?.refs || [],
+            formula: agentTrace?.formula,
+            decision: agentTrace?.decision,
+          },
         });
       }
       setAgReviews(reviews);
+      setAgTrace(trace);
       const [health, log] = await Promise.all([
         getAgLightHealth(),
         getAgLightBusLog(40),
@@ -286,7 +178,9 @@ const InteractiveDesignPanel: React.FC<Props> = ({
       setAgBusLog(log);
     } catch (e) {
       const fallbackReviews = makeAgentReviews(null, massGeojson, setbackGeometries);
+      const fallbackTrace = buildAgentTrace(fallbackReviews, null, massGeojson, setbackGeometries);
       setAgReviews(fallbackReviews);
+      setAgTrace(fallbackTrace);
       setAgError(e instanceof Error ? e.message : 'AG-light 검토 실패');
     } finally {
       setAgLoading(false);
@@ -586,6 +480,46 @@ const InteractiveDesignPanel: React.FC<Props> = ({
             {agHealth?.status ? `ON · log ${agHealth.components?.bus?.log_count ?? agBusLog.length}` : 'CHECK'}
           </span>
         </div>
+        <div
+          data-testid="ag-light-collaboration-method"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+            gap: 6,
+            marginBottom: 8,
+          }}
+        >
+          {COLLABORATION_STEPS.map((step) => (
+            <button
+              key={step.agent}
+              type="button"
+              onClick={() => setSelectedAgentId(step.agent)}
+              style={{
+                minHeight: 58,
+                padding: '7px 8px',
+                borderRadius: 7,
+                border: selectedAgentId === step.agent
+                  ? '1px solid rgba(94,234,212,0.5)'
+                  : '1px solid rgba(148,163,184,0.14)',
+                background: selectedAgentId === step.agent
+                  ? 'rgba(20,184,166,0.14)'
+                  : 'rgba(2,6,23,0.38)',
+                textAlign: 'left',
+                cursor: 'pointer',
+              }}
+            >
+              <div style={{ color: selectedAgentId === step.agent ? '#99f6e4' : '#bfdbfe', fontSize: 10, fontWeight: 900 }}>
+                {step.label}
+              </div>
+              <div style={{ color: '#60a5fa', fontSize: 9, marginTop: 2, fontFamily: 'ui-monospace, monospace' }}>
+                {step.agent}
+              </div>
+              <div style={{ color: '#94a3b8', fontSize: 9, lineHeight: 1.3, marginTop: 3 }}>
+                {step.output}
+              </div>
+            </button>
+          ))}
+        </div>
         <button
           type="button"
           onClick={runAgLightReview}
@@ -621,6 +555,62 @@ const InteractiveDesignPanel: React.FC<Props> = ({
         {agError && (
           <div style={{ marginTop: 6, color: '#fbbf24', fontSize: 10, lineHeight: 1.4 }}>
             {agError}
+          </div>
+        )}
+        {agTrace.length > 0 && (
+          <div
+            data-testid="ag-light-reasoning-trace"
+            style={{
+              marginTop: 8,
+              padding: 8,
+              borderRadius: 8,
+              border: '1px solid rgba(96,165,250,0.16)',
+              background: 'rgba(2,6,23,0.38)',
+            }}
+          >
+            <div style={{ color: '#bfdbfe', fontSize: 10, fontWeight: 800, marginBottom: 6 }}>
+              Agent reasoning trace
+            </div>
+            {agTrace.map(trace => (
+              <div
+                key={`trace-${trace.agent}`}
+                data-testid={`ag-light-trace-${trace.agent}`}
+                style={{
+                  marginTop: 6,
+                  padding: '7px 8px',
+                  borderRadius: 7,
+                  border: '1px solid rgba(148,163,184,0.12)',
+                  background: 'rgba(15,23,42,0.58)',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'center' }}>
+                  <span style={{ color: statusColor(trace.status), fontSize: 10, fontWeight: 900 }}>
+                    {trace.label}
+                  </span>
+                  <span style={{ color: '#64748b', fontSize: 9, fontFamily: 'ui-monospace, monospace' }}>
+                    {trace.agent}
+                  </span>
+                </div>
+                <div style={{ marginTop: 4, color: '#e2e8f0', fontSize: 10, fontWeight: 700, lineHeight: 1.35 }}>
+                  {trace.summary}
+                </div>
+                <div style={{ marginTop: 4, color: '#94a3b8', fontSize: 9, lineHeight: 1.45 }}>
+                  <span style={{ color: '#5eead4', fontWeight: 800 }}>참조</span>
+                  {' '}
+                  {trace.refs.length ? trace.refs.join(' · ') : '근거 없음'}
+                </div>
+                <div style={{ marginTop: 3, color: '#94a3b8', fontSize: 9, lineHeight: 1.45 }}>
+                  <span style={{ color: '#fbbf24', fontWeight: 800 }}>공식</span>
+                  {' '}
+                  {trace.formula || '공식/룰 텍스트 없음'}
+                </div>
+                <div style={{ marginTop: 3, color: '#cbd5e1', fontSize: 9, lineHeight: 1.45 }}>
+                  <span style={{ color: '#93c5fd', fontWeight: 800 }}>판단</span>
+                  {' '}
+                  {trace.decision}
+                </div>
+              </div>
+            ))}
           </div>
         )}
         {agReviews.length > 0 && (

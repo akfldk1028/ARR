@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { getAgLightBusLog, sendAgLightBusMessage } from '../lib/api-client';
+import { COLLABORATION_STEPS } from '../lib/ag-light-collaboration';
 import AGLightFlow from './ag-light-flow/AGLightFlow';
 import type { AGLightMessage, AGLightRunStatus } from './ag-light-flow/types';
 import DirectAgentChatPanel from './DirectAgentChatPanel';
@@ -152,6 +153,46 @@ export default function DefaultAgentFlowPanel({
         selectedAgentId={selectedAgentId}
         onSelectAgent={setSelectedAgentId}
       />
+      <div
+        data-testid="ag-light-collaboration-method"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+          gap: 6,
+          marginTop: 8,
+        }}
+      >
+        {COLLABORATION_STEPS.map((step) => (
+          <button
+            key={step.agent}
+            type="button"
+            onClick={() => setSelectedAgentId(step.agent)}
+            style={{
+              minHeight: 56,
+              padding: '7px 8px',
+              borderRadius: 7,
+              border: selectedAgentId === step.agent
+                ? '1px solid rgba(94,234,212,0.5)'
+                : '1px solid rgba(148,163,184,0.14)',
+              background: selectedAgentId === step.agent
+                ? 'rgba(20,184,166,0.14)'
+                : 'rgba(2,6,23,0.38)',
+              textAlign: 'left',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ color: selectedAgentId === step.agent ? '#99f6e4' : '#bfdbfe', fontSize: 10, fontWeight: 900 }}>
+              {step.label}
+            </div>
+            <div style={{ color: '#60a5fa', fontSize: 9, marginTop: 2, fontFamily: 'ui-monospace, monospace' }}>
+              {step.agent}
+            </div>
+            <div style={{ color: '#94a3b8', fontSize: 9, lineHeight: 1.3, marginTop: 3 }}>
+              {step.output}
+            </div>
+          </button>
+        ))}
+      </div>
       <DirectAgentChatPanel
         selectedAgentId={selectedAgentId}
         onSelectedAgentChange={setSelectedAgentId}
