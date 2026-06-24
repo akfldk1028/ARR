@@ -30,8 +30,11 @@ const getPath = (
     return `M ${sourceX} ${sourceY} L ${sourceX + offset} ${sourceY} L ${sourceX + offset} ${midY} L ${targetX - offset} ${midY} L ${targetX - offset} ${targetY} L ${targetX} ${targetY}`;
   }
 
+  if (Math.abs(sourceX - targetX) < 1) {
+    return `M ${sourceX} ${sourceY} L ${targetX} ${targetY}`;
+  }
   const midY = sourceY + (targetY - sourceY) / 2;
-  return `M ${sourceX} ${sourceY} C ${sourceX} ${midY}, ${targetX} ${midY}, ${targetX} ${targetY}`;
+  return `M ${sourceX} ${sourceY} L ${sourceX} ${midY} L ${targetX} ${midY} L ${targetX} ${targetY}`;
 };
 
 export default function EdgeOverlay({ nodes, edges }: Props) {
