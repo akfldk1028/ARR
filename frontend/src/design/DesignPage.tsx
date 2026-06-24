@@ -647,6 +647,15 @@ const DesignPage: React.FC = () => {
   }, [isE2E, selectedDesign, stream.paretoGeojson, jobState.sitePolygon]);
   const activeMassGeojson = interactivePreview || selectedMassGeojson || (!selectedDesign ? massFeatures[0] : null) || null;
   const activeMassDesignId = activeMassGeojson?.properties?.design_id ?? selectedDesign?.id ?? undefined;
+  const agentFlowStatus = stream.status === 'running' || stream.status === 'connecting'
+    ? 'active'
+    : stream.status === 'complete'
+      ? 'complete'
+      : stream.status === 'error'
+        ? 'error'
+        : stream.status === 'cancelled'
+          ? 'stopped'
+          : 'idle';
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -1033,7 +1042,10 @@ const DesignPage: React.FC = () => {
       </div>
 
       {/* Right: AI collaboration */}
-      <div style={{
+      <div
+        data-testid="design-ai-collaboration-panel"
+        data-collapsed={rightPanelCollapsed ? 'true' : 'false'}
+        style={{
         width: rightPanelCollapsed ? 52 : 520,
         height: '100vh',
         flexShrink: 0,
@@ -1063,6 +1075,7 @@ const DesignPage: React.FC = () => {
           )}
           <button
             type="button"
+            data-testid="design-ai-collaboration-toggle"
             onClick={() => setRightPanelCollapsed((collapsed) => !collapsed)}
             title={rightPanelCollapsed ? 'AI 협업 패널 펼치기' : 'AI 협업 패널 접기'}
             aria-label={rightPanelCollapsed ? 'AI 협업 패널 펼치기' : 'AI 협업 패널 접기'}
@@ -1111,7 +1124,7 @@ const DesignPage: React.FC = () => {
             onAestheticGenerated={handleAestheticGenerated}
           />
         ) : (
-          <DefaultAgentFlowPanel pnu={activePnu} />
+          <DefaultAgentFlowPanel pnu={activePnu} status={agentFlowStatus} />
         )}
       </div>
     </div>

@@ -81,6 +81,7 @@ export default function DirectAgentChatPanel({
           </div>
         </div>
         <select
+          data-testid="direct-agent-target-select"
           value={targetAgent}
           onChange={(event) => updateTarget(event.target.value)}
           disabled={disabled || sending}
@@ -115,6 +116,7 @@ export default function DirectAgentChatPanel({
           <button
             key={agent.id}
             type="button"
+            data-testid={`direct-agent-preset-${agent.id}`}
             onClick={() => updateTarget(agent.id)}
             disabled={disabled || sending}
             style={{
@@ -134,6 +136,7 @@ export default function DirectAgentChatPanel({
       </div>
 
       <textarea
+        data-testid="direct-agent-message-input"
         value={message}
         onChange={(event) => setMessage(event.target.value)}
         disabled={disabled || sending}
@@ -157,6 +160,7 @@ export default function DirectAgentChatPanel({
       />
       <button
         type="button"
+        data-testid="direct-agent-send-button"
         onClick={submit}
         disabled={disabled || sending || !message.trim()}
         style={{

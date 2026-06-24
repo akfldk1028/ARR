@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { sendAgLightBusMessage } from '../lib/api-client';
+import React, { useEffect, useMemo, useState } from 'react';
+import { getAgLightBusLog, sendAgLightBusMessage } from '../lib/api-client';
 import AGLightFlow from './ag-light-flow/AGLightFlow';
-import type { AGLightMessage } from './ag-light-flow/types';
+import type { AGLightMessage, AGLightRunStatus } from './ag-light-flow/types';
 import DirectAgentChatPanel from './DirectAgentChatPanel';
 
 const DEFAULT_AGENT_FLOW_MESSAGES: AGLightMessage[] = [
@@ -13,9 +13,87 @@ const DEFAULT_AGENT_FLOW_MESSAGES: AGLightMessage[] = [
   },
 ];
 
-export default function DefaultAgentFlowPanel({ pnu }: { pnu?: string | null }) {
-  const [messages, setMessages] = useState<AGLightMessage[]>(DEFAULT_AGENT_FLOW_MESSAGES);
+const FLOW_AGENT_IDS = new Set([
+  'user',
+  'design_orchestrator',
+  'law_graph_agent',
+  'law_agent',
+  'parking_agent',
+  'maas_geometry_agent',
+  'sunlight_agent',
+  'datum_agent',
+  'review_agent',
+  'design_critic',
+]);
+
+const toFlowMessage = (event: {
+  timestamp?: string;
+  from_agent: string;
+  to_agent: string;
+  message: string;
+  event_type?: string;
+  metadata?: Record<string, unknown>;
+}): AGLightMessage => ({
+  timestamp: event.timestamp,
+  from_agent: event.from_agent,
+  to_agent: event.to_agent,
+  message: event.message,
+  event_type: event.event_type,
+  metadata: event.metadata,
+});
+
+export default function DefaultAgentFlowPanel({
+  pnu,
+  status = 'idle',
+}: {
+  pnu?: string | null;
+  status?: AGLightRunStatus;
+}) {
+  const pnuMessage = useMemo<AGLightMessage | null>(() => {
+    if (!pnu) return null;
+    return {
+      from_agent: 'user',
+      to_agent: 'design_orchestrator',
+      message: `PNU ${pnu} 입력됨: 법규 그래프, 주차, 매스/기준면, 최종검토 순서로 전달 대기`,
+      event_type: 'pnu_context',
+      metadata: { pnu },
+    };
+  }, [pnu]);
+  const [manualMessages, setManualMessages] = useState<AGLightMessage[]>([]);
+  const [busMessages, setBusMessages] = useState<AGLightMessage[]>([]);
   const [selectedAgentId, setSelectedAgentId] = useState('law_graph_agent');
+  const messages = useMemo(
+    () => [
+      ...DEFAULT_AGENT_FLOW_MESSAGES,
+      ...(pnuMessage ? [pnuMessage] : []),
+      ...busMessages,
+      ...manualMessages,
+    ].slice(-18),
+    [busMessages, manualMessages, pnuMessage],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadBus = async () => {
+      try {
+        const events = await getAgLightBusLog(30);
+        if (cancelled) return;
+        const relevant = events
+          .filter((event) => FLOW_AGENT_IDS.has(event.from_agent) || FLOW_AGENT_IDS.has(event.to_agent))
+          .map(toFlowMessage)
+          .slice(-8);
+        setBusMessages(relevant);
+      } catch {
+        if (!cancelled) setBusMessages([]);
+      }
+    };
+    loadBus();
+    const timer = window.setInterval(loadBus, 5000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, []);
 
   const sendDirectAgentMessage = async (targetAgent: string, message: string) => {
     const event: AGLightMessage = {
@@ -26,7 +104,7 @@ export default function DefaultAgentFlowPanel({ pnu }: { pnu?: string | null }) 
       metadata: { source: 'arr_design_default_flow' },
     };
     await sendAgLightBusMessage(event);
-    setMessages((current) => [...current, event]);
+    setManualMessages((current) => [...current, event].slice(-8));
   };
 
   return (
@@ -68,7 +146,7 @@ export default function DefaultAgentFlowPanel({ pnu }: { pnu?: string | null }) 
       <AGLightFlow
         reviews={[]}
         messages={messages}
-        status="idle"
+        status={status}
         viewMode="pattern"
         pnu={pnu}
         selectedAgentId={selectedAgentId}

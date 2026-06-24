@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import {
-  ArrowDown,
-  ArrowRight,
   Grid,
   Maximize2,
   MessageSquare,
@@ -93,15 +91,6 @@ export default function AGLightFlowToolbar({
         aria-label={isFullscreen ? '전체화면 해제' : '전체화면'}
       >
         {isFullscreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
-      </button>
-      <button
-        type="button"
-        style={iconButtonStyle}
-        onClick={() => update({ direction: settings.direction === 'LR' ? 'TB' : 'LR' })}
-        title={settings.direction === 'LR' ? '세로 배치' : '가로 배치'}
-        aria-label={settings.direction === 'LR' ? '세로 배치' : '가로 배치'}
-      >
-        {settings.direction === 'LR' ? <ArrowRight size={15} /> : <ArrowDown size={15} />}
       </button>
       <button
         type="button"

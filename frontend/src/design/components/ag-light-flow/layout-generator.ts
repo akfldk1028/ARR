@@ -161,7 +161,8 @@ export function generateAGLightLayout({
   DESIGN_FLOW_AGENTS.forEach((agent, index) => {
     const source = flowTargets[index];
     const target = flowTargets[index + 1];
-    const active = reviews.some((review) =>
+    const agentMessages = getMessagesForAgent(messages, getAgentMessageIds(agent.participant, agent.mapping));
+    const active = agentMessages.length > 0 || reviews.some((review) =>
       agent.mapping.reviewAgentIds.includes(review.agent) &&
       (review.status === 'pass' || review.status === 'check')
     );
@@ -169,7 +170,7 @@ export function generateAGLightLayout({
     edges.push(createEdge(`flow-${source}-${target}`, source, target, {
       animated: active,
       label: settings.showLabels && active ? (agent.mapping.fallbackLabel || agent.participant.label) : '',
-      messages: getMessagesForAgent(messages, getAgentMessageIds(agent.participant, agent.mapping)),
+      messages: agentMessages,
       routingType: 'primary',
       stroke: active ? '#22c55e' : '#6b7280',
       strokeWidth: active ? 2 : 1,
