@@ -27,6 +27,7 @@ from design.maas.parking_layout import (
 )
 from design.maas.parking_requirements import resolve_candidate_parking_requirement
 from design.maas.parking_strategy import infer_parking_strategy
+from design.maas.research_backends import inspect_maas_clone_backend, run_maas_clone_reference_baseline
 from design.maas.training import build_examples_from_design_results, build_sft_examples, evidence_to_review_example, export_sft_seed
 from design.models import DesignResult, OptimizationJob
 
@@ -837,6 +838,22 @@ class MaasLegalVariantsTest(TestCase):
         self.assertEqual(evidence["backend"]["interfaces"]["optimizer"], "d4descent.optimizer.optimize")
         self.assertEqual(evidence["absorbed_pattern"]["rewrite"], "ARR grammar/morphology operators")
 
+    def test_maas_clone_bridge_compiles_reference_sequence(self):
+        backend = inspect_maas_clone_backend(enable_import=False)
+
+        self.assertEqual(backend["name"], "MAAS")
+        self.assertEqual(backend["source"], "clone/MAAS")
+        self.assertTrue(backend["exists"])
+        self.assertEqual(backend["interfaces"]["compiler"], "maas.grammar.compiler.compile_sequence")
+
+        baseline = run_maas_clone_reference_baseline(enable_import=True)
+        self.assertEqual(baseline["status"], "compiled")
+        self.assertEqual(baseline["scad_compile_status"], "compiled")
+        self.assertTrue(baseline["scad_contains"]["cube"])
+        self.assertEqual(baseline["metric_summary"]["token_f1"], 1.0)
+        self.assertEqual(baseline["metric_summary"]["ordered_lcs"], 2)
+        self.assertIn("missing_artifacts", baseline)
+
     def test_maas_algorithm_benchmark_command_writes_latest_json(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = StringIO()
@@ -858,6 +875,13 @@ class MaasLegalVariantsTest(TestCase):
             self.assertEqual(data["mode"], "maas_algorithm_benchmark")
             self.assertEqual(data["parking_mode"], "disabled")
             self.assertEqual(data["source"]["legal_truth"], "ARR deterministic legal repair/evaluation")
+            original = data["source"]["original_maas_baseline"]
+            self.assertEqual(original["source"], "clone/MAAS")
+            self.assertEqual(original["status"], "compiled")
+            self.assertEqual(original["scad_compile_status"], "compiled")
+            self.assertIn("cave", data["aggregate"]["original_maas_reference_verbs"])
+            self.assertIn("taper", data["aggregate"]["original_maas_reference_verbs"])
+            self.assertEqual(data["aggregate"]["original_maas_baseline_status"], "compiled")
             self.assertGreaterEqual(data["aggregate"]["scenario_count"], 2)
             self.assertEqual(data["aggregate"]["successful_scenarios"], data["aggregate"]["scenario_count"])
             self.assertEqual(data["aggregate"]["parking_evidence_feature_count"], 0)

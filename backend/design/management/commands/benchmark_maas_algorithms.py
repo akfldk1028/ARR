@@ -10,7 +10,7 @@ from typing import Any
 from django.core.management.base import BaseCommand
 
 from design.maas import generate_legal_mass_variants
-from design.maas.research_backends import d4descent_design_evidence
+from design.maas.research_backends import d4descent_design_evidence, run_maas_clone_reference_baseline
 
 
 DEFAULT_OPERATORS = [
@@ -226,7 +226,26 @@ def _scenario_summary(
     }
 
 
-def _aggregate(scenarios: list[dict[str, Any]]) -> dict[str, Any]:
+def _original_baseline_verbs(original_baseline: dict[str, Any] | None) -> list[str]:
+    if not isinstance(original_baseline, dict):
+        return []
+    metric_summary = original_baseline.get("metric_summary")
+    if isinstance(metric_summary, dict) and isinstance(metric_summary.get("pred_verbs"), list):
+        return [str(verb) for verb in metric_summary["pred_verbs"] if verb]
+    sequence = original_baseline.get("sequence")
+    calls = sequence.get("calls") if isinstance(sequence, dict) else []
+    return [
+        str(call.get("verb"))
+        for call in calls
+        if isinstance(call, dict) and call.get("verb") and call.get("verb") != "base"
+    ]
+
+
+def _aggregate(
+    scenarios: list[dict[str, Any]],
+    *,
+    original_baseline: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     ok = [item for item in scenarios if item.get("status") == "ok"]
     features = [feature for item in ok for feature in item.get("features", [])]
     mass_shape_counts = Counter(
@@ -259,6 +278,8 @@ def _aggregate(scenarios: list[dict[str, Any]]) -> dict[str, Any]:
         for feature in section_connector_features
         if feature.get("mass_shape")
     )
+    original_verbs = sorted(set(_original_baseline_verbs(original_baseline)))
+    arr_verbs = sorted(str(verb) for verb in verb_counts if verb)
     return {
         "scenario_count": len(scenarios),
         "successful_scenarios": len(ok),
@@ -273,6 +294,15 @@ def _aggregate(scenarios: list[dict[str, Any]]) -> dict[str, Any]:
         "mass_shape_histogram": dict(mass_shape_counts.most_common()),
         "concept_histogram": dict(concept_counts.most_common()),
         "verb_histogram": dict(verb_counts.most_common()),
+        "original_maas_baseline_status": (
+            original_baseline.get("status")
+            if isinstance(original_baseline, dict)
+            else None
+        ),
+        "original_maas_reference_verbs": original_verbs,
+        "arr_original_shared_verbs": sorted(set(arr_verbs) & set(original_verbs)),
+        "missing_original_verbs": sorted(set(original_verbs) - set(arr_verbs)),
+        "arr_extra_legal_verbs": sorted(set(arr_verbs) - set(original_verbs)),
         "section_connector_feature_count": len(section_connector_features),
         "section_connector_scenario_count": sum(
             1 for item in ok
@@ -338,6 +368,7 @@ class Command(BaseCommand):
         pnu = (raw_pnu or None) if options["with_parking"] else None
         max_variants = max(1, int(options["max_variants"]))
         operators = [operator for operator in options["operators"] if isinstance(operator, str) and operator]
+        original_baseline = run_maas_clone_reference_baseline(enable_import=True)
 
         scenarios: list[dict[str, Any]] = []
         for case in _fixture_cases():
@@ -370,11 +401,12 @@ class Command(BaseCommand):
             "parking_mode": "enabled" if pnu else "disabled",
             "operators": operators,
             "source": {
-                "grammar": "clone/MAAS verb-sequence philosophy absorbed as ARR grammar JSON/operators",
+                "grammar": "ARR grammar JSON/operators plus direct clone/MAAS reference baseline",
+                "original_maas_baseline": original_baseline,
                 "optimizer_backend": d4descent_design_evidence(enable_import=True),
                 "legal_truth": "ARR deterministic legal repair/evaluation",
             },
-            "aggregate": _aggregate(scenarios),
+            "aggregate": _aggregate(scenarios, original_baseline=original_baseline),
             "scenarios": scenarios,
         }
 
@@ -385,6 +417,12 @@ class Command(BaseCommand):
         latest.write_text(text, encoding="utf-8")
         self.stdout.write(self.style.SUCCESS(f"wrote {path}"))
         self.stdout.write(json.dumps(payload["aggregate"], ensure_ascii=False, indent=2))
+        self.stdout.write(
+            "original MAAS baseline: "
+            f"status={original_baseline.get('status')}, "
+            f"labels={original_baseline.get('backend', {}).get('labels_status')}, "
+            f"verbs={','.join(_original_baseline_verbs(original_baseline)) or '-'}"
+        )
         for scenario in scenarios:
             if scenario.get("status") != "ok":
                 continue
