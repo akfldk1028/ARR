@@ -104,6 +104,14 @@ CONCEPT_ORDER = [
 
 SECTION_CONCEPTS = {"stepback_tower", "taper", "grade", "diagonal_connect", "terrace_link", "sloped_roof"}
 MIN_GRAMMAR_CONCEPTS = 3
+SECTION_CONNECTOR_VERBS = {"diagonal_connect", "terrace_link", "sloped_roof_mass"}
+SECTION_CONNECTOR_SHAPE_TOKENS = (
+    "diagonal_connect",
+    "terrace_link",
+    "sloped_roof",
+    "step_connector",
+    "ribbon_stepback",
+)
 
 CONCEPT_LABELS = {
     "legal_layered": "법규엔벨로프",
@@ -133,6 +141,53 @@ def _concept_label(operator: str) -> str:
     if sequence_label:
         return sequence_label
     return CONCEPT_LABELS.get(_operator_family(operator), _operator_family(operator))
+
+
+def _is_section_connector(feature: dict[str, Any]) -> bool:
+    props = feature.get("properties", {}) or {}
+    mass_shape = str(props.get("mass_shape") or "")
+    if any(token in mass_shape for token in SECTION_CONNECTOR_SHAPE_TOKENS):
+        return True
+    sequence = props.get("maas_verb_sequence")
+    if not isinstance(sequence, list):
+        model = props.get("maas_model") if isinstance(props.get("maas_model"), dict) else {}
+        sequence = model.get("verb_sequence")
+    if not isinstance(sequence, list):
+        return False
+    return any(
+        isinstance(call, dict) and call.get("verb") in SECTION_CONNECTOR_VERBS
+        for call in sequence
+    )
+
+
+def _has_resolved_parking_requirement(feature: dict[str, Any]) -> bool:
+    props = feature.get("properties") if isinstance(feature.get("properties"), dict) else {}
+    precheck = props.get("parking_precheck") if isinstance(props.get("parking_precheck"), dict) else {}
+    required = precheck.get("required_count") if isinstance(precheck.get("required_count"), dict) else {}
+    return isinstance(required.get("required_spaces"), int)
+
+
+def _preserve_visible_section_connector(
+    selected: list[dict[str, Any]],
+    *,
+    final_limit: int,
+    preferred_operator: str | None = None,
+) -> list[dict[str, Any]]:
+    if preferred_operator or final_limit <= 1:
+        return selected
+    visible = selected[:final_limit]
+    if any(_is_section_connector(feature) for feature in visible):
+        return selected
+    connector = next((feature for feature in selected if _is_section_connector(feature)), None)
+    if connector is None:
+        return selected
+    has_parking_gate = any(_has_resolved_parking_requirement(feature) for feature in selected)
+    if has_parking_gate and _parking_priority_key(connector) < _parking_priority_key(visible[-1]):
+        return selected
+    return visible[:-1] + [connector] + [
+        feature for feature in selected[final_limit:]
+        if feature is not connector
+    ]
 
 
 def _volume_profile(feature: dict[str, Any]) -> tuple[tuple[float, float, float], ...]:
@@ -482,10 +537,14 @@ def _select_diverse_features(
             family = _operator_family(feature["properties"].get("mass_shape", ""))
             candidate = geojson_to_polygon(feature["geometry"])
             candidate_profile = _volume_profile(feature)
+            candidate_is_connector = _is_section_connector(feature)
             for existing in selected:
                 existing_family = _operator_family(existing["properties"].get("mass_shape", ""))
+                existing_is_connector = _is_section_connector(existing)
                 iou = polygon_iou(candidate, geojson_to_polygon(existing["geometry"]))
                 if iou >= 0.98 and candidate_profile == _volume_profile(existing):
+                    if family != existing_family and (candidate_is_connector or existing_is_connector):
+                        continue
                     return True
                 if family in {"bcr_fill", "legal_buildable"} and iou >= 0.96:
                     return True
@@ -520,6 +579,19 @@ def _select_diverse_features(
                 for f in by_family.get(family, [])
             ]
             for feature in section_candidates:
+                if feature in selected or is_near_duplicate(feature):
+                    continue
+                selected.append(feature)
+                break
+
+    # A stepped mass alone is not enough for MAAS design exploration. Preserve
+    # at least one section connector option so the user can compare step-only
+    # forms against diagonal/terrace/sloped linking masses in the default run.
+    if limit > len(selected) and not preferred_operator:
+        has_connector = any(_is_section_connector(feature) for feature in selected)
+        if not has_connector:
+            connector_candidates = [f for f in by_score if _is_section_connector(f)]
+            for feature in connector_candidates:
                 if feature in selected or is_near_duplicate(feature):
                     continue
                 selected.append(feature)
@@ -949,7 +1021,13 @@ def generate_legal_mass_variants(
         )
         if preferred_index is not None:
             selected.insert(0, selected.pop(preferred_index))
-    selected = selected[:max(1, max_variants)]
+    final_limit = max(1, max_variants)
+    selected = _preserve_visible_section_connector(
+        selected,
+        final_limit=final_limit,
+        preferred_operator=preferred_operator,
+    )
+    selected = selected[:final_limit]
     for i, feature in enumerate(selected, start=1):
         feature["properties"]["variant_id"] = f"maas_{i:02d}"
 

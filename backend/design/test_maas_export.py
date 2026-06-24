@@ -18,6 +18,7 @@ from design.maas.aesthetic.projection_bake import attach_baked_projection_assets
 from design.maas.aesthetic.projection_export import attach_textured_mesh_assets
 from design.maas.aesthetic.renderers import MultiViewReferencePackRenderer, ReferencePngRenderer
 from design.maas.grammar import generate_grammar_variants, load_term_ontology, resolve_intent_to_sequence
+from design.maas.legal_mesh_optimizer import _preserve_visible_section_connector
 from design.maas.parking_layout import (
     _drive_entrance_access,
     _solve_grid_parking_layout,
@@ -867,6 +868,9 @@ class MaasLegalVariantsTest(TestCase):
             self.assertGreaterEqual(data["aggregate"]["unique_concept_count"], 3)
             self.assertGreaterEqual(data["aggregate"]["unique_verb_count"], 3)
             self.assertGreaterEqual(data["aggregate"]["average_unique_shapes_per_scenario"], 3.0)
+            self.assertGreaterEqual(data["aggregate"]["section_connector_feature_count"], 1)
+            self.assertGreaterEqual(data["aggregate"]["section_connector_scenario_count"], 1)
+            self.assertGreaterEqual(data["aggregate"]["section_connector_shape_count"], 1)
             self.assertIn("mass_shape_histogram", data["aggregate"])
             self.assertFalse(any(
                 feature.get("parking_evidence_enabled")
@@ -990,7 +994,7 @@ class MaasLegalVariantsTest(TestCase):
                 {"name": "height", "type": "Constraint", "Requirement": "Less than", "val": 50, "unit": "m"},
             ],
             building_type="공동주택",
-            max_variants=8,
+            max_variants=6,
             sunlight_envelope={
                 "slanted_polygons": [{
                     "corners": [
@@ -1018,6 +1022,51 @@ class MaasLegalVariantsTest(TestCase):
         self.assertTrue(any("floor_plates" in f["properties"] for f in features))
         diversity_classes = {f["properties"]["candidate_diversity"]["class"] for f in features}
         self.assertTrue({"plan_diverse", "section_diverse"} & diversity_classes)
+        connector_verbs = {"diagonal_connect", "terrace_link", "sloped_roof_mass"}
+        connector_features = [
+            f for f in features
+            if connector_verbs & {
+                item.get("verb")
+                for item in f["properties"].get("maas_verb_sequence", [])
+                if isinstance(item, dict)
+            }
+        ]
+        self.assertTrue(connector_features)
+
+    def test_section_connector_preservation_does_not_override_parking_gate(self):
+        def feature(shape: str, *, provided: int, score: float) -> dict:
+            return {
+                "type": "Feature",
+                "properties": {
+                    "mass_shape": shape,
+                    "maas_score": score,
+                    "parking_precheck": {
+                        "required_count": {"required_spaces": 3},
+                        "layout_candidate": {
+                            "status": "pass" if provided >= 3 else "fail",
+                            "required_spaces": 3,
+                            "provided_spaces": provided,
+                            "unmet_spaces": max(0, 3 - provided),
+                        },
+                    },
+                },
+            }
+
+        visible_pass = [
+            feature("legal_layered_max", provided=3, score=0.9),
+            feature("court_open_east", provided=3, score=0.8),
+        ]
+        weak_connector = feature("grammar_diagonal_step_connector_layered", provided=1, score=0.7)
+
+        selected = _preserve_visible_section_connector(
+            [*visible_pass, weak_connector],
+            final_limit=2,
+        )
+
+        self.assertEqual(
+            [item["properties"]["mass_shape"] for item in selected[:2]],
+            ["legal_layered_max", "court_open_east"],
+        )
 
     def test_preferred_design_operator_survives_selection(self):
         result = generate_legal_mass_variants(

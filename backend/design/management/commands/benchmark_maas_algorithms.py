@@ -22,6 +22,15 @@ DEFAULT_OPERATORS = [
     "sloped_roof_mass",
 ]
 
+SECTION_CONNECTOR_VERBS = {"diagonal_connect", "terrace_link", "sloped_roof_mass"}
+SECTION_CONNECTOR_SHAPE_TOKENS = (
+    "diagonal_connect",
+    "terrace_link",
+    "sloped_roof",
+    "step_connector",
+    "ribbon_stepback",
+)
+
 
 def _constraints() -> list[dict[str, Any]]:
     return [
@@ -29,6 +38,13 @@ def _constraints() -> list[dict[str, Any]]:
         {"name": "far", "type": "Constraint", "Requirement": "Less than", "val": 250, "unit": "%"},
         {"name": "height", "type": "Constraint", "Requirement": "Less than", "val": 35, "unit": "m"},
     ]
+
+
+def _is_section_connector_summary(summary: dict[str, Any]) -> bool:
+    mass_shape = str(summary.get("mass_shape") or "")
+    if any(token in mass_shape for token in SECTION_CONNECTOR_SHAPE_TOKENS):
+        return True
+    return any(verb in SECTION_CONNECTOR_VERBS for verb in summary.get("sequence_verbs", []))
 
 
 def _fixture_cases() -> list[dict[str, Any]]:
@@ -102,7 +118,7 @@ def _feature_summary(feature: dict[str, Any], limits: dict[str, Any]) -> dict[st
         and float(props.get("far") or 0.0) <= float(limits["far_limit"]) + 0.1
         and float(props.get("height") or 0.0) <= float(limits["height_limit"]) + 0.1
     )
-    return {
+    summary = {
         "variant_id": props.get("variant_id"),
         "mass_shape": props.get("mass_shape"),
         "maas_concept": props.get("maas_concept"),
@@ -133,6 +149,8 @@ def _feature_summary(feature: dict[str, Any], limits: dict[str, Any]) -> dict[st
         "parking_required": required_count.get("required_spaces"),
         "parking_provided": layout.get("provided_spaces"),
     }
+    summary["is_section_connector"] = _is_section_connector_summary(summary)
+    return summary
 
 
 def _scenario_summary(
@@ -178,6 +196,10 @@ def _scenario_summary(
         for verb in item.get("sequence_verbs", [])
         if verb
     })
+    section_connectors = [
+        item for item in summaries
+        if item.get("is_section_connector")
+    ]
     return {
         "case_id": case["case_id"],
         "scenario": label,
@@ -190,6 +212,12 @@ def _scenario_summary(
         "unique_mass_shapes": unique_mass_shapes,
         "unique_concepts": unique_concepts,
         "unique_verbs": unique_verbs,
+        "section_connector_count": len(section_connectors),
+        "section_connector_shapes": sorted({
+            str(item.get("mass_shape"))
+            for item in section_connectors
+            if item.get("mass_shape")
+        }),
         "rejected_count": len(result.get("rejected") or []),
         "preferred_survived": preferred_survived,
         "preferred_top": preferred_top,
@@ -222,6 +250,15 @@ def _aggregate(scenarios: list[dict[str, Any]]) -> dict[str, Any]:
         if feature.get("parking_evidence_enabled")
     ]
     preferred = [item for item in ok if item.get("preferred_operator")]
+    section_connector_features = [
+        feature for feature in features
+        if feature.get("is_section_connector")
+    ]
+    section_connector_shapes = Counter(
+        str(feature.get("mass_shape"))
+        for feature in section_connector_features
+        if feature.get("mass_shape")
+    )
     return {
         "scenario_count": len(scenarios),
         "successful_scenarios": len(ok),
@@ -236,6 +273,13 @@ def _aggregate(scenarios: list[dict[str, Any]]) -> dict[str, Any]:
         "mass_shape_histogram": dict(mass_shape_counts.most_common()),
         "concept_histogram": dict(concept_counts.most_common()),
         "verb_histogram": dict(verb_counts.most_common()),
+        "section_connector_feature_count": len(section_connector_features),
+        "section_connector_scenario_count": sum(
+            1 for item in ok
+            if int(item.get("section_connector_count") or 0) > 0
+        ),
+        "section_connector_shape_count": len(section_connector_shapes),
+        "section_connector_shape_histogram": dict(section_connector_shapes.most_common()),
         "legal_pass_rate": round(
             sum(1 for feature in features if feature.get("legal_pass")) / len(features),
             4,
@@ -349,5 +393,6 @@ class Command(BaseCommand):
                 f"{scenario['feature_count']} variants, "
                 f"{scenario['unique_mass_shape_count']} shapes, "
                 f"{scenario['unique_verb_count']} verbs, "
+                f"connectors={scenario.get('section_connector_count', 0)}, "
                 f"top={scenario.get('top', {}).get('mass_shape')}"
             )
