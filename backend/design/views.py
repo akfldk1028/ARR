@@ -1164,6 +1164,10 @@ def maas_legal_variants(request):
             max_variants=int(body.get("max_variants") or 6),
             sunlight_envelope=body.get("sunlight_envelope") if isinstance(body.get("sunlight_envelope"), dict) else None,
             setback_geometries=body.get("setback_geometries") if isinstance(body.get("setback_geometries"), dict) else None,
+            include_interactive_seed=bool(body.get("include_interactive_seed")),
+            preferred_operator=body.get("preferred_operator") if isinstance(body.get("preferred_operator"), str) else None,
+            pnu=body.get("pnu") if isinstance(body.get("pnu"), str) else None,
+            parking_options=body.get("parking_options") if isinstance(body.get("parking_options"), dict) else None,
         )
     except Exception as e:
         return JsonResponse({"error": f"MAAS legal variants failed: {e}"}, status=400)

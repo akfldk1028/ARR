@@ -19,6 +19,9 @@ SUPPORTED_VERBS = {
     "taper",
     "grade",
     "step_envelope",
+    "diagonal_connect",
+    "terrace_link",
+    "sloped_roof_mass",
     "shift",
     "inset",
     "expand",
@@ -40,6 +43,7 @@ PLAN_VERBS = {
 }
 
 SECTION_VERBS = {"lift", "taper", "grade", "step_envelope"}
+DESIGN_SECTION_VERBS = {"diagonal_connect", "terrace_link", "sloped_roof_mass"}
 
 
-__all__ = ["PLAN_VERBS", "SECTION_VERBS", "SUPPORTED_VERBS"]
+__all__ = ["DESIGN_SECTION_VERBS", "PLAN_VERBS", "SECTION_VERBS", "SUPPORTED_VERBS"]

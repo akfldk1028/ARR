@@ -72,6 +72,30 @@
       "meaning": "Compose overlapping or crossing bars/slabs for plan diversity.",
       "verbs": ["interlock", "overlap", "shift"],
       "risk_notes": ["High visual diversity can still be a legal/program failure."]
+    },
+    {
+      "id": "diagonal_connect",
+      "ko": ["사선연결", "대각선 연결", "계단 연결", "스텝 연결"],
+      "en": ["diagonal connect", "stepped connector", "linked step mass"],
+      "meaning": "Offset upper stepback mass so a stepped envelope can be read as an intentional diagonal/linked section.",
+      "verbs": ["diagonal_connect", "lift", "shift"],
+      "risk_notes": ["This is a massing/design hint, not a structural ramp or egress claim."]
+    },
+    {
+      "id": "terrace_link",
+      "ko": ["테라스 연결", "연속 테라스", "계단식 테라스"],
+      "en": ["terrace link", "linked terrace", "continuous terrace"],
+      "meaning": "Turn sunlight or setback steps into connected terrace bands rather than isolated stacked boxes.",
+      "verbs": ["terrace_link", "grade", "taper"],
+      "risk_notes": ["Terrace usability must be checked separately from massing legality."]
+    },
+    {
+      "id": "sloped_roof_mass",
+      "ko": ["사선지붕", "경사지붕", "사선 매스", "일조사선 디자인"],
+      "en": ["sloped roof mass", "sloped mass", "diagonal envelope mass"],
+      "meaning": "Translate a diagonal legal or sunlight envelope into an architectural sloped-roof massing option.",
+      "verbs": ["sloped_roof_mass", "taper"],
+      "risk_notes": ["ARR currently represents this as stepped/upper-footprint evidence; true sloped mesh export is a later renderer task."]
     }
   ]
 }

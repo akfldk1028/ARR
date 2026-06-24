@@ -176,6 +176,35 @@ def _overlap_shifted_slabs(base: Polygon, *, axis: str, slab_ratio: float, shift
     return _clean(unary_union([a, b]).intersection(base))
 
 
+def _upper_diagonal_connect(base: Polygon, *, axis: str, upper_ratio: float, distance_ratio: float) -> Polygon | None:
+    minx, miny, maxx, maxy = base.bounds
+    width = maxx - minx
+    depth = maxy - miny
+    upper = _clean(scale(base, xfact=upper_ratio, yfact=upper_ratio, origin="centroid"))
+    if upper is None:
+        return None
+    shifted = translate(
+        upper,
+        xoff=width * distance_ratio if axis == "x" else 0.0,
+        yoff=depth * distance_ratio if axis == "y" else 0.0,
+    )
+    return _clean(shifted.intersection(base))
+
+
+def _upper_terrace_link(base: Polygon, *, side: str, upper_ratio: float, width_ratio: float, depth_ratio: float) -> Polygon | None:
+    upper = _clean(scale(base, xfact=upper_ratio, yfact=upper_ratio, origin="centroid"))
+    if upper is None:
+        return None
+    return _edge_notch(upper, side=side, width_ratio=width_ratio, depth_ratio=depth_ratio)
+
+
+def _upper_sloped_roof_mass(base: Polygon, *, x_ratio: float, y_ratio: float, upper_ratio: float) -> Polygon | None:
+    upper = _clean(scale(base, xfact=upper_ratio, yfact=upper_ratio, origin="centroid"))
+    if upper is None:
+        return None
+    return _clean(scale(upper, xfact=x_ratio, yfact=y_ratio, origin="centroid").intersection(base))
+
+
 def generate_morphology_variants(base_footprint: Polygon) -> list[MorphologyVariant]:
     """Generate deterministic mass variants from a repaired source footprint."""
     base = _clean(base_footprint)
@@ -306,6 +335,52 @@ def generate_morphology_variants(base_footprint: Polygon) -> list[MorphologyVari
             upper_footprint=upper_lifted,
             lower_floor_fraction=0.38,
             notes=("Operative Design lift+overlap을 포디움/상부 slab 분리로 근사",),
+        ))
+
+    for axis, distance, label in (
+        ("x", 0.12, "diagonal_connect_step_x"),
+        ("y", 0.12, "diagonal_connect_step_y"),
+    ):
+        upper_diag = _upper_diagonal_connect(base, axis=axis, upper_ratio=0.72, distance_ratio=distance)
+        if upper_diag is not None:
+            variants.append(MorphologyVariant(
+                label,
+                base,
+                upper_footprint=upper_diag,
+                lower_floor_fraction=0.40,
+                notes=("계단형 후퇴를 단순 층층 박스가 아니라 사선 연결 가능한 상부 오프셋 매스로 근사",),
+                verb_sequence=(
+                    {"verb": "base", "params": {"proportion": "site"}},
+                    {"verb": "diagonal_connect", "params": {"axis": axis, "upper_ratio": 0.72, "distance_ratio": distance}},
+                ),
+            ))
+
+    upper_terrace = _upper_terrace_link(base, side="north", upper_ratio=0.84, width_ratio=0.62, depth_ratio=0.22)
+    if upper_terrace is not None:
+        variants.append(MorphologyVariant(
+            "terrace_link_north",
+            base,
+            upper_footprint=upper_terrace,
+            lower_floor_fraction=0.36,
+            notes=("북측 일조/테라스 후퇴부를 연결된 terrace-link 단면으로 근사",),
+            verb_sequence=(
+                {"verb": "base", "params": {"proportion": "site"}},
+                {"verb": "terrace_link", "params": {"side": "north", "upper_ratio": 0.84, "width_ratio": 0.62, "depth_ratio": 0.22}},
+            ),
+        ))
+
+    upper_slope = _upper_sloped_roof_mass(base, x_ratio=0.70, y_ratio=0.92, upper_ratio=0.90)
+    if upper_slope is not None:
+        variants.append(MorphologyVariant(
+            "sloped_roof_mass",
+            base,
+            upper_footprint=upper_slope,
+            lower_floor_fraction=0.50,
+            notes=("사선 제한면을 단순 절단선이 아니라 sloped roof mass 디자인 후보로 근사",),
+            verb_sequence=(
+                {"verb": "base", "params": {"proportion": "site"}},
+                {"verb": "sloped_roof_mass", "params": {"upper_ratio": 0.90, "x_ratio": 0.70, "y_ratio": 0.92}},
+            ),
         ))
 
     return variants

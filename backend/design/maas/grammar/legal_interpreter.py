@@ -163,6 +163,16 @@ def _shift(poly: Polygon, axis: str, distance_ratio: float, clip: Polygon) -> Po
     return _clean(shifted.intersection(clip))
 
 
+def _ensure_upper(
+    footprint: Polygon,
+    upper: Polygon | None,
+    *,
+    ratio: float,
+) -> Polygon | None:
+    target = upper if upper is not None else footprint
+    return _clean(scale(target, xfact=ratio, yfact=ratio, origin="centroid").intersection(footprint))
+
+
 def interpret_sequence(base_footprint: Polygon, sequence: VerbSequence) -> MorphologyVariant | None:
     errors = sequence.validate()
     if errors:
@@ -241,6 +251,32 @@ def interpret_sequence(base_footprint: Polygon, sequence: VerbSequence) -> Morph
             # No plan mutation here. The legal optimizer will build a true
             # floor-by-floor stack from the sunlight/legal envelope.
             lower_floor_fraction = None
+        elif call.verb == "diagonal_connect":
+            ratio = float(params.get("upper_ratio", 0.72))
+            distance = float(params.get("distance_ratio", 0.10))
+            axis = params.get("axis", "x")
+            upper = _ensure_upper(footprint, upper, ratio=ratio)
+            if upper is not None:
+                upper = _shift(upper, axis, distance, footprint)
+                lower_floor_fraction = float(params.get("lower_floor_fraction", 0.40))
+        elif call.verb == "terrace_link":
+            side = params.get("side", "north")
+            width_ratio = float(params.get("width_ratio", 0.54))
+            depth_ratio = float(params.get("depth_ratio", 0.20))
+            target = _ensure_upper(footprint, upper, ratio=float(params.get("upper_ratio", 0.82)))
+            upper = _edge_cave(target or footprint, side, width_ratio, depth_ratio)
+            if upper is not None:
+                lower_floor_fraction = float(params.get("lower_floor_fraction", 0.34))
+        elif call.verb == "sloped_roof_mass":
+            target = _ensure_upper(footprint, upper, ratio=float(params.get("upper_ratio", 0.88)))
+            upper = _clean(scale(
+                target or footprint,
+                xfact=float(params.get("x_ratio", 0.70)),
+                yfact=float(params.get("y_ratio", 0.92)),
+                origin="centroid",
+            ).intersection(footprint))
+            if upper is not None:
+                lower_floor_fraction = float(params.get("lower_floor_fraction", 0.50))
 
         if next_fp is not None:
             footprint = next_fp

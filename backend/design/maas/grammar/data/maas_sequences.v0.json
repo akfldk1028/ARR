@@ -115,6 +115,44 @@
         {"verb": "taper", "params": {"x_ratio": 0.70, "y_ratio": 0.70}}
       ],
       "notes": ["교차 매스와 상부 후퇴를 결합한 복합 grammar 후보"]
+    },
+    {
+      "name": "grammar_diagonal_step_connector",
+      "label": "사선연결 스텝",
+      "aliases": ["diagonal step connector", "linked step mass", "사선 연결", "대각선 연결", "계단 연결"],
+      "intent_tags": ["stepback", "diagonal_connect", "section_design"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "lift", "params": {"upper_ratio": 0.78, "lower_floor_fraction": 0.40}},
+        {"verb": "diagonal_connect", "params": {"axis": "x", "upper_ratio": 0.86, "distance_ratio": 0.10, "lower_floor_fraction": 0.40}},
+        {"verb": "taper", "params": {"x_ratio": 0.86, "y_ratio": 0.92}}
+      ],
+      "notes": ["계단형 제한면을 상부 오프셋과 taper로 이어 사선 연결 가능한 단면 디자인 후보"]
+    },
+    {
+      "name": "grammar_terrace_ribbon_stepback",
+      "label": "연속테라스 스텝백",
+      "aliases": ["terrace ribbon stepback", "linked terrace", "연속 테라스", "테라스 연결", "계단식 테라스"],
+      "intent_tags": ["terrace", "stepback", "section_design"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "lift", "params": {"upper_ratio": 0.84, "lower_floor_fraction": 0.34}},
+        {"verb": "terrace_link", "params": {"side": "north", "upper_ratio": 0.88, "width_ratio": 0.62, "depth_ratio": 0.20, "lower_floor_fraction": 0.34}},
+        {"verb": "shift", "params": {"axis": "y", "distance_ratio": -0.04}}
+      ],
+      "notes": ["북측 일조 후퇴를 단절된 박스가 아니라 연결된 terrace band로 읽히게 하는 후보"]
+    },
+    {
+      "name": "grammar_sloped_roof_envelope",
+      "label": "사선지붕 엔벨로프",
+      "aliases": ["sloped roof envelope", "diagonal envelope mass", "사선지붕", "경사지붕", "일조사선 디자인"],
+      "intent_tags": ["sloped_roof", "sunlight", "section_design"],
+      "calls": [
+        {"verb": "base", "params": {"proportion": "site"}},
+        {"verb": "sloped_roof_mass", "params": {"upper_ratio": 0.90, "x_ratio": 0.70, "y_ratio": 0.92, "lower_floor_fraction": 0.50}},
+        {"verb": "taper", "params": {"x_ratio": 0.88, "y_ratio": 0.94}}
+      ],
+      "notes": ["일조사선/높이 제한면을 단순 cut line이 아니라 사선지붕형 매스 후보로 표현"]
     }
   ]
 }

@@ -773,10 +773,91 @@ class MaasLegalVariantsTest(TestCase):
         self.assertIn("grammar_courtyard_lift_taper", operators)
         self.assertIn("grammar_podium_tower_offset", operators)
         self.assertIn("grammar_sunlight_multi_step", operators)
+        self.assertIn("grammar_diagonal_step_connector", operators)
+        self.assertIn("grammar_terrace_ribbon_stepback", operators)
+        self.assertIn("grammar_sloped_roof_envelope", operators)
         for variant in variants:
             self.assertTrue(variant.operator.startswith("grammar_"))
             self.assertGreaterEqual(len(variant.verb_sequence), 2)
             self.assertEqual(variant.verb_sequence[0]["verb"], "base")
+
+    def test_design_section_operators_create_upper_mass_hints(self):
+        from design.maas.morphology_operators import generate_morphology_variants
+
+        variants = generate_morphology_variants(box(0, 0, 30, 20))
+        by_operator = {variant.operator: variant for variant in variants}
+
+        for operator in (
+            "diagonal_connect_step_x",
+            "diagonal_connect_step_y",
+            "terrace_link_north",
+            "sloped_roof_mass",
+        ):
+            self.assertIn(operator, by_operator)
+            variant = by_operator[operator]
+            self.assertIsNotNone(variant.upper_footprint)
+            self.assertLess(variant.upper_footprint.area, variant.footprint.area)
+            self.assertGreaterEqual(len(variant.verb_sequence), 2)
+            self.assertEqual(variant.verb_sequence[0]["verb"], "base")
+
+    def test_maas_sequence_metrics_follow_reference_eval_contract(self):
+        from design.maas.design_quality import ordered_lcs, sequence_metrics, token_f1, verb_set_jaccard
+
+        pred = [
+            {"verb": "base", "params": {}},
+            {"verb": "courtyard", "params": {}},
+            {"verb": "lift", "params": {}},
+            {"verb": "taper", "params": {}},
+        ]
+        gold = [
+            {"verb": "base", "params": {}},
+            {"verb": "courtyard", "params": {}},
+            {"verb": "taper", "params": {}},
+        ]
+
+        self.assertEqual(ordered_lcs(pred, gold), 2)
+        self.assertAlmostEqual(verb_set_jaccard(pred, gold), 2 / 3, places=4)
+        self.assertAlmostEqual(token_f1(pred, gold), 0.8, places=4)
+        metrics = sequence_metrics(pred, gold)
+        self.assertEqual(metrics["parsimony"], 3)
+        self.assertTrue(metrics["has_plan_operation"])
+        self.assertTrue(metrics["has_section_operation"])
+        self.assertEqual(metrics["reference_comparison"]["ordered_lcs"], 2)
+
+    def test_d4descent_clone_backend_is_connected_as_research_optimizer(self):
+        from design.maas.research_backends import d4descent_design_evidence
+
+        evidence = d4descent_design_evidence(enable_import=False)
+
+        self.assertEqual(evidence["name"], "d4descent")
+        self.assertEqual(evidence["source"], "clone/d4descent")
+        self.assertTrue(evidence["backend"]["exists"])
+        self.assertEqual(evidence["backend"]["interfaces"]["optimizer"], "d4descent.optimizer.optimize")
+        self.assertEqual(evidence["absorbed_pattern"]["rewrite"], "ARR grammar/morphology operators")
+
+    def test_generated_variants_include_design_quality_and_d4descent_evidence(self):
+        result = generate_legal_mass_variants(
+            mass_geojson=self._mass(),
+            site_polygon_geojson=self._site(),
+            constraints=[
+                {"name": "bcr", "type": "Constraint", "Requirement": "Less than", "val": 60, "unit": "%"},
+                {"name": "far", "type": "Constraint", "Requirement": "Less than", "val": 250, "unit": "%"},
+                {"name": "height", "type": "Constraint", "Requirement": "Less than", "val": 50, "unit": "m"},
+            ],
+            building_type="공동주택",
+            max_variants=4,
+            preferred_operator="grammar_diagonal_step_connector",
+        )
+
+        top = result["feature_collection"]["features"][0]["properties"]
+        quality = top["design_quality"]
+        self.assertEqual(quality["source"], "arr.maas.design_quality.v1")
+        self.assertIn("sequence_metrics", quality)
+        self.assertGreaterEqual(quality["score"], 0.0)
+        self.assertLessEqual(quality["score"], 1.0)
+        self.assertEqual(quality["optimizer_backend"]["name"], "d4descent")
+        self.assertIn(quality["optimizer_backend"]["status"], {"imported", "import_failed", "available_not_imported", "missing"})
+        self.assertEqual(top["maas_model"]["design_quality"]["score"], quality["score"])
 
     def test_sunlight_cap_and_bcr_fill_are_prioritized(self):
         constraints = [
@@ -888,6 +969,31 @@ class MaasLegalVariantsTest(TestCase):
         self.assertTrue(any("floor_plates" in f["properties"] for f in features))
         diversity_classes = {f["properties"]["candidate_diversity"]["class"] for f in features}
         self.assertTrue({"plan_diverse", "section_diverse"} & diversity_classes)
+
+    def test_preferred_design_operator_survives_selection(self):
+        result = generate_legal_mass_variants(
+            mass_geojson=self._mass(),
+            site_polygon_geojson=self._site(),
+            constraints=[
+                {"name": "bcr", "type": "Constraint", "Requirement": "Less than", "val": 60, "unit": "%"},
+                {"name": "far", "type": "Constraint", "Requirement": "Less than", "val": 250, "unit": "%"},
+                {"name": "height", "type": "Constraint", "Requirement": "Less than", "val": 50, "unit": "m"},
+            ],
+            building_type="공동주택",
+            max_variants=4,
+            preferred_operator="grammar_terrace_ribbon_stepback",
+        )
+
+        features = result["feature_collection"]["features"]
+        self.assertGreater(len(features), 0)
+        top = features[0]["properties"]
+        self.assertEqual(top["mass_shape"], "grammar_terrace_ribbon_stepback")
+        self.assertEqual(top["maas_concept"], "연속테라스 스텝백")
+        self.assertIn("maas_model", top)
+        self.assertGreaterEqual(len(top["maas_model"]["volumes"]), 2)
+        self.assertIn("terrace_link", [item["verb"] for item in top["maas_verb_sequence"]])
+        self.assertLessEqual(top["bcr"], 60.1)
+        self.assertLessEqual(top["far"], 250.1)
 
     def test_layered_stack_uses_floor_by_floor_envelope(self):
         """층별 허용 footprint를 잘라 사선 높이 여유를 FAR로 활용한다."""
@@ -1139,8 +1245,12 @@ class MaasIntentTrainingContractTest(TestCase):
         self.assertIn("sunlight_step", terms)
         self.assertIn("podium_tower", terms)
         self.assertIn("split_bridge", terms)
+        self.assertIn("diagonal_connect", terms)
+        self.assertIn("terrace_link", terms)
+        self.assertIn("sloped_roof_mass", terms)
         self.assertIn("step_envelope", terms["sunlight_step"]["verbs"])
         self.assertIn("split", terms["split_bridge"]["verbs"])
+        self.assertIn("diagonal_connect", terms["diagonal_connect"]["verbs"])
 
     def test_seed_sft_examples_train_intent_to_sequence_contract(self):
         examples = build_sft_examples()
