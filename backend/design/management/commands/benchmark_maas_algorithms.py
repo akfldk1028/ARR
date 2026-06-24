@@ -95,6 +95,7 @@ def _feature_summary(feature: dict[str, Any], limits: dict[str, Any]) -> dict[st
     parking = props.get("parking_precheck") if isinstance(props.get("parking_precheck"), dict) else {}
     layout = parking.get("layout_candidate") if isinstance(parking.get("layout_candidate"), dict) else {}
     required_count = parking.get("required_count") if isinstance(parking.get("required_count"), dict) else {}
+    parking_evidence_enabled = required_count.get("required_spaces") is not None
     legal_pass = (
         float(props.get("bcr") or 0.0) <= float(limits["bcr_limit"]) + 0.1
         and float(props.get("far") or 0.0) <= float(limits["far_limit"]) + 0.1
@@ -120,7 +121,14 @@ def _feature_summary(feature: dict[str, Any], limits: dict[str, Any]) -> dict[st
             if isinstance(quality.get("optimizer_backend"), dict)
             else None
         ),
-        "parking_status": layout.get("status") or required_count.get("status"),
+        "parking_evidence_enabled": parking_evidence_enabled,
+        "parking_requirement_status": required_count.get("status") if parking_evidence_enabled else None,
+        "parking_layout_status": layout.get("status"),
+        "parking_status": (
+            required_count.get("status") or layout.get("status")
+            if parking_evidence_enabled
+            else None
+        ),
         "parking_required": required_count.get("required_spaces"),
         "parking_provided": layout.get("provided_spaces"),
     }
@@ -172,7 +180,7 @@ def _aggregate(scenarios: list[dict[str, Any]]) -> dict[str, Any]:
     features = [feature for item in ok for feature in item.get("features", [])]
     parking_evidence_features = [
         feature for feature in features
-        if feature.get("parking_required") is not None
+        if feature.get("parking_evidence_enabled")
     ]
     preferred = [item for item in ok if item.get("preferred_operator")]
     return {
