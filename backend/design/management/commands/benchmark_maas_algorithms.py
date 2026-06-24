@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from collections import Counter
 from statistics import mean
 from typing import Any
 
@@ -161,12 +162,34 @@ def _scenario_summary(
         or any(item.get("mass_shape") == preferred_operator for item in summaries)
     )
     preferred_top = preferred_operator is not None and top.get("mass_shape") == preferred_operator
+    unique_mass_shapes = sorted({
+        str(item.get("mass_shape"))
+        for item in summaries
+        if item.get("mass_shape")
+    })
+    unique_concepts = sorted({
+        str(item.get("maas_concept"))
+        for item in summaries
+        if item.get("maas_concept")
+    })
+    unique_verbs = sorted({
+        str(verb)
+        for item in summaries
+        for verb in item.get("sequence_verbs", [])
+        if verb
+    })
     return {
         "case_id": case["case_id"],
         "scenario": label,
         "preferred_operator": preferred_operator,
         "status": "ok",
         "feature_count": len(summaries),
+        "unique_mass_shape_count": len(unique_mass_shapes),
+        "unique_concept_count": len(unique_concepts),
+        "unique_verb_count": len(unique_verbs),
+        "unique_mass_shapes": unique_mass_shapes,
+        "unique_concepts": unique_concepts,
+        "unique_verbs": unique_verbs,
         "rejected_count": len(result.get("rejected") or []),
         "preferred_survived": preferred_survived,
         "preferred_top": preferred_top,
@@ -178,6 +201,22 @@ def _scenario_summary(
 def _aggregate(scenarios: list[dict[str, Any]]) -> dict[str, Any]:
     ok = [item for item in scenarios if item.get("status") == "ok"]
     features = [feature for item in ok for feature in item.get("features", [])]
+    mass_shape_counts = Counter(
+        str(feature.get("mass_shape"))
+        for feature in features
+        if feature.get("mass_shape")
+    )
+    concept_counts = Counter(
+        str(feature.get("maas_concept"))
+        for feature in features
+        if feature.get("maas_concept")
+    )
+    verb_counts = Counter(
+        str(verb)
+        for feature in features
+        for verb in feature.get("sequence_verbs", [])
+        if verb
+    )
     parking_evidence_features = [
         feature for feature in features
         if feature.get("parking_evidence_enabled")
@@ -187,6 +226,16 @@ def _aggregate(scenarios: list[dict[str, Any]]) -> dict[str, Any]:
         "scenario_count": len(scenarios),
         "successful_scenarios": len(ok),
         "feature_count": len(features),
+        "unique_mass_shape_count": len(mass_shape_counts),
+        "unique_concept_count": len(concept_counts),
+        "unique_verb_count": len(verb_counts),
+        "average_unique_shapes_per_scenario": round(
+            mean(float(item.get("unique_mass_shape_count") or 0.0) for item in ok),
+            4,
+        ) if ok else 0.0,
+        "mass_shape_histogram": dict(mass_shape_counts.most_common()),
+        "concept_histogram": dict(concept_counts.most_common()),
+        "verb_histogram": dict(verb_counts.most_common()),
         "legal_pass_rate": round(
             sum(1 for feature in features if feature.get("legal_pass")) / len(features),
             4,
@@ -292,3 +341,13 @@ class Command(BaseCommand):
         latest.write_text(text, encoding="utf-8")
         self.stdout.write(self.style.SUCCESS(f"wrote {path}"))
         self.stdout.write(json.dumps(payload["aggregate"], ensure_ascii=False, indent=2))
+        for scenario in scenarios:
+            if scenario.get("status") != "ok":
+                continue
+            self.stdout.write(
+                f"{scenario['case_id']} / {scenario['scenario']}: "
+                f"{scenario['feature_count']} variants, "
+                f"{scenario['unique_mass_shape_count']} shapes, "
+                f"{scenario['unique_verb_count']} verbs, "
+                f"top={scenario.get('top', {}).get('mass_shape')}"
+            )

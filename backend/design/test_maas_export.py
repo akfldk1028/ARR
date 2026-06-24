@@ -863,10 +863,20 @@ class MaasLegalVariantsTest(TestCase):
             self.assertIsNone(data["aggregate"]["parking_pass_rate"])
             self.assertEqual(data["aggregate"]["preferred_survival_rate"], 1.0)
             self.assertGreaterEqual(data["aggregate"]["legal_pass_rate"], 0.99)
+            self.assertGreaterEqual(data["aggregate"]["unique_mass_shape_count"], 3)
+            self.assertGreaterEqual(data["aggregate"]["unique_concept_count"], 3)
+            self.assertGreaterEqual(data["aggregate"]["unique_verb_count"], 3)
+            self.assertGreaterEqual(data["aggregate"]["average_unique_shapes_per_scenario"], 3.0)
+            self.assertIn("mass_shape_histogram", data["aggregate"])
             self.assertFalse(any(
                 feature.get("parking_evidence_enabled")
                 for scenario in data["scenarios"]
                 for feature in scenario.get("features", [])
+            ))
+            self.assertTrue(all(
+                scenario.get("unique_mass_shape_count", 0) >= 3
+                for scenario in data["scenarios"]
+                if scenario.get("status") == "ok"
             ))
             self.assertTrue(any(
                 scenario.get("preferred_operator") == "grammar_diagonal_step_connector"
