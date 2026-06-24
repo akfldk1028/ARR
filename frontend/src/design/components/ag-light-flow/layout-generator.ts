@@ -77,7 +77,7 @@ const getReviewPositions = (
   }
 
   if (direction === 'TB') {
-    return Array.from({ length: agentCount }, (_, index) => ({ x: 126, y: 286 + index * 116 }));
+    return Array.from({ length: agentCount }, (_, index) => ({ x: 122, y: 214 + index * 86 }));
   }
 
   const startY = 12 - ((agentCount - 1) * 74) / 2;
@@ -101,12 +101,12 @@ const getFixedPositions = (
   }
 
   return {
-    user: direction === 'TB' ? { x: 126, y: 24 } : { x: 8, y: 154 },
-    hub: direction === 'TB' ? { x: 126, y: 154 } : { x: 154, y: 154 },
+    user: direction === 'TB' ? { x: 122, y: 24 } : { x: 8, y: 154 },
+    hub: direction === 'TB' ? { x: 122, y: 116 } : { x: 154, y: 154 },
     critic: direction === 'TB'
-      ? { x: 126, y: 286 + reviewCount * 116 }
+      ? { x: 122, y: 214 + reviewCount * 86 }
       : { x: 300, y: 12 + Math.max(reviewCount, 1) * 74 },
-    end: direction === 'TB' ? { x: 126, y: 286 + reviewCount * 116 } : { x: 446, y: 154 },
+    end: direction === 'TB' ? { x: 122, y: 214 + reviewCount * 86 } : { x: 446, y: 154 },
   };
 };
 

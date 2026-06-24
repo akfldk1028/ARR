@@ -55,6 +55,15 @@ const formatMetric = (value: number | undefined): string => (
   typeof value === 'number' && Number.isFinite(value) ? value.toFixed(1) : '-'
 );
 
+const extractVerbSequence = (...sources: unknown[]): string[] => uniqueStrings(
+  sources.flatMap((source) => asArray(source).map((item) => {
+    if (typeof item === 'string') return item;
+    const record = asRecord(item);
+    return asString(record.verb) || asString(record.operation) || asString(record.name) || '';
+  })),
+  8,
+);
+
 export const statusColor = (status: AGLightReview['status']): string => {
   if (status === 'pass') return '#5eead4';
   if (status === 'fail') return '#fca5a5';
@@ -93,10 +102,7 @@ export const buildAgentTrace = (
   const datum = asRecord(getNested(setbackGeometries, ['datum_result']));
   const sunlightEnvelope = asRecord(getNested(setbackGeometries, ['sunlight_envelope']));
   const massShape = asString(props.mass_shape) || asString(maasModel.operator) || asString(props.algorithm) || 'maas_legal_envelope';
-  const verbSequence = uniqueStrings([
-    asArray(props.maas_verb_sequence),
-    asArray(maasModel.verb_sequence),
-  ], 6);
+  const verbSequence = extractVerbSequence(props.maas_verb_sequence, maasModel.verb_sequence);
   const lawRefs = uniqueStrings([
     lawArticles.map((article) => article.full_id || article.title || article.ref_id),
     checks.map((check) => asArray(asRecord(check.basis).law_articles)),
@@ -128,15 +134,28 @@ export const buildAgentTrace = (
   ].filter(Boolean);
 
   const reviewByAgent = new Map(reviews.map((review) => [review.agent, review]));
-  const lawReview = reviewByAgent.get('law_agent');
+  const lawReview = reviewByAgent.get('law_graph_agent') || reviewByAgent.get('law_agent');
   const parkingReview = reviewByAgent.get('parking_agent');
-  const sunlightReview = reviewByAgent.get('sunlight_agent');
-  const datumReview = reviewByAgent.get('datum_agent');
-  const designReview = reviewByAgent.get('design_critic');
+  const maasReview = reviewByAgent.get('maas_geometry_agent');
+  const reviewAgent = reviewByAgent.get('review_agent') || reviewByAgent.get('design_critic');
+  const legalMetrics = asRecord(maasModel.legal_metrics);
+  const optimizerBackend = asRecord(designQuality.optimizer_backend);
+  const datumParts = [
+    asNumber(datum.datum_elevation_m) !== undefined ? `datum ${asNumber(datum.datum_elevation_m)?.toFixed(2)}m` : '',
+    asNumber(datum.parcel_datum_m) !== undefined ? `parcel ${asNumber(datum.parcel_datum_m)?.toFixed(2)}m` : '',
+    asNumber(datum.road_datum_m) !== undefined ? `road ${asNumber(datum.road_datum_m)?.toFixed(2)}m` : '',
+    asNumber(datum.neighbor_datum_m) !== undefined ? `neighbor ${asNumber(datum.neighbor_datum_m)?.toFixed(2)}m` : '',
+  ].filter(Boolean);
+  const sunlightParts = [
+    sunlightEnvelope.applies !== undefined ? `sunlight applies=${String(sunlightEnvelope.applies)}` : '',
+    sunlightEnvelope.slope !== undefined ? `slope ${String(sunlightEnvelope.slope)}` : '',
+    asNumber(sunlightEnvelope.datum_elevation_m) !== undefined ? `sunlight datum ${asNumber(sunlightEnvelope.datum_elevation_m)?.toFixed(2)}m` : '',
+  ].filter(Boolean);
 
   return [
     {
-      ...(lawReview || { agent: 'law_agent', label: '법규', status: 'check' as const, summary: '법규 근거 확인', detail: '' }),
+      ...(lawReview || { agent: 'law_graph_agent', label: '법규', status: 'check' as const, summary: '법규 근거 확인', detail: '' }),
+      agent: 'law_graph_agent',
       refs: lawRefs.length ? lawRefs : (lawCheckRefs.length ? lawCheckRefs : ['ARR legal constraint checks']),
       formula: graphProjection.available === true ? `Graph DB law refs ${graphProjection.resolved_count ?? lawRefs.length}건` : 'ARR constraint/evidence bundle',
       decision: compactText([
@@ -146,6 +165,7 @@ export const buildAgentTrace = (
     },
     {
       ...(parkingReview || { agent: 'parking_agent', label: '주차', status: 'check' as const, summary: '주차 근거 확인', detail: '' }),
+      agent: 'parking_agent',
       refs: parkingRefs.length ? parkingRefs : ['parking_precheck.required_count/layout_candidate'],
       formula: compactText(requiredCount.rounding_rule || layoutFormula.module || layoutFormula.schema_version || layout.layout_formula, 'parking formula 확인 필요'),
       decision: compactText({
@@ -156,35 +176,47 @@ export const buildAgentTrace = (
       }),
     },
     {
-      ...(sunlightReview || { agent: 'sunlight_agent', label: '정북일조', status: 'info' as const, summary: '정북일조 envelope', detail: '' }),
-      refs: uniqueStrings(['건축법 시행령 제86조', asString(sunlightEnvelope.datum_basis) || 'sunlight_envelope']),
-      formula: compactText(sunlightEnvelope.slope ? `slope ${sunlightEnvelope.slope}` : 'H<=10m 직각 / H>10m 사선 envelope'),
-      decision: compactText({
-        applies: sunlightEnvelope.applies,
-        datum_m: sunlightEnvelope.datum_m || datum.datum_elevation_m || datum.elevation_m,
-      }),
-    },
-    {
-      ...(datumReview || { agent: 'datum_agent', label: '대지레벨', status: 'check' as const, summary: 'datum 확인', detail: '' }),
-      refs: uniqueStrings(['건축법 시행령 §119', '건축법 시행령 §86', asString(datum.elevation_source)]),
-      formula: compactText(datum.basis || datum.datum_basis || '대지/도로/인접대지 평균 기준면 분리'),
-      decision: compactText({
-        parcel: datum.parcel_datum_m,
-        road: datum.road_datum_m,
-        neighbor: datum.neighbor_datum_m,
-        selected: datum.datum_elevation_m || datum.elevation_m,
-      }),
-    },
-    {
-      ...(designReview || { agent: 'design_critic', label: '디자인', status: 'info' as const, summary: '매스 판단', detail: '' }),
-      refs: [massShape, ...verbSequence],
-      formula: qualityParts.join(' · ') || 'MAAS legal morphology ranking',
+      ...(maasReview || { agent: 'maas_geometry_agent', label: '매스/기하', status: 'info' as const, summary: 'MAAS 매스 알고리즘 검증', detail: '' }),
+      agent: 'maas_geometry_agent',
+      refs: uniqueStrings([
+        massShape,
+        verbSequence,
+        asString(designQuality.source),
+        asString(optimizerBackend.source),
+        asString(datum.elevation_source),
+        '건축법 시행령 §86',
+        '건축법 시행령 §119',
+      ], 8),
+      formula: compactText([
+        qualityParts.join(' · ') || 'MAAS legal morphology ranking',
+        datumParts.join(' · '),
+        sunlightParts.join(' · '),
+      ].filter(Boolean).join(' | '), 'MAAS + datum/sunlight evidence'),
       decision: compactText({
         shape: massShape,
-        far: props.far,
-        bcr: props.bcr,
-        height: props.height,
-        reason: props.design_reason || props.rank_reason || designQuality.reason,
+        far: props.far ?? legalMetrics.far,
+        bcr: props.bcr ?? legalMetrics.bcr,
+        height: props.height ?? legalMetrics.height,
+        quality: designQuality.score,
+        volumes: asArray(maasModel.volumes).length || asArray(props.mass_volumes).length,
+        floor_groups: asArray(maasModel.floor_groups || props.floor_groups).length,
+      }),
+    },
+    {
+      ...(reviewAgent || { agent: 'review_agent', label: '최종검토', status: 'check' as const, summary: '최종 검토', detail: '' }),
+      agent: 'review_agent',
+      refs: uniqueStrings([
+        finalDecision.status,
+        missingDecisionEvidence,
+        lawCheckRefs,
+        parkingRefs,
+      ], 8),
+      formula: 'law_graph + parking + MAAS geometry evidence 종합',
+      decision: compactText({
+        status: getMassLegalStatus(evidence, massGeojson),
+        missing: missingDecisionEvidence,
+        hard_failures: asArray(evidence?.hard_failures).length,
+        open_issues: asArray(evidence?.open_issues).length,
       }),
     },
   ];
@@ -241,6 +273,10 @@ export const makeAgentReviews = (
   const far = asNumber(props.far);
   const bcr = asNumber(props.bcr);
   const height = asNumber(props.height);
+  const massShape = asString(props.mass_shape) || asString(asRecord(props.maas_model).operator) || asString(props.algorithm) || 'maas_legal_envelope';
+  const designQuality = asRecord(props.design_quality || asRecord(props.maas_model).design_quality);
+  const designQualityScore = asNumber(props.design_quality_score) ?? asNumber(designQuality.score);
+  const verbSequence = extractVerbSequence(props.maas_verb_sequence, asRecord(props.maas_model).verb_sequence);
 
   const parkingStatus: AGLightReview['status'] = requiredParking && providedParking !== undefined
     ? (providedParking >= requiredParking ? 'pass' : 'fail')
@@ -248,10 +284,14 @@ export const makeAgentReviews = (
   const lawStatus: AGLightReview['status'] = hardFailures.length > 0 || finalStatus.toLowerCase().includes('fail')
     ? 'fail'
     : (missingEvidence.length > 0 || openIssues.length > 0 ? 'check' : 'pass');
+  const maasStatus: AGLightReview['status'] = lawStatus === 'fail' ? 'check' : 'pass';
+  const reviewStatus: AGLightReview['status'] = lawStatus === 'fail' || parkingStatus === 'fail'
+    ? 'fail'
+    : (lawStatus === 'check' || parkingStatus === 'check' ? 'check' : 'pass');
 
   return [
     {
-      agent: 'law_agent',
+      agent: 'law_graph_agent',
       label: '법규',
       status: lawStatus,
       summary: `최종 ${finalStatus}`,
@@ -267,25 +307,23 @@ export const makeAgentReviews = (
       detail: '소규모 배치는 전면도로 이용 가능성을 별도 connector 없이 선형 주차면으로 검토',
     },
     {
-      agent: 'sunlight_agent',
-      label: '정북일조',
-      status: sunlightApplies ? 'pass' : 'info',
-      summary: sunlightApplies ? '§86 envelope 적용' : '적용 외 또는 envelope 없음',
-      detail: datumElevation !== undefined ? `기준면 ${datumElevation.toFixed(2)}m 기반` : '기준면 수치 확인 필요',
+      agent: 'maas_geometry_agent',
+      label: '매스/기하',
+      status: maasStatus,
+      summary: `${massShape} · FAR ${formatMetric(far)} · BCR ${formatMetric(bcr)} · H ${formatMetric(height)}m`,
+      detail: [
+        designQualityScore !== undefined ? `quality ${designQualityScore.toFixed(3)}` : 'quality 확인 필요',
+        verbSequence.length ? `verbs ${verbSequence.join('->')}` : 'verb sequence 없음',
+        datumElevation !== undefined ? `${datumSource} ${datumElevation.toFixed(2)}m` : 'datum_result 확인 필요',
+        sunlightApplies ? '§86 envelope 적용' : '정북 envelope 없음/적용 외',
+      ].join(' · '),
     },
     {
-      agent: 'datum_agent',
-      label: '대지레벨',
-      status: datumElevation !== undefined ? 'pass' : 'check',
-      summary: datumElevation !== undefined ? `${datumSource} 기준면 ${datumElevation.toFixed(2)}m` : 'datum_result 없음',
-      detail: '§119 가중평균 및 §86 인접대지 평균 기준 분리 검토',
-    },
-    {
-      agent: 'design_critic',
-      label: '디자인',
-      status: 'info',
-      summary: `FAR ${formatMetric(far)} · BCR ${formatMetric(bcr)} · H ${formatMetric(height)}m`,
-      detail: '법규 매스 고정 후 형태, 주차 가독성, 외관 생성만 후속 검토',
+      agent: 'review_agent',
+      label: '최종검토',
+      status: reviewStatus,
+      summary: reviewStatus === 'pass' ? '법규·주차·MAAS evidence 통합 통과' : '남은 evidence/리스크 확인 필요',
+      detail: `law ${lawStatus} · parking ${parkingStatus} · maas ${maasStatus} · hard ${hardFailures.length} · missing ${missingEvidence.length}`,
     },
   ];
 };

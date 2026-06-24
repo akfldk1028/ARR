@@ -6,7 +6,7 @@ export const REVIEW_AGENT_ID = 'review_agent';
 export const reviewParticipant = getTeamParticipant(REVIEW_AGENT_ID);
 
 export const reviewEvidenceMapping: AgentEvidenceMapping = {
-  reviewAgentIds: ['design_critic'],
+  reviewAgentIds: ['review_agent', 'design_critic'],
   tone: 'critic',
   fallbackLabel: '최종검토',
 };

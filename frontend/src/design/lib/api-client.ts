@@ -108,6 +108,7 @@ export async function sendAgLightBusMessage(params: {
   from_agent: string;
   to_agent: string;
   message: string;
+  event_type?: string;
   metadata?: Record<string, unknown>;
 }): Promise<void> {
   const res = await fetch(`${AG_LIGHT_BASE}/bus/send`, {

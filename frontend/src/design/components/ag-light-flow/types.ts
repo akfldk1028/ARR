@@ -50,7 +50,7 @@ export type AGLightEdge = Edge<AGLightEdgeData>;
 export type AGLightNode = Node<AGLightNodeData>;
 
 export const NODE_DIMENSIONS = {
-  compact: { width: 128, height: 86 },
+  compact: { width: 136, height: 78 },
   default: { width: 176, height: 102 },
   end: { width: 176, height: 82 },
 };

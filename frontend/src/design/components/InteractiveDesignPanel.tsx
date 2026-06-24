@@ -152,12 +152,19 @@ const InteractiveDesignPanel: React.FC<Props> = ({
         source: 'arr_design_ui',
         final_status: getMassLegalStatus(evidence, massGeojson),
       };
+      const handoffTargets: Record<string, string> = {
+        law_graph_agent: 'parking_agent',
+        parking_agent: 'maas_geometry_agent',
+        maas_geometry_agent: 'review_agent',
+        review_agent: 'design_orchestrator',
+      };
       for (const review of reviews) {
         const agentTrace = trace.find((item) => item.agent === review.agent);
         await sendAgLightBusMessage({
           from_agent: review.agent,
-          to_agent: 'design_orchestrator',
-          message: `${review.label}: ${review.summary} · 근거 ${agentTrace?.refs.join(', ') || 'none'} · 판단 ${agentTrace?.decision || review.detail}`,
+          to_agent: handoffTargets[review.agent] || 'design_orchestrator',
+          event_type: 'agent_reasoning_handoff',
+          message: `${review.label}: ${review.summary} · 공식 ${agentTrace?.formula || 'n/a'} · 근거 ${agentTrace?.refs.join(', ') || 'none'} · 판단 ${agentTrace?.decision || review.detail}`,
           metadata: {
             ...metadata,
             status: review.status,

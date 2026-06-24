@@ -6,7 +6,7 @@ export const MAAS_GEOMETRY_AGENT_ID = 'maas_geometry_agent';
 export const maasGeometryParticipant = getTeamParticipant(MAAS_GEOMETRY_AGENT_ID);
 
 export const maasGeometryEvidenceMapping: AgentEvidenceMapping = {
-  reviewAgentIds: ['sunlight_agent', 'datum_agent'],
+  reviewAgentIds: ['maas_geometry_agent', 'sunlight_agent', 'datum_agent'],
   tone: 'sunlight',
   fallbackLabel: '매스/기준면',
 };
