@@ -14,6 +14,7 @@ from shapely.geometry import box, mapping
 from shapely.affinity import scale as shapely_scale, translate as shapely_translate
 
 from design.maas.diversity import diversity_score, polygon_iou, shape_signature
+from design.maas.design_quality import attach_design_quality_evidence
 from design.maas.floor_groups import build_floor_groups
 from design.maas.grammar import get_sequence_label
 from design.maas.legal_envelope import (
@@ -29,6 +30,7 @@ from design.maas.parking_requirements import (
     resolve_candidate_parking_requirement,
 )
 from design.maas.parking_strategy import attach_parking_strategy
+from design.maas.research_backends import d4descent_design_evidence
 from design.maas.seed_library import generate_seed_variants, seed_library_metadata
 from design.services.mass_evaluator import get_floor_height
 from design.services.repair_operator import repair_design
@@ -58,6 +60,12 @@ def _operator_family(operator: str) -> str:
         return "interlock"
     if operator.startswith("overlap_slabs"):
         return "overlap"
+    if operator.startswith("diagonal_connect"):
+        return "diagonal_connect"
+    if operator.startswith("terrace_link"):
+        return "terrace_link"
+    if operator.startswith("sloped_roof"):
+        return "sloped_roof"
     if operator in {"courtyard_void"}:
         return "courtyard"
     if operator.startswith("tapered"):
@@ -83,6 +91,9 @@ CONCEPT_ORDER = [
     "pinch",
     "interlock",
     "overlap",
+    "diagonal_connect",
+    "terrace_link",
+    "sloped_roof",
     "stepback_tower",
     "taper",
     "grade",
@@ -91,7 +102,7 @@ CONCEPT_ORDER = [
     "legal_buildable",
 ]
 
-SECTION_CONCEPTS = {"stepback_tower", "taper", "grade"}
+SECTION_CONCEPTS = {"stepback_tower", "taper", "grade", "diagonal_connect", "terrace_link", "sloped_roof"}
 MIN_GRAMMAR_CONCEPTS = 3
 
 CONCEPT_LABELS = {
@@ -106,6 +117,9 @@ CONCEPT_LABELS = {
     "pinch": "핀치형",
     "interlock": "인터락",
     "overlap": "오버랩",
+    "diagonal_connect": "사선연결",
+    "terrace_link": "테라스연결",
+    "sloped_roof": "사선지붕형",
     "stepback_tower": "포디움/타워",
     "taper": "테이퍼",
     "grade": "테라스",
@@ -191,6 +205,14 @@ def _attach_3d_diversity(feature: dict[str, Any]) -> None:
     }
 
 
+def _attach_design_quality(feature: dict[str, Any], footprint_utm) -> None:
+    attach_design_quality_evidence(
+        feature,
+        footprint_utm=footprint_utm,
+        optimizer_backend=d4descent_design_evidence(),
+    )
+
+
 def _stack_has_meaningful_top(stack: FloorPlateStack) -> bool:
     if not stack.floor_plates:
         return False
@@ -211,7 +233,15 @@ def _should_use_floor_plate_stack(operator: str, preferred_operator: str | None 
         return True
     if operator.startswith("grammar_"):
         return any(token in operator for token in ("lift", "taper", "step", "terrace", "tower"))
-    return _operator_family(operator) in {"legal_layered", "stepback_tower", "taper", "grade"}
+    return _operator_family(operator) in {
+        "legal_layered",
+        "stepback_tower",
+        "taper",
+        "grade",
+        "diagonal_connect",
+        "terrace_link",
+        "sloped_roof",
+    }
 
 
 def _capacity_score(props: dict[str, Any]) -> float:
@@ -251,6 +281,10 @@ def _maas_verb_sequence(operator: str) -> list[dict[str, Any]]:
         "tapered_slab": [{"verb": "taper", "params": {"top_ratio": 0.58}}],
         "grade_terrace_north": [{"verb": "grade", "params": {"axis": "+y"}}],
         "lift_overlap_slabs": [{"verb": "overlap", "params": {"offset_vec": [0.4, 0.2, 0.0]}}, {"verb": "lift", "params": {"other": "6/8"}}],
+        "diagonal_connect_step_x": [{"verb": "diagonal_connect", "params": {"axis": "x", "upper_ratio": 0.72, "distance_ratio": 0.12}}],
+        "diagonal_connect_step_y": [{"verb": "diagonal_connect", "params": {"axis": "y", "upper_ratio": 0.72, "distance_ratio": 0.12}}],
+        "terrace_link_north": [{"verb": "terrace_link", "params": {"side": "north", "upper_ratio": 0.84}}],
+        "sloped_roof_mass": [{"verb": "sloped_roof_mass", "params": {"upper_ratio": 0.90, "x_ratio": 0.70, "y_ratio": 0.92}}],
     }
     if op.startswith("slender_bar"):
         return base + [{"verb": "compress", "params": {"axis": "x" if op.endswith(("east", "west")) else "y", "factor": 0.54}}]
@@ -277,6 +311,8 @@ def _compact_visual_volumes(floor_plates: list[dict[str, Any]], operator: str) -
         "step" in operator
         or "terrace" in operator
         or "grade" in operator
+        or "diagonal_connect" in operator
+        or "sloped_roof" in operator
         or family in {"stepback_tower", "grade"}
     )
     if wants_stepped_display and n >= 4:
@@ -440,6 +476,8 @@ def _select_diverse_features(
         selected.append(anchor)
 
     def is_near_duplicate(feature: dict[str, Any]) -> bool:
+        if preferred_operator and feature["properties"].get("mass_shape") == preferred_operator:
+            return False
         try:
             family = _operator_family(feature["properties"].get("mass_shape", ""))
             candidate = geojson_to_polygon(feature["geometry"])
@@ -749,6 +787,7 @@ def generate_legal_mass_variants(
             props["far_utilization"] = round(far_utilization, 4)
             props["bcr_utilization"] = round(bcr_utilization, 4)
             props["maas_score"] = round(far_utilization * 0.52 + bcr_utilization * 0.30 + diversity * 0.18, 4)
+            _attach_design_quality(feature, layered_stack.footprint)
             selected.append(feature)
             selected_polygons.append(layered_stack.footprint)
 
@@ -842,6 +881,7 @@ def generate_legal_mass_variants(
         props["far_utilization"] = round(far_utilization, 4)
         props["bcr_utilization"] = round(bcr_utilization, 4)
         props["maas_score"] = round(far_utilization * 0.45 + bcr_utilization * 0.35 + diversity * 0.20, 4)
+        _attach_design_quality(feature, repaired_fp)
         selected.append(feature)
         selected_polygons.append(repaired_fp)
 
@@ -881,6 +921,7 @@ def generate_legal_mass_variants(
         selected.append(feature)
     parking_repairs = _parking_repair_candidates(
         selected,
+        envelope=envelope,
         site_utm=site_utm,
         site_area_m2=site_area_m2,
         building_type=building_type,
@@ -898,6 +939,16 @@ def generate_legal_mass_variants(
         _sync_parking_repair_metadata(parking_repairs)
         selected.extend(parking_repairs)
     selected.sort(key=_parking_priority_key, reverse=True)
+    if preferred_operator:
+        preferred_index = next(
+            (
+                i for i, feature in enumerate(selected)
+                if feature["properties"].get("mass_shape") == preferred_operator
+            ),
+            None,
+        )
+        if preferred_index is not None:
+            selected.insert(0, selected.pop(preferred_index))
     selected = selected[:max(1, max_variants)]
     for i, feature in enumerate(selected, start=1):
         feature["properties"]["variant_id"] = f"maas_{i:02d}"
@@ -985,6 +1036,7 @@ def _attach_parking_requirements(
 def _parking_repair_candidates(
     features: list[dict[str, Any]],
     *,
+    envelope,
     site_utm,
     site_area_m2: float,
     building_type: str,
@@ -1055,7 +1107,10 @@ def _parking_repair_candidates(
             source_iou=source_iou,
         )
         cprops = candidate["properties"]
+        if failed_constraint_metrics(cprops, envelope):
+            continue
         cprops["maas_score"] = round(max(0.0, source_score - 0.18), 4)
+        _attach_design_quality(candidate, repaired_fp)
         cprops["parking_repair"] = {
             "source_variant_id": props.get("variant_id"),
             "source_mass_shape": props.get("mass_shape"),
@@ -1092,7 +1147,10 @@ def _parking_repair_candidates(
                 source_iou=source_iou,
             )
             lifted_props = lifted_candidate["properties"]
+            if failed_constraint_metrics(lifted_props, envelope):
+                continue
             lifted_props["maas_score"] = round(max(0.0, source_score - 0.08), 4)
+            _attach_design_quality(lifted_candidate, repaired_fp)
             lifted_props["parking_repair"] = {
                 **cprops["parking_repair"],
                 "method": "ground_void_upper_mass",

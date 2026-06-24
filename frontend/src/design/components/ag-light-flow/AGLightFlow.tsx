@@ -30,6 +30,7 @@ interface Props {
   messages?: AGLightMessage[];
   status?: AGLightRunStatus;
   viewMode?: AGLightViewMode;
+  pnu?: string | null;
   selectedAgentId?: string;
   onSelectAgent?: (agentId: string) => void;
 }
@@ -43,6 +44,7 @@ function AGLightFlowInner({
   messages,
   status = 'idle',
   viewMode = 'pattern',
+  pnu,
   selectedAgentId,
   onSelectAgent,
 }: Props) {
@@ -53,6 +55,15 @@ function AGLightFlowInner({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [settings, setSettings] = useState<AGLightFlowSettings>(DEFAULT_AG_LIGHT_SETTINGS);
   const flowRevision = `${nodes.length}-${edges.length}-${messages?.length || 0}-${selectedAgentId || 'none'}`;
+  const transferLabel = useMemo(() => {
+    const hasMessages = Boolean(messages?.length);
+    if (pnu) {
+      return hasMessages || status === 'active' || status === 'complete'
+        ? `PNU ${pnu} 전달됨`
+        : `PNU ${pnu} 대기`;
+    }
+    return 'PNU 선택 전 기본 흐름';
+  }, [messages?.length, pnu, status]);
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     setNodes((current) => applyNodeChanges(changes as NodeChange[], current as Node[]) as Node[]);
@@ -132,6 +143,29 @@ function AGLightFlowInner({
           }}
         />
       )}
+      <div
+        data-testid="ag-light-transfer-status"
+        style={{
+          position: 'absolute',
+          top: 10,
+          left: 10,
+          zIndex: 28,
+          maxWidth: 'calc(100% - 118px)',
+          padding: '5px 8px',
+          borderRadius: 999,
+          border: '1px solid rgba(94,234,212,0.2)',
+          background: 'rgba(2,6,23,0.86)',
+          color: '#a7f3d0',
+          fontSize: 10,
+          fontWeight: 700,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        }}
+        title={`${transferLabel} → 법규 → 주차 → 매스/기하 → 최종검토`}
+      >
+        {transferLabel} → 법규 → 주차 → 매스/기하 → 최종검토
+      </div>
       <EdgeOverlay nodes={nodes} edges={edges} />
       <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
         <ReactFlow

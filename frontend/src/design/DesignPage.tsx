@@ -647,6 +647,19 @@ const DesignPage: React.FC = () => {
   }, [isE2E, selectedDesign, stream.paretoGeojson, jobState.sitePolygon]);
   const activeMassGeojson = interactivePreview || selectedMassGeojson || (!selectedDesign ? massFeatures[0] : null) || null;
   const activeMassDesignId = activeMassGeojson?.properties?.design_id ?? selectedDesign?.id ?? undefined;
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const debugFeatures = activeMassGeojson ? [activeMassGeojson] : massFeatures;
+    (window as unknown as {
+      __arrDesignLastMassFeatures?: GeoJSONFeature[];
+      __arrDesignActiveMassFeature?: GeoJSONFeature | null;
+    }).__arrDesignLastMassFeatures = debugFeatures;
+    (window as unknown as {
+      __arrDesignActiveMassFeature?: GeoJSONFeature | null;
+    }).__arrDesignActiveMassFeature = activeMassGeojson;
+  }, [activeMassGeojson, massFeatures]);
+
   const activePanelDesign = useMemo<DesignData | null>(() => {
     if (selectedDesign) return selectedDesign;
     if (!activeMassGeojson) return null;
@@ -1089,6 +1102,7 @@ const DesignPage: React.FC = () => {
             constraints={jobState.constraints}
             sitePolygon={jobState.sitePolygon}
             siteArea={jobState.siteArea}
+            pnu={activePnu}
             buildingType={buildingType}
             algorithm={algorithm}
             sunlightEnvelope={jobState.setbackGeometries?.sunlight_envelope ?? null}
@@ -1097,7 +1111,7 @@ const DesignPage: React.FC = () => {
             onAestheticGenerated={handleAestheticGenerated}
           />
         ) : (
-          <DefaultAgentFlowPanel />
+          <DefaultAgentFlowPanel pnu={activePnu} />
         )}
       </div>
     </div>

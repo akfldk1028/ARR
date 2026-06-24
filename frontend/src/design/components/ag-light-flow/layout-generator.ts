@@ -70,16 +70,14 @@ const getReviewPositions = (
 ): Array<{ x: number; y: number }> => {
   if (!compact) {
     if (direction === 'TB') {
-      const startX = 360 - ((agentCount - 1) * 220) / 2;
-      return Array.from({ length: agentCount }, (_, index) => ({ x: startX + index * 220, y: 520 }));
+      return Array.from({ length: agentCount }, (_, index) => ({ x: 460, y: 370 + index * 150 }));
     }
     const startY = 160 - ((agentCount - 1) * 132) / 2;
     return Array.from({ length: agentCount }, (_, index) => ({ x: 720, y: startY + index * 132 }));
   }
 
   if (direction === 'TB') {
-    const startX = 8 - ((agentCount - 1) * 144) / 2;
-    return Array.from({ length: agentCount }, (_, index) => ({ x: startX + index * 144, y: 268 }));
+    return Array.from({ length: agentCount }, (_, index) => ({ x: 126, y: 286 + index * 116 }));
   }
 
   const startY = 12 - ((agentCount - 1) * 74) / 2;
@@ -93,22 +91,22 @@ const getFixedPositions = (
 ) => {
   if (!compact) {
     return {
-      user: direction === 'TB' ? { x: 360, y: 60 } : { x: 80, y: 160 },
-      hub: direction === 'TB' ? { x: 360, y: 280 } : { x: 380, y: 160 },
+      user: direction === 'TB' ? { x: 460, y: 50 } : { x: 80, y: 160 },
+      hub: direction === 'TB' ? { x: 460, y: 210 } : { x: 380, y: 160 },
       critic: direction === 'TB'
-        ? { x: 360 + reviewCount * 220, y: 520 }
+        ? { x: 460, y: 370 + reviewCount * 150 }
         : { x: 720, y: 160 + Math.max(reviewCount, 1) * 132 },
-      end: direction === 'TB' ? { x: 360, y: 740 } : { x: 1040, y: 160 },
+      end: direction === 'TB' ? { x: 460, y: 370 + reviewCount * 150 } : { x: 1040, y: 160 },
     };
   }
 
   return {
-    user: direction === 'TB' ? { x: 8, y: 8 } : { x: 8, y: 154 },
-    hub: direction === 'TB' ? { x: 8, y: 136 } : { x: 154, y: 154 },
+    user: direction === 'TB' ? { x: 126, y: 24 } : { x: 8, y: 154 },
+    hub: direction === 'TB' ? { x: 126, y: 154 } : { x: 154, y: 154 },
     critic: direction === 'TB'
-      ? { x: 8 + reviewCount * 144, y: 268 }
+      ? { x: 126, y: 286 + reviewCount * 116 }
       : { x: 300, y: 12 + Math.max(reviewCount, 1) * 74 },
-    end: direction === 'TB' ? { x: 8, y: 392 } : { x: 446, y: 154 },
+    end: direction === 'TB' ? { x: 126, y: 286 + reviewCount * 116 } : { x: 446, y: 154 },
   };
 };
 

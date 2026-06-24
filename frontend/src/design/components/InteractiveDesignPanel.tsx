@@ -32,6 +32,7 @@ interface Props {
   constraints: Constraint[];
   sitePolygon: object | null;
   siteArea: number | null;
+  pnu?: string | null;
   buildingType: string;
   algorithm: string;
   sunlightEnvelope?: object | null;
@@ -186,6 +187,7 @@ const InteractiveDesignPanel: React.FC<Props> = ({
   constraints,
   sitePolygon,
   siteArea,
+  pnu,
   buildingType,
   algorithm,
   sunlightEnvelope,
@@ -606,6 +608,7 @@ const InteractiveDesignPanel: React.FC<Props> = ({
           reviews={agReviews}
           messages={agBusLog}
           status={agHealth?.status ? 'complete' : 'idle'}
+          pnu={pnu}
           selectedAgentId={selectedAgentId}
           onSelectAgent={setSelectedAgentId}
         />

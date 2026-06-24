@@ -13,7 +13,7 @@ const DEFAULT_AGENT_FLOW_MESSAGES: AGLightMessage[] = [
   },
 ];
 
-export default function DefaultAgentFlowPanel() {
+export default function DefaultAgentFlowPanel({ pnu }: { pnu?: string | null }) {
   const [messages, setMessages] = useState<AGLightMessage[]>(DEFAULT_AGENT_FLOW_MESSAGES);
   const [selectedAgentId, setSelectedAgentId] = useState('law_graph_agent');
 
@@ -70,6 +70,7 @@ export default function DefaultAgentFlowPanel() {
         messages={messages}
         status="idle"
         viewMode="pattern"
+        pnu={pnu}
         selectedAgentId={selectedAgentId}
         onSelectAgent={setSelectedAgentId}
       />
