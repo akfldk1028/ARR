@@ -3,6 +3,7 @@
 import json
 import os
 import tempfile
+from io import StringIO
 
 from django.core.management import call_command
 from django.test import TestCase
@@ -834,6 +835,36 @@ class MaasLegalVariantsTest(TestCase):
         self.assertTrue(evidence["backend"]["exists"])
         self.assertEqual(evidence["backend"]["interfaces"]["optimizer"], "d4descent.optimizer.optimize")
         self.assertEqual(evidence["absorbed_pattern"]["rewrite"], "ARR grammar/morphology operators")
+
+    def test_maas_algorithm_benchmark_command_writes_latest_json(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = StringIO()
+            call_command(
+                "benchmark_maas_algorithms",
+                "--out-dir",
+                tmp,
+                "--operators",
+                "grammar_diagonal_step_connector",
+                "--max-variants",
+                "3",
+                stdout=out,
+            )
+
+            latest = os.path.join(tmp, "latest.json")
+            self.assertTrue(os.path.exists(latest))
+            with open(latest, encoding="utf-8") as fh:
+                data = json.load(fh)
+            self.assertEqual(data["mode"], "maas_algorithm_benchmark")
+            self.assertEqual(data["source"]["legal_truth"], "ARR deterministic legal repair/evaluation")
+            self.assertGreaterEqual(data["aggregate"]["scenario_count"], 2)
+            self.assertEqual(data["aggregate"]["successful_scenarios"], data["aggregate"]["scenario_count"])
+            self.assertEqual(data["aggregate"]["preferred_survival_rate"], 1.0)
+            self.assertGreaterEqual(data["aggregate"]["legal_pass_rate"], 0.99)
+            self.assertTrue(any(
+                scenario.get("preferred_operator") == "grammar_diagonal_step_connector"
+                and scenario.get("preferred_top")
+                for scenario in data["scenarios"]
+            ))
 
     def test_generated_variants_include_design_quality_and_d4descent_evidence(self):
         result = generate_legal_mass_variants(
