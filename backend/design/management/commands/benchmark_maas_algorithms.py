@@ -229,6 +229,9 @@ def _scenario_summary(
 def _original_baseline_verbs(original_baseline: dict[str, Any] | None) -> list[str]:
     if not isinstance(original_baseline, dict):
         return []
+    case_baseline = original_baseline.get("case_baseline")
+    if isinstance(case_baseline, dict) and isinstance(case_baseline.get("unique_gold_verbs"), list):
+        return [str(verb) for verb in case_baseline["unique_gold_verbs"] if verb]
     metric_summary = original_baseline.get("metric_summary")
     if isinstance(metric_summary, dict) and isinstance(metric_summary.get("pred_verbs"), list):
         return [str(verb) for verb in metric_summary["pred_verbs"] if verb]
@@ -296,6 +299,21 @@ def _aggregate(
         "verb_histogram": dict(verb_counts.most_common()),
         "original_maas_baseline_status": (
             original_baseline.get("status")
+            if isinstance(original_baseline, dict)
+            else None
+        ),
+        "original_maas_case_baseline_status": (
+            original_baseline.get("case_baseline", {}).get("status")
+            if isinstance(original_baseline, dict)
+            else None
+        ),
+        "original_maas_case_count": (
+            original_baseline.get("case_baseline", {}).get("case_count")
+            if isinstance(original_baseline, dict)
+            else None
+        ),
+        "original_maas_compiled_case_count": (
+            original_baseline.get("case_baseline", {}).get("compiled_case_count")
             if isinstance(original_baseline, dict)
             else None
         ),
@@ -421,6 +439,8 @@ class Command(BaseCommand):
             "original MAAS baseline: "
             f"status={original_baseline.get('status')}, "
             f"labels={original_baseline.get('backend', {}).get('labels_status')}, "
+            f"cases={original_baseline.get('case_baseline', {}).get('compiled_case_count')}/"
+            f"{original_baseline.get('case_baseline', {}).get('case_count')}, "
             f"verbs={','.join(_original_baseline_verbs(original_baseline)) or '-'}"
         )
         for scenario in scenarios:
