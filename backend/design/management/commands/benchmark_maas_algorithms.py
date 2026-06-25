@@ -8,9 +8,11 @@ from statistics import mean
 from typing import Any
 
 from django.core.management.base import BaseCommand
+from PIL import Image, ImageDraw, ImageFont
 
 from design.maas import generate_legal_mass_variants
 from design.maas.research_backends import d4descent_design_evidence, run_maas_clone_reference_baseline
+from design.services.site_geometry import geojson_to_polygon, wgs84_to_utm
 
 
 DEFAULT_OPERATORS = [
@@ -153,6 +155,232 @@ def _feature_summary(feature: dict[str, Any], limits: dict[str, Any]) -> dict[st
     return summary
 
 
+def _feature_volumes(feature: dict[str, Any]) -> list[dict[str, Any]]:
+    props = feature.get("properties") if isinstance(feature.get("properties"), dict) else {}
+    model = props.get("maas_model") if isinstance(props.get("maas_model"), dict) else {}
+    raw = model.get("volumes") or props.get("mass_volumes") or []
+    volumes: list[dict[str, Any]] = []
+    if isinstance(raw, list):
+        for item in raw:
+            if not isinstance(item, dict) or not isinstance(item.get("geometry"), dict):
+                continue
+            volumes.append({
+                "geometry": item["geometry"],
+                "bottom": float(item.get("bottom_height") or 0.0),
+                "top": float(item.get("top_height") or props.get("height") or 0.0),
+            })
+    if volumes:
+        return volumes
+    if isinstance(feature.get("geometry"), dict):
+        return [{
+            "geometry": feature["geometry"],
+            "bottom": 0.0,
+            "top": float(props.get("height") or 0.0),
+        }]
+    return []
+
+
+def _volume_local_points(volumes: list[dict[str, Any]]) -> list[tuple[list[tuple[float, float]], float, float]]:
+    converted = []
+    for volume in volumes:
+        try:
+            polygon = wgs84_to_utm(geojson_to_polygon(volume["geometry"]))
+            ring = [(float(x), float(y)) for x, y in list(polygon.exterior.coords)[:-1]]
+            converted.append((ring, float(volume["bottom"]), float(volume["top"])))
+        except Exception:
+            continue
+    if not converted:
+        return []
+    minx = min(x for ring, _, _ in converted for x, _ in ring)
+    miny = min(y for ring, _, _ in converted for _, y in ring)
+    return [(
+        [(x - minx, y - miny) for x, y in ring],
+        bottom,
+        top,
+    ) for ring, bottom, top in converted]
+
+
+def _feature_section_profile(feature: dict[str, Any]) -> dict[str, Any]:
+    props = feature.get("properties") if isinstance(feature.get("properties"), dict) else {}
+    profile = props.get("section_profile")
+    if isinstance(profile, dict):
+        return profile
+    model = props.get("maas_model") if isinstance(props.get("maas_model"), dict) else {}
+    profile = model.get("section_profile")
+    return profile if isinstance(profile, dict) else {}
+
+
+def _render_variant_grid(
+    *,
+    features: list[dict[str, Any]],
+    output_path: Path,
+    title: str,
+    limit: int,
+) -> None:
+    cells = max(1, min(limit, len(features)))
+    cols = 5
+    rows = (cells + cols - 1) // cols
+    cell_w = 320
+    cell_h = 260
+    header_h = 74
+    image = Image.new("RGB", (cols * cell_w, header_h + rows * cell_h), "#f8fafc")
+    draw = ImageDraw.Draw(image)
+    font = _load_font(13)
+    small_font = _load_font(11)
+    draw.rectangle((0, 0, image.width, header_h), fill="#0f172a")
+    draw.text((18, 14), title, fill="#e2e8f0", font=font)
+    draw.text((18, 42), f"legal MAAS alternatives: {cells} shown / {len(features)} generated", fill="#38bdf8", font=font)
+
+    for index, feature in enumerate(features[:cells]):
+        col = index % cols
+        row = index // cols
+        x0 = col * cell_w
+        y0 = header_h + row * cell_h
+        panel = (x0 + 10, y0 + 10, x0 + cell_w - 10, y0 + cell_h - 10)
+        draw.rounded_rectangle(panel, radius=6, fill="#ffffff", outline="#cbd5e1")
+        _draw_feature_axon(draw, panel, feature)
+        props = feature.get("properties") if isinstance(feature.get("properties"), dict) else {}
+        label = str(props.get("mass_shape") or "-")
+        concept = str(props.get("maas_concept") or "")
+        metrics = f"FAR {props.get('far', '-')}, BCR {props.get('bcr', '-')}, H {props.get('height', '-')}"
+        draw.text((panel[0] + 8, panel[1] + 8), f"{index + 1:02d} {label[:31]}", fill="#0f172a", font=small_font)
+        draw.text((panel[0] + 8, panel[1] + 26), concept[:32], fill="#2563eb", font=small_font)
+        draw.text((panel[0] + 8, panel[3] - 22), metrics[:44], fill="#475569", font=small_font)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(output_path)
+
+
+def _load_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
+    for path in (
+        "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    ):
+        try:
+            return ImageFont.truetype(path, size=size)
+        except Exception:
+            continue
+    return ImageFont.load_default()
+
+
+def _draw_feature_axon(
+    draw: ImageDraw.ImageDraw,
+    panel: tuple[int, int, int, int],
+    feature: dict[str, Any],
+) -> None:
+    volumes = _volume_local_points(_feature_volumes(feature))
+    if not volumes:
+        return
+    all_x = [x for ring, _, _ in volumes for x, _ in ring]
+    all_y = [y for ring, _, _ in volumes for _, y in ring]
+    all_z = [z for _, bottom, top in volumes for z in (bottom, top)]
+    min_px, min_py, max_px, max_py = panel
+    pad_x = 28
+    pad_y = 48
+
+    def raw_project(point: tuple[float, float], z: float) -> tuple[float, float]:
+        x, y = point
+        return (x - y * 0.45, y * 0.42 - z * 2.4)
+
+    raw_points = [
+        raw_project((x, y), z)
+        for ring, bottom, top in volumes
+        for x, y in ring
+        for z in (bottom, top)
+    ]
+    raw_min_x = min(x for x, _ in raw_points)
+    raw_max_x = max(x for x, _ in raw_points)
+    raw_min_y = min(y for _, y in raw_points)
+    raw_max_y = max(y for _, y in raw_points)
+    span_x = max(raw_max_x - raw_min_x, 1.0)
+    span_y = max(raw_max_y - raw_min_y, 1.0)
+    scale = min((max_px - min_px - pad_x * 2) / span_x, (max_py - min_py - pad_y * 2) / span_y)
+
+    def project(point: tuple[float, float], z: float) -> tuple[float, float]:
+        rx, ry = raw_project(point, z)
+        return (
+            min_px + pad_x + (rx - raw_min_x) * scale,
+            min_py + pad_y + (ry - raw_min_y) * scale,
+        )
+
+    palette = ["#f59e0b", "#fb7185", "#38bdf8", "#a78bfa", "#34d399"]
+    ordered_volumes = sorted(volumes, key=lambda item: item[1])
+    for volume_index, (ring, bottom, top) in enumerate(ordered_volumes):
+        top_ring = [project(point, top) for point in ring]
+        bottom_ring = [project(point, bottom) for point in ring]
+        color = palette[volume_index % len(palette)]
+        for a, b, c, d in zip(bottom_ring, bottom_ring[1:] + bottom_ring[:1], top_ring[1:] + top_ring[:1], top_ring):
+            draw.polygon([a, b, c, d], fill="#e2e8f0", outline="#94a3b8")
+        draw.polygon(top_ring, fill=color, outline="#0f172a")
+        draw.line(top_ring + [top_ring[0]], fill="#0f172a", width=2)
+    _draw_section_profile_overlay(draw, project, ordered_volumes, _feature_section_profile(feature))
+
+
+def _centroid(points: list[tuple[float, float]]) -> tuple[float, float]:
+    if not points:
+        return (0.0, 0.0)
+    return (
+        sum(x for x, _ in points) / len(points),
+        sum(y for _, y in points) / len(points),
+    )
+
+
+def _draw_section_profile_overlay(
+    draw: ImageDraw.ImageDraw,
+    project,
+    volumes: list[tuple[list[tuple[float, float]], float, float]],
+    profile: dict[str, Any],
+) -> None:
+    if not volumes or not profile:
+        return
+    kind = str(profile.get("kind") or "")
+    all_x = [x for ring, _, _ in volumes for x, _ in ring]
+    all_y = [y for ring, _, _ in volumes for _, y in ring]
+    minx, maxx = min(all_x), max(all_x)
+    miny, maxy = min(all_y), max(all_y)
+    bottom = min(value for _, value, _ in volumes)
+    top = max(value for _, _, value in volumes)
+    accent = "#ec4899"
+
+    if kind in {"diagonal_connector", "diagonal_connect"} and len(volumes) >= 2:
+        lower_ring, _, lower_top = volumes[0]
+        upper_ring, upper_bottom, upper_top = volumes[-1]
+        a = project(_centroid(lower_ring), lower_top)
+        b = project(_centroid(upper_ring), (upper_bottom + upper_top) / 2)
+        draw.line([a, b], fill=accent, width=7)
+        draw.line([a, b], fill="#fdf2f8", width=3)
+        return
+
+    if kind == "terrace_ribbon":
+        side = str(profile.get("side") or "north")
+        count = 4
+        for index in range(count):
+            t = (index + 1) / (count + 1)
+            y = miny + (maxy - miny) * (1.0 - t * 0.55 if side == "north" else t * 0.55)
+            z = bottom + (top - bottom) * (0.35 + index * 0.13)
+            p1 = project((minx, y), z)
+            p2 = project((maxx, y), z)
+            draw.line([p1, p2], fill=accent, width=4)
+        return
+
+    if kind in {"sloped_roof", "sloped_roof_mass"}:
+        high = top
+        low = bottom + (top - bottom) * 0.52
+        roof = [
+            project((minx, miny), high),
+            project((maxx, miny), high),
+            project((maxx, maxy), low),
+            project((minx, maxy), low),
+        ]
+        draw.polygon(roof, fill="#fed7aa", outline=accent)
+        draw.line(roof + [roof[0]], fill=accent, width=4)
+        for t in (0.33, 0.66):
+            p1 = project((minx + (maxx - minx) * t, miny), high)
+            p2 = project((minx + (maxx - minx) * t, maxy), low)
+            draw.line([p1, p2], fill="#fb7185", width=2)
+
+
 def _scenario_summary(
     *,
     case: dict[str, Any],
@@ -161,6 +389,8 @@ def _scenario_summary(
     building_type: str,
     pnu: str | None,
     max_variants: int,
+    render_dir: Path | None = None,
+    render_limit: int = 20,
 ) -> dict[str, Any]:
     result = generate_legal_mass_variants(
         mass_geojson=case["mass_geojson"],
@@ -174,6 +404,15 @@ def _scenario_summary(
     limits = result["constraints"]
     features = result["feature_collection"]["features"]
     summaries = [_feature_summary(feature, limits) for feature in features]
+    png_path = None
+    if render_dir is not None:
+        png_path = render_dir / f"{case['case_id']}__{label}.png"
+        _render_variant_grid(
+            features=features,
+            output_path=png_path,
+            title=f"{case['case_id']} / {label}",
+            limit=render_limit,
+        )
     top = summaries[0] if summaries else {}
     preferred_survived = (
         preferred_operator is None
@@ -223,6 +462,7 @@ def _scenario_summary(
         "preferred_top": preferred_top,
         "top": top,
         "features": summaries,
+        "alt_grid_png": str(png_path) if png_path else None,
     }
 
 
@@ -365,8 +605,21 @@ class Command(BaseCommand):
             help="Output directory relative to workspace root or absolute path.",
         )
         parser.add_argument("--max-variants", type=int, default=6)
+        parser.add_argument("--render-alt-png", action="store_true")
+        parser.add_argument("--alt-grid-limit", type=int, default=20)
         parser.add_argument("--building-type", default="공동주택")
         parser.add_argument("--pnu", default="1168011800104170004")
+        parser.add_argument("--case-id", help="Run only one fixture case id.")
+        parser.add_argument(
+            "--baseline-only",
+            action="store_true",
+            help="Run only the baseline scenario for the selected case(s).",
+        )
+        parser.add_argument(
+            "--skip-original-baseline",
+            action="store_true",
+            help="Skip clone/MAAS reference compilation for fast visual checks.",
+        )
         parser.add_argument(
             "--with-parking",
             action="store_true",
@@ -386,12 +639,26 @@ class Command(BaseCommand):
         pnu = (raw_pnu or None) if options["with_parking"] else None
         max_variants = max(1, int(options["max_variants"]))
         operators = [operator for operator in options["operators"] if isinstance(operator, str) and operator]
-        original_baseline = run_maas_clone_reference_baseline(enable_import=True)
+        render_dir = (out_dir / "alt_grids") if options["render_alt_png"] else None
+        render_limit = max(1, int(options["alt_grid_limit"]))
+        original_baseline = (
+            None
+            if options["skip_original_baseline"]
+            else run_maas_clone_reference_baseline(enable_import=True)
+        )
 
         scenarios: list[dict[str, Any]] = []
-        for case in _fixture_cases():
+        cases = _fixture_cases()
+        case_id = str(options.get("case_id") or "").strip()
+        if case_id:
+            cases = [case for case in cases if case["case_id"] == case_id]
+            if not cases:
+                raise ValueError(f"unknown case_id: {case_id}")
+
+        for case in cases:
             runs = [("baseline_legal_envelope", None)]
-            runs.extend((f"preferred_{operator}", operator) for operator in operators)
+            if not options["baseline_only"]:
+                runs.extend((f"preferred_{operator}", operator) for operator in operators)
             for label, preferred_operator in runs:
                 try:
                     scenarios.append(_scenario_summary(
@@ -401,6 +668,8 @@ class Command(BaseCommand):
                         building_type=building_type,
                         pnu=pnu,
                         max_variants=max_variants,
+                        render_dir=render_dir,
+                        render_limit=render_limit,
                     ))
                 except Exception as exc:
                     scenarios.append({
@@ -420,7 +689,7 @@ class Command(BaseCommand):
             "operators": operators,
             "source": {
                 "grammar": "ARR grammar JSON/operators plus direct clone/MAAS reference baseline",
-                "original_maas_baseline": original_baseline,
+                "original_maas_baseline": original_baseline or {"status": "skipped"},
                 "optimizer_backend": d4descent_design_evidence(enable_import=True),
                 "legal_truth": "ARR deterministic legal repair/evaluation",
             },
@@ -437,12 +706,14 @@ class Command(BaseCommand):
         self.stdout.write(json.dumps(payload["aggregate"], ensure_ascii=False, indent=2))
         self.stdout.write(
             "original MAAS baseline: "
-            f"status={original_baseline.get('status')}, "
-            f"labels={original_baseline.get('backend', {}).get('labels_status')}, "
-            f"cases={original_baseline.get('case_baseline', {}).get('compiled_case_count')}/"
-            f"{original_baseline.get('case_baseline', {}).get('case_count')}, "
+            f"status={(original_baseline or {}).get('status', 'skipped')}, "
+            f"labels={(original_baseline or {}).get('backend', {}).get('labels_status')}, "
+            f"cases={(original_baseline or {}).get('case_baseline', {}).get('compiled_case_count')}/"
+            f"{(original_baseline or {}).get('case_baseline', {}).get('case_count')}, "
             f"verbs={','.join(_original_baseline_verbs(original_baseline)) or '-'}"
         )
+        if render_dir:
+            self.stdout.write(self.style.SUCCESS(f"rendered alt PNG grids under {render_dir}"))
         for scenario in scenarios:
             if scenario.get("status") != "ok":
                 continue

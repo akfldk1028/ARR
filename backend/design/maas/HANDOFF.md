@@ -2,6 +2,81 @@
 
 Updated: 2026-06-25
 
+## 2026-06-25 MAAS Paper-Style Diversity / Section Profile Verification
+
+- User issue: 20 mass alternatives still looked too similar. The user correctly
+  objected that a MAAS/paper-style implementation should not merely rename
+  stacked boxes as `sloped`, `diagonal`, or `terrace`.
+- Current implementation state:
+  - `diversity.py` now includes MAAS-style verb sequence metrics:
+    set Jaccard, token F1, ordered LCS, `sequence_distance`, and
+    `sequence_diversity_score`.
+  - `legal_mesh_optimizer.py` now uses a clone/MAAS-inspired representative
+    selection pass: legal GeoJSON footprint distance + normalized mass metrics
+    + verb sequence distance + concept distance. This is ARR's legal-runtime
+    equivalent of the clone/MAAS diversity/K-medoids idea; ARR does not depend
+    on STL mesh features in production.
+  - Section-design verbs are preserved in selection:
+    `diagonal_connect`, `terrace_link`, and `sloped_roof_mass` are not filtered
+    out only because they share a legal ground footprint with another candidate.
+  - New canonical field: `properties.section_profile` and
+    `properties.maas_model.section_profile`. It is derived from
+    `maas_verb_sequence`, not from a one-off visual overlay. Current kinds:
+    `diagonal_connector`, `terrace_ribbon`, `sloped_roof`.
+  - `benchmark_maas_algorithms` can render 20-candidate PNG grids with
+    `--render-alt-png`. The renderer reads `section_profile`, so sloped roof,
+    diagonal connector, and terrace ribbon are visible in the verification PNG.
+- Latest verification command:
+  ```bash
+  cd /mnt/d/Data/25_ACE/ARR/backend
+  .venv/bin/python manage.py benchmark_maas_algorithms \
+    --out-dir /mnt/d/Data/25_ACE/docs/ai-session-memory/maas-benchmarks-fast \
+    --max-variants 20 \
+    --render-alt-png \
+    --alt-grid-limit 20 \
+    --case-id rect_legal_envelope \
+    --skip-original-baseline \
+    --operators grammar_terrace_ribbon_stepback grammar_sloped_roof_envelope grammar_diagonal_step_connector
+  ```
+- Latest benchmark result:
+  - `successful_scenarios=4/4`
+  - `feature_count=80`
+  - `average_unique_shapes_per_scenario=20.0`
+  - `unique_mass_shape_count=31`
+  - `unique_verb_count=21`
+  - `section_connector_feature_count=11`
+  - `legal_pass_rate=1.0`
+  - `preferred_survival_rate=1.0`
+  - `preferred_top_rate=1.0`
+- Latest PNG outputs:
+  - `docs/ai-session-memory/maas-benchmarks-fast/alt_grids/rect_legal_envelope__baseline_legal_envelope.png`
+  - `docs/ai-session-memory/maas-benchmarks-fast/alt_grids/rect_legal_envelope__preferred_grammar_terrace_ribbon_stepback.png`
+  - `docs/ai-session-memory/maas-benchmarks-fast/alt_grids/rect_legal_envelope__preferred_grammar_sloped_roof_envelope.png`
+  - `docs/ai-session-memory/maas-benchmarks-fast/alt_grids/rect_legal_envelope__preferred_grammar_diagonal_step_connector.png`
+- Latest tests passed:
+  ```bash
+  cd /mnt/d/Data/25_ACE/ARR/backend
+  .venv/bin/python -m py_compile \
+    design/maas/diversity.py \
+    design/maas/legal_mesh_optimizer.py \
+    design/management/commands/benchmark_maas_algorithms.py
+  .venv/bin/python manage.py test \
+    design.test_maas_export.MaasLegalVariantsTest.test_maas_sequence_metrics_follow_reference_eval_contract \
+    design.test_maas_export.MaasLegalVariantsTest.test_variant_selection_preserves_capacity_and_shape_diversity \
+    design.test_maas_export.MaasLegalVariantsTest.test_maas_algorithm_benchmark_command_writes_latest_json \
+    -v 2
+  ```
+- Important limitation:
+  - Do not claim final paper-grade 3D geometry yet. The legal quantities still
+    use vertical `mass_volumes` and floor plates. `section_profile` makes the
+    design intent machine-readable and visible in benchmark PNGs, but Cesium
+    and any downstream mesh export still need to convert that profile into true
+    inclined/terraced surface geometry.
+  - Next technical step: make the frontend/Cesium mass renderer and any export
+    path read `section_profile` and build actual sloped/diagonal/terrace faces,
+    while keeping legal FAR/BCR checks based on the conservative floor-plate
+    accounting.
+
 ## 2026-06-25 MAAS Agent Modularization / AG-light Flow State
 
 - User goal: the right-side "AI 설계 협업" must show a real law-to-design

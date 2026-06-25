@@ -13,7 +13,14 @@ from typing import Any
 from shapely.geometry import box, mapping
 from shapely.affinity import scale as shapely_scale, translate as shapely_translate
 
-from design.maas.diversity import diversity_score, polygon_iou, shape_signature
+from design.maas.diversity import (
+    diversity_score,
+    polygon_iou,
+    sequence_distance,
+    sequence_diversity_score,
+    sequence_verbs,
+    shape_signature,
+)
 from design.maas.design_quality import attach_design_quality_evidence
 from design.maas.floor_groups import build_floor_groups
 from design.maas.grammar import get_sequence_label
@@ -104,6 +111,7 @@ CONCEPT_ORDER = [
 
 SECTION_CONCEPTS = {"stepback_tower", "taper", "grade", "diagonal_connect", "terrace_link", "sloped_roof"}
 MIN_GRAMMAR_CONCEPTS = 3
+MIN_SECTION_DESIGN_CONCEPTS = 3
 SECTION_CONNECTOR_VERBS = {"diagonal_connect", "terrace_link", "sloped_roof_mass"}
 SECTION_CONNECTOR_SHAPE_TOKENS = (
     "diagonal_connect",
@@ -287,7 +295,7 @@ def _should_use_floor_plate_stack(operator: str, preferred_operator: str | None 
     if operator == preferred_operator:
         return True
     if operator.startswith("grammar_"):
-        return any(token in operator for token in ("lift", "taper", "step", "terrace", "tower"))
+        return any(token in operator for token in ("lift", "taper", "step", "terrace", "tower", "diagonal", "sloped"))
     return _operator_family(operator) in {
         "legal_layered",
         "stepback_tower",
@@ -303,6 +311,98 @@ def _capacity_score(props: dict[str, Any]) -> float:
     far = float(props.get("far_utilization") or 0.0)
     bcr = float(props.get("bcr_utilization") or 0.0)
     return far * 0.62 + bcr * 0.38
+
+
+def _normalized_feature_vector(feature: dict[str, Any]) -> tuple[float, ...]:
+    props = feature.get("properties", {}) or {}
+    signature = props.get("shape_signature") if isinstance(props.get("shape_signature"), dict) else {}
+    signature_3d = props.get("shape_signature_3d") if isinstance(props.get("shape_signature_3d"), dict) else {}
+    return (
+        float(props.get("bcr") or 0.0) / 100.0,
+        float(props.get("far") or 0.0) / 300.0,
+        float(props.get("height") or 0.0) / 60.0,
+        float(signature.get("compactness") or 0.0) / 100.0,
+        float(signature_3d.get("volume_count") or 0.0) / 6.0,
+        float(signature_3d.get("floor_plate_count") or 0.0) / 20.0,
+    )
+
+
+def _feature_distance(a: dict[str, Any], b: dict[str, Any]) -> float:
+    """MAAS-style alt distance: geometry, 3D metrics, and verb sequence."""
+    try:
+        geom_distance = 1.0 - polygon_iou(geojson_to_polygon(a["geometry"]), geojson_to_polygon(b["geometry"]))
+    except Exception:
+        geom_distance = 0.0
+    av = _normalized_feature_vector(a)
+    bv = _normalized_feature_vector(b)
+    metric_distance = sum(abs(x - y) for x, y in zip(av, bv)) / max(1, len(av))
+    seq_distance = sequence_distance(
+        sequence_verbs((a.get("properties") or {}).get("maas_verb_sequence")),
+        sequence_verbs((b.get("properties") or {}).get("maas_verb_sequence")),
+    )
+    concept_distance = 0.0 if _operator_family((a.get("properties") or {}).get("mass_shape", "")) == _operator_family((b.get("properties") or {}).get("mass_shape", "")) else 1.0
+    return round(
+        geom_distance * 0.30
+        + metric_distance * 0.25
+        + seq_distance * 0.35
+        + concept_distance * 0.10,
+        4,
+    )
+
+
+def _kmedoid_representatives(
+    candidates: list[dict[str, Any]],
+    *,
+    k: int,
+    anchors: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    """Pick diverse representatives using the clone/MAAS diversity-kmedoids pattern.
+
+    The clone uses mesh complexity + convexity + verb Jaccard. ARR does not
+    depend on STL meshes at runtime, so the same idea is applied to legal
+    GeoJSON features: footprint IoU, normalized mass metrics, and MAAS verb
+    sequence distance.
+    """
+    if k <= 0 or not candidates:
+        return []
+    anchors = anchors or []
+    picked: list[dict[str, Any]] = []
+    distance_cache: dict[tuple[int, int], float] = {}
+
+    def distance(a: dict[str, Any], b: dict[str, Any]) -> float:
+        key = tuple(sorted((id(a), id(b))))
+        if key not in distance_cache:
+            distance_cache[key] = _feature_distance(a, b)
+        return distance_cache[key]
+
+    def min_distance_to_selection(feature: dict[str, Any]) -> float:
+        selected = anchors + picked
+        if not selected:
+            return 1.0
+        return min(distance(feature, item) for item in selected)
+
+    first = max(
+        candidates,
+        key=lambda feature: (
+            min_distance_to_selection(feature),
+            _capacity_score(feature.get("properties", {}) or {}),
+        ),
+    )
+    picked.append(first)
+
+    while len(picked) < min(k, len(candidates)):
+        remaining = [feature for feature in candidates if feature not in picked]
+        if not remaining:
+            break
+        picked.append(max(
+            remaining,
+            key=lambda feature: (
+                min_distance_to_selection(feature),
+                _capacity_score(feature.get("properties", {}) or {}),
+            ),
+        ))
+
+    return picked
 
 
 def _maas_verb_sequence(operator: str) -> list[dict[str, Any]]:
@@ -440,6 +540,82 @@ def _maas_model(
     }
 
 
+def _section_profile_from_sequence(
+    *,
+    operator: str,
+    sequence: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None,
+    props: dict[str, Any],
+) -> dict[str, Any] | None:
+    """Expose section-design intent separately from legal volume accounting.
+
+    FAR/BCR and legality still use volumes/floor plates. This profile is the
+    canonical design/raster-render hint derived from the MAAS verb sequence, so
+    diagonal/terrace/sloped candidates do not collapse visually into identical
+    stacked boxes.
+    """
+    calls = [call for call in sequence or [] if isinstance(call, dict)]
+    for call in calls:
+        verb = str(call.get("verb") or "")
+        params = call.get("params") if isinstance(call.get("params"), dict) else {}
+        if verb == "diagonal_connect":
+            return {
+                "kind": "diagonal_connector",
+                "source": "maas_verb_sequence",
+                "operator": operator,
+                "axis": params.get("axis", "x"),
+                "upper_ratio": float(params.get("upper_ratio", 0.72)),
+                "distance_ratio": float(params.get("distance_ratio", 0.10)),
+                "lower_floor_fraction": float(params.get("lower_floor_fraction", props.get("step_floor", 0.40) or 0.40)),
+                "render_hint": "draw_inclined_connector_between_lower_and_upper_masses",
+            }
+        if verb == "terrace_link":
+            return {
+                "kind": "terrace_ribbon",
+                "source": "maas_verb_sequence",
+                "operator": operator,
+                "side": params.get("side", "north"),
+                "upper_ratio": float(params.get("upper_ratio", 0.84)),
+                "width_ratio": float(params.get("width_ratio", 0.62)),
+                "depth_ratio": float(params.get("depth_ratio", 0.20)),
+                "render_hint": "draw_continuous_terrace_bands_not_isolated_boxes",
+            }
+        if verb == "sloped_roof_mass":
+            return {
+                "kind": "sloped_roof",
+                "source": "maas_verb_sequence",
+                "operator": operator,
+                "upper_ratio": float(params.get("upper_ratio", 0.90)),
+                "x_ratio": float(params.get("x_ratio", 0.70)),
+                "y_ratio": float(params.get("y_ratio", 0.92)),
+                "render_hint": "draw_sloped_envelope_plane_over_mass",
+            }
+    family = _operator_family(operator)
+    if family in {"diagonal_connect", "terrace_link", "sloped_roof"}:
+        return {
+            "kind": family,
+            "source": "operator_family",
+            "operator": operator,
+            "render_hint": "derive_section_profile_from_operator_family",
+        }
+    return None
+
+
+def _attach_section_profile(feature: dict[str, Any]) -> None:
+    props = feature.setdefault("properties", {})
+    sequence = props.get("maas_verb_sequence")
+    profile = _section_profile_from_sequence(
+        operator=str(props.get("mass_shape") or ""),
+        sequence=sequence,
+        props=props,
+    )
+    if profile is None:
+        return
+    props["section_profile"] = profile
+    model = props.get("maas_model")
+    if isinstance(model, dict):
+        model["section_profile"] = profile
+
+
 def _single_volume_model(operator: str, feature: dict[str, Any]) -> dict[str, Any]:
     props = feature.get("properties", {}) or {}
     volumes = [{
@@ -500,6 +676,7 @@ def _apply_variant_verb_sequence(feature: dict[str, Any], variant) -> None:
         model["verb_sequence"] = sequence_list
         model["grammar_sequence"] = variant.operator
         model["grammar_label"] = _concept_label(variant.operator)
+    _attach_section_profile(feature)
 
 
 def _select_diverse_features(
@@ -538,11 +715,15 @@ def _select_diverse_features(
             candidate = geojson_to_polygon(feature["geometry"])
             candidate_profile = _volume_profile(feature)
             candidate_is_connector = _is_section_connector(feature)
+            candidate_verbs = sequence_verbs(feature["properties"].get("maas_verb_sequence"))
             for existing in selected:
                 existing_family = _operator_family(existing["properties"].get("mass_shape", ""))
                 existing_is_connector = _is_section_connector(existing)
                 iou = polygon_iou(candidate, geojson_to_polygon(existing["geometry"]))
+                existing_verbs = sequence_verbs(existing["properties"].get("maas_verb_sequence"))
                 if iou >= 0.98 and candidate_profile == _volume_profile(existing):
+                    return True
+                if iou >= 0.94 and candidate_verbs == existing_verbs:
                     return True
                 if family in {"bcr_fill", "legal_buildable"} and iou >= 0.96:
                     return True
@@ -562,6 +743,64 @@ def _select_diverse_features(
     for feature in by_score:
         family = _operator_family(feature["properties"].get("mass_shape", ""))
         by_family.setdefault(family, []).append(feature)
+
+    if limit >= 8:
+        capped_by_score = by_score[: max(limit + 12, 32)]
+        medoid_pool = [
+            feature for feature in capped_by_score
+            if feature not in selected and not is_near_duplicate(feature)
+        ]
+        medoid_pool = medoid_pool[: max(limit + 8, 28)]
+        medoids = _kmedoid_representatives(
+            medoid_pool,
+            k=limit - len(selected),
+            anchors=selected,
+        )
+        selected.extend(medoids)
+        min_section_design = min(MIN_SECTION_DESIGN_CONCEPTS, max(1, limit // 5))
+        section_design_count = sum(1 for feature in selected if _is_section_connector(feature))
+        if section_design_count < min_section_design:
+            section_candidates = [
+                feature for feature in by_score
+                if feature not in selected and _is_section_connector(feature)
+            ]
+            for feature in section_candidates:
+                if section_design_count >= min_section_design:
+                    break
+                candidate_verbs = sequence_verbs(feature["properties"].get("maas_verb_sequence"))
+                selected_section_verbs = [
+                    sequence_verbs(item["properties"].get("maas_verb_sequence"))
+                    for item in selected
+                    if _is_section_connector(item)
+                ]
+                if candidate_verbs in selected_section_verbs:
+                    continue
+                if len(selected) >= limit:
+                    replace_index = min(
+                        range(len(selected)),
+                        key=lambda i: (
+                            1 if _is_section_connector(selected[i]) else 0,
+                            sequence_diversity_score(
+                                sequence_verbs(selected[i]["properties"].get("maas_verb_sequence")),
+                                [
+                                    sequence_verbs(other["properties"].get("maas_verb_sequence"))
+                                    for j, other in enumerate(selected)
+                                    if j != i
+                                ],
+                            ),
+                            _capacity_score(selected[i]["properties"]),
+                        ),
+                    )
+                    selected.pop(replace_index)
+                selected.append(feature)
+                section_design_count += 1
+        for feature in by_score:
+            if len(selected) >= limit:
+                break
+            if feature in selected or is_near_duplicate(feature):
+                continue
+            selected.append(feature)
+        return selected[:limit]
 
     # Keep at least one sectional/stepback strategy when the parcel can support
     # it. The user still needs a legal terrace/step mass as an option; the
@@ -638,11 +877,19 @@ def _select_diverse_features(
         if not remaining:
             break
         selected_polys = [geojson_to_polygon(f["geometry"]) for f in selected]
+        selected_sequences = [
+            sequence_verbs(f["properties"].get("maas_verb_sequence"))
+            for f in selected
+        ]
         best = max(
             remaining,
             key=lambda f: (
-                _capacity_score(f["properties"]) * 0.65
-                + diversity_score(geojson_to_polygon(f["geometry"]), selected_polys, None) * 0.35
+                _capacity_score(f["properties"]) * 0.45
+                + diversity_score(geojson_to_polygon(f["geometry"]), selected_polys, None) * 0.25
+                + sequence_diversity_score(
+                    sequence_verbs(f["properties"].get("maas_verb_sequence")),
+                    selected_sequences,
+                ) * 0.30
             ),
         )
         selected.append(best)
@@ -715,6 +962,7 @@ def _mass_feature(
     props["maas_model"] = model
     props["mass_volumes"] = model["volumes"]
     props["maas_verb_sequence"] = model["verb_sequence"]
+    _attach_section_profile(feature)
     attach_parking_strategy(
         props,
         site_area_m2=site_area_m2,
@@ -782,6 +1030,7 @@ def _floor_plate_feature(
         "geometry": mapping(utm_to_wgs84(stack.footprint)),
         "properties": props,
     }
+    _attach_section_profile(feature)
     _attach_3d_diversity(feature)
     return feature
 
