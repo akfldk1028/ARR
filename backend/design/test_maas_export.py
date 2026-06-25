@@ -1274,8 +1274,27 @@ class MaasLegalVariantsTest(TestCase):
         self.assertLessEqual(props["bcr"], 50.1)
         self.assertLessEqual(props["far"], 250.1)
         self.assertIn("operation_history", props)
-        self.assertTrue(any(r["agent"] == "law_agent" for r in data["agent_reviews"]))
+        self.assertTrue(any(r["agent"] == "law_graph_agent" for r in data["agent_reviews"]))
         self.assertEqual(data["a2ui_messages"][1]["updateComponents"]["surfaceId"], "maas-agent-review")
+
+    def test_maas_agent_registry_exposes_flow_cards(self):
+        from design.maas.agents import build_agent_cards, build_agent_registry
+        from design.maas.agents.orchestrator.flow import FLOW_AGENT_SEQUENCE, FLOW_STEPS
+
+        registry = build_agent_registry()
+        self.assertEqual(list(FLOW_AGENT_SEQUENCE), [
+            "design_orchestrator",
+            "law_graph_agent",
+            "parking_agent",
+            "maas_geometry_agent",
+            "review_agent",
+        ])
+        self.assertTrue(all(agent_id in registry for agent_id in FLOW_AGENT_SEQUENCE))
+        cards = build_agent_cards()
+        self.assertEqual([card["name"] for card in cards], list(FLOW_AGENT_SEQUENCE))
+        self.assertEqual(FLOW_STEPS[1][0], "design_orchestrator")
+        self.assertEqual(FLOW_STEPS[1][1], "law_graph_agent")
+        self.assertTrue(all("skills" in card and "capabilities" in card for card in cards))
 
     def test_overheight_source_does_not_inflate_legal_seed_floors(self):
         mass = self._mass()

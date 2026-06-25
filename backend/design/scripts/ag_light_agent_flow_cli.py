@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import time
 import uuid
 from pathlib import Path
@@ -13,18 +14,15 @@ from urllib.error import URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from design.maas.agents.orchestrator.flow import FLOW_STEPS
+
 
 DEFAULT_BASE_URL = "http://127.0.0.1:8200"
 DEFAULT_TEAM_JSON = Path(__file__).resolve().parents[4] / "JSON_MODULES" / "teams" / "041_MAAS_Legal_Design_Team.json"
-
-FLOW_STEPS = [
-    ("user", "design_orchestrator", "PNU/design 후보를 받으면 법규-주차-매스-검토 순서로 협업을 시작해."),
-    ("design_orchestrator", "law_graph_agent", "Graph DB 법규 근거와 누락 evidence를 rule_id 중심으로 확인해."),
-    ("law_graph_agent", "parking_agent", "법규 검토 결과를 받아 주차 산정 대수와 연접/차로 조건을 검토해."),
-    ("parking_agent", "maas_geometry_agent", "주차 조건을 반영해 가능한 MAAS 매스 repair operation을 제안해."),
-    ("maas_geometry_agent", "review_agent", "법규/주차/매스 evidence를 묶어 통과/보류/실패 리스크를 판정해."),
-    ("review_agent", "design_orchestrator", "최종 판단과 다음 수정 지시를 사용자에게 전달할 형태로 정리해."),
-]
 
 
 def request_json(method: str, url: str, payload: dict[str, Any] | None = None) -> Any:

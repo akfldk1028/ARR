@@ -1,6 +1,52 @@
 # MAAS Legal Envelope Handoff
 
-Updated: 2026-06-15
+Updated: 2026-06-25
+
+## 2026-06-25 MAAS Agent Modularization / AG-light Flow State
+
+- User goal: the right-side "AI 설계 협업" must show a real law-to-design
+  collaboration, not a decorative graph. The backend agent structure should be
+  modular like official ADK/A2A examples: each agent owns a folder, card, and
+  contract; the orchestrator owns the canonical flow.
+- Current backend structure:
+  - `agents/orchestrator/flow.py`: canonical handoff sequence
+    `user -> design_orchestrator -> law_graph_agent -> parking_agent -> maas_geometry_agent -> review_agent -> design_orchestrator`.
+  - `agents/orchestrator/agent.py`: top-level routing card/result.
+  - `agents/law_graph_agent/agent.py`: FAR/BCR/height constraint review.
+  - `agents/parking_agent/agent.py`: parking count/layout precheck review.
+  - `agents/maas_geometry_agent/agent.py`: MAAS operation/shape explanation.
+  - `agents/review_agent/agent.py`: rejected-candidate/final audit summary.
+  - `agents/shared/types.py`: `AgentContext`, `AgentResult`, `AgentCard`, `MaasAgent`.
+  - `agents/shared/registry.py`: registry/card builder and review runner.
+  - `agents/shared/evidence.py`: shared feature/parking evidence helpers.
+  - `agents/contracts.py`: compatibility wrapper for existing interactive endpoint; it delegates to the registry now.
+- Current agent ids are intentionally aligned with
+  `JSON_MODULES/teams/041_MAAS_Legal_Design_Team.json` and frontend
+  `ARR/frontend/src/design/components/ag-light-flow/agents/*`:
+  `law_graph_agent`, `parking_agent`, `maas_geometry_agent`, `review_agent`.
+  Do not reintroduce old ids `law_agent`, `geometry_agent`, or
+  `optimization_agent` in API output.
+- `ARR/backend/design/scripts/ag_light_agent_flow_cli.py` imports
+  `orchestrator.flow.FLOW_STEPS` instead of duplicating flow text. This keeps
+  CLI, backend, and React Flow semantics aligned.
+- Verified this session:
+  - Python compile for modified agent/CLI files passed with `.venv/bin/python`.
+  - Direct registry smoke check returned cards:
+    `design_orchestrator, law_graph_agent, parking_agent, maas_geometry_agent, review_agent`.
+  - Django targeted tests passed:
+    `test_interactive_operation_endpoint_returns_synced_metrics`,
+    `test_interactive_offset_edge_returns_agent_reviewed_legal_mass`,
+    `test_maas_agent_registry_exposes_flow_cards`.
+  - AG-light CLI live bus smoke passed:
+    `.venv/bin/python design/scripts/ag_light_agent_flow_cli.py --runs 1 --delay 0 --base-url http://127.0.0.1:8200`
+    returned `success_rate: 100.0%`.
+- Next frontend work, if requested:
+  - React Flow should display per-agent reasoning/evidence from `agent_reviews`
+    and A2UI updates: cited legal limits/rule ids, parking count/layout evidence,
+    MAAS operation/shape reason, and final review status.
+  - Keep the graph visually simple and vertical. Lines must be readable; avoid
+    dense crossed edges. The user expects the flow to show real-time progress
+    when PNU lookup/optimization runs.
 
 ## 2026-06-15 Parking Layout / VWorld Resume State
 
