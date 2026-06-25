@@ -15,7 +15,7 @@ class Neo4jService:
     """Neo4j database connection and operations manager"""
 
     def __init__(self, uri: str = None, user: str = None, password: str = None, database: str = None):
-        self.uri = uri or os.getenv("NEO4J_URI", "neo4j://127.0.0.1:7687")
+        self.uri = uri or os.getenv("NEO4J_URI", "bolt://172.27.80.1:7687")
         self.user = user or os.getenv("NEO4J_USER", "neo4j")
         self.password = password or os.getenv("NEO4J_PASSWORD", "11111111")
         self.database = database or os.getenv("NEO4J_DATABASE", "neo4j")  # Use neo4j as default database
