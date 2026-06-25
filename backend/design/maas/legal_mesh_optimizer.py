@@ -543,8 +543,6 @@ def _select_diverse_features(
                 existing_is_connector = _is_section_connector(existing)
                 iou = polygon_iou(candidate, geojson_to_polygon(existing["geometry"]))
                 if iou >= 0.98 and candidate_profile == _volume_profile(existing):
-                    if family != existing_family and (candidate_is_connector or existing_is_connector):
-                        continue
                     return True
                 if family in {"bcr_fill", "legal_buildable"} and iou >= 0.96:
                     return True
@@ -597,6 +595,22 @@ def _select_diverse_features(
                 selected.append(feature)
                 break
 
+    ordered_families = CONCEPT_ORDER + [
+        family for family in by_family
+        if family not in CONCEPT_ORDER
+    ]
+
+    for family in ordered_families:
+        if len(selected) >= limit:
+            break
+        if any(_operator_family(s["properties"].get("mass_shape", "")) == family for s in selected):
+            continue
+        for feature in by_family.get(family, []):
+            if feature in selected or is_near_duplicate(feature):
+                continue
+            selected.append(feature)
+            break
+
     if limit > len(selected) and not preferred_operator:
         grammar_candidates = [
             f for f in by_score
@@ -615,26 +629,10 @@ def _select_diverse_features(
                 continue
             selected.append(feature)
 
-    ordered_families = CONCEPT_ORDER + [
-        family for family in by_family
-        if family not in CONCEPT_ORDER
-    ]
-
-    for family in ordered_families:
-        if len(selected) >= limit:
-            break
-        if any(_operator_family(s["properties"].get("mass_shape", "")) == family for s in selected):
-            continue
-        for feature in by_family.get(family, []):
-            if feature in selected or is_near_duplicate(feature):
-                continue
-            selected.append(feature)
-            break
-
     # Only backfill same-family variants when the parcel yielded too few
     # concepts. For normal parcels, stop at one representative per spatial
     # concept so the UI does not become a list of near-identical stepbacks.
-    min_required = min(limit, 8)
+    min_required = limit
     while len(selected) < min_required:
         remaining = [f for f in by_score if f not in selected and not is_near_duplicate(f)]
         if not remaining:
@@ -1010,7 +1008,17 @@ def generate_legal_mass_variants(
         )
         _sync_parking_repair_metadata(parking_repairs)
         selected.extend(parking_repairs)
-    selected.sort(key=_parking_priority_key, reverse=True)
+    parking_visible = [
+        feature for feature in selected
+        if _parking_priority_key(feature)[1] > 0
+    ]
+    parking_visible.sort(key=_parking_priority_key, reverse=True)
+    review_candidates = [
+        feature for feature in selected
+        if feature not in parking_visible
+    ]
+    review_candidates.sort(key=_review_diversity_priority_key, reverse=True)
+    selected = parking_visible + review_candidates
     if preferred_operator:
         preferred_index = next(
             (
@@ -1519,6 +1527,22 @@ def _parking_priority_key(feature: dict[str, Any]) -> tuple[int, int, int, float
         float(props.get("maas_score") or 0.0),
         floor_area,
         footprint_area,
+    )
+
+
+def _review_diversity_priority_key(feature: dict[str, Any]) -> tuple[int, float, float, float]:
+    props = feature.get("properties") if isinstance(feature.get("properties"), dict) else {}
+    diversity = props.get("candidate_diversity") if isinstance(props.get("candidate_diversity"), dict) else {}
+    class_rank = {
+        "plan_diverse": 3,
+        "near_duplicate": 2,
+        "section_diverse": 1,
+    }.get(diversity.get("class"), 0)
+    return (
+        class_rank,
+        float(props.get("diversity_score") or 0.0),
+        float(props.get("maas_score") or 0.0),
+        float(props.get("floor_area") or 0.0),
     )
 
 
