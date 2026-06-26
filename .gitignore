@@ -280,3 +280,4 @@ frontend/nul
 backend/.wrangler/
 backend/NUL
 backend/law/relationship_embedding/data/relationship_contexts_with_embeddings.json
+backend/media/maas/aesthetic/references/

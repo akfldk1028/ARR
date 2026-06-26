@@ -118,6 +118,8 @@ export interface GeoJSONFeature {
     algorithm?: string;
     variant_id?: string;
     maas_score?: number;
+    design_quality_score?: number;
+    design_quality?: MaasDesignQuality;
     diversity_score?: number;
     source_iou?: number;
     notes?: string[];
@@ -146,6 +148,7 @@ export interface GeoJSONFeature {
       }>;
       floor_groups?: FloorGroup[];
       legal_metrics?: Record<string, number | undefined>;
+      design_quality?: MaasDesignQuality;
     };
     // MAAS legal-envelope floor-by-floor massing
     floor_plates?: Array<{
@@ -174,6 +177,42 @@ export interface GeoJSONFeature {
     lower_height?: number;
     upper_geometry?: { type: string; coordinates: number[][][] };
   };
+}
+
+export interface MaasDesignQuality {
+  source: 'arr.maas.design_quality.v1';
+  score: number;
+  components: {
+    capacity: number;
+    diversity: number;
+    compactness: number;
+    plate_profile: number;
+    sequence_richness: number;
+  };
+  sequence_metrics: {
+    source: 'arr.maas.sequence_metrics.v1';
+    parsimony: number;
+    unique_verb_count: number;
+    verb_set: string[];
+    plan_verbs: string[];
+    section_verbs: string[];
+    has_plan_operation: boolean;
+    has_section_operation: boolean;
+    reference_comparison?: {
+      jaccard: number;
+      token_f1: number;
+      ordered_lcs: number;
+      lcs_score: number;
+    };
+  };
+  optimizer_backend: {
+    name: string;
+    source?: string;
+    status: string;
+    backend?: Record<string, unknown>;
+    absorbed_pattern?: Record<string, unknown>;
+  };
+  legal_truth: string;
 }
 
 export interface FloorGroup {

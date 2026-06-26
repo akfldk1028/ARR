@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
 import { useVworld3D } from '../../land/hooks/use-vworld-3d';
 import { reverse } from '../../land/lib/land-api-client';
 import type { DatumBoundarySegment, DatumPointSample, GeoJSONFeature, SetbackGeometry, SetbackGeometriesMap } from '../lib/types';
@@ -165,6 +165,10 @@ const MassFallback2D: React.FC<{
   const height = 760;
   const selectedFeature = (massFeatures || [])[0];
   const selectedProps = selectedFeature?.properties || {};
+  useEffect(() => {
+    (window as any).__arrDesignLastMassFeatures = massFeatures || [];
+    (window as any).__arrDesignActiveMassFeature = selectedFeature || null;
+  }, [massFeatures, selectedFeature]);
   if (!bounds || !massFeatures?.length) {
     return (
       <div style={{ color: '#f87171', fontSize: 13 }}>

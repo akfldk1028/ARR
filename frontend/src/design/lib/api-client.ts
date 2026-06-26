@@ -261,6 +261,10 @@ export async function createMaasLegalVariants(params: {
   max_variants?: number;
   sunlight_envelope?: object | null;
   setback_geometries?: object | null;
+  include_interactive_seed?: boolean;
+  preferred_operator?: string | null;
+  pnu?: string | null;
+  parking_options?: object | null;
 }): Promise<MaasLegalVariantsResult> {
   const res = await fetch(`${BASE}/maas/legal-variants/`, {
     method: 'POST',
